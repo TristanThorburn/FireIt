@@ -9,8 +9,8 @@ const KeyPad = (props) => {
             pinCombo.push(e.target.textContent)
         }
         if(userCombo.length === 4 && pinCombo.length === 4){
-            props.user(userCombo.join().replace(/\,/g, ''))
-            props.pin(pinCombo.join().replace(/\,/g, ''))
+            props.user(userCombo.join().replace(/,/g, ''))
+            props.pin(pinCombo.join().replace(/,/g, ''))
             props.button(true)
         }
     }
