@@ -1,0 +1,12 @@
+@import './setup.scss';
+@import './variables.scss';
+
+@import './login.scss';
+
+
+html{
+    font-size:125%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:$backgroundColor;
+}
+
