@@ -1,19 +1,21 @@
-const KeyPad = () => {
-    const userNumber = [];
-    const userPassword = [];
+const KeyPad = (props) => {
+    const userCombo = [];
+    const pinCombo = [];
 
     const handleClick = (e) => {
-        if (userNumber.length <=3){
-            userNumber.push(e.target.textContent)
+        if (userCombo.length <=3){
+            userCombo.push(e.target.textContent)
+        } else if(userCombo.length === 4 && pinCombo.length <=3){
+            pinCombo.push(e.target.textContent)
         }
-        // if (userNumber.length = 3 && userPassword.length <=3){
-        //     userPassword.push(e.target.textContent)
-        // }
-        console.log("UserNumber", userNumber, userNumber.length);
+        if(userCombo.length === 4 && pinCombo.length === 4){
+            props.user(userCombo.join().replace(/\,/g, ''))
+            props.pin(pinCombo.join().replace(/\,/g, ''))
+            props.button(true)
+        }
     }
 
     return(
-        <div className='keypad'>
         <table>
             <thead>
                 <tr>
@@ -43,8 +45,8 @@ const KeyPad = () => {
                 </tr>
             </tbody>
         </table>
-    </div>
     )
+
 }
 
 export default KeyPad;

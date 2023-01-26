@@ -1,24 +1,23 @@
-import UserNumber from './UserNumber';
-import UserPassword from './UserPassword';
-import UserForm from './UserForm';
+import KeyPad from './KeyPad';
 import { useState } from 'react';
 
 const Login = () => {
-    const [ showUserPad, setShowUserPad ] = useState(true);
-    const [ showPasswordPad, setShowPasswordPad ] = useState(false);
-    const [ showSubmitForm, setShowSubmitForm ] = useState(false);
+    const [ showButton, setShowButton ] = useState(false);
+    const [ userId, setUserId ] = useState();
+    const [ userPin, setUserPin ] = useState();
+
+    const submitUser = () => {
+        console.log("user:",userId, "pin:",userPin)
+    }
 
     return(
         <div className='loginContainer'>
-            {showUserPad 
-                ? <UserNumber /> 
-                : null}
-            {showPasswordPad 
-                ? <UserPassword /> 
-                : null}
-            {showSubmitForm
-                ? <UserForm /> 
-                : null}
+            <div className='keypad'>
+                <KeyPad user={setUserId} pin={setUserPin} button={setShowButton}/>
+                {showButton
+                    ? <button onClick={submitUser} className='login'>🔥</button>
+                    : null}
+            </div>
         </div>
     )
 }
