@@ -1,9 +1,12 @@
-import Login from "./user/Login";
+import AuthProvider from "../contexts/AuthContext";
+import KeyPad from "./user/KeyPad";
 
 function App() {
   return (
     <div className="App">
-      <Login />
+      <AuthProvider>
+        <KeyPad />
+      </AuthProvider>
     </div>
   );
 }
