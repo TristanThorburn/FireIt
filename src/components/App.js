@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from '../components/PrivateRoutes';
 import ErrorPage from './ErrorPage';
 import SummaryDash from './SummaryDash';
+import BackendDash from './BackendDash';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             
             <Route element={<PrivateRoutes />}>
               <Route exact path='/' element={<SummaryDash />} />
+              <Route path='/backend-dash' element={<BackendDash />} />
             </Route>
           
           </Routes>
