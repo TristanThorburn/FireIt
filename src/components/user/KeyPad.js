@@ -1,28 +1,28 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const KeyPad = () => {
     let userCombo = [];
     let pinCombo = [];
     const [ error, setError ] = useState();
+    const [ loading, setLoading ] = useState();
     const [ email, setEmail ] = useState();
-    const [ password, setPassword ] = useState()
-    const { login, currentUser, logout } = useAuth();
+    const [ password, setPassword ] = useState();
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleClick = (e) => {
         if (userCombo.length <=3){
             userCombo.push(e.target.textContent)
-            console.log("user", userCombo, "pin", pinCombo)
         } else if(userCombo.length === 4 && pinCombo.length <=3){
             pinCombo.push(e.target.textContent)
-            console.log("user", userCombo, "pin", pinCombo)
         }
         if(userCombo.length === 4 && pinCombo.length === 4){
             userCombo.push('@fireit.ca')
             pinCombo.push('fireit')
             const loginUser = userCombo.join().replace(/,/g, '');
             const loginPass = pinCombo.join().replace(/,/g, '');
-            console.log("loginUser:", loginUser, "loginPass:", loginPass);
             setEmail(loginUser)
             setPassword(loginPass)
         }
@@ -31,29 +31,26 @@ const KeyPad = () => {
     const handleClear = async () => {
             userCombo = [];
             pinCombo = [];
-            if(currentUser.email){
-                try {
-                    await logout()
-                } catch (error) {
-                    setError(error.message)
-                }
-            }
     }
 
     const handleLogin = async () => {
         try {
+            setError('')
+            setLoading(true)
             await login(email, password)
+            navigate('/')
         } catch (error) {
             setError(error.message)
         }
+        setLoading(false)
     }
 
 
     return(
         <div className='loginContainer'>
             
+            <div className='demoGuide'>To Demo User:5555, Password:5555, 🔥</div>
             <div>{error}</div>
-            <div>{currentUser?.email}</div>
 
             <div className='keypad'>
                 <table>
@@ -81,7 +78,7 @@ const KeyPad = () => {
                         <tr>
                             <td onClick={handleClear}>⛔</td>
                             <td onClick={handleClick}>0</td>
-                            <td onClick={handleLogin}>🔥</td>
+                            <td onClick={handleLogin} disabled={loading}>🔥</td>
                         </tr>
                     </tbody>
                 </table>

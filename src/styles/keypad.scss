@@ -6,6 +6,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position:relative;
 
     .keypad{
         border: 5px solid black;
@@ -39,5 +40,10 @@
         border:$buttonColor;
         background-color:$buttonColor;
         font-size: 1.5rem;
+    }
+    .demoGuide{
+        position:absolute;
+        top:0px;
+        font-size:2rem;
     }
 }

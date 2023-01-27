@@ -1,0 +1,116 @@
+@import './variables.scss';
+
+.tableTab{
+    position:relative;
+    height:92.5vh;
+    background-color:black;
+
+    h2{
+        margin:0;
+    }
+    ul{
+        margin:0 auto;
+        padding:0;
+        width:100%;
+        list-style:none;
+        display:flex;
+        justify-content:space-evenly;
+    }
+}
+
+.tableMap{
+    height:90%;
+    align-items: center;
+    position:relative;
+
+    li{
+        position:absolute;
+        border:1px solid black;
+        background-color:$buttonColor;
+        color:white;
+    }
+}
+
+.tableOne{
+    top:100px;
+    left:100px;
+    @include diamondTable;
+}
+
+.tableTwo{
+    top:400px;
+    left:200px;
+    @include diamondTable;
+}
+
+.tableThree{
+    top:700px;
+    left:100px;
+    @include boothTable;
+}
+
+.tableFour{
+    top:100px;
+    left:700px;
+    @include diamondTable;
+}
+
+.tableFive{
+    top:400px;
+    left:800px;
+    @include diamondTable;
+}
+
+.tableSix{
+    top:700px;
+    left:700px;
+    @include boothTable;
+}
+
+.tableSeven{
+    top:100px;
+    left:1300px;
+    @include diamondTable;
+}
+
+.tableEight{
+    top:400px;
+    left:1400px;
+    @include diamondTable;
+}
+
+.tableNine{
+    top:700px;
+    left:1300px;
+    @include boothTable;
+}
+
+.tableTen{
+    top:300px;
+    right:100px;
+    height:300px;
+    width:100px;
+
+    p{
+        margin-top:127px;
+        margin-left:15px;
+        margin-bottom:0px;
+    }
+}
+
+.tableTabNav{
+    border-top:2px solid black;
+    background-color:$backgroundColor;
+    height:10%;
+    position:absolute;
+    left:0;
+    bottom:0;
+    right:0;
+    display:flex;
+    align-items: center;
+    cursor: pointer;
+    
+    button{
+        cursor: pointer;
+    }
+}

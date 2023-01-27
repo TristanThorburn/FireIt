@@ -2,3 +2,31 @@ $backgroundColor:#c1e0f7;
 $userKeyColor:#bbdfc5;
 $logoColor:#ffaf87;
 $buttonColor:green;
+
+@mixin diamondTable {
+    rotate:(45deg);
+    width:100px;
+    height:100px;
+    position: relative;
+    
+    p{
+        margin:0 auto;
+        rotate:(-45deg);
+        position:absolute;
+        top:30%;
+        transform:translateX(-50%);
+        left:20%;
+        transform:translateY(-50%);
+        width:100%;
+    }
+}
+
+@mixin boothTable{
+    width:200px;
+    height:100px;
+
+    p{
+        margin-left:69px;
+        margin-top:35px;
+    }
+}

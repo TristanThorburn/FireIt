@@ -1,7 +1,12 @@
 @import './setup.scss';
 @import './variables.scss';
 
-@import './login.scss';
+@import './keypad.scss';
+@import './summarydash.scss';
+@import './tabletab.scss';
+@import './menutab.scss';
+@import './checktab.scss';
+@import './paymenttab.scss';
 
 
 html{
@@ -9,4 +14,7 @@ html{
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color:$backgroundColor;
 }
-
+body{
+    margin:0;
+    padding:0;
+}
