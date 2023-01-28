@@ -1,5 +1,5 @@
 import AuthProvider from '../contexts/AuthContext';
-import KeyPad from './user/KeyPad';
+import Login from './user/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from '../components/PrivateRoutes';
 import ErrorPage from './ErrorPage';
@@ -14,7 +14,7 @@ function App() {
         <AuthProvider>
 
           <Routes>
-            <Route path='/login' element={<KeyPad />} />
+            <Route path='/login' element={<Login />} />
             <Route path='*' element={<ErrorPage />} />
             
             <Route element={<PrivateRoutes />}>
