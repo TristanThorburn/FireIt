@@ -1,0 +1,65 @@
+@import './variables.scss';
+
+.loginContainer{
+    height:100vh;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+
+    .demoGuide{
+        position:absolute;
+        top:0px;
+        font-size:2rem;
+
+        p{
+            margin:0;
+        }
+    }
+    h1{
+        text-transform: uppercase;
+        font-size:3rem;
+        margin:0 auto;
+    }
+    .keypad{
+        border: 5px solid black;
+        width:500px;
+        height:475px;
+        display:flex;
+        flex-direction:column;
+    }
+    table{
+        width:80%;
+        margin:0 auto;
+        font-size:3rem;
+    }
+    tbody{
+        text-align:center;
+    }
+    thead{
+        font-size:2rem;
+    }
+    td{
+        border:2px solid black;
+        width:calc(100% / 3);
+
+        button{
+            width:100%;
+            background-color: $userKeyColor;
+            border:none;
+            cursor:pointer;
+        }
+    }
+    td:active{
+        background-color:darken($userKeyColor, 50%);
+    }
+    .padError{
+        text-align:center;
+        margin:1rem auto;
+        background-color:$errorBackgroundColor;
+        width:80%;
+        font-weight: 600;
+        font-size:1.25rem;
+    }
+}
