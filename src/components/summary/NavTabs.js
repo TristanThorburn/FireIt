@@ -1,6 +1,20 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import AdminPad from '../user/AdminPad';
 
 const NavTabs = (props) => {
+    const [ adminPad, setAdminPad ] = useState(false)
+
+        const toggleAdmin = () => {
+        setAdminPad(!adminPad);
+    }
+
+    if(adminPad){
+        document.body.classList.add('adminOpen')
+    } else {
+        document.body.classList.remove('adminOpen')
+    }
+
     const handleTable = () => {
         props.tableTab(true);
         props.menuTab(false);
@@ -36,8 +50,12 @@ const NavTabs = (props) => {
                 <li onClick={handleMenu}>Menu</li>
                 <li onClick={handleCheck}>Check</li>
                 <li onClick={handlePayment}>Payment</li>
-                <li><Link to='/backend-dash'>Admin</Link></li>
+                <li onClick={toggleAdmin}>Admin</li>
             </ul>
+            {adminPad
+            ? <AdminPad closeAdmin={setAdminPad}/> 
+            : null
+            }
         </div>
     )
 }
