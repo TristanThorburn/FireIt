@@ -27,6 +27,7 @@ const AdminPad = (props) => {
 
     const handleAdminAuth = () => {
         if(adminAuth === '8829') {
+            document.body.classList.remove('adminOpen')
             navigate('/backend-dash')
         } else {
             setError('Incorrect PIN')

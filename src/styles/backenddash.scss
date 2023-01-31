@@ -1,0 +1,29 @@
+@import './variables.scss';
+
+.backendDash{
+    .buttonContainer{
+        height:80vh;
+        display:flex;
+        align-items:center;
+    }
+    h2{
+        margin:0 auto;
+        text-align: center;
+        font-size:4rem;
+    }
+    ul{
+        list-style: none;
+        display:flex;
+        justify-content: space-evenly;
+        padding:0;
+        margin:0 auto;
+        width:100%;
+    }
+    li{
+        width:calc(80% / 4);
+        text-align: center;
+    }
+    img{
+        width:100%;
+    }
+}
