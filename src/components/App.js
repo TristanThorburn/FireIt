@@ -5,6 +5,9 @@ import PrivateRoutes from '../components/PrivateRoutes';
 import ErrorPage from './ErrorPage';
 import SummaryDash from './SummaryDash';
 import BackendDash from './BackendDash';
+import MenuData from './backdash/MenuData';
+import EmployeeData from './backdash/EmployeeData';
+import PaymentData from './backdash/PaymentData';
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route exact path='/' element={<SummaryDash />} />
               <Route path='/backend-dash' element={<BackendDash />} />
+              <Route path='/menu-data' element={<MenuData />} />
+              <Route path='/employee-data' element={<EmployeeData />} />
+              <Route path='/payment-data' element={<PaymentData />} />
             </Route>
           
           </Routes>
