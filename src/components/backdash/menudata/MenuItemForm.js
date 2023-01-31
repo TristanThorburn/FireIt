@@ -1,7 +1,7 @@
 import { appCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
-import { addDoc, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
-import { useEffect, useRef } from 'react';
+import { addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useRef } from 'react';
 
 const MenuItemForm = (props) => {
     const nameRef = useRef('')
