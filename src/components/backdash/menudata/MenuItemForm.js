@@ -1,9 +1,25 @@
 import { appCollectionRef } from '../../../library/firestoreCollections';
-import { addDoc } from 'firebase/firestore';
-import { useRef } from 'react';
+import { db } from '../../../firebase';
+import { addDoc, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { useEffect, useRef } from 'react';
 
 const MenuItemForm = (props) => {
     const nameRef = useRef('')
+
+    // useEffect(() => {
+    //     const docRef = (db, 'apps', props.id);
+        
+    //     try{
+    //         const docSnap = await getDoc(docRef)
+    //         if(docSnap.exists()){
+    //             console.log(docSnap.data())
+    //         } else {
+    //             console.log('no doc')
+    //         }
+    //     } catch(error) {
+    //         console.log(error)
+    //     }
+    // },[props.id])
 
     const handleUpdate = (e) => {
         e.preventDefault()
@@ -11,10 +27,23 @@ const MenuItemForm = (props) => {
             addDoc(appCollectionRef, {
                 name:nameRef.current.value
             })
-            .then(response => {console.log(response)})
-            .catch(error => {console.log(error)})
+            props.setNewItem(false);
         }
-        console.log('hello', props.newItem)
+        if(props.id !== '' && nameRef.current.value !== ''){
+            const docRef = doc(db, 'apps', props.id)
+            
+            updateDoc(docRef, {
+                name:nameRef.current.value
+            })
+        }
+    }
+
+    const handleDelete = () => {
+        const docRef = doc(db, 'apps', props.id)
+        
+        if(props.id !== ''){
+            deleteDoc(docRef)
+        }
     }
 
     return(
@@ -22,7 +51,11 @@ const MenuItemForm = (props) => {
 
             <div>
                 <label htmlFor='name'>Item Name:</label>
-                <input type='text' id='name' ref={nameRef}/>
+                {props.id
+                    ? <input type='text' id='name' ref={nameRef} placeholder='placeholder'/>
+                    : <input type='text' id='name' ref={nameRef}/>
+                }
+                
             </div>
 
             <div>
@@ -92,7 +125,11 @@ const MenuItemForm = (props) => {
                     <option value='dressings'>dressings</option>
                 </select>
             </div>
-            <button>Update</button>
+            {props.newItem
+                ? <button type='submit'>Add Item</button>
+                : <button type='submit'>Update Item</button>
+            }
+            <button onClick={handleDelete}>Delete Item</button>
         </form>
     )
 }

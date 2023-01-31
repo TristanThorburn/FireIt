@@ -31,8 +31,8 @@ const MenuData = () => {
             </div>
 
             {appTab
-            ? <AppsData />
-            : null
+                ? <AppsData />
+                : null
             }
 
         </div>

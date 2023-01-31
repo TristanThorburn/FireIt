@@ -7,7 +7,8 @@ import { onSnapshot } from 'firebase/firestore';
 
 const AppsData = () => {
     const [ appsData, setAppsData ] = useState([]);
-    const [ newItem, setNewItem ] = useState(false)
+    const [ newItem, setNewItem ] = useState(false);
+    const [ selectedItem, setSelectedItem ] = useState('');
 
     // const getApps = () => {
     //     getDocs(appCollectionRef)
@@ -32,24 +33,34 @@ const AppsData = () => {
                 data: doc.data()
             })))
         })
-        return () => {
-            unsubscribe()
-        }
+        return unsubscribe
     },[])
 
     const handleNewItem = () => {
+        setSelectedItem('')
         setNewItem(true)
     }
-    
+ 
     return(
         <div>
             <div className='itemList'>
                 <ul>
                     <li><button onClick={handleNewItem}>New Item</button></li>
-                    {appsData.map(appetizer => <li key={appetizer.id}>{appetizer.data.name}{appetizer.data.price}{appetizer.data.sides}</li>)}
+                    {appsData.map(appetizer => 
+                        <li 
+                            key={appetizer.id}
+                            onClick={() => {
+                                setSelectedItem(appetizer.id)
+                                setNewItem(false)
+                            }}
+                            >
+                                {appetizer.data.name}
+                        </li>)}
                 </ul>
             </div>
-            <MenuItemForm setNewItem={setNewItem} newItem={newItem}/>
+
+            <MenuItemForm setNewItem={setNewItem} newItem={newItem} id={selectedItem}/>
+
         </div>
     )
 }
