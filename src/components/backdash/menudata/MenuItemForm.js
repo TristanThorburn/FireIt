@@ -1,7 +1,14 @@
-import { appCollectionRef, mainsCollectionRef } from '../../../library/firestoreCollections';
+import { 
+    appCollectionRef, 
+    dessertsCollectionRef, 
+    mainsCollectionRef, 
+    coldDrinksCollectionRef, 
+    hotDrinksCollectionRef 
+    } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { useRef, useEffect, useState } from 'react';
+import PopUpData from './PopUpData';
 
 const MenuItemForm = (props) => {
     const [ collectionRef, setCollectionRef ] = useState('');
@@ -26,6 +33,13 @@ const MenuItemForm = (props) => {
             }
             if(props.activeTab === 'mains'){
                 setCollectionRef(mainsCollectionRef)
+            }
+            if(props.activeTab === 'desserts'){
+                setCollectionRef(dessertsCollectionRef)
+            }if(props.activeTab === 'cold drinks'){
+                setCollectionRef(coldDrinksCollectionRef)
+            }if(props.activeTab === 'hot drinks'){
+                setCollectionRef(hotDrinksCollectionRef)
             }
         }
         if(props.id !== ''){
@@ -150,21 +164,6 @@ const MenuItemForm = (props) => {
 
     const handleTaxGroup = (e) => {
         setTaxGroup(e.target.value)
-    }
-
-    const handlePopUps = (e) => {
-        const { value, checked } = e.target;
-        const { popUpsList } = popUps;
-
-        if(checked){
-            setPopUps({
-                popUpsList:[...popUpsList, value],
-            })
-        } else {
-            setPopUps({
-                popUpsList:popUpsList.filter((e) => e !== value),
-            })
-        }
     }
 
     const handleAddPopUp = (e) => {
@@ -437,76 +436,21 @@ const MenuItemForm = (props) => {
             {/* Pop Up Groups */}
             <fieldset>
                 <legend htmlFor='popUpGroup'>Pop Up Group(s):</legend>
-                {<p>{popUpsAction}</p>}
-                <div>
-                    <input 
-                        id='sides'
-                        type='checkbox'
-                        name='popUpGroup'
-                        value='sides'
-                        onChange={handlePopUps}
-                        />
-                    <label htmlFor='sides'>Sides</label>
-                </div>
 
-                <div>
-                    <input 
-                        id='proteins'
-                        type='checkbox'
-                        name='popUpGroup'
-                        value='proteins'
-                        onChange={handlePopUps}
-                        />
-                    <label htmlFor='proteins'>Proteins</label>
-                </div>
+                {props.id !== '' && itemData.popUps
+                    ? <>Current Pop Ups: {itemData.popUps.join(', ')}</>
+                    : null
+                }
 
-                <div>
-                    <input 
-                        id='dressings'
-                        type='checkbox'
-                        name='popUpGroup'
-                        value='dressings'
-                        onChange={handlePopUps}
-                        />
-                    <label htmlFor='dressings'>Dressings</label>
-                </div>
-
-                <div>
-                    <input 
-                        id='foodAddons'
-                        type='checkbox'
-                        name='popUpGroup'
-                        value='foodAddons'
-                        onChange={handlePopUps}
-                        />
-                    <label htmlFor='foodAddons'>Food Addons</label>
-                </div>
-
-                <div>
-                    <input 
-                        id='mixes'
-                        type='checkbox'
-                        name='popUpGroup'
-                        value='mixes'
-                        onChange={handlePopUps}
-                        />
-                    <label htmlFor='mixes'>Mixes</label>
-                </div>
-
-                <div>
-                    <input 
-                        id='barAddons'
-                        type='checkbox'
-                        name='popUpGroup'
-                        value='barAddons'
-                        onChange={handlePopUps}
-                        />
-                    <label htmlFor='barAddons'>Bar Addons</label>
-                </div>
                 <div>
                     <button onClick={handleAddPopUp}>Add</button>
                     <button onClick={handleRemovePopUp}>Remove</button>
                 </div>
+
+                {popUpsAction === 'add' || popUpsAction === 'remove'
+                    ? <PopUpData popUps={popUps} setPopUps={setPopUps} popUpsAction={popUpsAction}/>
+                    : null
+                }
             </fieldset>
 
             {props.newItem === false && props.id === ''

@@ -1,20 +1,38 @@
-import MenuItemForm from './MenuItemForm';
+import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
-import { mainsCollectionRef } from '../../../library/firestoreCollections';
+import { appCollectionRef } from '../../../../library/firestoreCollections';
 import { onSnapshot } from 'firebase/firestore';
 
-const MainsData = (props) => {
-    const [ mainsData, setMainsData ] = useState([]);
+// LOGIC: select item from list, choose new/update/delete to open form component
+
+const AppsData = (props) => {
+    const [ appsData, setAppsData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
+    // const getApps = () => {
+    //     getDocs(appCollectionRef)
+    //     .then(response => { 
+    //         const appetizers = response.docs.map(doc => ({
+    //             data:doc.data(),
+    //             id: doc.id,
+    //         }))
+    //         setAppsData(appetizers)
+    //     })
+    //     .catch(error => console.log(error))
+    // }
+
+    // useEffect(() => {
+    //     getApps();
+    // },[])
+
     useEffect(() => {
-        const unsubscribe = onSnapshot(mainsCollectionRef, snapshot => {
-            setMainsData(snapshot.docs.map(doc => ({
+        const unsubscribe = onSnapshot(appCollectionRef, snapshot => {
+            setAppsData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
-            })));
-        });
+            })))
+        })
         return unsubscribe
     },[])
 
@@ -26,17 +44,18 @@ const MainsData = (props) => {
     return(
         <div>
             <div className='itemList'>
+                <h3>Apps List</h3>
                 <ul>
                     <li><button onClick={handleNewItem}>New Item</button></li>
-                    {mainsData.map(main => 
+                    {appsData.map(appetizer => 
                         <li 
-                            key={main.id}
+                            key={appetizer.id}
                             onClick={() => {
-                                setSelectedItem(main.id)
+                                setSelectedItem(appetizer.id)
                                 setNewItem(false)
                             }}
                             >
-                                {main.data.name}
+                                {appetizer.data.name}
                         </li>)}
                 </ul>
             </div>
@@ -48,9 +67,8 @@ const MainsData = (props) => {
                 setSelectedItem={setSelectedItem}
                 activeTab={props.activeTab}
                 docQuery={props.docQuery} />
-
         </div>
     )
 }
 
-export default MainsData;
+export default AppsData
