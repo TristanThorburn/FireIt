@@ -65,7 +65,7 @@ const MenuItemForm = (props) => {
 
     const handleUpdateItem = (e) => {
         e.preventDefault()
-        const docRef = doc(db, props.activeTab, props.id)
+        const docRef = doc(db, ...props.docQuery, props.id)
 
         if(props.id !== '' && nameRef.current.value !== ''){
             updateDoc(docRef, {
@@ -125,7 +125,7 @@ const MenuItemForm = (props) => {
         }
 
     const handleDelete = () => {
-        const docRef = doc(db, props.activeTab, props.id)
+        const docRef = doc(db, ...props.docQuery, props.id)
         
         if(props.id !== ''){
             deleteDoc(docRef)
