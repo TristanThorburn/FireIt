@@ -5,7 +5,7 @@ import { onSnapshot } from 'firebase/firestore';
 
 // LOGIC: select item from list, choose new/update/delete to open form component
 
-const AppsData = () => {
+const AppsData = (props) => {
     const [ appsData, setAppsData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
@@ -59,7 +59,12 @@ const AppsData = () => {
                 </ul>
             </div>
 
-            <MenuItemForm setNewItem={setNewItem} newItem={newItem} id={selectedItem}/>
+            <MenuItemForm 
+                setNewItem={setNewItem}
+                newItem={newItem}
+                id={selectedItem}
+                setSelectedItem={setSelectedItem}
+                activeTab={props.activeTab}/>
 
         </div>
     )

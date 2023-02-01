@@ -1,33 +1,45 @@
 import { appCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
-import { addDoc, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { useRef, useEffect, useState } from 'react';
 
 const MenuItemForm = (props) => {
+    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ itemData, setItemData ] = useState();
+    const [ itemType, setItemType ] = useState('');
+    const [ taxGroup, setTaxGroup ] = useState('foodTax');
+    const [ printerRoute, setPrinterRoute ] = useState('noPrint');
+    const [ popUps, setPopUps ] = useState({popUpsList:[]});
+    const [ popUpsAction, setPopUpsAction ] = useState('');
     const nameRef = useRef('');
     const onScreenNameRef = useRef('');
     const chitNameRef = useRef('');
     const itemPriceRef = useRef('');
-    const [ appData, setAppData ] = useState();
-    const [ itemType, setItemType ] = useState('');
-    const [ printerRoute, setPrinterRoute ] = useState('noPrint');
-    const [ taxGroup, setTaxGroup ] = useState('foodTax');
-    const [ popUps, setPopUps ] = useState({popUpsList:[]});
     
     useEffect(() => {
         if(props.id === ''){
-            setAppData({})
+            setItemData({})
+
+            if(props.activeTab === 'apps'){
+                setCollectionRef(appCollectionRef)
+            }
         }
         if(props.id !== ''){
-            const docRef = doc(db, 'apps', props.id)
-            getDoc(docRef).then((doc) => setAppData(doc.data())).catch(error => console.log(error))
+            const docRef = doc(db, props.activeTab, props.id)
+            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
         }
-    },[props.id])
+    },[props.id, props.activeTab])
 
-    const handleUpdate = (e) => {
+    const handleTest = (e) => {
+        e.preventDefault();
+        console.log(popUps.popUpsList)
+    }
+
+    const handleAddItem = (e) => {
         e.preventDefault()
+
         if(props.newItem === true && nameRef.current.value !== ''){
-            addDoc(appCollectionRef, {
+            addDoc(collectionRef, {
                 name:nameRef.current.value,
                 screenName:onScreenNameRef.current.value,
                 chitName:chitNameRef.current.value,
@@ -35,8 +47,8 @@ const MenuItemForm = (props) => {
                 type:itemType,
                 taxGroup:taxGroup,
                 printerRoute:printerRoute,
-                popUps:popUps,
-            })
+                popUps:popUps.popUpsList,
+            });
             props.setNewItem(false);
             setPopUps({popUpsList:[]})
             Array.from(document.querySelectorAll('input')).forEach(
@@ -46,21 +58,75 @@ const MenuItemForm = (props) => {
             Array.from(document.querySelectorAll('input[type=radio]')).forEach(
                 input => (input.checked = false))
         }
+    }
+
+    const handleUpdateItem = (e) => {
+        e.preventDefault()
+        const docRef = doc(db, props.activeTab, props.id)
+
         if(props.id !== '' && nameRef.current.value !== ''){
-            const docRef = doc(db, 'apps', props.id)
-            
             updateDoc(docRef, {
                 name:nameRef.current.value
             })
         }
-    }
+        if(props.id !== '' && onScreenNameRef.current.value !== ''){
+            updateDoc(docRef, {
+                screenName:onScreenNameRef.current.value
+            })
+        }
+        if(props.id !== '' && chitNameRef.current.value !==''){
+            updateDoc(docRef, {
+                chitName:chitNameRef.current.value
+            })
+        }
+        if(props.id !== '' && itemPriceRef.current.value !== ''){
+            updateDoc(docRef, {
+                price:itemPriceRef.current.value
+            })
+        }
+        if(props.id !== '' && itemType !== ''){
+            updateDoc(docRef, {
+                type:itemType
+            })
+        }
+        if(props.id !== '' && taxGroup !== ''){
+            updateDoc(docRef, {
+                taxGroup:taxGroup
+            })
+        }
+        if(props.id !== '' && printerRoute !== ''){
+            updateDoc(docRef, {
+                printerRoute:printerRoute
+            })
+        }
+        if(props.id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'add'){
+            updateDoc(docRef, {
+                popUps:arrayUnion(...popUps.popUpsList)
+            });
+            setPopUpsAction('')
+        }
+        if(props.id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'remove'){
+            updateDoc(docRef, {
+                popUps:arrayRemove(...popUps.popUpsList)
+            });
+            setPopUpsAction('')
+        }
+        props.setSelectedItem('');
+        setPopUps({popUpsList:[]});
+        Array.from(document.querySelectorAll('input')).forEach(
+            input => (input.value = ''))
+        Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
+                input => (input.checked = false))
+        Array.from(document.querySelectorAll('input[type=radio]')).forEach(
+            input => (input.checked = false))
+        }
 
     const handleDelete = () => {
-        const docRef = doc(db, 'apps', props.id)
+        const docRef = doc(db, props.activeTab, props.id)
         
         if(props.id !== ''){
             deleteDoc(docRef)
-            setAppData('')
+            setItemData('')
         }
     }
 
@@ -91,24 +157,32 @@ const MenuItemForm = (props) => {
         }
     }
 
-    const testPopState = () => {
-        console.log(popUps)
+    const handleAddPopUp = (e) => {
+        e.preventDefault();
+        setPopUpsAction('add');
+    }
+
+    const handleRemovePopUp = (e) => {
+        e.preventDefault();
+        setPopUpsAction('remove')
     }
 
     return(
-        <form className='menuItemForm' onSubmit={handleUpdate}>
+        <form className='menuItemForm'>
 
             <div>
                 <label htmlFor='itemName'>Item Name:</label>
-                {props.id
+                {props.id !== ''
                     ? <input 
                         id='itemName'
+                        name='itemName'
                         type='text'
                         ref={nameRef}
-                        placeholder={appData.name}
+                        placeholder={itemData?.name}
                         />
                     : <input
-                        id='itemName' 
+                        id='itemName'
+                        name='itemName'
                         type='text'
                         ref={nameRef}
                         />
@@ -118,83 +192,116 @@ const MenuItemForm = (props) => {
             <div>
                 <label 
                     htmlFor='screenName'>On Screen Name:</label>
-                <input 
-                    id='screenName'
-                    type='text'
-                    ref={onScreenNameRef}
-                    />
+                {props.id !== ''
+                    ? <input 
+                        id='screenName'
+                        name='screenName'
+                        type='text'
+                        ref={onScreenNameRef}
+                        placeholder={itemData?.screenName}
+                        />
+                    : <input 
+                        id='screenName'
+                        name='screenName'
+                        type='text'
+                        ref={onScreenNameRef}
+                        />
+                }
+                
             </div>
 
             <div>
                 <label htmlFor='chitName'>Chit Name:</label>
-                <input 
-                    id='chitName'
-                    type='text'
-                    ref={chitNameRef}
-                    />
+                {props.id !== ''
+                    ? <input 
+                        id='chitName'
+                        name='chitName'
+                        type='text'
+                        ref={chitNameRef}
+                        placeholder={itemData?.chitName}
+                        />
+                    : <input 
+                        id='chitName'
+                        name='chitName'
+                        type='text'
+                        ref={chitNameRef}
+                        />
+                }
+                
             </div>
             
             <div>
                 <label htmlFor='price'>Item Price:</label>
-                <input 
-                    id='price'
-                    type='number'
-                    ref={itemPriceRef}
-                    />
+                {props.id !== ''
+                    ? <input 
+                        id='price'
+                        name='price'
+                        type='text'
+                        ref={itemPriceRef}
+                        placeholder={itemData?.price}
+                        />
+                    : <input 
+                        id='price'
+                        name='price'
+                        type='number'
+                        ref={itemPriceRef}
+                        />
+                }
+                
             </div>           
 
             <fieldset>
                 <legend>Select Item Type</legend>
                 <div>
-                    <label htmlFor='item'>Item</label>
+                    <label htmlFor='itemType'>Item</label>
                     <input 
                         id='item'
                         type='radio'
-                        name='type'
+                        name='itemType'
                         value='item'
                         onClick={handleItemType}
                         />
                 </div>
 
                 <div>
-                    <label htmlFor='addon'>Addon</label>
+                    <label htmlFor='itemType'>Addon</label>
                     <input 
                         id='addon'
                         type='radio'
-                        name='type'
+                        name='itemType'
                         value='addon'
                         onClick={handleItemType}
                         />
                 </div>
 
                 <div>
-                    <label htmlFor='modifier'>Modifier</label>
+                    <label htmlFor='itemType'>Modifier</label>
                     <input  
                         id='modifier'
                         type='radio'
-                        name='type'
+                        name='itemType'
                         value='modifier'
                         onClick={handleItemType}
                         />
                 </div>
 
                 <div>
-                    <label htmlFor='nonItem'>Non Item</label>
+                    <label htmlFor='itemType'>Non Item</label>
                     <input  
                         id='nonItem'
                         type='radio'
-                        name='type'
+                        name='itemType'
                         value='nonItem'
                         onClick={handleItemType}
                         />
                 </div>
 
                 <div>
-                    <label htmlFor='transformer'>Transformer</label>
+                    <label htmlFor='itemType'>Transformer</label>
                     <input 
                         id='transformer'
                         type='radio'
-                        name='type'
+                        name='itemType'
                         value='transformer'
                         onClick={handleItemType}
                         />
@@ -208,16 +315,45 @@ const MenuItemForm = (props) => {
                     name='taxGroup'
                     onChange={handleTaxGroup}
                     >
-                    <option 
-                        value='foodTax'
-                        name='taxGroup'
-                        >Food Tax
-                    </option>
-                    <option 
-                        value='alcoholTax'
-                        name='taxGroup'
-                        >Alcohol Tax
-                    </option>
+                    {props.id !== '' && itemData.taxGroup === 'foodTax'
+                        ? <>
+                            <option 
+                                value='foodTax'
+                                name='taxGroup'
+                                >Food Tax
+                            </option>
+                            <option 
+                                value='alcoholTax'
+                                name='taxGroup'
+                                >Alcohol Tax
+                            </option>
+                          </>
+                        :props.id !== '' && itemData.taxGroup === 'alcoholTax'
+                            ? <>
+                                <option 
+                                    value='alcoholTax'
+                                    name='taxGroup'
+                                    >Alcohol Tax
+                                </option>
+                                <option 
+                                    value='foodTax'
+                                    name='taxGroup'
+                                    >Food Tax
+                                </option>
+                              </>
+                            : <>
+                                <option 
+                                    value='foodTax'
+                                    name='taxGroup'
+                                    >Food Tax
+                                </option>
+                                <option 
+                                    value='alcoholTax'
+                                    name='taxGroup'
+                                    >Alcohol Tax
+                                </option>
+                              </>
+                    }
                 </select>
             </div>
 
@@ -228,27 +364,84 @@ const MenuItemForm = (props) => {
                     name='printerRoute'
                     onChange={handlePrinterRoute}
                     >
-                    <option 
-                        value='noPrint'
-                        name='printerRoute'
-                        >NO PRINT
-                    </option>
-                    <option 
-                        value='bar'
-                        name='printerRoute'
-                        >BAR
-                    </option>
-                    <option
-                        value='kitchen'
-                        name='printerRoute'
-                        >KITCHEN
-                    </option>
+                    {props.id !== '' && itemData.printerRoute === 'noPrint'
+                        ? <>
+                            <option 
+                                value='noPrint'
+                                name='printerRoute'
+                                >NO PRINT
+                            </option>
+                            <option 
+                                value='bar'
+                                name='printerRoute'
+                                >BAR
+                            </option>
+                            <option
+                                value='kitchen'
+                                name='printerRoute'
+                                >KITCHEN
+                            </option>
+                          </>
+                        :props.id !== '' && itemData.printerRoute === 'bar'
+                            ? <>
+                                <option 
+                                    value='bar'
+                                    name='printerRoute'
+                                    >BAR
+                                </option>
+                                <option
+                                    value='kitchen'
+                                    name='printerRoute'
+                                    >KITCHEN
+                                </option>
+                                <option 
+                                    value='noPrint'
+                                    name='printerRoute'
+                                    >NO PRINT
+                                </option>
+                              </>
+                            :props.id !== '' && itemData.printerRoute === 'kitchen'
+                                ? <>
+                                    <option
+                                        value='kitchen'
+                                        name='printerRoute'
+                                        >KITCHEN
+                                    </option>
+                                    <option 
+                                        value='noPrint'
+                                        name='printerRoute'
+                                        >NO PRINT
+                                    </option>
+                                    <option 
+                                        value='bar'
+                                        name='printerRoute'
+                                        >BAR
+                                    </option>
+                                  </>
+                                : <>
+                                    <option 
+                                        value='noPrint'
+                                        name='printerRoute'
+                                        >NO PRINT
+                                    </option>
+                                    <option 
+                                        value='bar'
+                                        name='printerRoute'
+                                        >BAR
+                                    </option>
+                                    <option
+                                        value='kitchen'
+                                        name='printerRoute'
+                                        >KITCHEN
+                                    </option>
+                                  </>
+                    }
                 </select>
             </div>
 
             <fieldset>
                 <legend htmlFor='popUpGroup'>Pop Up Group(s):</legend>
-
+                {<p>{popUpsAction}</p>}
                 <div>
                     <input 
                         id='sides'
@@ -314,15 +507,23 @@ const MenuItemForm = (props) => {
                         />
                     <label htmlFor='barAddons'>Bar Addons</label>
                 </div>
+                <div>
+                    <button onClick={handleAddPopUp}>Add</button>
+                    <button onClick={handleRemovePopUp}>Remove</button>
+                </div>
             </fieldset>
 
-            {props.newItem
-                ? <button type='submit'>Add Item</button>
-                : <button type='submit'>Update Item</button>
+            {props.newItem === false && props.id === ''
+                ? null
+                : props.id !== ''
+                    ? <button type='submit' onClick={handleUpdateItem}>Update Item</button>
+                    : props.newItem === true
+                ? <button type='submit' onClick={handleAddItem}>Add Item</button>
+                : null
             }
             
             <button onClick={handleDelete}>Delete Item</button>
-            <button onClick={testPopState}>TestPopUps</button>
+            <button onClick={handleTest}>Test Button</button>
         </form>
     )
 }
