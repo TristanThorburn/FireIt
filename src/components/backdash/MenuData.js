@@ -13,17 +13,20 @@ const MenuData = () => {
     const [ appTab, setAppsTab ] = useState(false);
     const [ mainsTab, setMainsTab ]= useState(false);
     const [ activeDataDoc, setActiveDataDoc ] = useState('');
+    const [ docQuery, setDocQuery ] = useState('')
 
     const handleApps = () => {
         setMainsTab(false);
         setAppsTab(true);
         setActiveDataDoc('apps');
+        setDocQuery(['food', 'menu', 'apps'])
     }
 
     const handleMains = () => {
         setAppsTab(false);
         setMainsTab(true);
         setActiveDataDoc('mains');
+        setDocQuery(['food', 'menu', 'mains'])
     }
 
     return(
@@ -42,12 +45,12 @@ const MenuData = () => {
             </div>
 
             {appTab
-                ? <AppsData activeTab={activeDataDoc} />
+                ? <AppsData activeTab={activeDataDoc} docQuery={docQuery} />
                 : null
             }
 
             {mainsTab
-                ? <MainsData activeTab={activeDataDoc} />
+                ? <MainsData activeTab={activeDataDoc} docQuery={docQuery} />
                 : null
             }
 
