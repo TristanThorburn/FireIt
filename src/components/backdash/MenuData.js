@@ -10,9 +10,11 @@ import AppsData from './menudata/AppsData';
 
 const MenuData = () => {
     const [ appTab, setAppsTab ] = useState(false)
+    const [ activeDataDoc, setActiveDataDoc ] = useState('');
 
     const handleApps = () => {
         setAppsTab(true)
+        setActiveDataDoc('apps')
     }
 
     return(
@@ -31,7 +33,7 @@ const MenuData = () => {
             </div>
 
             {appTab
-                ? <AppsData />
+                ? <AppsData activeTab={activeDataDoc}/>
                 : null
             }
 
