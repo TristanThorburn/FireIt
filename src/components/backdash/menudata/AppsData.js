@@ -64,7 +64,8 @@ const AppsData = (props) => {
                 newItem={newItem}
                 id={selectedItem}
                 setSelectedItem={setSelectedItem}
-                activeTab={props.activeTab}/>
+                activeTab={props.activeTab}
+                docQuery={props.docQuery} />
 
         </div>
     )

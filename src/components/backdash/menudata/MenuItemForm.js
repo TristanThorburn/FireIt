@@ -28,10 +28,10 @@ const MenuItemForm = (props) => {
             }
         }
         if(props.id !== ''){
-            const docRef = doc(db, props.activeTab, props.id)
+            const docRef = doc(db, ...props.docQuery, props.id)
             getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
         }
-    },[props.id, props.activeTab])
+    },[props.id, props.docQuery, props.activeTab])
 
     const handleTest = (e) => {
         e.preventDefault();
