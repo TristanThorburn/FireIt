@@ -44,6 +44,7 @@ const AppsData = (props) => {
     return(
         <div>
             <div className='itemList'>
+                <h3>Apps List</h3>
                 <ul>
                     <li><button onClick={handleNewItem}>New Item</button></li>
                     {appsData.map(appetizer => 
@@ -66,7 +67,6 @@ const AppsData = (props) => {
                 setSelectedItem={setSelectedItem}
                 activeTab={props.activeTab}
                 docQuery={props.docQuery} />
-
         </div>
     )
 }
