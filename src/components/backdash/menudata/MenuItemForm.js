@@ -7,11 +7,12 @@ const MenuItemForm = (props) => {
     const [ collectionRef, setCollectionRef ] = useState('');
     const [ itemData, setItemData ] = useState();
     const [ itemType, setItemType ] = useState('');
-    const [ taxGroup, setTaxGroup ] = useState('foodTax');
-    const [ printerRoute, setPrinterRoute ] = useState('noPrint');
+    const [ taxGroup, setTaxGroup ] = useState('');
+    const [ printerRoute, setPrinterRoute ] = useState('');
     const [ popUps, setPopUps ] = useState({popUpsList:[]});
     const [ popUpsAction, setPopUpsAction ] = useState('');
     const nameRef = useRef('');
+    const itemStockRef = useRef('');
     const onScreenNameRef = useRef('');
     const chitNameRef = useRef('');
     const itemPriceRef = useRef('');
@@ -44,6 +45,7 @@ const MenuItemForm = (props) => {
         if(props.newItem === true && nameRef.current.value !== ''){
             addDoc(collectionRef, {
                 name:nameRef.current.value,
+                itemStock:itemStockRef.current.value,
                 screenName:onScreenNameRef.current.value,
                 chitName:chitNameRef.current.value,
                 price:itemPriceRef.current.value,
@@ -70,6 +72,11 @@ const MenuItemForm = (props) => {
         if(props.id !== '' && nameRef.current.value !== ''){
             updateDoc(docRef, {
                 name:nameRef.current.value
+            })
+        }
+        if(props.id !== '' && itemStockRef.current.value !== ''){
+            updateDoc(docRef, {
+                itemStock:itemStockRef.current.value
             })
         }
         if(props.id !== '' && onScreenNameRef.current.value !== ''){
@@ -172,7 +179,7 @@ const MenuItemForm = (props) => {
 
     return(
         <form className='menuItemForm'>
-
+            {/* Item Name */}
             <div>
                 <label htmlFor='itemName'>Item Name:</label>
                 {props.id !== ''
@@ -191,10 +198,28 @@ const MenuItemForm = (props) => {
                         />
                 }
             </div>
-
+            {/* Item Count */}
             <div>
-                <label 
-                    htmlFor='screenName'>On Screen Name:</label>
+                <label htmlFor='itemStock'>Item Stock:</label>
+                {props.id !== ''
+                    ? <input 
+                        id='itemStock'
+                        name='itemStock'
+                        type='number'
+                        ref={itemStockRef}
+                        placeholder={itemData?.itemStock}
+                        />
+                    : <input 
+                        id='price'
+                        name='price'
+                        type='number'
+                        ref={itemStockRef}
+                        />
+                }
+            </div>
+            {/* On Screen Name */}
+            <div>
+                <label htmlFor='screenName'>On Screen Name:</label>
                 {props.id !== ''
                     ? <input 
                         id='screenName'
@@ -210,9 +235,8 @@ const MenuItemForm = (props) => {
                         ref={onScreenNameRef}
                         />
                 }
-                
             </div>
-
+            {/* ChitName */}
             <div>
                 <label htmlFor='chitName'>Chit Name:</label>
                 {props.id !== ''
@@ -230,16 +254,15 @@ const MenuItemForm = (props) => {
                         ref={chitNameRef}
                         />
                 }
-                
             </div>
-            
+            {/* Item Price */}
             <div>
                 <label htmlFor='price'>Item Price:</label>
                 {props.id !== ''
                     ? <input 
                         id='price'
                         name='price'
-                        type='text'
+                        type='number'
                         ref={itemPriceRef}
                         placeholder={itemData?.price}
                         />
@@ -250,11 +273,14 @@ const MenuItemForm = (props) => {
                         ref={itemPriceRef}
                         />
                 }
-                
-            </div>           
-
+            </div>
+            {/* Item Type */}
             <fieldset>
                 <legend>Select Item Type</legend>
+                {props.id !== '' && itemData.type
+                    ? <> Current type: {itemData.type}</>
+                    : null
+                }
                 <div>
                     <label htmlFor='itemType'>Item</label>
                     <input 
@@ -294,7 +320,7 @@ const MenuItemForm = (props) => {
                         id='nonItem'
                         type='radio'
                         name='itemType'
-                        value='nonItem'
+                        value='non item'
                         onClick={handleItemType}
                         />
                 </div>
@@ -310,7 +336,7 @@ const MenuItemForm = (props) => {
                         />
                 </div>
             </fieldset>
-            
+            {/* Tax Group */}
             <div>
                 <label htmlFor='taxGroup'>Tax Group:</label>
                 <select 
@@ -319,6 +345,22 @@ const MenuItemForm = (props) => {
                     onChange={handleTaxGroup}
                     >
                     {props.id !== '' && itemData.taxGroup === 'foodTax'
+                        ? <option value='' disabled selected>Food Tax</option>
+                        : props.id !== '' && itemData.taxGroup === 'alcoholTax'
+                            ? <option value='' disabled selected>Alcohol Tax</option>
+                            :<option value='' disabled selected>Select Tax Type</option>
+                    }
+                    <option 
+                        value='foodTax'
+                        name='taxGroup'
+                        >Food Tax
+                    </option>
+                    <option 
+                        value='alcoholTax'
+                        name='taxGroup'
+                        >Alcohol Tax
+                    </option>
+                    {/* {props.id !== '' && itemData.taxGroup === 'foodTax'
                         ? <>
                             <option 
                                 value='foodTax'
@@ -356,10 +398,10 @@ const MenuItemForm = (props) => {
                                     >Alcohol Tax
                                 </option>
                               </>
-                    }
+                    } */}
                 </select>
             </div>
-
+            {/* Printer Route */}
             <div>
                 <label htmlFor='printerRoute'>Printer Route:</label>
                 <select 
@@ -368,80 +410,31 @@ const MenuItemForm = (props) => {
                     onChange={handlePrinterRoute}
                     >
                     {props.id !== '' && itemData.printerRoute === 'noPrint'
-                        ? <>
-                            <option 
-                                value='noPrint'
-                                name='printerRoute'
-                                >NO PRINT
-                            </option>
-                            <option 
-                                value='bar'
-                                name='printerRoute'
-                                >BAR
-                            </option>
-                            <option
-                                value='kitchen'
-                                name='printerRoute'
-                                >KITCHEN
-                            </option>
-                          </>
+                        ?<option value='' disabled selected>NO PRINT</option>
                         :props.id !== '' && itemData.printerRoute === 'bar'
-                            ? <>
-                                <option 
-                                    value='bar'
-                                    name='printerRoute'
-                                    >BAR
-                                </option>
-                                <option
-                                    value='kitchen'
-                                    name='printerRoute'
-                                    >KITCHEN
-                                </option>
-                                <option 
-                                    value='noPrint'
-                                    name='printerRoute'
-                                    >NO PRINT
-                                </option>
-                              </>
+                            ?<option value='' disabled selected>BAR</option>
                             :props.id !== '' && itemData.printerRoute === 'kitchen'
-                                ? <>
-                                    <option
-                                        value='kitchen'
-                                        name='printerRoute'
-                                        >KITCHEN
-                                    </option>
-                                    <option 
-                                        value='noPrint'
-                                        name='printerRoute'
-                                        >NO PRINT
-                                    </option>
-                                    <option 
-                                        value='bar'
-                                        name='printerRoute'
-                                        >BAR
-                                    </option>
-                                  </>
-                                : <>
-                                    <option 
-                                        value='noPrint'
-                                        name='printerRoute'
-                                        >NO PRINT
-                                    </option>
-                                    <option 
-                                        value='bar'
-                                        name='printerRoute'
-                                        >BAR
-                                    </option>
-                                    <option
-                                        value='kitchen'
-                                        name='printerRoute'
-                                        >KITCHEN
-                                    </option>
-                                  </>
+                                ?<option value='' disabled selected>KITCHEN</option>
+                                :<option value='' disabled selected>SELECT ROUTE</option>
                     }
+                    <option 
+                        value='noPrint'
+                        name='printerRoute'
+                        >NO PRINT
+                    </option>
+                    <option 
+                        value='bar'
+                        name='printerRoute'
+                        >BAR
+                    </option>
+                    <option
+                        value='kitchen'
+                        name='printerRoute'
+                        >KITCHEN
+                    </option>
                 </select>
             </div>
-
+            {/* Pop Up Groups */}
             <fieldset>
                 <legend htmlFor='popUpGroup'>Pop Up Group(s):</legend>
                 {<p>{popUpsAction}</p>}
