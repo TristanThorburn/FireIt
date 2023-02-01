@@ -1,4 +1,10 @@
-import { appCollectionRef, dessertsCollectionRef, mainsCollectionRef } from '../../../library/firestoreCollections';
+import { 
+    appCollectionRef, 
+    dessertsCollectionRef, 
+    mainsCollectionRef, 
+    coldDrinksCollectionRef, 
+    hotDrinksCollectionRef 
+    } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { useRef, useEffect, useState } from 'react';
@@ -30,6 +36,10 @@ const MenuItemForm = (props) => {
             }
             if(props.activeTab === 'desserts'){
                 setCollectionRef(dessertsCollectionRef)
+            }if(props.activeTab === 'cold drinks'){
+                setCollectionRef(coldDrinksCollectionRef)
+            }if(props.activeTab === 'hot drinks'){
+                setCollectionRef(hotDrinksCollectionRef)
             }
         }
         if(props.id !== ''){

@@ -1,16 +1,16 @@
-import MenuItemForm from './MenuItemForm';
+import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
-import { mainsCollectionRef } from '../../../library/firestoreCollections';
+import { dessertsCollectionRef } from '../../../../library/firestoreCollections';
 import { onSnapshot } from 'firebase/firestore';
 
-const MainsData = (props) => {
-    const [ mainsData, setMainsData ] = useState([]);
+const DessertsData = (props) => {
+    const [ dessertsData, setDessertsData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(mainsCollectionRef, snapshot => {
-            setMainsData(snapshot.docs.map(doc => ({
+        const unsubscribe = onSnapshot(dessertsCollectionRef, snapshot => {
+            setDessertsData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
             })));
@@ -26,18 +26,18 @@ const MainsData = (props) => {
     return(
         <div>
             <div className='itemList'>
-                <h3>Mains List</h3>
+                <h3>Dessert List</h3>
                 <ul>
                     <li><button onClick={handleNewItem}>New Item</button></li>
-                    {mainsData.map(main => 
+                    {dessertsData.map(dessert => 
                         <li 
-                            key={main.id}
+                            key={dessert.id}
                             onClick={() => {
-                                setSelectedItem(main.id)
+                                setSelectedItem(dessert.id)
                                 setNewItem(false)
                             }}
                             >
-                                {main.data.name}
+                                {dessert.data.name}
                         </li>)}
                 </ul>
             </div>
@@ -53,4 +53,4 @@ const MainsData = (props) => {
     )
 }
 
-export default MainsData;
+export default DessertsData;
