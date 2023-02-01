@@ -1,4 +1,4 @@
-import { appCollectionRef } from '../../../library/firestoreCollections';
+import { appCollectionRef, mainsCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { useRef, useEffect, useState } from 'react';
@@ -22,6 +22,9 @@ const MenuItemForm = (props) => {
 
             if(props.activeTab === 'apps'){
                 setCollectionRef(appCollectionRef)
+            }
+            if(props.activeTab === 'mains'){
+                setCollectionRef(mainsCollectionRef)
             }
         }
         if(props.id !== ''){

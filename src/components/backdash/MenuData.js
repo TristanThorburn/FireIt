@@ -7,14 +7,23 @@ import nonalch from '../../assets/nonalch.png';
 import mains from '../../assets/mains.png';
 import allmenu from '../../assets/allmenu.png';
 import AppsData from './menudata/AppsData';
+import MainsData from './menudata/MainsData';
 
 const MenuData = () => {
-    const [ appTab, setAppsTab ] = useState(false)
+    const [ appTab, setAppsTab ] = useState(false);
+    const [ mainsTab, setMainsTab ]= useState(false);
     const [ activeDataDoc, setActiveDataDoc ] = useState('');
 
     const handleApps = () => {
-        setAppsTab(true)
-        setActiveDataDoc('apps')
+        setMainsTab(false);
+        setAppsTab(true);
+        setActiveDataDoc('apps');
+    }
+
+    const handleMains = () => {
+        setAppsTab(false);
+        setMainsTab(true);
+        setActiveDataDoc('mains');
     }
 
     return(
@@ -25,7 +34,7 @@ const MenuData = () => {
                 <ul>
                     <li><Link to='/backend-dash'><img src={back} alt="" /></Link>Backend Dashboard</li>
                     <li onClick={handleApps}><img src={apps} alt="" />Apps</li>
-                    <li><img src={mains} alt="" />Mains</li>
+                    <li onClick={handleMains}><img src={mains} alt="" />Mains</li>
                     <li><img src={nonalch} alt="" />Non Alcholic</li>
                     <li><img src={wine} alt="" />Liquor/Wine/Beer</li>
                     <li><img src={allmenu} alt="" />All Items</li>
@@ -33,7 +42,12 @@ const MenuData = () => {
             </div>
 
             {appTab
-                ? <AppsData activeTab={activeDataDoc}/>
+                ? <AppsData activeTab={activeDataDoc} />
+                : null
+            }
+
+            {mainsTab
+                ? <MainsData activeTab={activeDataDoc} />
                 : null
             }
 
