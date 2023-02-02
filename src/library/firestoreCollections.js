@@ -14,6 +14,8 @@ export const hotDrinksCollectionRef = collection(db, 'drinks', 'non alcoholic', 
 export const redWineCollectionRef = collection(db, 'drinks', 'alcoholic', 'wine', 'type', 'red wine');
 // WHITE WINES
 export const whiteWineCollectionRef = collection(db, 'drinks', 'alcoholic', 'wine', 'type', 'white wine');
+// BUBBLY
+export const bubblyCollectionRef = collection(db, 'drinks', 'alcoholic', 'wine', 'type', 'bubbly');
 // BEER
 export const beerCollectionRef = collection(db, 'drinks', 'alcoholic', 'beer');
 // COCKTAILS
