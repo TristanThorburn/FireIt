@@ -3,7 +3,9 @@ import {
     dessertsCollectionRef, 
     mainsCollectionRef, 
     coldDrinksCollectionRef, 
-    hotDrinksCollectionRef 
+    hotDrinksCollectionRef, 
+    foodAddsCollectionRef,
+    drinkAddsCollectionRef
     } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -36,10 +38,18 @@ const MenuItemForm = (props) => {
             }
             if(props.activeTab === 'desserts'){
                 setCollectionRef(dessertsCollectionRef)
-            }if(props.activeTab === 'cold drinks'){
+            }
+            if(props.activeTab === 'cold drinks'){
                 setCollectionRef(coldDrinksCollectionRef)
-            }if(props.activeTab === 'hot drinks'){
+            }
+            if(props.activeTab === 'hot drinks'){
                 setCollectionRef(hotDrinksCollectionRef)
+            }
+            if(props.activeTab === 'food addons'){
+                setCollectionRef(foodAddsCollectionRef)
+            }
+            if(props.activeTab === 'drink addons'){
+                setCollectionRef(drinkAddsCollectionRef)
             }
         }
         if(props.id !== ''){

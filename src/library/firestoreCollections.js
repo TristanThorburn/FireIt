@@ -32,3 +32,7 @@ export const rumCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits',
 export const tequilaCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'tequila');
 // WHISKEY
 export const whiskeyCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'whiskey');
+// FOOD ADDONS
+export const foodAddsCollectionRef = collection(db, 'food', 'addons', 'food addons');
+// BAR ADDONS
+export const drinkAddsCollectionRef = collection(db, 'drinks', 'addons', 'drink addons');
