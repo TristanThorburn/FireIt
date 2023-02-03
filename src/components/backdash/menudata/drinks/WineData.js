@@ -1,39 +1,39 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { 
-        beerBottleCollectionRef, 
-        beerCanCollectionRef, 
-        beerDraftCollectionRef,
+        redWineCollectionRef,
+        whiteWineCollectionRef,
+        bubblyCollectionRef,
         } from '../../../../library/firestoreCollections';
 import { onSnapshot } from 'firebase/firestore';
 
-const BeerData = (props) => {
-    const [ beerData, setBeerData ] = useState([]);
+const WineData = (props) => {
+    const [ wineData, setWineData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        if(props.activeTab === 'beer bottle'){
-            const unsubscribe = onSnapshot(beerBottleCollectionRef, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
+        if(props.activeTab === 'red wine'){
+            const unsubscribe = onSnapshot(redWineCollectionRef, snapshot => {
+            setWineData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
                 })));
             });
             return unsubscribe
         }
-        if(props.activeTab === 'beer can'){
-            const unsubscribe = onSnapshot(beerCanCollectionRef, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
+        if(props.activeTab === 'white wine'){
+            const unsubscribe = onSnapshot(whiteWineCollectionRef, snapshot => {
+            setWineData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
                 })));
             });
             return unsubscribe
         }
-        if(props.activeTab === 'beer draft'){
-            const unsubscribe = onSnapshot(beerDraftCollectionRef, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
+        if(props.activeTab === 'bubbly'){
+            const unsubscribe = onSnapshot(bubblyCollectionRef, snapshot => {
+            setWineData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
                 })));
@@ -54,27 +54,27 @@ const BeerData = (props) => {
     return(
         <div>
             <div className='itemList'>
-                {props.activeTab === 'beer bottle'
-                    ? <h3>Beer Bottle List</h3>
-                    : props.activeTab === 'beer can'
-                        ?<h3>Beer Cans List</h3>
-                        : props.activeTab === 'beer draft'
-                            ? <h3>Draft Beer List</h3>
+                {props.activeTab === 'red wine'
+                    ? <h3>Red Wine List</h3>
+                    : props.activeTab === 'white wine'
+                        ?<h3>White Wine List</h3>
+                        : props.activeTab === 'bubbly'
+                            ? <h3>Champagne and Prosecco List</h3>
                             : null
                 }
 
-                {props.activeTab === 'beer bottle' || props.activeTab === 'beer can' || props.activeTab === 'beer draft'
+                {props.activeTab === 'red wine' || props.activeTab === 'white wine' || props.activeTab === 'bubbly'
                     ?<ul>
                         <li><button onClick={handleNewItem}>New Item</button></li>
-                        {beerData.map(beer => 
+                        {wineData.map(wine => 
                             <li 
-                                key={beer.id}
+                                key={wine.id}
                                 onClick={() => {
-                                    setSelectedItem(beer.id)
+                                    setSelectedItem(wine.id)
                                     setNewItem(false)
                                 }}
                                 >
-                                    {beer.data.name}
+                                    {wine.data.name}
                             </li>)}
                     </ul>
                     :null
@@ -92,4 +92,4 @@ const BeerData = (props) => {
     )
 }
 
-export default BeerData;
+export default WineData;

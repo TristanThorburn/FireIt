@@ -8,7 +8,19 @@ import {
     drinkAddsCollectionRef,
     beerBottleCollectionRef,
     beerCanCollectionRef,
-    beerDraftCollectionRef
+    beerDraftCollectionRef,
+    redWineCollectionRef,
+    whiteWineCollectionRef,
+    bubblyCollectionRef,
+    cocktailCollectionRef,
+    shotsCollectionRef,
+    ginCollectionRef,
+    rumCollectionRef,
+    tequilaCollectionRef,
+    vodkaCollectionRef,
+    whiskeyCollectionRef,
+    ciderCollectionRef,
+    hardSeltzerCollectionRef,
     } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -62,6 +74,42 @@ const MenuItemForm = (props) => {
             }
             if(props.activeTab === 'beer draft'){
                 setCollectionRef(beerDraftCollectionRef)
+            }
+            if(props.activeTab === 'red wine'){
+                setCollectionRef(redWineCollectionRef)
+            }
+            if(props.activeTab === 'white wine'){
+                setCollectionRef(whiteWineCollectionRef)
+            }
+            if(props.activeTab === 'bubbly'){
+                setCollectionRef(bubblyCollectionRef)
+            }
+            if(props.activeTab === 'cocktails'){
+                setCollectionRef(cocktailCollectionRef)
+            }
+            if(props.activeTab === 'shots'){
+                setCollectionRef(shotsCollectionRef)
+            }
+            if(props.activeTab === 'gin'){
+                setCollectionRef(ginCollectionRef)
+            }
+            if(props.activeTab === 'rum'){
+                setCollectionRef(rumCollectionRef)
+            }
+            if(props.activeTab === 'tequila'){
+                setCollectionRef(tequilaCollectionRef)
+            }
+            if(props.activeTab === 'vodka'){
+                setCollectionRef(vodkaCollectionRef)
+            }
+            if(props.activeTab === 'whiskey'){
+                setCollectionRef(whiskeyCollectionRef)
+            }
+            if(props.activeTab === 'cider'){
+                setCollectionRef(ciderCollectionRef)
+            }
+            if(props.activeTab === 'hard seltzer'){
+                setCollectionRef(hardSeltzerCollectionRef)
             }
         }
         if(props.id !== ''){
@@ -300,8 +348,8 @@ const MenuItemForm = (props) => {
                 {/* Item Type */}
                     <fieldset>
                         <legend>Select Item Type</legend>
-                        {props.id !== '' && itemData.type
-                            ? <> Current type: {itemData.type}</>
+                        {props.id !== '' && itemData?.type
+                            ? <> Current type: {itemData?.type}</>
                             : null
                         }
                         <div>
@@ -367,9 +415,9 @@ const MenuItemForm = (props) => {
                             name='taxGroup'
                             onChange={handleTaxGroup}
                             >
-                            {props.id !== '' && itemData.taxGroup === 'foodTax'
+                            {props.id !== '' && itemData?.taxGroup === 'foodTax'
                                 ? <option value='' disabled selected>Food Tax</option>
-                                : props.id !== '' && itemData.taxGroup === 'alcoholTax'
+                                : props.id !== '' && itemData?.taxGroup === 'alcoholTax'
                                     ? <option value='' disabled selected>Alcohol Tax</option>
                                     :<option value='' disabled selected>Select Tax Type</option>
                             }
@@ -393,11 +441,11 @@ const MenuItemForm = (props) => {
                             name='printerRoute'
                             onChange={handlePrinterRoute}
                             >
-                            {props.id !== '' && itemData.printerRoute === 'noPrint'
+                            {props.id !== '' && itemData?.printerRoute === 'noPrint'
                                 ?<option value='' disabled selected>NO PRINT</option>
-                                :props.id !== '' && itemData.printerRoute === 'bar'
+                                :props.id !== '' && itemData?.printerRoute === 'bar'
                                     ?<option value='' disabled selected>BAR</option>
-                                    :props.id !== '' && itemData.printerRoute === 'kitchen'
+                                    :props.id !== '' && itemData?.printerRoute === 'kitchen'
                                         ?<option value='' disabled selected>KITCHEN</option>
                                         :<option value='' disabled selected>SELECT ROUTE</option>
                             }
@@ -422,8 +470,8 @@ const MenuItemForm = (props) => {
                     <fieldset>
                         <legend htmlFor='popUpGroup'>Pop Up Group(s):</legend>
 
-                        {props.id !== '' && itemData.popUps
-                            ? <>Current Pop Ups: {itemData.popUps.join(', ')}</>
+                        {props.id !== '' && itemData?.popUps
+                            ? <>Current Pop Ups: {itemData?.popUps.join(', ')}</>
                             : null
                         }
 

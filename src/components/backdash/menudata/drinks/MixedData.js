@@ -1,39 +1,29 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { 
-        beerBottleCollectionRef, 
-        beerCanCollectionRef, 
-        beerDraftCollectionRef,
+        cocktailCollectionRef,
+        shotsCollectionRef,
         } from '../../../../library/firestoreCollections';
 import { onSnapshot } from 'firebase/firestore';
 
-const BeerData = (props) => {
-    const [ beerData, setBeerData ] = useState([]);
+const MixedData = (props) => {
+    const [ mixedData, setMixedData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        if(props.activeTab === 'beer bottle'){
-            const unsubscribe = onSnapshot(beerBottleCollectionRef, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
+        if(props.activeTab === 'cocktails'){
+            const unsubscribe = onSnapshot(cocktailCollectionRef, snapshot => {
+            setMixedData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
                 })));
             });
             return unsubscribe
         }
-        if(props.activeTab === 'beer can'){
-            const unsubscribe = onSnapshot(beerCanCollectionRef, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-                })));
-            });
-            return unsubscribe
-        }
-        if(props.activeTab === 'beer draft'){
-            const unsubscribe = onSnapshot(beerDraftCollectionRef, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
+        if(props.activeTab === 'shots'){
+            const unsubscribe = onSnapshot(shotsCollectionRef, snapshot => {
+            setMixedData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
                 })));
@@ -54,27 +44,25 @@ const BeerData = (props) => {
     return(
         <div>
             <div className='itemList'>
-                {props.activeTab === 'beer bottle'
-                    ? <h3>Beer Bottle List</h3>
-                    : props.activeTab === 'beer can'
-                        ?<h3>Beer Cans List</h3>
-                        : props.activeTab === 'beer draft'
-                            ? <h3>Draft Beer List</h3>
-                            : null
+                {props.activeTab === 'cocktails'
+                    ? <h3>Cocktails List</h3>
+                    : props.activeTab === 'shots'
+                        ?<h3>Shots List</h3>
+                        : null
                 }
 
-                {props.activeTab === 'beer bottle' || props.activeTab === 'beer can' || props.activeTab === 'beer draft'
-                    ?<ul>
+                {props.activeTab === 'cocktails' || props.activeTab === 'shots'
+                    ? <ul>
                         <li><button onClick={handleNewItem}>New Item</button></li>
-                        {beerData.map(beer => 
+                        {mixedData.map(mixed => 
                             <li 
-                                key={beer.id}
+                                key={mixed.id}
                                 onClick={() => {
-                                    setSelectedItem(beer.id)
+                                    setSelectedItem(mixed.id)
                                     setNewItem(false)
                                 }}
                                 >
-                                    {beer.data.name}
+                                    {mixed.data.name}
                             </li>)}
                     </ul>
                     :null
@@ -92,4 +80,4 @@ const BeerData = (props) => {
     )
 }
 
-export default BeerData;
+export default MixedData;
