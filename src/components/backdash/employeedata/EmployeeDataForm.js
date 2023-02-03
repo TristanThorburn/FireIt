@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import { employeeCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { doc, getDoc, } from 'firebase/firestore';
 
