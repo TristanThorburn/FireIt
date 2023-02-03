@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const AppsData = (props) => {
     const [ appsData, setAppsData ] = useState([]);
@@ -25,7 +25,8 @@ const AppsData = (props) => {
     // },[])
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(appCollectionRef, snapshot => {
+        const q = query(appCollectionRef, orderBy('name'));
+        const unsubscribe = onSnapshot(q, snapshot => {
             setAppsData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
