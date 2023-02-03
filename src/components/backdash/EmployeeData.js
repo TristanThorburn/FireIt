@@ -27,8 +27,8 @@ const EmployeeData = () => {
  
     return(
         <div>
+            <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
             <div className='itemList employeeData'>
-                <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
                 <h3>Employees List</h3>
                 <button onClick={handleNewEmployee}>New Employee</button>
                 <table>

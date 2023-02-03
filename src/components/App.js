@@ -13,7 +13,7 @@ import SettingsData from './backdash/SettingsData';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Router>
 
         <AuthProvider>
@@ -24,13 +24,14 @@ function App() {
             
             <Route element={<PrivateRoutes />}>
               <Route exact path='/' element={<SummaryDash />} />
-              <Route path='/backend-dash' element={<BackendDash />} />
-              <Route path='/menu-data' element={<MenuData />} />
-              <Route path='/employee-data' element={<EmployeeData />} />
-              <Route path='/tablemap-data' element={<TableMapData />} />
-              <Route path='/payment-data' element={<PaymentData />} />
               <Route path='/settings' element={<SettingsData />} />
             </Route>
+
+            <Route path='/backend-dash' element={<BackendDash />} />
+            <Route path='/menu-data' element={<MenuData />} />
+            <Route path='/employee-data' element={<EmployeeData />} />
+            <Route path='/tablemap-data' element={<TableMapData />} />
+            <Route path='/payment-data' element={<PaymentData />} />
           
           </Routes>
 

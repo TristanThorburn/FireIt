@@ -129,6 +129,15 @@ const MenuItemForm = (props) => {
         }
     },[props.id, props.docQuery, props.activeTab])
 
+    useEffect(() => {
+        Array.from(document.querySelectorAll('input')).forEach(
+            input => (input.value = ''))
+        Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
+                input => (input.checked = false))
+        Array.from(document.querySelectorAll('input[type=radio]')).forEach(
+            input => (input.checked = false))
+    }, [props.id, props.newItem])
+
     const handleAddItem = (e) => {
         e.preventDefault()
 
