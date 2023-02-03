@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../../library/firestoreCollections';
 import { onSnapshot } from 'firebase/firestore';
 
-// LOGIC: select item from list, choose new/update/delete to open form component
-
 const AppsData = (props) => {
     const [ appsData, setAppsData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
