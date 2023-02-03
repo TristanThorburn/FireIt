@@ -31,6 +31,11 @@ export const beerCanCollectionRef = collection(db, 'drinks', 'alcoholic', 'beer'
 // BEER DRAFT
 export const beerDraftCollectionRef = collection(db, 'drinks', 'alcoholic', 'beer', 'type', 'draft');
 
+// CIDER
+export const ciderCollectionRef = collection(db, 'drinks', 'alcoholic', 'cider');
+// HARD SELTZER
+export const hardSeltzerCollectionRef = collection(db, 'drinks', 'alcoholic', 'hard seltzer')
+
 
 // COCKTAILS
 export const cocktailCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'cocktails');
@@ -38,14 +43,14 @@ export const cocktailCollectionRef = collection(db, 'drinks', 'alcoholic', 'spir
 export const shotsCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'shots');
 
 
-// VODKA
-export const vodkaCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'vodka');
 // GIN
 export const ginCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'gin');
 // RUM
 export const rumCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'rum');
 // TEQUILA
 export const tequilaCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'tequila');
+// VODKA
+export const vodkaCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'vodka');
 // WHISKEY
 export const whiskeyCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'whiskey');
 

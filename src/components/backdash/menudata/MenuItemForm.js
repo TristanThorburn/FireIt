@@ -12,6 +12,15 @@ import {
     redWineCollectionRef,
     whiteWineCollectionRef,
     bubblyCollectionRef,
+    cocktailCollectionRef,
+    shotsCollectionRef,
+    ginCollectionRef,
+    rumCollectionRef,
+    tequilaCollectionRef,
+    vodkaCollectionRef,
+    whiskeyCollectionRef,
+    ciderCollectionRef,
+    hardSeltzerCollectionRef,
     } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -74,6 +83,33 @@ const MenuItemForm = (props) => {
             }
             if(props.activeTab === 'bubbly'){
                 setCollectionRef(bubblyCollectionRef)
+            }
+            if(props.activeTab === 'cocktails'){
+                setCollectionRef(cocktailCollectionRef)
+            }
+            if(props.activeTab === 'shots'){
+                setCollectionRef(shotsCollectionRef)
+            }
+            if(props.activeTab === 'gin'){
+                setCollectionRef(ginCollectionRef)
+            }
+            if(props.activeTab === 'rum'){
+                setCollectionRef(rumCollectionRef)
+            }
+            if(props.activeTab === 'tequila'){
+                setCollectionRef(tequilaCollectionRef)
+            }
+            if(props.activeTab === 'vodka'){
+                setCollectionRef(vodkaCollectionRef)
+            }
+            if(props.activeTab === 'whiskey'){
+                setCollectionRef(whiskeyCollectionRef)
+            }
+            if(props.activeTab === 'cider'){
+                setCollectionRef(ciderCollectionRef)
+            }
+            if(props.activeTab === 'hard seltzer'){
+                setCollectionRef(hardSeltzerCollectionRef)
             }
         }
         if(props.id !== ''){
