@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { drinkAddsCollectionRef } from '../../../../library/firestoreCollections';
 import { onSnapshot } from 'firebase/firestore';
 
-// LOGIC: select item from list, choose new/update/delete to open form component
-
 const DrinkAddonsData = (props) => {
     const [ drinkAddsData, setDrinkAddsData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
