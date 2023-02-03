@@ -22,6 +22,8 @@ const NonAlchData = (props) => {
     }
 
     useEffect(() => {
+        setSelectedItem('');
+        setNewItem(false);
         if(drinkType === 'cold'){
             const unsubscribe = onSnapshot(coldDrinksCollectionRef, snapshot => {
             setNonAlchData(snapshot.docs.map(doc => ({

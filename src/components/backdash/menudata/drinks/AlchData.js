@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import BeerData from './BeerData';
-import RedWineData from './wine/RedWineData';
-import WhiteWineData from './wine/WhiteWineData';
-import BubblyData from './wine/BubblyData';
+import WineData from './WineData';
 import CocktailsData from './mixed/CocktailsData';
 import ShotsData from './mixed/ShotsData';
 import GinData from './liquor/GinData';
@@ -40,11 +38,14 @@ const AlchData = (props) => {
         setLiquorTab(false);
         setCiderTab(false);
         setHardSeltzerTab(false);
+        setBeerBottleTab(false);
+        setBeerCanTab(false);
+        setBeerDraftTab(false);
+        setRedWineTab(false);
         setWhiteWineTab(false);
         setBubblyTab(false);
-        setRedWineTab(false);
-        setShotsTab(false);
         setCocktailsTab(false);
+        setShotsTab(false);
         setGinTab(false);
         setRumTab(false);
         setTequilaTab(false);
@@ -137,18 +138,24 @@ const AlchData = (props) => {
         setWhiteWineTab(false);
         setBubblyTab(false);
         setRedWineTab(true);
+        props.setActiveDataDoc('red wine');
+        props.setDocQuery(['drinks', 'alcoholic', 'wine', 'type', 'red wine'])
     }
 
     const handleWhiteWine = () => {
         setRedWineTab(false);
         setBubblyTab(false);
         setWhiteWineTab(true);
+        props.setActiveDataDoc('white wine');
+        props.setDocQuery(['drinks', 'alcoholic', 'wine', 'type', 'white wine'])
     }
 
     const handleBubbly = () => {
         setRedWineTab(false);
         setWhiteWineTab(false);
         setBubblyTab(true);
+        props.setActiveDataDoc('bubbly');
+        props.setDocQuery(['drinks', 'alcoholic', 'wine', 'type', 'bubbly'])
     }
 
     // MIXED
@@ -263,13 +270,12 @@ const AlchData = (props) => {
                 : null
             }
 
-            {redWineTab
-                ? <RedWineData />
-                : whiteWineTab
-                    ? <WhiteWineData />
-                    :bubblyTab
-                        ? <BubblyData />
-                        : null
+            {redWineTab || whiteWineTab || bubblyTab
+                ? <WineData
+                    activeTab={props.activeTab}
+                    docQuery={props.docQuery}
+                    />
+                : null
             }
 
             {cocktailsTab
