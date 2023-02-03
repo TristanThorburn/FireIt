@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { db } from '../../../firebase';
-import { doc, getDoc, deleteDoc, addDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc, addDoc, updateDoc, } from 'firebase/firestore';
 import { employeeCollectionRef } from '../../../library/firestoreCollections';
+import EmployeeFirebase from './EmployeeFirebase';
 
 const EmployeeDataForm = (props) => {
     const [ employeeData, setEmployeeData ] = useState()
@@ -17,14 +18,23 @@ const EmployeeDataForm = (props) => {
     const provinceRef = useRef('');
     const postalCodeRef = useRef('');
     const phoneRef = useRef('');
-    const emailRef = useRef('');
+    // const emailRef = useRef('')
     const firstDayRef = useRef('');
     const lastDayRef = useRef('');
     const notesRef = useRef('');
+    // const [ testUser, setTestUser ] = useState('8829')
 
     const handleTest = (e) => {
         e.preventDefault()
-        console.log(employeeData.dob.toDate())
+        // getDocs(employeeCollectionRef).then(snap => {
+        //     snap.forEach(doc => {
+        //         let usersList = []
+        //         usersList.push(doc.data().userID)
+        //         // if(usersList[0] === testUser){
+        //         //     console.log(true)}
+        //         console.log(usersList)
+        //     })
+        // })
     }
 
     useEffect(() => {
@@ -37,6 +47,13 @@ const EmployeeDataForm = (props) => {
         }
     },[props.id])
 
+    useEffect(() => {
+        Array.from(document.querySelectorAll('input')).forEach(
+            input => (input.value = ''))
+        Array.from(document.querySelectorAll('textarea')).forEach(
+                input => (input.value = ''))
+    },[props.id, props.newEmployee])
+
     const handleAddEmployee = (e) => {
         e.preventDefault()
 
@@ -48,15 +65,15 @@ const EmployeeDataForm = (props) => {
                 userID:userIDRef.current.value,
                 userPW:userPWRef.current.value,
                 sin:SINRef.current.value,
-                // dob:dobRef.current.value,
+                dob:dobRef.current.value,
                 street:streetRef.current.value,
                 city:cityRef.current.value,
                 province:provinceRef.current.value,
                 postalCode:postalCodeRef.current.value,
                 phone:phoneRef.current.value,
-                email:emailRef.current.value,
-                // firstDay:firstDayRef.current.value,
-                // lastDay:lastDayRef.current.value,
+                email:userIDRef.current.value + '@fireit.ca',
+                firstDay:firstDayRef.current.value,
+                lastDay:lastDayRef.current.value,
                 notes:notesRef.current.value,
             });
             props.setNewEmployee(false);
@@ -131,11 +148,11 @@ const EmployeeDataForm = (props) => {
                 phone:phoneRef.current.value
             })
         }
-        if(props.id !== '' && emailRef.current.value !== ''){
-            updateDoc(docRef, {
-                email:emailRef.current.value
-            })
-        }
+        // if(props.id !== '' && emailRef.current.value !== ''){
+        //     updateDoc(docRef, {
+        //         email:emailRef.current.value
+        //     })
+        // }
         if(props.id !== '' && firstDayRef.current.value !== ''){
             updateDoc(docRef, {
                 firstDay:firstDayRef.current.value
@@ -168,197 +185,200 @@ const EmployeeDataForm = (props) => {
         }
     }
 
-
     return(
-        <form className='employeeForm'>
-        {/* Employee # */}
-            <div>
-                <label htmlFor='employeeNumber'>Employee #</label>
-                <input
-                    id='employeeNumber'
-                    name='employeeNumber'
-                    type='number'
-                    ref={employeeNumberRef}
-                    placeholder={employeeData?.employeeNumber}
-                    />
-            </div>
-        {/* First Name */}
-            <div>
-                <label htmlFor='firstName'>First Name</label>
-                <input  
-                    id='firstName'
-                    name='firstName'
-                    type='text'
-                    ref={firstNameRef}
-                    placeholder={employeeData?.firstName}
-                    />
-            </div>
-        {/* Last Name */}
-            <div>
-                <label htmlFor='lastName'>Last Name</label>
-                <input
-                    id='lastName'
-                    name='lastName'
-                    type='text'
-                    ref={lastNameRef}
-                    placeholder={employeeData?.lastName}
-                    />
-            </div>
-        {/* User ID */}
-            <div>
-                <label htmlFor='userID'>User ID</label>
-                <input
-                    id='userID'
-                    name='userID'
-                    type='number'
-                    ref={userIDRef}
-                    placeholder={employeeData?.userID}
-                    />
-            </div>
-        {/* User PW */}
-            <div>
-                <label htmlFor='userPW'>User PW</label>
-                <input
-                    id='userPW'
-                    name='userPW'
-                    type='number'
-                    ref={userPWRef}
-                    placeholder={employeeData?.userPW}
-                    />
-            </div>
-        {/* SIN */}
-            <div>
-                <label htmlFor='SIN'>SIN</label>
-                <input
-                    id='SIN'
-                    name='SIN'
-                    type='text'
-                    ref={SINRef}
-                    placeholder={employeeData?.sin}
-                    />
-            </div>
-        {/* DOB */}
-            <div>
-                <label htmlFor='dob'>Date of Birth</label>
-                <input
-                    id='dob'
-                    name='dob'
-                    type='date'
-                    ref={dobRef}
-                    />
-            </div>
-        {/* Street */}
-            <div>
-                <label htmlFor='street'>Street</label>
-                <input
-                    id='street'
-                    name='street'
-                    type='text'
-                    ref={streetRef}
-                    placeholder={employeeData?.street}
-                    />
-            </div>
-        {/* City */}
-            <div>
-                <label htmlFor='city'>City</label>
-                <input
-                    id='city'
-                    name='city'
-                    type='text'
-                    ref={cityRef}
-                    placeholder={employeeData?.city}
-                    />
-            </div>
-        {/* Province */}
-            <div>
-                <label htmlFor='province'>Province</label>
-                <input
-                    id='province'
-                    name='province'
-                    type='text'
-                    ref={provinceRef}
-                    placeholder={employeeData?.province}
-                    />
-            </div>
-        {/* Postal Code */}
-            <div>
-                <label htmlFor='postalCode'>Postal Code</label>
-                <input
-                    id='postalCode'
-                    name='postalCode'
-                    type='text'
-                    ref={postalCodeRef}
-                    placeholder={employeeData?.postalCode}
-                    />
-            </div>
-        {/* Phone Number */}
-            <div>
-                <label htmlFor='phone'>Phone</label>
-                <input
-                    id='phone'
-                    name='phone'
-                    type='text'
-                    ref={phoneRef}
-                    placeholder={employeeData?.phone}
-                    />
-            </div>
-        {/* Email */}
-            <div>
-                <label htmlFor='email'>Email</label>
-                <input
-                    id='email'
-                    name='email'
-                    type='text'
-                    ref={emailRef}
-                    placeholder={employeeData?.email}
-                    />
-            </div>
-        {/* First Day */}
-            <div>
-                <label htmlFor='firstDay'>Start Date</label>
-                <input
-                    id='firstDay'
-                    name='firstDay'
-                    type='date'
-                    ref={firstDayRef}
-                    />
-            </div>
-        {/* Last Day */}
-            <div>
-                <label htmlFor='lastDay'>End Date</label>
-                <input
-                    id='lastDay'
-                    name='lastDay'
-                    type='date'
-                    ref={lastDayRef}
-                    />
-            </div>
-        {/* Notes */}
-            <div>
-                <label htmlFor='notes'>Notes</label>
-                <textarea
-                    id='notes'
-                    name='notes'
-                    ref={notesRef}
-                    placeholder={employeeData?.notes}
-                    >
-                </textarea>
-            </div>
+        <>
+            <form className='employeeForm'>
+            {/* Employee # */}
+                <div>
+                    <label htmlFor='employeeNumber'>Employee #</label>
+                    <input
+                        id='employeeNumber'
+                        name='employeeNumber'
+                        type='number'
+                        ref={employeeNumberRef}
+                        placeholder={employeeData?.employeeNumber}
+                        />
+                </div>
+            {/* First Name */}
+                <div>
+                    <label htmlFor='firstName'>First Name</label>
+                    <input  
+                        id='firstName'
+                        name='firstName'
+                        type='text'
+                        ref={firstNameRef}
+                        placeholder={employeeData?.firstName}
+                        />
+                </div>
+            {/* Last Name */}
+                <div>
+                    <label htmlFor='lastName'>Last Name</label>
+                    <input
+                        id='lastName'
+                        name='lastName'
+                        type='text'
+                        ref={lastNameRef}
+                        placeholder={employeeData?.lastName}
+                        />
+                </div>
+            {/* User ID */}
+                <div>
+                    <label htmlFor='userID'>User ID</label>
+                    <input
+                        id='userID'
+                        name='userID'
+                        type='number'
+                        ref={userIDRef}
+                        placeholder={employeeData?.userID}
+                        />
+                </div>
+            {/* User PW */}
+                <div>
+                    <label htmlFor='userPW'>User PW</label>
+                    <input
+                        id='userPW'
+                        name='userPW'
+                        type='number'
+                        ref={userPWRef}
+                        placeholder={employeeData?.userPW}
+                        />
+                </div>
+            {/* SIN */}
+                <div>
+                    <label htmlFor='SIN'>SIN</label>
+                    <input
+                        id='SIN'
+                        name='SIN'
+                        type='text'
+                        ref={SINRef}
+                        placeholder={employeeData?.sin}
+                        />
+                </div>
+            {/* DOB */}
+                <div>
+                    <label htmlFor='dob'>Date of Birth</label>
+                    <p>{employeeData?.dob}</p>
+                    <input
+                        id='dob'
+                        name='dob'
+                        type='date'
+                        ref={dobRef}
+                        />
+                </div>
+            {/* Street */}
+                <div>
+                    <label htmlFor='street'>Street</label>
+                    <input
+                        id='street'
+                        name='street'
+                        type='text'
+                        ref={streetRef}
+                        placeholder={employeeData?.street}
+                        />
+                </div>
+            {/* City */}
+                <div>
+                    <label htmlFor='city'>City</label>
+                    <input
+                        id='city'
+                        name='city'
+                        type='text'
+                        ref={cityRef}
+                        placeholder={employeeData?.city}
+                        />
+                </div>
+            {/* Province */}
+                <div>
+                    <label htmlFor='province'>Province</label>
+                    <input
+                        id='province'
+                        name='province'
+                        type='text'
+                        ref={provinceRef}
+                        placeholder={employeeData?.province}
+                        />
+                </div>
+            {/* Postal Code */}
+                <div>
+                    <label htmlFor='postalCode'>Postal Code</label>
+                    <input
+                        id='postalCode'
+                        name='postalCode'
+                        type='text'
+                        ref={postalCodeRef}
+                        placeholder={employeeData?.postalCode}
+                        />
+                </div>
+            {/* Phone Number */}
+                <div>
+                    <label htmlFor='phone'>Phone</label>
+                    <input
+                        id='phone'
+                        name='phone'
+                        type='text'
+                        ref={phoneRef}
+                        placeholder={employeeData?.phone}
+                        />
+                </div>
+            {/* Email */}
+                <div>
+                    <label htmlFor='email'>Email</label>
+                    <input
+                        id='email'
+                        name='email'
+                        type='text'
+                        // ref={emailRef}
+                        disabled
+                        placeholder={employeeData?.email}
+                        />
+                </div>
+            {/* First Day */}
+                <div>
+                    <label htmlFor='firstDay'>Start Date</label>
+                    <p>{employeeData?.firstDay}</p>
+                    <input
+                        id='firstDay'
+                        name='firstDay'
+                        type='date'
+                        ref={firstDayRef}
+                        />
+                </div>
+            {/* Last Day */}
+                <div>
+                    <label htmlFor='lastDay'>End Date</label>
+                    <p>{employeeData?.lastDay}</p>
+                    <input
+                        id='lastDay'
+                        name='lastDay'
+                        type='date'
+                        ref={lastDayRef}
+                        />
+                </div>
+            {/* Notes */}
+                <div>
+                    <label htmlFor='notes'>Notes</label>
+                    <textarea
+                        id='notes'
+                        name='notes'
+                        ref={notesRef}
+                        placeholder={employeeData?.notes}
+                        >
+                    </textarea>
+                </div>
 
-            {!props.newEmployee && props.id !== ''
-                ? <>
-                    <button onClick={handleUpdateEmployee}>Update Employee</button>
-                    <button onClick={handleDelete}>Delete Employee</button>
-                </>
-                : props.newEmployee 
-                    ? <button onClick={handleAddEmployee}>Add Emmployee</button>
-                    : null
-            }
-
-
-            
-            <button onClick={handleTest}>Test</button>
-        </form>
+                {!props.newEmployee && props.id !== ''
+                    ? <>
+                        <button onClick={handleUpdateEmployee}>Update Employee</button>
+                        <button onClick={handleDelete}>Delete Employee</button>
+                    </>
+                    : props.newEmployee 
+                        ? <button onClick={handleAddEmployee}>Add Emmployee</button>
+                        : null
+                }
+                <button onClick={handleTest}>Test</button>
+            </form>
+            <EmployeeFirebase user={employeeData?.email} pw={employeeData?.userPW}/>
+        </>
         
     )
 }
