@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const NonAlchData = (props) => {
     const [ nonAlchData, setNonAlchData ] = useState([]);
@@ -25,7 +25,8 @@ const NonAlchData = (props) => {
         setSelectedItem('');
         setNewItem(false);
         if(drinkType === 'cold'){
-            const unsubscribe = onSnapshot(coldDrinksCollectionRef, snapshot => {
+            const q = query(coldDrinksCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setNonAlchData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
@@ -34,7 +35,8 @@ const NonAlchData = (props) => {
             return unsubscribe
         }
         if(drinkType === 'hot'){
-            const unsubscribe = onSnapshot(hotDrinksCollectionRef, snapshot => {
+            const q = query(hotDrinksCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setNonAlchData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
