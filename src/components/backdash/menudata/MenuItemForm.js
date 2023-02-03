@@ -118,11 +118,6 @@ const MenuItemForm = (props) => {
         }
     },[props.id, props.docQuery, props.activeTab])
 
-    const handleTest = (e) => {
-        e.preventDefault();
-        console.log(popUps.popUpsList)
-    }
-
     const handleAddItem = (e) => {
         e.preventDefault()
 
@@ -502,8 +497,6 @@ const MenuItemForm = (props) => {
                 ? <button onClick={handleDelete}>Delete Item</button>
                 : null
             }
-            
-            <button onClick={handleTest}>Test Button</button>
         </form>
     )
 }

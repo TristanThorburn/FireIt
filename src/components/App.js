@@ -7,7 +7,9 @@ import SummaryDash from './SummaryDash';
 import BackendDash from './BackendDash';
 import MenuData from './backdash/MenuData';
 import EmployeeData from './backdash/EmployeeData';
+import TableMapData from './backdash/TableMapData';
 import PaymentData from './backdash/PaymentData';
+import SettingsData from './backdash/SettingsData';
 
 function App() {
   return (
@@ -25,7 +27,9 @@ function App() {
               <Route path='/backend-dash' element={<BackendDash />} />
               <Route path='/menu-data' element={<MenuData />} />
               <Route path='/employee-data' element={<EmployeeData />} />
+              <Route path='/tablemap-data' element={<TableMapData />} />
               <Route path='/payment-data' element={<PaymentData />} />
+              <Route path='/settings' element={<SettingsData />} />
             </Route>
           
           </Routes>
