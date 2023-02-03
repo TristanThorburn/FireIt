@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { db } from '../../../firebase';
-import { doc, getDoc, } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc, addDoc, updateDoc } from 'firebase/firestore';
+import { employeeCollectionRef } from '../../../library/firestoreCollections';
 
 const EmployeeDataForm = (props) => {
     const [ employeeData, setEmployeeData ] = useState()
@@ -35,6 +36,138 @@ const EmployeeDataForm = (props) => {
             getDoc(docRef).then((doc) => setEmployeeData(doc.data())).catch(error => console.log(error))
         }
     },[props.id])
+
+    const handleAddEmployee = (e) => {
+        e.preventDefault()
+
+        if(props.newEmployee === true && firstNameRef.current.value !== ''){
+            addDoc(employeeCollectionRef, {
+                employeeNumber:employeeNumberRef.current.value,
+                firstName:firstNameRef.current.value,
+                lastName:lastNameRef.current.value,
+                userID:userIDRef.current.value,
+                userPW:userPWRef.current.value,
+                sin:SINRef.current.value,
+                // dob:dobRef.current.value,
+                street:streetRef.current.value,
+                city:cityRef.current.value,
+                province:provinceRef.current.value,
+                postalCode:postalCodeRef.current.value,
+                phone:phoneRef.current.value,
+                email:emailRef.current.value,
+                // firstDay:firstDayRef.current.value,
+                // lastDay:lastDayRef.current.value,
+                notes:notesRef.current.value,
+            });
+            props.setNewEmployee(false);
+            Array.from(document.querySelectorAll('input')).forEach(
+                input => (input.value = ''))
+            Array.from(document.querySelectorAll('textarea')).forEach(
+                    input => (input.value = ''))
+        }
+    }
+
+    const handleUpdateEmployee = (e) => {
+        e.preventDefault()
+        const docRef = doc(db, 'employees', props.id)
+
+        if(props.id !== '' && employeeNumberRef.current.value !== ''){
+            updateDoc(docRef, {
+                employeeNumber:employeeNumberRef.current.value
+            })
+        }
+        if(props.id !== '' && firstNameRef.current.value !== ''){
+            updateDoc(docRef, {
+                firstName:firstNameRef.current.value
+            })
+        }
+        if(props.id !== '' && lastNameRef.current.value !== ''){
+            updateDoc(docRef, {
+                lastName:lastNameRef.current.value
+            })
+        }
+        if(props.id !== '' && userIDRef.current.value !== ''){
+            updateDoc(docRef, {
+                userID:userIDRef.current.value
+            })
+        }
+        if(props.id !== '' && userPWRef.current.value !== ''){
+            updateDoc(docRef, {
+                userPW:userPWRef.current.value
+            })
+        }
+        if(props.id !== '' && SINRef.current.value !== ''){
+            updateDoc(docRef, {
+                sin:SINRef.current.value
+            })
+        }
+        if(props.id !== '' && dobRef.current.value !== ''){
+            updateDoc(docRef, {
+                dob:dobRef.current.value
+            })
+        }
+        if(props.id !== '' && streetRef.current.value !== ''){
+            updateDoc(docRef, {
+                street:streetRef.current.value
+            })
+        }
+        if(props.id !== '' && cityRef.current.value !== ''){
+            updateDoc(docRef, {
+                city:cityRef.current.value
+            })
+        }
+        if(props.id !== '' && provinceRef.current.value !== ''){
+            updateDoc(docRef, {
+                province:provinceRef.current.value
+            })
+        }
+        if(props.id !== '' && postalCodeRef.current.value !== ''){
+            updateDoc(docRef, {
+                postalCode:postalCodeRef.current.value
+            })
+        }
+        if(props.id !== '' && phoneRef.current.value !== ''){
+            updateDoc(docRef, {
+                phone:phoneRef.current.value
+            })
+        }
+        if(props.id !== '' && emailRef.current.value !== ''){
+            updateDoc(docRef, {
+                email:emailRef.current.value
+            })
+        }
+        if(props.id !== '' && firstDayRef.current.value !== ''){
+            updateDoc(docRef, {
+                firstDay:firstDayRef.current.value
+            })
+        }
+        if(props.id !== '' && lastDayRef.current.value !== ''){
+            updateDoc(docRef, {
+                lastDay:lastDayRef.current.value
+            })
+        }
+        if(props.id !== '' && notesRef.current.value !== ''){
+            updateDoc(docRef, {
+                notes:notesRef.current.value
+            })
+        }
+        props.setSelectedEmployee('');
+        Array.from(document.querySelectorAll('input')).forEach(
+            input => (input.value = ''))
+        Array.from(document.querySelectorAll('textarea')).forEach(
+                input => (input.value = ''))
+        }
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        const docRef = doc(db, 'employees', props.id)
+        
+        if(props.id !== ''){
+            deleteDoc(docRef)
+            setEmployeeData('')
+        }
+    }
+
 
     return(
         <form className='employeeForm'>
@@ -101,7 +234,7 @@ const EmployeeDataForm = (props) => {
                     name='SIN'
                     type='text'
                     ref={SINRef}
-                    placeholder={employeeData?.SIN}
+                    placeholder={employeeData?.sin}
                     />
             </div>
         {/* DOB */}
@@ -211,6 +344,18 @@ const EmployeeDataForm = (props) => {
                     >
                 </textarea>
             </div>
+
+            {!props.newEmployee && props.id !== ''
+                ? <>
+                    <button onClick={handleUpdateEmployee}>Update Employee</button>
+                    <button onClick={handleDelete}>Delete Employee</button>
+                </>
+                : props.newEmployee 
+                    ? <button onClick={handleAddEmployee}>Add Emmployee</button>
+                    : null
+            }
+
+
             
             <button onClick={handleTest}>Test</button>
         </form>

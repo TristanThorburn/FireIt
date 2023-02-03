@@ -27,7 +27,7 @@ const EmployeeData = () => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='itemList employeeData'>
                 <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
                 <h3>Employees List</h3>
                 <button onClick={handleNewEmployee}>New Employee</button>
@@ -60,9 +60,11 @@ const EmployeeData = () => {
             {newEmployee || selectedEmployee
                 ? <EmployeeDataForm
                     newEmployee={newEmployee}
+                    setNewEmployee={setNewEmployee}
+                    setSelectedEmployee={setSelectedEmployee}
                     id={selectedEmployee}
                     />
-                : null
+                : <h3>Select an employee, or create new</h3>
             }
         </div>
     )
