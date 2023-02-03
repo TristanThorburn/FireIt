@@ -223,7 +223,8 @@ const MenuItemForm = (props) => {
             input => (input.checked = false))
         }
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
+        e.preventDefault()
         const docRef = doc(db, ...props.docQuery, props.id)
         
         if(props.id !== ''){
@@ -475,14 +476,12 @@ const MenuItemForm = (props) => {
             {props.newItem === false && props.id === ''
                 ? null
                 : props.id !== ''
-                    ? <button type='submit' onClick={handleUpdateItem}>Update Item</button>
-                    : props.newItem === true
+                    ? <>
+                        <button type='submit' onClick={handleUpdateItem}>Update Item</button>
+                        <button onClick={handleDelete}>Delete Item</button>
+                    </>
+                    : props.newItem
                 ? <button type='submit' onClick={handleAddItem}>Add Item</button>
-                : null
-            }
-
-            {props.id !== '' || props.newItem === true
-                ? <button onClick={handleDelete}>Delete Item</button>
                 : null
             }
         </form>
