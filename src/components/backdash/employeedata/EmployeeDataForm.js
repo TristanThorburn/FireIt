@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { db } from '../../../firebase';
-import { doc, getDoc, deleteDoc, addDoc, updateDoc, } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc, addDoc, updateDoc, getDocs } from 'firebase/firestore';
 import { employeeCollectionRef } from '../../../library/firestoreCollections';
 import EmployeeFirebase from './EmployeeFirebase';
 
@@ -22,19 +22,20 @@ const EmployeeDataForm = (props) => {
     const firstDayRef = useRef('');
     const lastDayRef = useRef('');
     const notesRef = useRef('');
-    // const [ testUser, setTestUser ] = useState('8829')
+    const  testUser = '5555'
 
     const handleTest = (e) => {
         e.preventDefault()
-        // getDocs(employeeCollectionRef).then(snap => {
-        //     snap.forEach(doc => {
-        //         let usersList = []
-        //         usersList.push(doc.data().userID)
-        //         // if(usersList[0] === testUser){
-        //         //     console.log(true)}
-        //         console.log(usersList)
-        //     })
-        // })
+        getDocs(employeeCollectionRef).then(snap => {
+            let usersList = []
+            snap.forEach(doc => {                
+                usersList.push(doc.data().userID)
+            })            
+            // check if user ID is in the list
+            const userExists = usersList.indexOf(testUser) > -1
+            console.log(usersList)
+            console.log(userExists)
+        })
     }
 
     useEffect(() => {
