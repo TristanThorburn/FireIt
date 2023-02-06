@@ -1,5 +1,10 @@
 @import './variables.scss';
 
+.tableBackDash{
+    h2{
+        margin:0 auto;
+    }
+}
 .tableTab{
     position:relative;
     height:92.5vh;
@@ -29,6 +34,10 @@
         background-color:$buttonColor;
         color:white;
     }
+}
+
+.table{
+    cursor: pointer;
 }
 
 .tableOne{
