@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const CiderData = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
@@ -9,7 +9,8 @@ const CiderData = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(ciderCollectionRef, snapshot => {
+        const q = query(ciderCollectionRef, orderBy('name'));
+        const unsubscribe = onSnapshot(q, snapshot => {
             setCiderData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()

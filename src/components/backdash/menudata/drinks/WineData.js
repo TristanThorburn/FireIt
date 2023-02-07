@@ -5,7 +5,7 @@ import {
         whiteWineCollectionRef,
         bubblyCollectionRef,
         } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const WineData = (props) => {
     const [ wineData, setWineData ] = useState([]);
@@ -14,7 +14,8 @@ const WineData = (props) => {
 
     useEffect(() => {
         if(props.activeTab === 'red wine'){
-            const unsubscribe = onSnapshot(redWineCollectionRef, snapshot => {
+            const q = query(redWineCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setWineData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
@@ -23,7 +24,8 @@ const WineData = (props) => {
             return unsubscribe
         }
         if(props.activeTab === 'white wine'){
-            const unsubscribe = onSnapshot(whiteWineCollectionRef, snapshot => {
+            const q = query(whiteWineCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setWineData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
@@ -32,7 +34,8 @@ const WineData = (props) => {
             return unsubscribe
         }
         if(props.activeTab === 'bubbly'){
-            const unsubscribe = onSnapshot(bubblyCollectionRef, snapshot => {
+            const q = query(bubblyCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setWineData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()

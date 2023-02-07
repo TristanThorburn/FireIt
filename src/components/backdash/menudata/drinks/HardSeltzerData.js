@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { hardSeltzerCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const HardSeltzerData = (props) => {
     const [ hardSeltzerData, setHardSeltzerData ] = useState([]);
@@ -9,7 +9,8 @@ const HardSeltzerData = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(hardSeltzerCollectionRef, snapshot => {
+        const q = query(hardSeltzerCollectionRef, orderBy('name'));
+        const unsubscribe = onSnapshot(q, snapshot => {
             setHardSeltzerData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()

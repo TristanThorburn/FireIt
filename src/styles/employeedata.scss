@@ -1,0 +1,20 @@
+.employeeData{
+    tr{
+        cursor: pointer;
+    }
+}
+
+.employeeForm{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    max-width:90%;
+    margin:0 auto;
+
+    div, textarea{
+        margin:1rem auto;
+        display:flex;
+        flex-direction: column;
+    }
+}

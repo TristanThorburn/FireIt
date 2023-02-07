@@ -1,9 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { drinkAddsCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
-
-// LOGIC: select item from list, choose new/update/delete to open form component
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const DrinkAddonsData = (props) => {
     const [ drinkAddsData, setDrinkAddsData ] = useState([]);
@@ -11,7 +9,8 @@ const DrinkAddonsData = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(drinkAddsCollectionRef, snapshot => {
+        const q = query(drinkAddsCollectionRef, orderBy('name'));
+        const unsubscribe = onSnapshot(q, snapshot => {
             setDrinkAddsData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()

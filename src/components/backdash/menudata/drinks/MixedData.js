@@ -4,7 +4,7 @@ import {
         cocktailCollectionRef,
         shotsCollectionRef,
         } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const MixedData = (props) => {
     const [ mixedData, setMixedData ] = useState([]);
@@ -13,7 +13,8 @@ const MixedData = (props) => {
 
     useEffect(() => {
         if(props.activeTab === 'cocktails'){
-            const unsubscribe = onSnapshot(cocktailCollectionRef, snapshot => {
+            const q = query(cocktailCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setMixedData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
@@ -22,7 +23,8 @@ const MixedData = (props) => {
             return unsubscribe
         }
         if(props.activeTab === 'shots'){
-            const unsubscribe = onSnapshot(shotsCollectionRef, snapshot => {
+            const q = query(shotsCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setMixedData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()

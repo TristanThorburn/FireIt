@@ -59,3 +59,6 @@ export const whiskeyCollectionRef = collection(db, 'drinks', 'alcoholic', 'spiri
 export const foodAddsCollectionRef = collection(db, 'food', 'addons', 'food addons');
 // BAR ADDONS
 export const drinkAddsCollectionRef = collection(db, 'drinks', 'addons', 'drink addons');
+
+// EMPLOYEE DATA
+export const employeeCollectionRef = collection(db, 'employees');

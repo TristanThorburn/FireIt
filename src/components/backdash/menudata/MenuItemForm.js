@@ -31,8 +31,6 @@ const MenuItemForm = (props) => {
     const [ collectionRef, setCollectionRef ] = useState('');
     const [ itemData, setItemData ] = useState();
     const [ itemType, setItemType ] = useState('');
-    const [ taxGroup, setTaxGroup ] = useState('');
-    const [ printerRoute, setPrinterRoute ] = useState('');
     const [ popUps, setPopUps ] = useState({popUpsList:[]});
     const [ popUpsAction, setPopUpsAction ] = useState('');
     const nameRef = useRef('');
@@ -40,6 +38,19 @@ const MenuItemForm = (props) => {
     const onScreenNameRef = useRef('');
     const chitNameRef = useRef('');
     const itemPriceRef = useRef('');
+    const taxOptions = [
+        {value: '', label: '--Choose an option--'},
+        {value: 'Food Tax', label: 'Food Tax'},
+        {value: 'Alcohol Tax', label: 'Alcohol Tax'},
+      ];
+    const printOptions = [
+        {value: '', label: '--Choose an option--'},
+        {value: 'No Print', label: 'No Print'},
+        {value: 'Bar', label: 'Bar'},
+        {value: 'Kitchen', label: 'Kitchen'},
+        ];
+    const [ taxGroup, setTaxGroup ] = useState(taxOptions[0].value);
+    const [ printerRoute, setPrinterRoute ] = useState(printOptions[0].value);
     
     useEffect(() => {
         if(props.id === ''){
@@ -118,6 +129,15 @@ const MenuItemForm = (props) => {
         }
     },[props.id, props.docQuery, props.activeTab])
 
+    useEffect(() => {
+        Array.from(document.querySelectorAll('input')).forEach(
+            input => (input.value = ''))
+        Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
+                input => (input.checked = false))
+        Array.from(document.querySelectorAll('input[type=radio]')).forEach(
+            input => (input.checked = false))
+    }, [props.id, props.newItem])
+
     const handleAddItem = (e) => {
         e.preventDefault()
 
@@ -182,11 +202,13 @@ const MenuItemForm = (props) => {
             updateDoc(docRef, {
                 taxGroup:taxGroup
             })
+            setTaxGroup('');
         }
         if(props.id !== '' && printerRoute !== ''){
             updateDoc(docRef, {
                 printerRoute:printerRoute
             })
+            setPrinterRoute('');
         }
         if(props.id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'add'){
             updateDoc(docRef, {
@@ -210,7 +232,8 @@ const MenuItemForm = (props) => {
             input => (input.checked = false))
         }
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
+        e.preventDefault()
         const docRef = doc(db, ...props.docQuery, props.id)
         
         if(props.id !== ''){
@@ -405,60 +428,35 @@ const MenuItemForm = (props) => {
                 {/* Tax Group */}
                     <div>
                         <label htmlFor='taxGroup'>Tax Group:</label>
-                        <select 
+                        <p>{itemData?.taxGroup}</p>
+                        <select
                             id='taxGroup'
                             name='taxGroup'
+                            value={taxGroup}
                             onChange={handleTaxGroup}
                             >
-                            {props.id !== '' && itemData?.taxGroup === 'foodTax'
-                                ? <option value='' disabled selected>Food Tax</option>
-                                : props.id !== '' && itemData?.taxGroup === 'alcoholTax'
-                                    ? <option value='' disabled selected>Alcohol Tax</option>
-                                    :<option value='' disabled selected>Select Tax Type</option>
-                            }
-                            <option 
-                                value='foodTax'
-                                name='taxGroup'
-                                >Food Tax
-                            </option>
-                            <option 
-                                value='alcoholTax'
-                                name='taxGroup'
-                                >Alcohol Tax
-                            </option>
+                            {taxOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 {/* Printer Route */}
                     <div>
                         <label htmlFor='printerRoute'>Printer Route:</label>
-                        <select 
+                        <p>{itemData?.printerRoute}</p>
+                        <select
                             id='printerRoute'
                             name='printerRoute'
+                            value={printerRoute}
                             onChange={handlePrinterRoute}
                             >
-                            {props.id !== '' && itemData?.printerRoute === 'noPrint'
-                                ?<option value='' disabled selected>NO PRINT</option>
-                                :props.id !== '' && itemData?.printerRoute === 'bar'
-                                    ?<option value='' disabled selected>BAR</option>
-                                    :props.id !== '' && itemData?.printerRoute === 'kitchen'
-                                        ?<option value='' disabled selected>KITCHEN</option>
-                                        :<option value='' disabled selected>SELECT ROUTE</option>
-                            }
-                            <option 
-                                value='noPrint'
-                                name='printerRoute'
-                                >NO PRINT
-                            </option>
-                            <option 
-                                value='bar'
-                                name='printerRoute'
-                                >BAR
-                            </option>
-                            <option
-                                value='kitchen'
-                                name='printerRoute'
-                                >KITCHEN
-                            </option>
+                            {printOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 {/* Pop Up Groups */}
@@ -487,14 +485,12 @@ const MenuItemForm = (props) => {
             {props.newItem === false && props.id === ''
                 ? null
                 : props.id !== ''
-                    ? <button type='submit' onClick={handleUpdateItem}>Update Item</button>
-                    : props.newItem === true
+                    ? <>
+                        <button type='submit' onClick={handleUpdateItem}>Update Item</button>
+                        <button onClick={handleDelete}>Delete Item</button>
+                    </>
+                    : props.newItem
                 ? <button type='submit' onClick={handleAddItem}>Add Item</button>
-                : null
-            }
-
-            {props.id !== '' || props.newItem === true
-                ? <button onClick={handleDelete}>Delete Item</button>
                 : null
             }
         </form>

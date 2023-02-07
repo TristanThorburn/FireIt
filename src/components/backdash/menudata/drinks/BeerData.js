@@ -5,7 +5,7 @@ import {
         beerCanCollectionRef, 
         beerDraftCollectionRef,
         } from '../../../../library/firestoreCollections';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const BeerData = (props) => {
     const [ beerData, setBeerData ] = useState([]);
@@ -14,7 +14,8 @@ const BeerData = (props) => {
 
     useEffect(() => {
         if(props.activeTab === 'beer bottle'){
-            const unsubscribe = onSnapshot(beerBottleCollectionRef, snapshot => {
+            const q = query(beerBottleCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setBeerData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
@@ -23,7 +24,8 @@ const BeerData = (props) => {
             return unsubscribe
         }
         if(props.activeTab === 'beer can'){
-            const unsubscribe = onSnapshot(beerCanCollectionRef, snapshot => {
+            const q = query(beerCanCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setBeerData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
@@ -32,7 +34,8 @@ const BeerData = (props) => {
             return unsubscribe
         }
         if(props.activeTab === 'beer draft'){
-            const unsubscribe = onSnapshot(beerDraftCollectionRef, snapshot => {
+            const q = query(beerDraftCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
             setBeerData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
