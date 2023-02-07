@@ -46,7 +46,7 @@ const AdminPad = (props) => {
                     <table>
                         <thead>
                             <tr>
-                                <th colSpan={3}>Admin PIN?</th>
+                                <th colSpan={3}>Admin PIN? (8829)</th>
                             </tr>
                         </thead>
                         <tbody>
