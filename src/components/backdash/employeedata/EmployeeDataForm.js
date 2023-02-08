@@ -78,10 +78,7 @@ const EmployeeDataForm = (props) => {
                 notes:notesRef.current.value,
             });
             props.setNewEmployee(false);
-            Array.from(document.querySelectorAll('input')).forEach(
-                input => (input.value = ''))
-            Array.from(document.querySelectorAll('textarea')).forEach(
-                    input => (input.value = ''))
+            document.getElementById('menuItemForm').reset(); 
         }
     }
 
@@ -170,10 +167,7 @@ const EmployeeDataForm = (props) => {
             })
         }
         props.setSelectedEmployee('');
-        Array.from(document.querySelectorAll('input')).forEach(
-            input => (input.value = ''))
-        Array.from(document.querySelectorAll('textarea')).forEach(
-                input => (input.value = ''))
+        document.getElementById('menuItemForm').reset(); 
         }
 
     const handleDelete = (e) => {

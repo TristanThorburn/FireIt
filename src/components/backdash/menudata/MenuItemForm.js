@@ -155,12 +155,14 @@ const MenuItemForm = (props) => {
             });
             props.setNewItem(false);
             setPopUps({popUpsList:[]})
-            Array.from(document.querySelectorAll('input')).forEach(
-                input => (input.value = ''))
-            Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
-                    input => (input.checked = false))
-            Array.from(document.querySelectorAll('input[type=radio]')).forEach(
-                input => (input.checked = false))
+            setPopUpsAction('')
+            // Array.from(document.querySelectorAll('input')).forEach(
+            //     input => (input.value = ''))
+            // Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
+            //         input => (input.checked = false))
+            // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
+            //     input => (input.checked = false))
+            document.getElementById('menuItemForm').reset();
         }
     }
 
@@ -224,12 +226,14 @@ const MenuItemForm = (props) => {
         }
         props.setSelectedItem('');
         setPopUps({popUpsList:[]});
-        Array.from(document.querySelectorAll('input')).forEach(
-            input => (input.value = ''))
-        Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
-                input => (input.checked = false))
-        Array.from(document.querySelectorAll('input[type=radio]')).forEach(
-            input => (input.checked = false))
+        setPopUpsAction('')
+        // Array.from(document.querySelectorAll('input')).forEach(
+        //     input => (input.value = ''))
+        // Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
+        //         input => (input.checked = false))
+        // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
+        //     input => (input.checked = false))
+        document.getElementById('menuItemForm').reset(); 
         }
 
     const handleDelete = (e) => {
@@ -265,7 +269,7 @@ const MenuItemForm = (props) => {
     }
 
     return(
-        <form className='menuItemForm'>
+        <form className='menuItemForm' id='menuItemForm'>
             {props.id !== '' || props.newItem === true
                 ? <>
                 {/* Item Name */}
