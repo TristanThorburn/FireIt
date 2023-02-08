@@ -156,6 +156,8 @@ const MenuItemForm = (props) => {
             props.setNewItem(false);
             setPopUps({popUpsList:[]})
             setPopUpsAction('')
+            setTaxGroup('')
+            setPrinterRoute('')
             // Array.from(document.querySelectorAll('input')).forEach(
             //     input => (input.value = ''))
             // Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
