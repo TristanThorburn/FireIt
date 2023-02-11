@@ -33,58 +33,60 @@
         border:1px solid black;
         background-color:$buttonColor;
         color:white;
+        cursor: pointer;
+        transform:translate(-50%, -50%)
     }
 }
 
-.table{
-    cursor: pointer;
+.tableMapDirections{
+    display:flex;
 }
 
 .tableOne{
-    top:100px;
-    left:100px;
+    top:150px;
+    left:200px;
     @include diamondTable;
 }
 
 .tableTwo{
-    top:400px;
-    left:200px;
+    top:450px;
+    left:250px;
     @include diamondTable;
 }
 
 .tableThree{
     top:700px;
-    left:100px;
+    left:250px;
     @include boothTable;
 }
 
 .tableFour{
-    top:100px;
-    left:700px;
+    top:150px;
+    left:750px;
     @include diamondTable;
 }
 
 .tableFive{
-    top:400px;
+    top:450px;
     left:800px;
     @include diamondTable;
 }
 
 .tableSix{
     top:700px;
-    left:700px;
+    left:800px;
     @include boothTable;
 }
 
 .tableSeven{
-    top:100px;
-    left:1300px;
+    top:150px;
+    left:1250px;
     @include diamondTable;
 }
 
 .tableEight{
-    top:400px;
-    left:1400px;
+    top:450px;
+    left:1300px;
     @include diamondTable;
 }
 
@@ -95,7 +97,7 @@
 }
 
 .tableTen{
-    top:300px;
+    top:450px;
     right:100px;
     height:300px;
     width:100px;

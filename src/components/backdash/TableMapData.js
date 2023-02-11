@@ -20,11 +20,13 @@ const TableMapData = () => {
             <h2>Tables and Map Setup</h2>
 
             {mapUpdateable
-                ? <button onClick={disableUpdate}>Disable Updates</button>
+                ? <div className='tableMapDirections'>
+                    <button onClick={disableUpdate}>Disable Updates</button>
+                    <p>Click to move, then click to set new position</p>
+                </div>
                 : <button onClick={enableUpdate}>Update Map</button>
             }
-            
-            
+
             <div className='tableTab'>
                 <TableMap updateable={mapUpdateable}/>
             </div>            
