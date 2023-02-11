@@ -11,6 +11,7 @@
         padding:0;
         list-style:none;
         display:flex;
+        flex-wrap:wrap;
         justify-content: space-evenly;
         width:80%;
     }
@@ -30,6 +31,10 @@
     margin:1.5rem auto;
     border:2px solid black;
     max-width:90%;
+    
+    ul{
+        width:100%;
+    }
 }
 
 .menuItemForm{
