@@ -42,71 +42,8 @@
     display:flex;
 }
 
-.tableOne{
-    top:150px;
-    left:200px;
+.table{
     @include diamondTable;
-}
-
-.tableTwo{
-    top:450px;
-    left:250px;
-    @include diamondTable;
-}
-
-.tableThree{
-    top:700px;
-    left:250px;
-    @include boothTable;
-}
-
-.tableFour{
-    top:150px;
-    left:750px;
-    @include diamondTable;
-}
-
-.tableFive{
-    top:450px;
-    left:800px;
-    @include diamondTable;
-}
-
-.tableSix{
-    top:700px;
-    left:800px;
-    @include boothTable;
-}
-
-.tableSeven{
-    top:150px;
-    left:1250px;
-    @include diamondTable;
-}
-
-.tableEight{
-    top:450px;
-    left:1300px;
-    @include diamondTable;
-}
-
-.tableNine{
-    top:700px;
-    left:1300px;
-    @include boothTable;
-}
-
-.tableTen{
-    top:450px;
-    right:100px;
-    height:300px;
-    width:100px;
-
-    p{
-        margin-top:127px;
-        margin-left:15px;
-        margin-bottom:0px;
-    }
 }
 
 .tableTabNav{
