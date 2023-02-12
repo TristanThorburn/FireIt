@@ -62,3 +62,6 @@ export const drinkAddsCollectionRef = collection(db, 'drinks', 'addons', 'drink 
 
 // EMPLOYEE DATA
 export const employeeCollectionRef = collection(db, 'employees');
+
+// TABLEMAP DATA
+export const tableMapCollectionRef = collection(db, 'tables')

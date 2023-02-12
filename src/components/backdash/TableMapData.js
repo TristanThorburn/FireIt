@@ -28,7 +28,7 @@ const TableMapData = () => {
             }
 
             <div className='tableTab'>
-                <TableMap updateable={mapUpdateable}/>
+                <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
             </div>            
         </div>
     )
