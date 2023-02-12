@@ -21,6 +21,7 @@ import {
     whiskeyCollectionRef,
     ciderCollectionRef,
     hardSeltzerCollectionRef,
+    menuModsCollectionRef,
     } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { addDoc, doc, updateDoc, deleteDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -121,6 +122,9 @@ const MenuItemForm = (props) => {
             }
             if(props.activeTab === 'hard seltzer'){
                 setCollectionRef(hardSeltzerCollectionRef)
+            }
+            if(props.activeTab === 'menu mods'){
+                setCollectionRef(menuModsCollectionRef)
             }
         }
         if(props.id !== ''){

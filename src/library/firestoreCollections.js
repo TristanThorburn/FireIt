@@ -55,6 +55,10 @@ export const vodkaCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits
 export const whiskeyCollectionRef = collection(db, 'drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'whiskey');
 
 
+// MENU MODS
+export const menuModsCollectionRef = collection(db, 'menu mods');
+
+
 // FOOD ADDONS
 export const foodAddsCollectionRef = collection(db, 'food', 'addons', 'food addons');
 // BAR ADDONS
