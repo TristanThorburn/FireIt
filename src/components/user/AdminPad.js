@@ -31,7 +31,7 @@ const AdminPad = (props) => {
         if(adminAuth === '8829') {
             document.body.classList.remove('adminOpen')
             try{
-                await logout()
+                // await logout()
                 navigate('/backend-dash')
             } catch {
                 setError('failed log in')
