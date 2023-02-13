@@ -52,6 +52,7 @@ const MenuItemForm = (props) => {
         ];
     const [ taxGroup, setTaxGroup ] = useState(taxOptions[0].value);
     const [ printerRoute, setPrinterRoute ] = useState(printOptions[0].value);
+    const [ cloneItem, setCloneItem ] = useState({})
     
     useEffect(() => {
         if(props.id === ''){
@@ -142,6 +143,22 @@ const MenuItemForm = (props) => {
         //     input => (input.checked = false))
         document.getElementById('menuItemForm').reset(); 
     }, [props.id, props.newItem])
+
+    useEffect(() => {
+        if(cloneItem.name !== undefined && cloneItem.name !== ''){
+            addDoc(collectionRef, {
+                name:cloneItem.name,
+                itemStock:cloneItem.itemStock,
+                screenName:cloneItem.screenName,
+                chitName:cloneItem.chitName,
+                price:cloneItem.price,
+                type:cloneItem.type,
+                taxGroup:cloneItem.taxGroup,
+                printerRoute:cloneItem.printerRoute,
+                popUps:cloneItem.popUps,
+            })
+        }
+    }, [collectionRef, cloneItem])
 
     const handleAddItem = (e) => {
         e.preventDefault()
@@ -250,6 +267,32 @@ const MenuItemForm = (props) => {
         if(props.id !== ''){
             deleteDoc(docRef)
             setItemData('')
+        }
+    }
+
+    const handleClone = async (e) => {
+        e.preventDefault()
+        if(props.id !==''){
+            try {
+                const docRef = doc(db, ...props.docQuery, props.id)
+                const itemToClone = await getDoc(docRef)
+                const cloneData = itemToClone.data()
+                if(itemToClone.exists()){
+                    setCloneItem({
+                        name : cloneData.name + 'CLONE', 
+                            itemStock : cloneData.itemStock,
+                            screenName : cloneData.screenName,
+                            chitName : cloneData.chitName,
+                            price : cloneData.price,
+                            type : cloneData.type,
+                            taxGroup : cloneData.taxGroup,
+                            printerRoute : cloneData.printerRoute,
+                            popUps : cloneData.popUps,
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
@@ -496,10 +539,11 @@ const MenuItemForm = (props) => {
             {props.newItem === false && props.id === ''
                 ? null
                 : props.id !== ''
-                    ? <>
+                    ? <div className='updateButtons'>
                         <button type='submit' onClick={handleUpdateItem}>Update Item</button>
+                        <button onClick={handleClone}>Clone Item</button>
                         <button onClick={handleDelete}>Delete Item</button>
-                    </>
+                    </div>
                     : props.newItem
                 ? <button type='submit' onClick={handleAddItem}>Add Item</button>
                 : null

@@ -48,4 +48,13 @@
     div, fieldset{
         margin:1rem auto;
     }
+    .updateButtons{
+    display:flex;
+    flex-direction:column;
+
+    button{
+        margin:10px auto;
+    }
+    }
 }
+
