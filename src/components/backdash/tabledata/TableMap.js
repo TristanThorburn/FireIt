@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, updateDoc, doc } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import TableForm from './TableForm';
+import TableStyleUpdate from './TableStyleUpdate';
 
 const TableMap = (props) => {
     const tableMap = document.querySelector('.tableMap');
     const tables = document.querySelectorAll('.table');
     const [ tablesData, setTablesData ] = useState([]);
     const [ enableDrag, setEnableDrag ] = useState(false);
-    const [ addingTable, setAddingTable ] = useState(false);
+    const [ addingTable, setAddingTable ] = useState(false);    
+    const [ stylingTable, setStylingTable ] = useState(false);
+    const [ selectedTable, setSelectedTable ] = useState('');
+    const activeTable = document.getElementById(`${selectedTable}`)
 
     useEffect(() => {
         const q = query(tableMapCollectionRef, orderBy('name'));
@@ -21,29 +25,37 @@ const TableMap = (props) => {
         })
         return unsubscribe
     },[])
-
     
     const handleTest = () => {
-        console.log(tableMap.children)
     }
 
     const handleAllowDragging = () => {
         if(enableDrag === false){
             setEnableDrag(true)
-            tables.forEach((table) => {
-                table.setAttribute('draggable', true)
-            })
         }
         if(enableDrag === true){
             setEnableDrag(false)
-            tables.forEach((table) => {
-                table.removeAttribute('draggable', true)
-            })
         }
     }
 
     const handleAddTable = () => {
             setAddingTable(!addingTable)
+    }
+
+    const handleUpdateStyle = () => {
+        if(selectedTable !== ''){
+            setStylingTable(!stylingTable)
+        } else {
+            alert('Select a Table')
+        }
+    }
+
+    const handleDelete = (e) => {
+        const docRef = doc(db, 'tables', `${selectedTable}`)
+        if(props.id !== ''){
+            deleteDoc(docRef)
+            setSelectedTable('')
+        }
     }
 
     const handleSave = () => {
@@ -57,7 +69,7 @@ const TableMap = (props) => {
         props.setMapUpdateable(false)
     }
 
-    const handleDrag = (e) => {
+    const handleTableClick = (e) => {
         if(enableDrag === true){
             const element = e.target
             element.style.border='2px solid white'
@@ -77,6 +89,7 @@ const TableMap = (props) => {
 
             tableMap.addEventListener('mousemove', mouseMove)
         }
+        setSelectedTable(e.target.id)
     }
 
     const handleNoPropagation = (e) => {
@@ -91,36 +104,46 @@ const TableMap = (props) => {
                         <li><button onClick={handleTest}>Test</button></li>
                         <li>
                             {enableDrag
-                            ?<button onClick={handleAllowDragging}>Disable Table Dragging</button>
-                            :<button onClick={handleAllowDragging}>Enable Table Dragging</button>
+                            ?<button onClick={handleAllowDragging}>Disable Table Reposition</button>
+                            :<button onClick={handleAllowDragging}>Enable Table Reposition</button>
                         }</li>
+                        <li><button onClick={handleSave}>Save Table Positions</button></li>
                         <li><button onClick={handleAddTable}>Add Table</button></li>
-                        <li><button>Change Table Style</button></li>
-                        <li><button>Delete Table</button></li>
-                        <li><button onClick={handleSave}>Save Updates</button></li>
+                        <li><button onClick={handleUpdateStyle}>Change Table Style</button></li>
+                        <li><button onClick={handleDelete}>Delete Table</button></li>
                     </ul>
                     {enableDrag 
                         ? <p className='tableMapDirections'>Click to move, click again to set</p>
-                        : null
+                        : selectedTable
+                            ? <p className='tableMapDirections'>Selected Table: {activeTable?.innerText}</p>
+                            : <p className='tableMapDirections'>No Selected Table</p>
                     }  
                 </div>
                 :null
             }
 
             {addingTable
-                ?<TableForm setAddingTable={setAddingTable}/>
-                :<ul className='tableMap'>            
-                    {tablesData.map(table => 
-                        <li 
-                            key={table.id}
-                            id={table.id}
-                            className={['table', table.data?.tableStyle].join(' ')}
-                            onClick={handleDrag}
-                            style={{left:table?.data.left, top: table?.data.top}}
-                            >
-                                <p onClick={handleNoPropagation}>{table.data.name}</p>
-                        </li>)}
-                </ul>
+                ? <TableForm
+                    setAddingTable={setAddingTable}
+                    />
+                : stylingTable
+                    ? <TableStyleUpdate
+                        setStylingTable={setStylingTable}
+                        activeTable={activeTable?.innerText}
+                        tableId={selectedTable}
+                        />
+                    :<ul className='tableMap'>            
+                        {tablesData.map(table => 
+                            <li 
+                                key={table.id}
+                                id={table.id}
+                                className={['table', table.data?.tableStyle].join(' ')}
+                                onClick={handleTableClick}
+                                style={{left:table?.data.left, top: table?.data.top}}
+                                >
+                                    <p onClick={handleNoPropagation}>{table.data.name}</p>
+                            </li>)}
+                    </ul>
             }
             
         </>

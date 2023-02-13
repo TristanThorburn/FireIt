@@ -1,9 +1,22 @@
 @import './variables.scss';
 
 .tableBackDash{
-    h2{
+    header{
         margin:0 auto;
+        width:80%;
+        display:flex;
+        align-items: center;
+        justify-content: space-evenly;
+        
+        button{
+            width:200px;
+        }
     }
+    h2{
+        // margin:20px auto;
+        text-align: center;
+    }
+    
 }
 .tableTab{
     position:relative;
@@ -25,7 +38,6 @@
 
 .tableMap{
     height:100%;
-    align-items: center;
     position:relative;
 
     li{
@@ -83,10 +95,15 @@
 }
 
 .updateMapNav{
+    position:absolute;
+    top:0;
+    left:350px;
     border:2px solid white;
     height:4rem;
-}
+    width:60%;
+    z-index: 1;
 
+}
 
 .tableMapDirections{
     color:white;
@@ -112,6 +129,7 @@
 
 .tableFormModal{
     position:fixed;
+    z-index: 10;
     left:0;
     top:0;
     right:0;

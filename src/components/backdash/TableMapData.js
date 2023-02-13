@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import TableMap from '../summary/table/TableMap';
+import TableMap from '../backdash/tabledata/TableMap';
 import { useState } from 'react';
 
 const TableMapData = () => {
@@ -14,16 +14,18 @@ const TableMapData = () => {
     }
 
     return(
-        <div className='tableBackDash'>            
-            <Link to='/backend-dash'>Return to Backend Dashboard</Link>
+        <div className='tableBackDash'>
+            <header>
+                <Link to='/backend-dash'>Return to Backend Dashboard</Link>
 
-            <h2>Tables and Map Setup</h2>
+                <h2>Tables and Map Setup</h2>
 
-            {mapUpdateable
-                ? <button onClick={disableUpdate}>Disable Updates</button>
-                : <button onClick={enableUpdate}>Update Map</button>
-            }
-
+                {mapUpdateable
+                    ? <button onClick={disableUpdate}>Disable Updates</button>
+                    : <button onClick={enableUpdate}>Update Map</button>
+                }
+            </header>
+            
             <div className='tableTab'>
                 <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
             </div>            
