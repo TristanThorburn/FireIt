@@ -148,14 +148,14 @@ const MenuItemForm = (props) => {
         if(cloneItem.name !== undefined && cloneItem.name !== ''){
             addDoc(collectionRef, {
                 name:cloneItem.name,
-                itemStock:cloneItem?.itemStock,
-                screenName:cloneItem?.screenName,
-                chitName:cloneItem?.chitName,
-                price:cloneItem?.price,
-                type:cloneItem?.type,
-                taxGroup:cloneItem?.taxGroup,
-                printerRoute:cloneItem?.printerRoute,
-                popUps:cloneItem?.popUps,
+                itemStock:cloneItem.itemStock,
+                screenName:cloneItem.screenName,
+                chitName:cloneItem.chitName,
+                price:cloneItem.price,
+                type:cloneItem.type,
+                taxGroup:cloneItem.taxGroup,
+                printerRoute:cloneItem.printerRoute,
+                popUps:cloneItem.popUps,
             })
         }
     }, [collectionRef, cloneItem])
@@ -275,9 +275,9 @@ const MenuItemForm = (props) => {
         if(props.id !==''){
             try {
                 const docRef = doc(db, ...props.docQuery, props.id)
-                const cloneItem = await getDoc(docRef)
-                const cloneData = cloneItem.data()
-                if(cloneItem.exists()){
+                const itemToClone = await getDoc(docRef)
+                const cloneData = itemToClone.data()
+                if(itemToClone.exists()){
                     setCloneItem({
                         name : cloneData.name + 'CLONE', 
                             itemStock : cloneData.itemStock,
