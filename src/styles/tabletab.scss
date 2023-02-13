@@ -1,9 +1,22 @@
 @import './variables.scss';
 
 .tableBackDash{
-    h2{
+    header{
         margin:0 auto;
+        width:80%;
+        display:flex;
+        align-items: center;
+        justify-content: space-evenly;
+        
+        button{
+            width:200px;
+        }
     }
+    h2{
+        // margin:20px auto;
+        text-align: center;
+    }
+    
 }
 .tableTab{
     position:relative;
@@ -24,26 +37,77 @@
 }
 
 .tableMap{
-    height:90%;
-    align-items: center;
+    height:100%;
     position:relative;
 
     li{
         position:absolute;
-        border:1px solid black;
-        background-color:$buttonColor;
-        color:white;
         cursor: pointer;
         transform:translate(-50%, -50%)
     }
 }
 
-.tableMapDirections{
-    display:flex;
+.table{
+    border:1px solid black;
+    background-color:$buttonColor;
+    color:white;
 }
 
-.table{
-    @include diamondTable;
+.diamondTable{
+    rotate:(45deg);
+    width:100px;
+    height:100px;
+    position: relative;
+    
+    p{
+        margin:0 auto;
+        rotate:(-45deg);
+        position:absolute;
+        top:30%;
+        transform:translateX(-50%);
+        left:20%;
+        transform:translateY(-50%);
+        width:100%;
+    }
+}
+
+.squareTable{
+    width:100px;
+    height:100px;
+    @include flexCenterCenter;
+}
+
+.rectangleTable{
+    width:200px;
+    height:100px;
+
+    p{
+        margin-left:69px;
+        margin-top:35px;
+    }
+}
+
+.circleTable{
+    width:100px;
+    height:100px;
+    @include flexCenterCenter;
+    border-radius:50%;
+}
+
+.updateMapNav{
+    position:absolute;
+    top:0;
+    left:350px;
+    border:2px solid white;
+    height:4rem;
+    width:60%;
+    z-index: 1;
+
+}
+
+.tableMapDirections{
+    color:white;
+    text-align: center;
 }
 
 .tableTabNav{
@@ -61,4 +125,59 @@
     button{
         cursor: pointer;
     }
+}
+
+.tableFormModal{
+    position:fixed;
+    z-index: 10;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    background-color: rgba(0, 0, 0, 0.5);
+    @include flexCenterCenter;
+}
+
+.tableFormContainer{
+    border:2px solid white;
+    width:750px;
+    height:600px;
+    background-color:$backgroundColor;
+    display:grid;
+    grid-template-rows:1fr, 4fr, 1fr;
+
+    h2{
+        text-align: center;
+    }
+    fieldset{
+        display:flex;
+        justify-content: space-evenly;
+        flex-wrap:wrap;
+    }
+    footer{
+        text-align: center;
+        display:flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+}
+
+.tableFormStyle{
+    border:1px solid black;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width:calc(100% / 2);
+}
+
+.tableFormName{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.demoTable{
+    transform:scale(0.75);
+    margin:15px auto;
 }

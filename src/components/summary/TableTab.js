@@ -1,5 +1,5 @@
-import TableTabNav from './table/TableTabNav';
-import TableMap from './table/TableMap';
+import TableTabNav from './navs/TableTabNav';
+import TableMap from '../backdash/tabledata/TableMap';
 
 const TableTab = () => {
     return(
