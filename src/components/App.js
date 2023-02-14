@@ -3,7 +3,7 @@ import Login from './user/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from '../components/PrivateRoutes';
 import ErrorPage from './ErrorPage';
-import SummaryDash from './SummaryDash';
+import SummaryDash from './FrontDash';
 import BackendDash from './BackendDash';
 import MenuData from './backdash/MenuData';
 import EmployeeData from './backdash/EmployeeData';

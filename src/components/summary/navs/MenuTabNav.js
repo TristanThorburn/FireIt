@@ -2,7 +2,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const TableTabNav = () => {
+const MenuTabNav = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
@@ -19,7 +19,7 @@ const TableTabNav = () => {
     }
 
     return(
-        <div className='tableTabNav'>
+        <div className='menuTabNav'>
             <ul>
                 <li>{currentUser.email}</li>
                 <li>Demo</li>
@@ -39,4 +39,4 @@ const TableTabNav = () => {
         </div>
     )
 }
-export default TableTabNav;
+export default MenuTabNav;
