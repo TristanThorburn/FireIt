@@ -2,11 +2,7 @@
 
 .tableBackDash{
     header{
-        margin:0 auto;
-        width:80%;
-        display:flex;
-        align-items: center;
-        justify-content: space-evenly;
+        @include backDashHeader;
         
         button{
             width:200px;

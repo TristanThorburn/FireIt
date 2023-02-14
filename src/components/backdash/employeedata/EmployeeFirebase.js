@@ -31,8 +31,9 @@ const EmployeeFirebase = (props) => {
     }
 
     return(
-        <div>
-            <h3>Activate Employee (Connect to Firebase)</h3>
+        <div className='employeeActivateFirebase'>
+            <h3>Activate Employee?</h3>
+            <p>Work around to connect users to firebase authentication to allow log  in to the initial sever terminal, using UserID followed by UserPW</p>
             {error}
             {currentUser?.email
                 ? <>

@@ -16,7 +16,7 @@ const TableMapData = () => {
     return(
         <div className='tableBackDash'>
             <header>
-                <Link to='/backend-dash'>Return to Backend Dashboard</Link>
+                <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
 
                 <h2>Tables and Map Setup</h2>
 

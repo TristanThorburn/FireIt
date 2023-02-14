@@ -22,22 +22,15 @@ const EmployeeDataForm = (props) => {
     const firstDayRef = useRef('');
     const lastDayRef = useRef('');
     const notesRef = useRef('');
-    const  testUser = '5555'
+    const [ empNumberExists, setEmpNumberExists ] = useState('')
+    const [ empUserExists, setEmpUserExists ] = useState('')
 
     const handleTest = (e) => {
         e.preventDefault()
-        getDocs(employeeCollectionRef).then(snap => {
-            let usersList = []
-            snap.forEach(doc => {                
-                usersList.push(doc.data().userID)
-            })            
-            // check if user ID is in the list
-            const userExists = usersList.indexOf(testUser) > -1
-            console.log(usersList)
-            console.log(userExists)
-        })
+        
+        console.log(empNumberExists, empUserExists)
     }
-
+    // Initial Employee List Display Effect
     useEffect(() => {
         if(props.id === ''){
             setEmployeeData({})
@@ -47,13 +40,29 @@ const EmployeeDataForm = (props) => {
             getDoc(docRef).then((doc) => setEmployeeData(doc.data())).catch(error => console.log(error))
         }
     },[props.id])
-
+    // Clear form info on submit
     useEffect(() => {
         Array.from(document.querySelectorAll('input')).forEach(
             input => (input.value = ''))
         Array.from(document.querySelectorAll('textarea')).forEach(
                 input => (input.value = ''))
     },[props.id, props.newEmployee])
+
+    useEffect(()=> {
+        getDocs(employeeCollectionRef).then(snap => {
+            let employeeNumbers = []
+            let employeeUsers = []
+            snap.forEach(doc => {
+                employeeNumbers.push(doc.data().employeeNumber)               
+                employeeUsers.push(doc.data().userID)
+            })            
+            // check if employee # or user ID is in the list
+            const doesNumberExist = employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
+            const doesUserExist = employeeUsers.indexOf(userIDRef.current.value) > -1
+            setEmpNumberExists(doesNumberExist)
+            setEmpUserExists(doesUserExist)
+        })
+    },[employeeNumberRef.current.value, userIDRef.current.value])
 
     const handleAddEmployee = (e) => {
         e.preventDefault()
@@ -78,7 +87,7 @@ const EmployeeDataForm = (props) => {
                 notes:notesRef.current.value,
             });
             props.setNewEmployee(false);
-            document.getElementById('menuItemForm').reset(); 
+            document.getElementById('employeeForm').reset(); 
         }
     }
 
@@ -167,7 +176,7 @@ const EmployeeDataForm = (props) => {
             })
         }
         props.setSelectedEmployee('');
-        document.getElementById('menuItemForm').reset(); 
+        document.getElementById('employeeForm').reset(); 
         }
 
     const handleDelete = (e) => {
@@ -182,7 +191,7 @@ const EmployeeDataForm = (props) => {
 
     return(
         <>
-            <form className='employeeForm'>
+            <form className='employeeForm' id='employeeForm'>
             {/* Employee # */}
                 <div>
                     <label htmlFor='employeeNumber'>Employee #</label>
@@ -250,15 +259,17 @@ const EmployeeDataForm = (props) => {
                         />
                 </div>
             {/* DOB */}
-                <div>
-                    <label htmlFor='dob'>Date of Birth</label>
-                    <p>{employeeData?.dob}</p>
-                    <input
-                        id='dob'
-                        name='dob'
-                        type='date'
-                        ref={dobRef}
-                        />
+                <div className='employeeFormCalendar'>
+                    <div>
+                        <label htmlFor='dob'>Date of Birth</label>
+                        <input
+                            id='dob'
+                            name='dob'
+                            type='date'
+                            ref={dobRef}
+                            />
+                    </div>
+                    <p>Saved: {employeeData?.dob}</p>
                 </div>
             {/* Street */}
                 <div>
@@ -328,26 +339,31 @@ const EmployeeDataForm = (props) => {
                         />
                 </div>
             {/* First Day */}
-                <div>
-                    <label htmlFor='firstDay'>Start Date</label>
-                    <p>{employeeData?.firstDay}</p>
-                    <input
-                        id='firstDay'
-                        name='firstDay'
-                        type='date'
-                        ref={firstDayRef}
-                        />
+                <div className='employeeFormCalendar'>
+                    <div>
+                        <label htmlFor='firstDay'>Start Date</label>
+                        <input
+                            id='firstDay'
+                            name='firstDay'
+                            type='date'
+                            ref={firstDayRef}
+                            />
+                    </div>
+                    <p>Saved: {employeeData?.firstDay}</p>
                 </div>
             {/* Last Day */}
-                <div>
-                    <label htmlFor='lastDay'>End Date</label>
-                    <p>{employeeData?.lastDay}</p>
-                    <input
-                        id='lastDay'
-                        name='lastDay'
-                        type='date'
-                        ref={lastDayRef}
-                        />
+                <div className='employeeFormCalendar'>
+                    <div>
+                        <label htmlFor='lastDay'>End Date</label>
+                        <input
+                            id='lastDay'
+                            name='lastDay'
+                            type='date'
+                            ref={lastDayRef}
+                            />
+                    </div>
+                    <p>Saved: {employeeData?.lastDay}</p>
+                    
                 </div>
             {/* Notes */}
                 <div>
@@ -361,15 +377,21 @@ const EmployeeDataForm = (props) => {
                     </textarea>
                 </div>
 
-                {!props.newEmployee && props.id !== ''
-                    ? <>
-                        <button onClick={handleUpdateEmployee}>Update Employee</button>
-                        <button onClick={handleDelete}>Delete Employee</button>
-                    </>
-                    : props.newEmployee 
-                        ? <button onClick={handleAddEmployee}>Add Emmployee</button>
-                        : null
-                }
+                <div className='employeeButtonContainer'>
+                    {!props.newEmployee && props.id !== ''
+                        ? <div className='employeeSubmit'>
+                            <button onClick={handleUpdateEmployee}>Update Employee</button>
+                            <button onClick={handleDelete}>Delete Employee</button>
+                        </div>
+                        : props.newEmployee 
+                            ? <button
+                                onClick={handleAddEmployee}
+                                className='employeeNewButtonSubmit'
+                                >Add Emmployee</button>
+                            : null
+                    }
+                </div>
+                
                 <button onClick={handleTest}>Test</button>
             </form>
             <EmployeeFirebase user={employeeData?.email} pw={employeeData?.userPW}/>
