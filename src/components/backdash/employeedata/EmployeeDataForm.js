@@ -22,13 +22,15 @@ const EmployeeDataForm = (props) => {
     const firstDayRef = useRef('');
     const lastDayRef = useRef('');
     const notesRef = useRef('');
-    const [ empNumberExists, setEmpNumberExists ] = useState('')
-    const [ empUserExists, setEmpUserExists ] = useState('')
+    const [ empNumberExists, setEmpNumberExists ] = useState('');
+    const [ empUserExists, setEmpUserExists ] = useState('');
+    const [ userChecker, setUserChecker ] = useState('');
+    const [ employeeChecker, setEmployeeChecker ] = useState('');
 
     const handleTest = (e) => {
         e.preventDefault()
         
-        console.log(empNumberExists, empUserExists)
+        console.log('number:', empNumberExists, 'userID:', empUserExists)
     }
     // Initial Employee List Display Effect
     useEffect(() => {
@@ -62,12 +64,15 @@ const EmployeeDataForm = (props) => {
             setEmpNumberExists(doesNumberExist)
             setEmpUserExists(doesUserExist)
         })
-    },[employeeNumberRef.current.value, userIDRef.current.value])
+    },[userChecker, employeeChecker])
 
     const handleAddEmployee = (e) => {
         e.preventDefault()
 
-        if(props.newEmployee === true && firstNameRef.current.value !== ''){
+        if(props.newEmployee === true 
+            && firstNameRef.current.value !== ''
+            && empNumberExists === false
+            && empUserExists === false){
             addDoc(employeeCollectionRef, {
                 employeeNumber:employeeNumberRef.current.value,
                 firstName:firstNameRef.current.value,
@@ -88,6 +93,9 @@ const EmployeeDataForm = (props) => {
             });
             props.setNewEmployee(false);
             document.getElementById('employeeForm').reset(); 
+        }
+        if( empNumberExists === true || empUserExists === true){
+            alert('Employee #, or User ID, already exists. Please change them to values that are not already in use and retry to add employee')
         }
     }
 
@@ -189,6 +197,16 @@ const EmployeeDataForm = (props) => {
         }
     }
 
+    const handleEmployeeCheck = (e) => {
+        e.preventDefault()
+        setEmployeeChecker(employeeNumberRef.current.value)
+    }
+
+    const handleUserCheck = (e) => {
+        e.preventDefault()
+        setUserChecker(userIDRef.current.value)
+    }
+
     return(
         <>
             <form className='employeeForm' id='employeeForm'>
@@ -201,6 +219,7 @@ const EmployeeDataForm = (props) => {
                         type='number'
                         ref={employeeNumberRef}
                         placeholder={employeeData?.employeeNumber}
+                        onChange={handleEmployeeCheck}
                         />
                 </div>
             {/* First Name */}
@@ -234,6 +253,7 @@ const EmployeeDataForm = (props) => {
                         type='number'
                         ref={userIDRef}
                         placeholder={employeeData?.userID}
+                        onChange={handleUserCheck}
                         />
                 </div>
             {/* User PW */}
