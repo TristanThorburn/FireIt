@@ -37,7 +37,6 @@ const EmployeeFirebase = (props) => {
             {error}
             {currentUser?.email
                 ? <>
-                    <p>User authenticated</p>
                     <button onClick={handleNewActivate}>Authenticate New User?</button>
                 </>
                 : <button onClick={handleActivate} disabled={loading}>Submit Activation?</button>

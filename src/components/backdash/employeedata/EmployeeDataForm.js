@@ -103,89 +103,95 @@ const EmployeeDataForm = (props) => {
         e.preventDefault()
         const docRef = doc(db, 'employees', props.id)
 
-        if(props.id !== '' && employeeNumberRef.current.value !== ''){
+        if(empNumberExists === false && empUserExists === false){
+            if(props.id !== '' && employeeNumberRef.current.value !== ''){
             updateDoc(docRef, {
                 employeeNumber:employeeNumberRef.current.value
             })
+            }
+            if(props.id !== '' && firstNameRef.current.value !== ''){
+                updateDoc(docRef, {
+                    firstName:firstNameRef.current.value
+                })
+            }
+            if(props.id !== '' && lastNameRef.current.value !== ''){
+                updateDoc(docRef, {
+                    lastName:lastNameRef.current.value
+                })
+            }
+            if(props.id !== '' && userIDRef.current.value !== ''){
+                updateDoc(docRef, {
+                    userID:userIDRef.current.value
+                })
+            }
+            if(props.id !== '' && userPWRef.current.value !== ''){
+                updateDoc(docRef, {
+                    userPW:userPWRef.current.value
+                })
+            }
+            if(props.id !== '' && SINRef.current.value !== ''){
+                updateDoc(docRef, {
+                    sin:SINRef.current.value
+                })
+            }
+            if(props.id !== '' && dobRef.current.value !== ''){
+                updateDoc(docRef, {
+                    dob:dobRef.current.value
+                })
+            }
+            if(props.id !== '' && streetRef.current.value !== ''){
+                updateDoc(docRef, {
+                    street:streetRef.current.value
+                })
+            }
+            if(props.id !== '' && cityRef.current.value !== ''){
+                updateDoc(docRef, {
+                    city:cityRef.current.value
+                })
+            }
+            if(props.id !== '' && provinceRef.current.value !== ''){
+                updateDoc(docRef, {
+                    province:provinceRef.current.value
+                })
+            }
+            if(props.id !== '' && postalCodeRef.current.value !== ''){
+                updateDoc(docRef, {
+                    postalCode:postalCodeRef.current.value
+                })
+            }
+            if(props.id !== '' && phoneRef.current.value !== ''){
+                updateDoc(docRef, {
+                    phone:phoneRef.current.value
+                })
+            }
+            // if(props.id !== '' && emailRef.current.value !== ''){
+            //     updateDoc(docRef, {
+            //         email:emailRef.current.value
+            //     })
+            // }
+            if(props.id !== '' && firstDayRef.current.value !== ''){
+                updateDoc(docRef, {
+                    firstDay:firstDayRef.current.value
+                })
+            }
+            if(props.id !== '' && lastDayRef.current.value !== ''){
+                updateDoc(docRef, {
+                    lastDay:lastDayRef.current.value
+                })
+            }
+            if(props.id !== '' && notesRef.current.value !== ''){
+                updateDoc(docRef, {
+                    notes:notesRef.current.value
+                })
+            }
+            props.setSelectedEmployee('');
+            document.getElementById('employeeForm').reset(); 
         }
-        if(props.id !== '' && firstNameRef.current.value !== ''){
-            updateDoc(docRef, {
-                firstName:firstNameRef.current.value
-            })
+        if( empNumberExists === true || empUserExists === true){
+            alert('Employee #, or User ID, already exists. Please change them to values that are not already in use and retry to update employee')
         }
-        if(props.id !== '' && lastNameRef.current.value !== ''){
-            updateDoc(docRef, {
-                lastName:lastNameRef.current.value
-            })
-        }
-        if(props.id !== '' && userIDRef.current.value !== ''){
-            updateDoc(docRef, {
-                userID:userIDRef.current.value
-            })
-        }
-        if(props.id !== '' && userPWRef.current.value !== ''){
-            updateDoc(docRef, {
-                userPW:userPWRef.current.value
-            })
-        }
-        if(props.id !== '' && SINRef.current.value !== ''){
-            updateDoc(docRef, {
-                sin:SINRef.current.value
-            })
-        }
-        if(props.id !== '' && dobRef.current.value !== ''){
-            updateDoc(docRef, {
-                dob:dobRef.current.value
-            })
-        }
-        if(props.id !== '' && streetRef.current.value !== ''){
-            updateDoc(docRef, {
-                street:streetRef.current.value
-            })
-        }
-        if(props.id !== '' && cityRef.current.value !== ''){
-            updateDoc(docRef, {
-                city:cityRef.current.value
-            })
-        }
-        if(props.id !== '' && provinceRef.current.value !== ''){
-            updateDoc(docRef, {
-                province:provinceRef.current.value
-            })
-        }
-        if(props.id !== '' && postalCodeRef.current.value !== ''){
-            updateDoc(docRef, {
-                postalCode:postalCodeRef.current.value
-            })
-        }
-        if(props.id !== '' && phoneRef.current.value !== ''){
-            updateDoc(docRef, {
-                phone:phoneRef.current.value
-            })
-        }
-        // if(props.id !== '' && emailRef.current.value !== ''){
-        //     updateDoc(docRef, {
-        //         email:emailRef.current.value
-        //     })
-        // }
-        if(props.id !== '' && firstDayRef.current.value !== ''){
-            updateDoc(docRef, {
-                firstDay:firstDayRef.current.value
-            })
-        }
-        if(props.id !== '' && lastDayRef.current.value !== ''){
-            updateDoc(docRef, {
-                lastDay:lastDayRef.current.value
-            })
-        }
-        if(props.id !== '' && notesRef.current.value !== ''){
-            updateDoc(docRef, {
-                notes:notesRef.current.value
-            })
-        }
-        props.setSelectedEmployee('');
-        document.getElementById('employeeForm').reset(); 
-        }
+    }
+        
 
     const handleDelete = (e) => {
         e.preventDefault();
