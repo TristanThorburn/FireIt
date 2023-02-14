@@ -15,6 +15,10 @@ Tristan Thorburn 2023
 -------------------------------------------------------------------------------------------------------
 Admin ('Back-end') Dashboard
 
+-Menu Entry Setup:
+    -Added new section for menu mods
+    -Added item clone feature to replicate similar items
+    
 -Table Map Settings:
     -Allow adding / deleting and editing design style of tables in table map database
 
