@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import TableMap from '../backdash/tabledata/TableMap';
+import TableTabNav from '../summary/navs/TableTabNav';
 import { useState } from 'react';
 
 const TableMapData = () => {
@@ -28,7 +29,8 @@ const TableMapData = () => {
             
             <div className='tableTab'>
                 <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
-            </div>            
+                <TableTabNav />
+            </div>
         </div>
     )
 }
