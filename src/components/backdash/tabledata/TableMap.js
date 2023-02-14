@@ -66,6 +66,7 @@ const TableMap = (props) => {
                 top:table.style.top,
             })
         })
+        setEnableDrag(false)
         props.setMapUpdateable(false)
     }
 
