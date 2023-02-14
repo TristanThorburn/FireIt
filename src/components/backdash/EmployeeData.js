@@ -26,11 +26,16 @@ const EmployeeData = () => {
     }
  
     return(
-        <div>
-            <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
-            <div className='itemList employeeData'>
-                <h3>Employees List</h3>
+        <div className='employeeData'>
+            <header>
+                <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
+
+                <h2>Employees List</h2>
+
                 <button onClick={handleNewEmployee}>New Employee</button>
+            </header>
+            
+            <div className='employeeDataContainer'>
                 <table>
                     <thead>
                         <tr>
@@ -54,7 +59,6 @@ const EmployeeData = () => {
                         </tr>)}
                     </tbody>
                 </table>
-                    
             </div>
 
             {newEmployee || selectedEmployee

@@ -10,24 +10,27 @@ Tristan Thorburn 2023
 
 
                                     CHANGELOG:
-                                    2023-02-13
-
--------------------------------------------------------------------------------------------------------
+                                    2023-02-14
 Admin ('Back-end') Dashboard
 
--Menu Entry Setup:
-    -Added new section for menu mods
-    -Added item clone feature to replicate similar items
-    
--Table Map Settings:
-    -Allow adding / deleting and editing design style of tables in table map database
+Employee Data Setup:
+    -Now checks for existing employee numbers, or userID when adding or updating employees
 
+**********************************************************************************************************
+                                    CHANGELOG:
+                                    2023-02-13
+Admin ('Back-end') Dashboard
+
+Menu Entry Setup:
+    -Added new section for menu modifiers database, such as rush, hold
+    -Added item clone feature to replicate similar items in all menu components
+    
+Table Map Settings:
+    -Allow adding / deleting and editing design style of tables in table map database
 
 **********************************************************************************************************
                                     2023-02-12
                                 Start of Changelog
-
-
 Keypad / Login:
 
 -Used to replicate touch screen logic used by Front of House Staff in lieu of server badge/card
@@ -54,17 +57,17 @@ Admin ('Back-end') Dashboard
 
 -Replicate the user interface of the main data computer to set up information for the summary dashboard mechanics to utilize
 
--Menu Entry Setup:
+Menu Entry Setup:
     -Add / Store items for the menu that can be added to table bills, organized by categories / subcategory
     -like the original system initial items can be created with just a name, any current data populates placeholders in form or is displayed for the user
 
--Employee Setup:
+Employee Data Setup:
     -Add / Store employee data, current data is populated via placeholder or other display, ability to add employees to firebase 'authenticating' from data entered into the employee form
 
--Table Map Settings:
+Table Map Settings:
     -Update the display of the table map on the front end summary dash which pulls table locations from this saved data.
 
--Future sections for:
+Future sections for:
     - payment data
     - misc settings
 
