@@ -19,6 +19,7 @@ const TableStyleUpdate = (props) => {
         updateDoc(docRef, {
             tableStyle:design
         })
+        setDesign('')
         props.setStylingTable(false)
     }
 
