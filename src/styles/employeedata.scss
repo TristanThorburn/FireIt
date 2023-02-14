@@ -1,6 +1,36 @@
+@import './variables.scss';
+
 .employeeData{
+    header{
+        @include backDashHeader
+    }
+
+    h3{
+        text-align: center;
+    }
+}
+
+.employeeDataContainer{
+    margin:0 auto;
+    border:2px solid black;
+    background-color: white;
+    width:50%;
+    height:350px;
+    overflow-y: scroll;
+
+    table{
+        width:100%;
+        text-align: center;
+    }
+    th{
+        border-bottom: 2px solid black;
+    }
     tr{
         cursor: pointer;
+    }
+    td{
+        border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+        width:calc(100% / 3);
     }
 }
 
@@ -12,9 +42,61 @@
     max-width:90%;
     margin:0 auto;
 
-    div, textarea{
+    div{
         margin:1rem auto;
         display:flex;
         flex-direction: column;
+        
+    }
+    textarea{
+        margin:0 auto;
+    }
+    button{
+        border-radius: 5px;
+    }
+}
+
+.employeeFormCalendar{
+    transform: translateY(12px);
+
+    div{
+        margin:0 auto;
+    }
+    p{
+        margin:0;
+    }
+}
+
+.employeeButtonContainer{
+    width:100%;
+}
+
+div.employeeSubmit{
+    margin:0 auto;
+    width:100%;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    button:first-child{
+        border:2px solid green;
+    }
+    button:nth-child(2){
+        border:2px solid red;
+    }
+}
+
+.employeeNewButtonSubmit{
+    border:2px solid green;
+    width: 200px;
+    margin:0 auto;
+}
+
+.employeeActivateFirebase{
+    @include flexCenterCenter;
+    flex-direction: column;
+    margin-top: 1rem;
+    
+    h3, p{
+        margin:0.5rem auto;
     }
 }
