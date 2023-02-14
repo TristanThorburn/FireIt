@@ -1,14 +1,20 @@
-import { useState, useRef } from 'react';
-import { addDoc } from 'firebase/firestore';
+import { useState, useRef, useEffect } from 'react';
+import { addDoc, getDocs } from 'firebase/firestore';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 
 const TableForm = (props) => {
-    const [ design, setDesign ] = useState('')
+    const [ design, setDesign ] = useState('squareTable')
     const tableNameRef = useRef('')
+    const [ existingTable, setExistingTable ] = useState('')
 
-    const handleAddTable = (e) => {
-        e.preventDefault()
-        if(tableNameRef.current.value !== ''){
+    useEffect(() => {
+        if(tableNameRef.current.value !== '' && existingTable === false){
+            const designOptions = document.getElementsByName('design');
+                for (var radio of designOptions){
+                    if (radio.checked) {    
+                        setDesign(radio.value)
+                    }
+                }
             addDoc(tableMapCollectionRef, {
                 name:tableNameRef.current.value,
                 tableStyle:design,
@@ -17,14 +23,26 @@ const TableForm = (props) => {
             });
             props.setAddingTable(false)
             }
+        if(tableNameRef.current.value !== '' && existingTable === true){
+            alert('Table already exists')
+        }
+    }, [existingTable, props, design])
+
+    const handleAddTable = (e) => {
+        e.preventDefault()
+        getDocs(tableMapCollectionRef).then(snap => {
+            let tablesList = []
+            snap.forEach(doc => {                
+                tablesList.push(doc.data().name)
+            })            
+            // check if table table is in the list
+            const tableExists = tablesList.indexOf(tableNameRef?.current.value) > -1
+            setExistingTable(tableExists)
+        })
     }
 
     const handleCancel = () => {
         props.setAddingTable(false)
-    }
-
-    const handleDesign = (e) => {
-        setDesign(e.target.value)
     }
 
     return(
@@ -48,31 +66,29 @@ const TableForm = (props) => {
                     <fieldset>
                         <legend>Select Table Style</legend>
                             <div className='tableFormStyle'>
-                                <label htmlFor='design'>Diamond</label>
-                                <input 
-                                    id='diamond'
-                                    type='radio'
-                                    name='design'
-                                    value='diamondTable'
-                                    onClick={handleDesign}
-                                    />
-                                <div 
-                                    className='table diamondTable demoTable'
-                                    ><p>Table #</p>
-                                </div>
-                            </div>
-
-                            <div className='tableFormStyle'>
                                 <label htmlFor='design'>Square</label>
                                 <input 
                                     id='square'
                                     type='radio'
                                     name='design'
                                     value='squareTable'
-                                    onClick={handleDesign}
                                     />
                                 <div 
                                     className='table squareTable demoTable'
+                                    ><p>Table #</p>
+                                </div>
+                            </div>
+
+                            <div className='tableFormStyle'>
+                                <label htmlFor='design'>Diamond</label>
+                                <input 
+                                    id='diamond'
+                                    type='radio'
+                                    name='design'
+                                    value='diamondTable'
+                                    />
+                                <div 
+                                    className='table diamondTable demoTable'
                                     ><p>Table #</p>
                                 </div>
                             </div>
@@ -84,7 +100,6 @@ const TableForm = (props) => {
                                     type='radio'
                                     name='design'
                                     value='rectangleTable'
-                                    onClick={handleDesign}
                                     />
                                 <div 
                                     className='table rectangleTable demoTable'
@@ -99,7 +114,6 @@ const TableForm = (props) => {
                                     type='radio'
                                     name='design'
                                     value='circleTable'
-                                    onClick={handleDesign}
                                     />
                                 <div 
                                     className='table circleTable demoTable'

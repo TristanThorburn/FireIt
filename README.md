@@ -6,14 +6,25 @@ Created to explore the logic of some of the Point of Sale systems I used while w
 
 Primarily inspired by my 3 years working exclusively with Squirrel (https://www.squirrelsystems.com/)
 
-                                    Tristan Thorburn 2023
+Tristan Thorburn 2023
 
 
-CHANGELOG:
-2023-02-12 - Start of Changelog
+                                    CHANGELOG:
+                                    2023-02-13
+
+-------------------------------------------------------------------------------------------------------
+Admin ('Back-end') Dashboard
+
+-Table Map Settings:
+    -Allow adding / deleting and editing design style of tables in table map database
 
 
-                                    Keypad / Login:
+**********************************************************************************************************
+                                    2023-02-12
+                                Start of Changelog
+
+
+Keypad / Login:
 
 -Used to replicate touch screen logic used by Front of House Staff in lieu of server badge/card
 
@@ -21,7 +32,7 @@ CHANGELOG:
     -4 Digit user ID, 🔥 (Submit), 4 digit user password, 🔥 (Submit),
 
 -------------------------------------------------------------------------------------------------------
-                                    Summary / Dashboard:
+Summary / Dashboard:
 
 -Log in navigates user to summary screen showing current set up for table map / floor plan, pulled from data
 
@@ -35,7 +46,7 @@ CHANGELOG:
 -Admin Tab auths an admin user comparing 4 digit pin to authorized users array
 
 -------------------------------------------------------------------------------------------------------
-                                    Admin ('Back-end') Dashboard
+Admin ('Back-end') Dashboard
 
 -Replicate the user interface of the main data computer to set up information for the summary dashboard mechanics to utilize
 
