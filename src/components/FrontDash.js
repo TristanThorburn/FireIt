@@ -5,7 +5,7 @@ import MenuTab from './summary/MenuTab';
 import CheckTab from './summary/CheckTab';
 import PaymentTab from './summary/PaymentTab';
  
-const SummaryDash = () => {
+const FrontDash = () => {
     const[ tableTabActive, setTableTabActive ] = useState(true);
     const[ menuTabActive, setMenuTabActive ] = useState(false);
     const[ checkTabActive, setCheckTabActive ] = useState(false);
@@ -43,4 +43,4 @@ const SummaryDash = () => {
     )
 }
 
-export default SummaryDash;
+export default FrontDash;

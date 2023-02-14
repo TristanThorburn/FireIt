@@ -37,6 +37,11 @@
     }
 }
 
+.alcoholNavButtons{
+    display:flex;
+    justify-content: space-around;
+}
+
 .menuItemForm{
     display:flex;
     flex-wrap:wrap;

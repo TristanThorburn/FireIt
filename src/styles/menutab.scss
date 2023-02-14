@@ -3,8 +3,22 @@
 .menuTab{
     position:relative;
     height:92.5vh;
+    display:flex;
+}
 
-    h2{
-        margin:0;
-    }
+.activeCheck{
+    border:2px solid lightcoral;
+    width:20%;
+    height:90%;
+}
+
+.activeMenuCategory{
+    border:2px solid lightseagreen;
+    width:80%;
+    height:90%;
+}
+
+.menuTabNav{
+    @include frontLowerNav;
+    @include frontLowerNavUL;
 }

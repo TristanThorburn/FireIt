@@ -228,51 +228,51 @@ const AlchData = (props) => {
         <div>
             {beerTab || wineTab || mixedTab || liquorTab || ciderTab || hardSeltzerTab
                 ? null
-                :<>
+                :<div className='alcoholNavButtons'>
                     <button onClick={handleBeer}>Beer</button>
                     <button onClick={handleWine}>Wine</button>
                     <button onClick={handleMixed}>Mixed Drinks</button>
                     <button onClick={handleLiquor}>Liquor</button>
                     <button onClick={handleCider}>Cider</button>
                     <button onClick={handleHardSeltzer}>Hard Seltzer, etc.</button>
-                </>
+                </div>
             }
             
             {beerTab
-                ? <>
+                ? <div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleBeerBottle}>Bottle</button>
                     <button onClick={handleBeerCan}>Can</button>
                     <button onClick={handleBeerDraft}>Draft</button>
-                    </>
+                    </div>
                 : null
             }
             {wineTab
-                ?<>
+                ?<div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleRedWine}>Red Wine</button>
                     <button onClick={handleWhiteWine}>White Wine</button>
                     <button onClick={handleBubbly}>Bubbly</button>
-                </>
+                </div>
                 : null
             }
             {mixedTab
-                ?<>
+                ?<div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleCocktails}>Cocktails</button>
                     <button onClick={handleShots}>Shots</button>
-                </>
+                </div>
                 : null
             }
             {liquorTab
-                ?<>
+                ?<div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleGin}>Gin</button>
                     <button onClick={handleRum}>Rum</button>
                     <button onClick={handleTequila}>Tequila</button>
                     <button onClick={handleVodka}>Vodka</button>
                     <button onClick={handleWhiskey}>Whiskey</button>
-                </>
+                </div>
                 : null
             }
 
