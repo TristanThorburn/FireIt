@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import TableMap from '../backdash/tabledata/TableMap';
-import TableTabNav from '../summary/navs/TableTabNav';
+import TableTabNav from '../frontdash/navs/TableTabNav';
 import { useState } from 'react';
 
 const TableMapData = () => {

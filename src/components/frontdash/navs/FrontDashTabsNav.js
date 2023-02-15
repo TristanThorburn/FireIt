@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import AdminPad from '../user/AdminPad';
+import AdminPad from '../../user/AdminPad';
 
-const NavTabs = (props) => {
+const FrontDashNavTabs = (props) => {
     const [ adminPad, setAdminPad ] = useState(false)
 
         const toggleAdmin = () => {
@@ -18,7 +18,8 @@ const NavTabs = (props) => {
         props.tableTab(true);
         props.menuTab(false);
         props.checkTab(false);
-        props.paymentTab(false)
+        props.paymentTab(false);
+        props.summaryTab(false);
     }
 
     const handleMenu = () => {
@@ -26,6 +27,7 @@ const NavTabs = (props) => {
         props.menuTab(true);
         props.checkTab(false);
         props.paymentTab(false);
+        props.summaryTab(false);
     }
 
     const handleCheck = () => {
@@ -33,6 +35,7 @@ const NavTabs = (props) => {
         props.menuTab(false);
         props.checkTab(true);
         props.paymentTab(false);
+        props.summaryTab(false);
     }
 
     const handlePayment = () => {
@@ -40,11 +43,21 @@ const NavTabs = (props) => {
         props.menuTab(false);
         props.checkTab(false);
         props.paymentTab(true);
+        props.summaryTab(false);
+    }
+
+    const handleSummary = () => {
+        props.tableTab(false);
+        props.menuTab(false);
+        props.checkTab(false);
+        props.paymentTab(false);
+        props.summaryTab(true);
     }
 
     return(
-        <div className="navTabs">
+        <div className='navTabs'>
             <ul>
+                <li onClick={handleSummary}>Summary</li>
                 <li onClick={handleTable}>TableMap</li>
                 <li onClick={handleMenu}>Menu</li>
                 <li onClick={handleCheck}>Check</li>
@@ -59,4 +72,4 @@ const NavTabs = (props) => {
     )
 }
 
-export default NavTabs;
+export default FrontDashNavTabs;

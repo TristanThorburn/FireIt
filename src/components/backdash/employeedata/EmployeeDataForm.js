@@ -27,11 +27,11 @@ const EmployeeDataForm = (props) => {
     const [ userChecker, setUserChecker ] = useState('');
     const [ employeeChecker, setEmployeeChecker ] = useState('');
 
-    const handleTest = (e) => {
-        e.preventDefault()
+    // const handleTest = (e) => {
+    //     e.preventDefault()
         
-        console.log('number:', empNumberExists, 'userID:', empUserExists)
-    }
+    //     console.log('number:', empNumberExists, 'userID:', empUserExists)
+    // }
     // Initial Employee List Display Effect
     useEffect(() => {
         if(props.id === ''){
@@ -49,7 +49,7 @@ const EmployeeDataForm = (props) => {
         Array.from(document.querySelectorAll('textarea')).forEach(
                 input => (input.value = ''))
     },[props.id, props.newEmployee])
-
+    // Check that the user isnt trying to modify 1 instance employee number and user ID
     useEffect(()=> {
         getDocs(employeeCollectionRef).then(snap => {
             let employeeNumbers = []
@@ -191,7 +191,6 @@ const EmployeeDataForm = (props) => {
             alert('Employee #, or User ID, already exists. Please change them to values that are not already in use and retry to update employee')
         }
     }
-        
 
     const handleDelete = (e) => {
         e.preventDefault();
@@ -418,7 +417,7 @@ const EmployeeDataForm = (props) => {
                     }
                 </div>
                 
-                <button onClick={handleTest}>Test</button>
+                {/* <button onClick={handleTest}>Test</button> */}
             </form>
             <EmployeeFirebase user={employeeData?.email} pw={employeeData?.userPW}/>
         </>
