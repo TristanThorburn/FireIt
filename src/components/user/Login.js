@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import UserPad from './UserPad';
-import PassPad from './PassPad';
+import UserPad from './UserKeyPad';
+import PassPad from './PassKeyPad';
 
 const Login = () => {
     const [ email, setEmail ] = useState();
