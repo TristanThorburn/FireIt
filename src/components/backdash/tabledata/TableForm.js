@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { addDoc, getDocs } from 'firebase/firestore';
+import { setDoc, getDocs, doc } from 'firebase/firestore';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
+import { db } from '../../../firebase';
 
 const TableForm = (props) => {
     const [ design, setDesign ] = useState('squareTable')
@@ -10,12 +11,13 @@ const TableForm = (props) => {
     useEffect(() => {
         if(tableNameRef.current.value !== '' && existingTable === false){
             const designOptions = document.getElementsByName('design');
+            const tableRef = doc(db, 'tables', `${tableNameRef.current.value.toLowerCase()}`)
                 for (var radio of designOptions){
                     if (radio.checked) {    
                         setDesign(radio.value)
                     }
                 }
-            addDoc(tableMapCollectionRef, {
+            setDoc(tableRef , {
                 name:tableNameRef.current.value,
                 tableStyle:design,
                 top:'50px',

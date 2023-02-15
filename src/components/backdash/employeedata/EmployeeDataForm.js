@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { db } from '../../../firebase';
-import { doc, getDoc, deleteDoc, addDoc, updateDoc, getDocs } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc, setDoc, updateDoc, getDocs } from 'firebase/firestore';
 import { employeeCollectionRef } from '../../../library/firestoreCollections';
 import EmployeeFirebase from './EmployeeFirebase';
 
@@ -32,6 +32,7 @@ const EmployeeDataForm = (props) => {
         
     //     console.log('number:', empNumberExists, 'userID:', empUserExists)
     // }
+
     // Initial Employee List Display Effect
     useEffect(() => {
         if(props.id === ''){
@@ -73,7 +74,9 @@ const EmployeeDataForm = (props) => {
             && firstNameRef.current.value !== ''
             && empNumberExists === false
             && empUserExists === false){
-            addDoc(employeeCollectionRef, {
+            const newEmployeeRef = doc(
+                db, 'employees', `${employeeNumberRef.current.value.toLowerCase()}`)
+            setDoc(newEmployeeRef, {
                 employeeNumber:employeeNumberRef.current.value,
                 firstName:firstNameRef.current.value,
                 lastName:lastNameRef.current.value,
