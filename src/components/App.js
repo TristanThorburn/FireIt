@@ -1,9 +1,10 @@
 import AuthProvider from '../contexts/AuthContext';
+import TableProvider from '../contexts/TableContext';
 import Login from './user/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from '../components/PrivateRoutes';
 import ErrorPage from './ErrorPage';
-import SummaryDash from './FrontDash';
+import FrontDash from './FrontDash';
 import BackendDash from './BackendDash';
 import MenuData from './backdash/MenuData';
 import EmployeeData from './backdash/EmployeeData';
@@ -17,14 +18,14 @@ function App() {
       <Router>
 
         <AuthProvider>
+        <TableProvider>
 
           <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<ErrorPage />} />
             
             <Route element={<PrivateRoutes />}>
-              <Route exact path='/' element={<SummaryDash />} />
-              <Route path='/settings' element={<SettingsData />} />
+                <Route exact path='/' element={<FrontDash />} />
             </Route>
 
             <Route path='/backend-dash' element={<BackendDash />} />
@@ -32,9 +33,11 @@ function App() {
             <Route path='/employee-data' element={<EmployeeData />} />
             <Route path='/tablemap-data' element={<TableMapData />} />
             <Route path='/payment-data' element={<PaymentData />} />
+            <Route path='/settings' element={<SettingsData />} />
           
           </Routes>
-
+        
+        </TableProvider>
         </AuthProvider>
 
       </Router>  

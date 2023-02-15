@@ -1,0 +1,6 @@
+@import './variables.scss';
+
+.summaryTabNav{
+    @include frontLowerNav;
+    @include frontLowerNavUL;
+}

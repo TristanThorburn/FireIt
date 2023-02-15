@@ -8,3 +8,8 @@
         margin:0;
     }
 }
+
+.paymentTabNav{
+    @include frontLowerNav;
+    @include frontLowerNavUL;
+}

@@ -2,7 +2,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const TableTabNav = () => {
+const PaymentTabNav = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
@@ -19,9 +19,8 @@ const TableTabNav = () => {
     }
 
     return(
-        <div className='tableTabNav'>
+        <div className='paymentTabNav'>
             <ul>
-                <li>{currentUser.email}</li>
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
@@ -29,9 +28,10 @@ const TableTabNav = () => {
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
+                <li>HELP</li>
                 <li>{error
                         ? <>{error}</>
-                        : <>Demo</>
+                        : <>{currentUser.email}</>
                     }
                 </li>
                 <li onClick={handleLogout}><button>LogOut</button></li>
@@ -39,4 +39,4 @@ const TableTabNav = () => {
         </div>
     )
 }
-export default TableTabNav;
+export default PaymentTabNav;

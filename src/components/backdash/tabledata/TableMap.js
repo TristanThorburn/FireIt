@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTable } from './../../../contexts/TableContext';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
@@ -8,6 +9,7 @@ import TableStyleUpdate from './TableStyleUpdate';
 const TableMap = (props) => {
     const tableMap = document.querySelector('.tableMap');
     const tables = document.querySelectorAll('.table');
+    const { setContextTable } = useTable()
     const [ tablesData, setTablesData ] = useState([]);
     const [ enableDrag, setEnableDrag ] = useState(false);
     const [ addingTable, setAddingTable ] = useState(false);    
@@ -27,6 +29,7 @@ const TableMap = (props) => {
     },[])
     
     const handleTest = () => {
+        console.log(tablesData);
     }
 
     const handleAllowDragging = () => {
@@ -90,6 +93,11 @@ const TableMap = (props) => {
 
             tableMap.addEventListener('mousemove', mouseMove)
         }
+        if(props.tableTabActive){
+            props.setTableTabActive(false);
+            props.setMenuTabActive(true);
+            setContextTable(e.target.id);
+        }
         setSelectedTable(e.target.id)
     }
 
@@ -133,18 +141,18 @@ const TableMap = (props) => {
                         activeTable={activeTable?.innerText}
                         tableId={selectedTable}
                         />
-                    :<ul className='tableMap'>            
-                        {tablesData.map(table => 
-                            <li 
-                                key={table.id}
-                                id={table.id}
-                                className={['table', table.data?.tableStyle].join(' ')}
-                                onClick={handleTableClick}
-                                style={{left:table?.data.left, top: table?.data.top}}
-                                >
-                                    <p onClick={handleNoPropagation}>{table.data.name}</p>
-                            </li>)}
-                    </ul>
+                    :<ul className='tableMap'>
+                            {tablesData.map(table => 
+                                <li 
+                                    key={table.id}
+                                    id={table.id}
+                                    className={['table', table.data?.tableStyle].join(' ')}
+                                    onClick={handleTableClick}
+                                    style={{left:table?.data.left, top: table?.data.top}}
+                                    >
+                                        <p onClick={handleNoPropagation}>{table.data.name}</p>
+                                </li>)}
+                        </ul>
             }
             
         </>
