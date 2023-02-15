@@ -23,6 +23,9 @@ const MenuTab = () => {
     const [ liquorsCategory, setLiquorsCategory ] = useState(false);
     const [ winesCategory, setWinesCategory ] = useState(false);
 
+    const handleTest = () => {
+    }
+
     const handleGoApps = () => {
         setDirectory(false);
         setAppsCategory(true);
@@ -158,7 +161,7 @@ const MenuTab = () => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCOHOLIC</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li></li>
+                            <li onClick={handleTest}>Test</li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>

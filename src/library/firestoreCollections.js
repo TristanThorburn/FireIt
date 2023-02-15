@@ -1,7 +1,6 @@
 import { collection } from 'firebase/firestore';
 import { db } from '../firebase';
 
-
 // APPS
 export const appCollectionRef = collection(db, 'food', 'menu', 'apps');
 // MAINS
