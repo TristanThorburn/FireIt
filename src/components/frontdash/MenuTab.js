@@ -10,6 +10,7 @@ import CiderSeltzScreen from './menu_tab_components/CiderSeltzScreen';
 import MixedDrinksScreen from './menu_tab_components/MixedDrinksScreen';
 import LiquorsScreen from './menu_tab_components/LiquorsScreen';
 import WinesScreen from './menu_tab_components/WinesScreen';
+import { useAuth } from "../../contexts/AuthContext";
 
 const MenuTab = () => {
     const [ directory, setDirectory ] = useState(true);
@@ -22,8 +23,14 @@ const MenuTab = () => {
     const [ mixedCategory, setMixedCategory ] = useState(false);
     const [ liquorsCategory, setLiquorsCategory ] = useState(false);
     const [ winesCategory, setWinesCategory ] = useState(false);
+    const { currentUser } = useAuth()
 
     const handleTest = () => {
+        const removeEmail = ['@', 'f', 'i','r','e','i','t','.','c','a']
+        const logInEmail = currentUser.email.split('')
+        const currentUserId = logInEmail.filter((word) => 
+            !removeEmail.includes(word)).join().replace(/,/g, '')
+        console.log(currentUserId)
     }
 
     const handleGoApps = () => {

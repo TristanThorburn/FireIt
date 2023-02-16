@@ -422,7 +422,12 @@ const EmployeeDataForm = (props) => {
                 
                 {/* <button onClick={handleTest}>Test</button> */}
             </form>
-            <EmployeeFirebase user={employeeData?.email} pw={employeeData?.userPW}/>
+            <EmployeeFirebase 
+                user={employeeData?.email}
+                pw={employeeData?.userPW}
+                firebaseId={props.id}
+                firebaseAuth={employeeData?.firebaseAuth}
+                />
         </>
         
     )
