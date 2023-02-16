@@ -1,7 +1,7 @@
 import { useTable } from '../../../contexts/TableContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { db } from '../../../firebase';
-import { doc, getDoc, orderBy, onSnapshot, query, collection } from 'firebase/firestore';
+import { doc, getDoc, orderBy, onSnapshot, query, collection, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
 const TableCheck = () => {
@@ -11,7 +11,7 @@ const TableCheck = () => {
     const [ serverData, setServerData ] = useState({})
     const [ checkData, setCheckData ] = useState([])
     // query where()
-    // const checkRef = doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, 'seat')
+    const checkRef = doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, 'seat')
     const checkCollectionRef = 
         collection(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`)
 
@@ -28,13 +28,12 @@ const TableCheck = () => {
 
     const handleTest = async () => {
         // console.log('server:', serverData.employeeNumber, 'table:', tableData.name);
-        // setDoc(checkRef, {
-        //     seat:true,
-        //     seatNumber:'1',
-        //     items:['chicken strips', 'burger', 'spaghetti'],
-        //     checkTotal:'15',
-        // })
-        console.log(checkData[0].data.items)
+        setDoc(checkRef, {
+            seat:true,
+            seatNumber:'1',
+            items:['bruschetta', 'caesar salad', 'curry'],
+            checkTotal:'15',
+        })
     }
 
     // Check which table is in tableContext
