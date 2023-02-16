@@ -2,7 +2,7 @@ import app from '../firebase'
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth'
 import React, { useContext, useState, useEffect } from 'react';
 import { employeeCollectionRef } from '../library/firestoreCollections';
-import { onSnapshot, query, where } from 'firebase/firestore';
+import { query, where, getDocs } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -12,10 +12,11 @@ export const useAuth =() => {
 
 const AuthProvider = ({children}) => {
     const auth = getAuth(app);
-    const [ currentUser, setCurrentUser ] = useState();
+    const [ currentUser, setCurrentUser ] = useState('');
     const [ employeeContext, setEmployeeContext ] = useState([]);
-    const [ fireitID, setFireitID ] = useState();
+    const [ fireitID, setFireitID ] = useState('');
     const [ loading, setLoading ] = useState(true)
+    const [ loggedIn, setLoggedIn ] = useState(false);
 
     const signUp = async (email, password) => {
         return await createUserWithEmailAndPassword(auth, email, password)
@@ -31,14 +32,17 @@ const AuthProvider = ({children}) => {
 
     // Session persitence off, log out user on tab close
     useEffect(() => {
-        setPersistence(auth, browserSessionPersistence)
-        .then((email, password) => {
-            return signInWithEmailAndPassword(auth, email, password)
-        })
-        .catch((error) => {
-            console.log(error.code, error.message)
-        });
-    },[auth])
+        if(loggedIn && currentUser !== null){
+            setPersistence(auth, browserSessionPersistence)
+            .then((email, password) => {
+                return signInWithEmailAndPassword(auth, currentUser.email, password)
+            })
+            .catch((error) => {
+                console.log(error.code, error.message)
+            });
+        }
+        
+    },[auth, currentUser, loggedIn])
 
     // Get user info from firebase auth on sign in/out etc
     useEffect ( () => {
@@ -51,23 +55,30 @@ const AuthProvider = ({children}) => {
 
     // get userID from user login
     useEffect(() => {
-        const logInEmail = currentUser?.email.split('')
-        const removeEmail = ['@', 'f', 'i','r','e','i','t','.','c','a']
-        const currentUserId = logInEmail?.filter((word) => 
-            !removeEmail.includes(word)).join().replace(/,/g, '')
-            setFireitID(currentUserId)
-    }, [currentUser?.email])
+        if(currentUser){
+            const logInEmail = currentUser?.email.split('')
+            const removeEmail = ['@', 'f', 'i','r','e','i','t','.','c','a']
+            const currentUserId = logInEmail?.filter((word) => 
+                !removeEmail.includes(word)).join().replace(/,/g, '')
+                setFireitID(currentUserId)
+            }
+    }, [currentUser?.email, currentUser])
 
     // Query firestore by userID to get employee#
     useEffect(() => {
-        const q = query(employeeCollectionRef, where('userID', '==', `${fireitID}`));
-        const unsubscribe = onSnapshot(q, snapshot => {
-            setEmployeeContext(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })))
-        })
-        return unsubscribe
+        if(fireitID !== ''){
+            const q = query(employeeCollectionRef, where('userID', '==', `${fireitID}`));
+            
+            const loggedInUserCheck = async () => {
+                const result = await getDocs(q)
+                let user = []
+                result.forEach((doc) => {
+                    user.push(doc.data());
+                })
+                setEmployeeContext(user[0])
+            }
+            loggedInUserCheck()
+        }
     }, [fireitID])
 
     const value = {
@@ -76,6 +87,7 @@ const AuthProvider = ({children}) => {
         logout,
         signUp,
         employeeContext,
+        setLoggedIn,
     }
 
     return(

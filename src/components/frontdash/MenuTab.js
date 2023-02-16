@@ -24,7 +24,7 @@ const MenuTab = () => {
     const [ winesCategory, setWinesCategory ] = useState(false);
 
     const handleTest = () => {
-        
+        console.log('hi')
     }
 
     const handleGoApps = () => {

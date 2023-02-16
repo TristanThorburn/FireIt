@@ -43,8 +43,8 @@ const MenuTabNav = (props) => {
                 <li>HELP</li>
                 <li>{error
                         ? <>{error}</>
-                            : employeeContext[0]
-                                ? <>User: {employeeContext[0]?.data.firstName}</>
+                            : employeeContext
+                                ? <>User: {employeeContext.firstName}</>
                                 : <>No User</>
                     }
                 </li>
