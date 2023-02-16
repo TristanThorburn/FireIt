@@ -259,7 +259,7 @@ const MenuItemForm = (props) => {
         // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
         //     input => (input.checked = false))
         document.getElementById('menuItemForm').reset(); 
-        }
+    }
 
     const handleDelete = (e) => {
         e.preventDefault()

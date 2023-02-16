@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const SummaryTabNav = () => {
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout, employeeContext } = useAuth();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
@@ -31,7 +31,9 @@ const SummaryTabNav = () => {
                 <li>HELP</li>
                 <li>{error
                         ? <>{error}</>
-                        : <>{currentUser.email}</>
+                            : employeeContext
+                                ? <>User: {employeeContext.firstName}</>
+                                : <>No User</>
                     }
                 </li>
                 <li onClick={handleLogout}><button>LogOut</button></li>

@@ -6,7 +6,7 @@ const PassPad = (props) => {
     let pinCombo = [];
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState();
-    const { login } = useAuth();
+    const { login, setLoggedIn } = useAuth();
     const navigate = useNavigate();
 
     const handleClick = (e) => {
@@ -34,6 +34,7 @@ const PassPad = (props) => {
                 setError('')
                 setLoading(true)
                 await login(props.email.toString(), props.password.toString())
+                setLoggedIn(true)
                 navigate('/')
             } catch (error) {
                 setError(error.message)
