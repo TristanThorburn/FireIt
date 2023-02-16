@@ -258,7 +258,8 @@ const EmployeeDataForm = (props) => {
                     <input
                         id='userID'
                         name='userID'
-                        type='number'
+                        type='text'
+                        maxLength='4'
                         ref={userIDRef}
                         placeholder={employeeData?.userID}
                         onChange={handleUserCheck}
@@ -270,7 +271,8 @@ const EmployeeDataForm = (props) => {
                     <input
                         id='userPW'
                         name='userPW'
-                        type='number'
+                        type='text'
+                        maxLength='4'
                         ref={userPWRef}
                         placeholder={employeeData?.userPW}
                         />
