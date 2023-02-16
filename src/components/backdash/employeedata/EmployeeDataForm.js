@@ -202,6 +202,7 @@ const EmployeeDataForm = (props) => {
         if(props.id !== ''){
             deleteDoc(docRef)
             setEmployeeData('')
+            props.setSelectedEmployee('')
         }
     }
 

@@ -29,7 +29,7 @@ const AuthProvider = ({children}) => {
         signOut(auth);
     }
 
-    // Session Persistence, log out on tab close
+    // Session persitence off, log out user on tab close
     useEffect(() => {
         setPersistence(auth, browserSessionPersistence)
         .then((email, password) => {

@@ -19,7 +19,7 @@ const TableTabNav = () => {
     }
 
     const handleTest = () => {
-        console.log(employeeContext[0])
+        console.log(employeeContext[0].id)
     }
 
     return(

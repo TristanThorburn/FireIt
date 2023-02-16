@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const MenuTabNav = (props) => {
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout, employeeContext } = useAuth();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
@@ -43,7 +43,9 @@ const MenuTabNav = (props) => {
                 <li>HELP</li>
                 <li>{error
                         ? <>{error}</>
-                        : <>{currentUser.email}</>
+                            : employeeContext[0]
+                                ? <>User: {employeeContext[0]?.data.firstName}</>
+                                : <>No User</>
                     }
                 </li>
                 <li onClick={handleLogout}><button>LogOut</button></li>
