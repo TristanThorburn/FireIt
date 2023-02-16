@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 const UserPad = (props) => {
     let userCombo = [];
+    // let contextUser = []
     const [ userPin, setUserPin ] = useState()
     const [ submitable, setSubmitable ] = useState(false)
     const [ error, setError ] = useState('')
@@ -12,6 +13,7 @@ const UserPad = (props) => {
         } else if(userCombo.length === 3){
             setSubmitable(true);
             userCombo.push(e.target.textContent)
+            // contextUser.push(e.target.textContent)
             userCombo.push('@fireit.ca');
             const loginUser = new Array(userCombo.join().replace(/,/g, '')) 
             setUserPin(loginUser)
@@ -19,6 +21,7 @@ const UserPad = (props) => {
     }
     const handleClear = () => {
         userCombo = [];
+        // contextUser = []
         setError('Combo Cleared')
         setSubmitable(false);
         setTimeout(() => {

@@ -30,7 +30,7 @@ import PopUpData from './PopUpData';
 
 const MenuItemForm = (props) => {
     const [ collectionRef, setCollectionRef ] = useState('');
-    const [ itemData, setItemData ] = useState();
+    const [ itemData, setItemData ] = useState('');
     const [ itemType, setItemType ] = useState('');
     const [ popUps, setPopUps ] = useState({popUpsList:[]});
     const [ popUpsAction, setPopUpsAction ] = useState('');
@@ -53,7 +53,8 @@ const MenuItemForm = (props) => {
     const [ taxGroup, setTaxGroup ] = useState(taxOptions[0].value);
     const [ printerRoute, setPrinterRoute ] = useState(printOptions[0].value);
     const [ cloneItem, setCloneItem ] = useState({})
-    
+
+// DETERMINE WHICH COLLECTION REF TO USE FOR DATA && What item data to display when selected
     useEffect(() => {
         if(props.id === ''){
             setItemData({})
@@ -133,7 +134,7 @@ const MenuItemForm = (props) => {
             getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
         }
     },[props.id, props.docQuery, props.activeTab])
-
+// RESET FORMS
     useEffect(() => {
         // Array.from(document.querySelectorAll('input')).forEach(
         //     input => (input.value = ''))
@@ -141,9 +142,9 @@ const MenuItemForm = (props) => {
         //         input => (input.checked = false))
         // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
         //     input => (input.checked = false))
-        document.getElementById('menuItemForm').reset(); 
+        document.getElementById('menuItemForm').reset();
     }, [props.id, props.newItem])
-
+// ADD CLONED ITEM TO FIRESTORE
     useEffect(() => {
         if(cloneItem.name !== undefined && cloneItem.name !== ''){
             addDoc(collectionRef, {
