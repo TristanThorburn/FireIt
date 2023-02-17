@@ -1,33 +1,20 @@
-import { useTable } from '../../../contexts/TableContext';
-import { useAuth } from '../../../contexts/AuthContext';
 import { db } from '../../../firebase';
-import { doc, getDoc, orderBy, onSnapshot, query, collection, setDoc } from 'firebase/firestore';
+import { doc, orderBy, onSnapshot, query, collection, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
-const TableCheck = () => {
-    const { employeeContext } = useAuth()
-    const { contextTable } = useTable();
-    const [ tableData, setTableData ] = useState([])
-    const [ serverData, setServerData ] = useState({})
+const TableCheck = (props) => {
+    // props.serverData, props.tableData
     const [ checkData, setCheckData ] = useState([])
     // query where()
-    const checkRef = doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, 'seat')
+    // const checkRef = doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, props.selectedSeat)
+    const checkRef = 
+        doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat')
     const checkCollectionRef = 
-        collection(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`)
+        collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`)
 
-    useEffect(() => {
-        const q = query(checkCollectionRef, orderBy('seatNumber'));
-        const unsubscribe = onSnapshot(q, snapshot => {
-            setCheckData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })))
-        })
-        return unsubscribe
-    },[checkCollectionRef])
 
     const handleTest = async () => {
-        console.log('server:', serverData.employeeNumber, 'table:', tableData.name);
+        console.log('server:', props.serverData.employeeNumber, 'table:', props.tableData.name);
         setDoc(checkRef, {
             seat:true,
             seatNumber:'1',
@@ -35,38 +22,26 @@ const TableCheck = () => {
             checkTotal:'15',
         })
     }
-
-    // Check which table is in tableContext
+    // Get Data for the check from current server and table
     useEffect(() => {
-        if(contextTable !== '' ){
-            const getTable = async () => {
-                const docRef = doc(db, 'tables', contextTable)
-                const tableDataRequest = await getDoc(docRef)
-                const tableInfo = tableDataRequest.data();
-                    if(tableInfo){
-                        setTableData(tableInfo)
-                    }
-                }
-            const getServer = async () => {
-                const docRef = doc(db, 'employees', employeeContext.employeeNumber)
-                const serverDataRequest = await getDoc(docRef)
-                const serverInfo = serverDataRequest.data();
-                    if(serverInfo){
-                        setServerData(serverInfo)
-                    }
-                }
-            getTable()
-            .then(() => {getServer()}).catch(error => console.log(error))
+        if(props.tableData.name !== undefined){
+            const q = query(checkCollectionRef, orderBy('seatNumber'));
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setCheckData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
-    }, [contextTable, employeeContext]);
+    },[checkCollectionRef, props.tableData.name])
 
     return(
         <div>
-            <button onClick={handleTest}>Test</button>
-            {tableData.name !== undefined
+            {props.tableData.name !== undefined
                 ? <div>
-                    <h2>{tableData.name}</h2>
-                    <h3>Server: {serverData.firstName}</h3>
+                    <h2>{props.tableData.name}</h2>
+                    <h3>Server: {props.serverData.firstName}</h3>
                 </div>
                 : <div>
                     <h2>No Table Selected</h2>
@@ -83,6 +58,12 @@ const TableCheck = () => {
                     </div> 
                 )}
             </ul>
+            <button onClick={handleTest} className='testButton'>Test</button>
+            <footer>
+                <p>Check Total:</p>
+                <p>$$$$$$</p>
+            </footer>
+            
         </div>
     )
 }
