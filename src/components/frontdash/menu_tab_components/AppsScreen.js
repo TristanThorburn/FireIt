@@ -19,7 +19,7 @@ const AppsScreen = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='appScreenlist'>
                 <h3>Apps List</h3>
                 <ul>
                     {appsData.map(appetizer => 
