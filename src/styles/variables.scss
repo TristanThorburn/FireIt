@@ -4,6 +4,12 @@ $logoColor:#ffaf87;
 $buttonColor:green;
 $errorBackgroundColor:lightcoral;
 
+@mixin cleanUl{
+    list-style:none;
+    margin:0 auto;
+    padding:0;
+}
+
 @mixin flexCenterCenter{
     display:flex;
     align-items: center;

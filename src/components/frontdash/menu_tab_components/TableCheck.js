@@ -27,7 +27,7 @@ const TableCheck = () => {
     },[checkCollectionRef])
 
     const handleTest = async () => {
-        // console.log('server:', serverData.employeeNumber, 'table:', tableData.name);
+        console.log('server:', serverData.employeeNumber, 'table:', tableData.name);
         setDoc(checkRef, {
             seat:true,
             seatNumber:'1',
@@ -63,7 +63,7 @@ const TableCheck = () => {
     return(
         <div>
             <button onClick={handleTest}>Test</button>
-            {tableData && serverData
+            {tableData.name !== undefined
                 ? <div>
                     <h2>{tableData.name}</h2>
                     <h3>Server: {serverData.firstName}</h3>

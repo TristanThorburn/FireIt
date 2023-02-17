@@ -7,9 +7,7 @@
         margin:0 auto;
     }
     ul{
-        margin:0 auto;
-        padding:0;
-        list-style:none;
+        @include cleanUl;
         display:flex;
         flex-wrap:wrap;
         justify-content: space-evenly;
