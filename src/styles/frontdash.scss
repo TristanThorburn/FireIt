@@ -7,10 +7,8 @@
     align-items: center;
 
     ul{
-        padding:0;
-        margin:0 auto;
+        @include cleanUl;
         width:100%;
-        list-style:none;
         display:flex;
         justify-content:space-evenly;
     }

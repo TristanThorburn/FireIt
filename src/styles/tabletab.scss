@@ -149,9 +149,7 @@
 }
 
 .tableFormName{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
+    @include flexCenterCenter;
 }
 
 .demoTable{
