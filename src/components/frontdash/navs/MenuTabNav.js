@@ -7,6 +7,10 @@ const MenuTabNav = (props) => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
+    const handleSeatNum = () => {
+        props.setSeatKeyPadActive(true)
+    }
+    
     const handleDirectory = () => {
         props.toDirectory(true)
         props.toApps(false);
@@ -35,7 +39,7 @@ const MenuTabNav = (props) => {
         <div className='menuTabNav'>
             <ul>
                 <li>SEND ORDER</li>
-                <li>SEAT #?</li>
+                <li><button onClick={handleSeatNum}>SEAT #?</button></li>
                 <li>SEAT NAME</li>
                 <li>HIDE OLD</li>
                 <li onClick={handleDirectory}>DIRECTORY</li>

@@ -25,7 +25,7 @@ const TableTabNav = () => {
     return(
         <div className='tableTabNav'>
             <ul>
-                <li onClick={handleTest}>Test</li>
+                <li onClick={handleTest} className='testButton'>Test</li>
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>

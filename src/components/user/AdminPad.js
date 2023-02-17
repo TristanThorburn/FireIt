@@ -47,9 +47,9 @@ const AdminPad = (props) => {
     }
 
     return(
-        <div className='loginContainer adminPad'>
+        <div className='adminPad'>
             <div className='keypad'>
-                <button onClick={closeAdmin} className='closeAdmin'>X</button>
+                <button onClick={closeAdmin} className='closePad'>X</button>
                     <table>
                         <thead>
                             <tr>

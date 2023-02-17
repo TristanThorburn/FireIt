@@ -54,7 +54,7 @@ const MenuItemForm = (props) => {
     const [ printerRoute, setPrinterRoute ] = useState(printOptions[0].value);
     const [ cloneItem, setCloneItem ] = useState({})
 
-// DETERMINE WHICH COLLECTION REF TO USE FOR DATA && What item data to display when selected
+// DETERMINE WHICH COLLECTION REF TO USE FOR DATA && What item data to display when  item selected
     useEffect(() => {
         if(props.id === ''){
             setItemData({})

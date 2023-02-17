@@ -7,13 +7,25 @@
 }
 
 .activeCheck{
-    border:2px solid lightcoral;
+    position: relative;
+    background-color: white;
+    border:4px solid black;
     width:20%;
     height:90%;
 
-    h2{
+    h2, h3{
         margin:0 auto;
         text-align: center;
+    }
+    footer{
+        margin:0 auto;
+        width:90%;
+        display:flex;
+        justify-content: space-between;
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
     }
 }
 
@@ -23,7 +35,7 @@
 }
 
 .activeMenuCategory{
-    border:2px solid lightseagreen;
+    border:4px solid black;
     width:80%;
     height:90%;
     @include flexCenterCenter;

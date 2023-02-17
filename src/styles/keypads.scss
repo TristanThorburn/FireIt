@@ -1,13 +1,16 @@
 @import './variables.scss';
 
 .loginContainer{
+    @include flexCenterCenter;
     height:100vh;
-    display:flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     position:relative;
 
+    h1{
+        text-transform: uppercase;
+        font-size:3rem;
+        margin:0 auto;
+    }
     .demoGuide{
         position:absolute;
         top:0px;
@@ -17,18 +20,16 @@
             margin:0;
         }
     }
-    h1{
-        text-transform: uppercase;
-        font-size:3rem;
-        margin:0 auto;
-    }
-    .keypad{
-        border: 5px solid black;
-        width:500px;
-        height:475px;
-        display:flex;
-        flex-direction:column;
-    }
+}
+
+.keypad{
+    border: 5px solid black;
+    width:500px;
+    height:475px;
+    display:flex;
+    flex-direction:column;
+    background-color:$backgroundColor;
+    
     table{
         width:80%;
         margin:0 auto;
@@ -64,30 +65,22 @@
     }
 }
 
-.adminPad{
-    position:fixed;
-    top:0;
-    left:0;
-    bottom:0;
-    right:0;
-    z-index: 10;
-    background: rgba(49,49,49,0.8);
+.adminPad, .serverPad{
+    @include popUpModal;
+    @include flexCenterCenter;
 
     .keypad{
-        background-color:$backgroundColor;
-        position:relative;
-    }
-    .closeAdmin{
-        position:absolute;
-        top:0;
-        right:0;
-        width:100px;
-        height:50px;
-        font-size:1.5rem;
-        background-color:$errorBackgroundColor;
-        border:2px solid black;
+        height:525px;
     }
     table{
         margin-top:1rem;
     }
+}
+
+.closePad{
+    width:100%;
+    height:50px;
+    font-size:1.5rem;
+    background-color:$errorBackgroundColor;
+    border:2px solid black;
 }

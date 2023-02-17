@@ -1,6 +1,10 @@
 import TableCheck from "./menu_tab_components/TableCheck";
 import MenuTabNav from "./navs/MenuTabNav";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useTable } from "../../contexts/TableContext";
+import { db } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 import AppsScreen from './menu_tab_components/AppsScreen';
 import MainsScreen from './menu_tab_components/MainsScreen';
 import DessertsScreen from './menu_tab_components/DessertsScreen';
@@ -10,8 +14,13 @@ import CiderSeltzScreen from './menu_tab_components/CiderSeltzScreen';
 import MixedDrinksScreen from './menu_tab_components/MixedDrinksScreen';
 import LiquorsScreen from './menu_tab_components/LiquorsScreen';
 import WinesScreen from './menu_tab_components/WinesScreen';
+import ServerKeyPad from '../user/ServerKeyPad';
 
 const MenuTab = () => {
+    const { employeeContext } = useAuth()
+    const { contextTable } = useTable();
+    const [ tableData, setTableData ] = useState([])
+    const [ serverData, setServerData ] = useState({})
     const [ directory, setDirectory ] = useState(true);
     const [ appsCategory, setAppsCategory ] = useState(false);
     const [ mainsCategory, setMainsCategory ] = useState(false);
@@ -22,10 +31,36 @@ const MenuTab = () => {
     const [ mixedCategory, setMixedCategory ] = useState(false);
     const [ liquorsCategory, setLiquorsCategory ] = useState(false);
     const [ winesCategory, setWinesCategory ] = useState(false);
+    const [ selectedSeat, setSelectedSeat ] = useState('');
+    const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
 
     const handleTest = () => {
-        console.log('hi')
+        console.log(tableData, serverData.firstName)
     }
+
+    // Get data for current employee and table
+    useEffect(() => {
+        if(contextTable !== '' ){
+            const getTable = async () => {
+                const docRef = doc(db, 'tables', contextTable)
+                const tableDataRequest = await getDoc(docRef)
+                const tableInfo = tableDataRequest.data();
+                    if(tableInfo){
+                        setTableData(tableInfo)
+                    }
+                }
+            const getServer = async () => {
+                const docRef = doc(db, 'employees', employeeContext.employeeNumber)
+                const serverDataRequest = await getDoc(docRef)
+                const serverInfo = serverDataRequest.data();
+                    if(serverInfo){
+                        setServerData(serverInfo)
+                    }
+                }
+            getTable()
+            .then(() => {getServer()}).catch(error => console.log(error))
+        }
+    }, [contextTable, employeeContext]);
 
     const handleGoApps = () => {
         setDirectory(false);
@@ -146,8 +181,21 @@ const MenuTab = () => {
 
     return(
         <div className='menuTab'>
+            {seatKeyPadActive
+                ? <ServerKeyPad
+                    setSeatKeyPadActive={setSeatKeyPadActive}
+                    setSelectedSeat={setSelectedSeat}
+                    selectedSeat={selectedSeat}
+                    />
+                : null
+            }
+
             <article className='activeCheck'>
-                <TableCheck />
+                <TableCheck
+                    selectedSeat={selectedSeat}
+                    serverData={serverData}
+                    tableData={tableData}
+                    />
             </article>
             
             <section className='activeMenuCategory'>
@@ -162,7 +210,7 @@ const MenuTab = () => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCOHOLIC</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li onClick={handleTest}>Test</li>
+                            <li onClick={handleTest} className='testButton'>Test</li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>
@@ -170,47 +218,83 @@ const MenuTab = () => {
                 }
 
                 {appsCategory
-                    ? <AppsScreen />
+                    ? <AppsScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {mainsCategory
-                    ? <MainsScreen />
+                    ? <MainsScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {dessertsCategory
-                    ? <DessertsScreen />
+                    ? <DessertsScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {nonAlchCategory
-                    ? <NonAlchScreen />
+                    ? <NonAlchScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {beerCategory
-                    ? <BeerScreen />
+                    ? <BeerScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {cidSprCategory
-                    ? <CiderSeltzScreen />
+                    ? <CiderSeltzScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {mixedCategory
-                    ? <MixedDrinksScreen />
+                    ? <MixedDrinksScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {liquorsCategory
-                    ? <LiquorsScreen />
+                    ? <LiquorsScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
 
                 {winesCategory
-                    ? <WinesScreen />
+                    ? <WinesScreen
+                        selectedSeat={selectedSeat}
+                        serverData={serverData}
+                        tableData={tableData}
+                        />
                     : null
                 }
             </section>
@@ -226,45 +310,11 @@ const MenuTab = () => {
                 toMixed={setMixedCategory}
                 toLiquors={setLiquorsCategory}
                 toWines={setWinesCategory}
+                setSelectedSeat={setSelectedSeat}
+                setSeatKeyPadActive={setSeatKeyPadActive}
                 />
         </div>
     )
 }
 
 export default MenuTab;
-
-// Thoughts:
-// Choose base components on how logic pulls happen as they ARE from specific library paths that so far
-//      in the project pulls all of the data from the library, or should I get doc single for each?
-// Components:
-//      -App Component
-            // -Pop Food Adds
-            // Modifiers
-//      -Mains Component
-            // -Pop Food Adds
-            // Modifiers
-//      -Desert Component
-            // -Pop Food Adds
-            // Modifiers
-//      -Non Alch Tab
-//      -Beer Tab
-            // -Bottle
-            // -Can
-            // -Draft
-            // Modifiers
-//      -Wine Tab
-            // Red
-            // White
-            // Bubbly
-            // Modifiers
-//      -Mixed Drinks
-            // Cocktails
-            // Shots
-            // Modifiers
-//      -Liquor
-            // Gin
-            // Rum
-            // Tequila
-            // Vodka
-            // Whiskey
-            // Modifiers

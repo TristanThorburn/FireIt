@@ -4,6 +4,12 @@ $logoColor:#ffaf87;
 $buttonColor:green;
 $errorBackgroundColor:lightcoral;
 
+// peach FFC09F && desert sand E4C5AF 
+// rosy brown CA907E && puce BB7E8C
+// redwine 6B2737
+// sunset E6C79C  possibly with this pink: #fc466b as landing?
+
+
 @mixin cleanUl{
     list-style:none;
     margin:0 auto;
@@ -49,4 +55,22 @@ $errorBackgroundColor:lightcoral;
         display:flex;
         justify-content:space-evenly;
     }
+}
+
+@mixin menuItemButton{
+    text-transform: uppercase;
+    width:250px;
+    height:50px;
+    border-radius:10px;
+    color:white;
+}
+
+@mixin popUpModal{
+    position:fixed;
+    z-index: 10;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    background: rgba(49,49,49,0.8);
 }
