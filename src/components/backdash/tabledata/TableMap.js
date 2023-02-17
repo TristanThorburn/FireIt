@@ -28,10 +28,6 @@ const TableMap = (props) => {
         return unsubscribe
     },[])
     
-    const handleTest = () => {
-        console.log(tablesData);
-    }
-
     const handleAllowDragging = () => {
         if(enableDrag === false){
             setEnableDrag(true)
@@ -110,7 +106,6 @@ const TableMap = (props) => {
             {props.updateable === true
                 ?<div className='updateMapNav'>
                     <ul>
-                        <li><button onClick={handleTest}>Test</button></li>
                         <li>
                             {enableDrag
                             ?<button onClick={handleAllowDragging}>Disable Table Reposition</button>
