@@ -27,12 +27,6 @@ const EmployeeDataForm = (props) => {
     const [ userChecker, setUserChecker ] = useState('');
     const [ employeeChecker, setEmployeeChecker ] = useState('');
 
-    // const handleTest = (e) => {
-    //     e.preventDefault()
-        
-    //     console.log('number:', empNumberExists, 'userID:', empUserExists)
-    // }
-
     // Initial Employee List Display Effect
     useEffect(() => {
         if(props.id === ''){
@@ -422,8 +416,6 @@ const EmployeeDataForm = (props) => {
                             : null
                     }
                 </div>
-                
-                {/* <button onClick={handleTest}>Test</button> */}
             </form>
             <EmployeeFirebase 
                 user={employeeData?.email}
