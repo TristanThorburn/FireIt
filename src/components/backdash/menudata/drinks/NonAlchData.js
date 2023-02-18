@@ -53,21 +53,16 @@ const NonAlchData = (props) => {
  
     return(
         <div>
-            <div>
+            <div className='alcoholNavButtons'>
                 <button onClick={handleColdDrink}>Cold Drinks</button>
                 <button onClick={handleHotDrink}>Hot Drinks</button>
             </div>
-            <div className='itemList'>
-                {drinkType === 'cold'
-                    ?<h3>Cold Drinks List</h3>
-                    :drinkType === 'hot'
-                        ?<h3>Hot Drinks List</h3>
-                        :null
-                }
 
-                {drinkType === 'cold' || drinkType === 'hot'
-                    ?<ul>
-                        <li><button onClick={handleNewItem}>New Item</button></li>
+            {drinkType === 'cold'
+                    ?<div className='itemList'>
+                        <h3>Cold Drinks List</h3>
+                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                        <ul>
                         {nonAlchData.map(nonAlch => 
                             <li 
                                 key={nonAlch.id}
@@ -78,10 +73,26 @@ const NonAlchData = (props) => {
                                 >
                                     {nonAlch.data.name}
                             </li>)}
-                    </ul>
-                    :null
-                }
-            </div>
+                        </ul>
+                    </div>
+                    :drinkType === 'hot'
+                        ?<div className='itemList'>
+                            <h3>Hot Drinks List</h3>
+                            <button onClick={handleNewItem} className='newItemButton'>New Item</button><ul>
+                            {nonAlchData.map(nonAlch => 
+                                <li 
+                                    key={nonAlch.id}
+                                    onClick={() => {
+                                        setSelectedItem(nonAlch.id)
+                                        setNewItem(false)
+                                    }}
+                                    >
+                                        {nonAlch.data.name}
+                                </li>)}
+                            </ul>
+                        </div>
+                        :null
+            }
 
             <MenuItemForm 
                 setNewItem={setNewItem}

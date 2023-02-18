@@ -68,10 +68,13 @@ const TableCheck = (props) => {
                
             <button onClick={handleTest} className='testButton'>Test</button>
 
-            <footer>
-                <p>Check Total:</p>
-                <p>$$$$$$</p>
-            </footer>
+            {props.tableData.name !== undefined
+                ?<footer>
+                    <p>Check Total:</p>
+                    <p>$$$$$$</p>
+                </footer>
+                :null
+            }
             
         </div>
     )

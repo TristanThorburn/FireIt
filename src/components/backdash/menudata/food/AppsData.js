@@ -44,8 +44,8 @@ const AppsData = (props) => {
         <div>
             <div className='itemList'>
                 <h3>Apps List</h3>
+                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>
-                    <li><button onClick={handleNewItem}>New Item</button></li>
                     {appsData.map(appetizer => 
                         <li 
                             key={appetizer.id}

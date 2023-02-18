@@ -7,6 +7,10 @@ const CheckTabNav = () => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
+    const handleTest = () => {
+        console.log('test')
+    }
+
     const handleLogout = async () => { 
         if(currentUser.email){
             try {
@@ -19,9 +23,9 @@ const CheckTabNav = () => {
     }
 
     return(
-        <div className='checkTabNav'>
+        <div className='frontLowerNav'>
             <ul>
-                <li>Demo</li>
+                <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
@@ -29,14 +33,14 @@ const CheckTabNav = () => {
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>HELP</li>
-                <li>{error
-                        ? <>{error}</>
+                <li className='navCurrentUser'>{error
+                        ? <p>{error}</p>
                             : employeeContext
-                                ? <>User: {employeeContext.firstName}</>
-                                : <>No User</>
+                                ? <p>User: {employeeContext.firstName}</p>
+                                : <p>No User</p>
                     }
                 </li>
-                <li onClick={handleLogout}><button>LogOut</button></li>
+                <li><button onClick={handleLogout} className='workingButton'>LogOut</button></li>
             </ul>
         </div>
     )

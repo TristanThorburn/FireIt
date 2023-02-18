@@ -1,18 +1,26 @@
 @import './variables.scss';
 
 .tableBackDash{
+    background-color: $backDashBackgroundColor;
+
     header{
         @include backDashHeader;
-        
-        button{
-            width:200px;
-        }
     }
     h2{
-        // margin:20px auto;
+        margin:0;
+        font-size: 3rem;
         text-align: center;
     }
+    .frontLowerNav{
+    background-color: $backDashBackgroundColor;
     
+        li{
+            color:black;
+        }
+        p{
+            color:white;
+        }
+    }
 }
 .tableTab{
     position:relative;
@@ -86,12 +94,15 @@
 .updateMapNav{
     position:absolute;
     top:0;
-    left:350px;
+    left:100px;
     border:2px solid white;
     height:4rem;
-    width:60%;
+    width:90%;
     z-index: 1;
 
+    button.enableDrag{
+        width:300px
+    }
 }
 
 .tableMapDirections{
@@ -107,6 +118,7 @@
 .tableFormModal{
     @include popUpModal;
     @include flexCenterCenter;
+    color:white;
 }
 
 .tableFormContainer{
@@ -144,6 +156,8 @@
 
 .tableFormName{
     @include flexCenterCenter;
+    justify-content:space-evenly;
+    margin:1rem;
 }
 
 .demoTable{

@@ -80,21 +80,35 @@ const LiquorsData = (props) => {
         <div>
             <div className='itemList'>
                 {props.activeTab === 'gin'
-                    ? <h3>Gin List</h3>
-                    : props.activeTab === 'rum wine'
-                        ?<h3>Rum List</h3>
+                    ? <>
+                        <h3>Gin List</h3>
+                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                    </>
+                    : props.activeTab === 'rum'
+                        ?<>
+                            <h3>Rum List</h3>
+                            <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                        </>
                         : props.activeTab === 'tequila'
-                            ? <h3>Tequila List</h3>
+                            ?<>
+                                <h3>Tequila List</h3>
+                                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                            </>
                             : props.activeTab === 'vodka'
-                                ? <h3>Vodka List</h3>
+                                ?<>
+                                    <h3>Vodka List</h3>
+                                    <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                                </>
                                 : props.activeTab === 'whiskey'
-                                    ? <h3>Whisky List</h3>
+                                    ?<>
+                                        <h3>Whiskey List</h3>
+                                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                                    </>
                                     : null
                 }
 
                 {props.activeTab === 'gin' || props.activeTab === 'rum' || props.activeTab === 'tequila' || props.activeTab === 'vodka' || props.activeTab === 'whiskey'
                     ? <ul>
-                        <li><button onClick={handleNewItem}>New Item</button></li>
                         {liquorData.map(liquor => 
                             <li 
                                 key={liquor.id}

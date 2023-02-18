@@ -96,8 +96,16 @@ const TableStyleUpdate = (props) => {
                 </form>
 
                 <footer>
-                    <button onClick={handleUpdate}>Update Table</button>
-                    <button onClick={handleCancel}>Cancel</button>
+                    <button
+                        className='newItemButton'
+                        onClick={handleUpdate}
+                        >Update Table
+                    </button>
+                    <button
+                        className='newItemButton deleteItemButton'
+                        onClick={handleCancel}
+                        >Cancel
+                    </button>
                 </footer>
             </div>
         </div>

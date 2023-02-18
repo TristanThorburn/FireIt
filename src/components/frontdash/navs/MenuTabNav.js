@@ -36,20 +36,20 @@ const MenuTabNav = (props) => {
     }
 
     return(
-        <div className='menuTabNav'>
+        <div className='frontLowerNav'>
             <ul>
                 <li><button className='nonWorkingButton'>SEND ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li><button className='nonWorkingButton'>SEAT NAME</button></li>
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
-                <li><button onClick={handleDirectory} className='workingButton'>DIRECTORY</button></li>
+                <li><button onClick={handleDirectory} className='workingButton'>SHOW ALL</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
                 <li><button className='nonWorkingButton'>HELP</button></li>
-                <li>{error
-                        ? <>{error}</>
+                <li className='navCurrentUser'>{error
+                        ? <p>{error}</p>
                             : employeeContext
-                                ? <>User: {employeeContext.firstName}</>
-                                : <>No User</>
+                                ? <p>User: {employeeContext.firstName}</p>
+                                : <p>No User</p>
                     }
                 </li>
                 <li><button onClick={handleLogout} className='workingButton'>LogOut</button></li>

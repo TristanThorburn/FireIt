@@ -28,8 +28,8 @@ const CiderData = (props) => {
         <div>
             <div className='itemList'>
                 <h3>Cider List</h3>
+                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>
-                    <li><button onClick={handleNewItem}>New Item</button></li>
                     {ciderData.map(cider => 
                         <li 
                             key={cider.id}

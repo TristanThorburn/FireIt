@@ -16,11 +16,11 @@ const PopUpData = (props) => {
     }
 
     return(
-        <div>
+        <div className='popUpOptions'>
             {props.popUpsAction === 'add'
-                ? 'Adding:'
+                ? <h5>Adding:</h5>
                 :props.popUpsAction === 'remove'
-                    ? 'Removing:'
+                    ? <h5>Removing:</h5>
                     : null
             }
             <div>
@@ -31,7 +31,7 @@ const PopUpData = (props) => {
                     value='Sides'
                     onChange={handlePopUps}
                     />
-                <label htmlFor='sides'>Sides</label>
+                <label htmlFor='sides'> Sides</label>
             </div>
 
             <div>
@@ -42,7 +42,7 @@ const PopUpData = (props) => {
                     value='Proteins'
                     onChange={handlePopUps}
                     />
-                <label htmlFor='proteins'>Proteins</label>
+                <label htmlFor='proteins'> Proteins</label>
             </div>
 
             <div>
@@ -53,7 +53,7 @@ const PopUpData = (props) => {
                     value='Dressings'
                     onChange={handlePopUps}
                     />
-                <label htmlFor='dressings'>Dressings</label>
+                <label htmlFor='dressings'> Dressings</label>
             </div>
 
             <div>
@@ -64,7 +64,7 @@ const PopUpData = (props) => {
                     value='Food Addons'
                     onChange={handlePopUps}
                     />
-                <label htmlFor='foodAddons'>Food Addons</label>
+                <label htmlFor='foodAddons'> Food Addons</label>
             </div>
 
             <div>
@@ -75,7 +75,7 @@ const PopUpData = (props) => {
                     value='Mixes'
                     onChange={handlePopUps}
                     />
-                <label htmlFor='mixes'>Mixes</label>
+                <label htmlFor='mixes'> Mixes</label>
             </div>
 
             <div>
@@ -86,7 +86,7 @@ const PopUpData = (props) => {
                     value='Bar Addons'
                     onChange={handlePopUps}
                     />
-                <label htmlFor='barAddons'>Bar Addons</label>
+                <label htmlFor='barAddons'> Bar Addons</label>
             </div>
         </div>
 

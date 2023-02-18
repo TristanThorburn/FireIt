@@ -238,9 +238,9 @@ const MenuTab = () => {
                             <li onClick={handleGoCidSpr}><button>CIDER/SELTZ</button></li>
                             <li onClick={handleGoDesserts}><button>DESSERTS</button></li>
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
-                            <li onClick={handleGoNonAlch}><button>NON ALCOHOLIC</button></li>
+                            <li onClick={handleGoNonAlch}><button>NON ALCH</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li onClick={handleTest} className='testButton'>Test</li>
+                            <li onClick={handleTest}><button className='testButton'>Test</button></li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>

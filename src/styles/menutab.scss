@@ -43,6 +43,10 @@
     width:80%;
     height:90%;
     @include flexCenterCenter;
+
+    h3{
+        color:white;
+    }
 }
 
 .menuCategories{
@@ -60,23 +64,11 @@
         font-size:3rem;
     }
     button{
-        border-radius:5px;
+        border-radius:10px;
+        width:500px;
+        background-color:$backDashBackgroundColor;
     }
-}
-
-.menuTabNav{
-    @include frontLowerNav;
-    @include frontLowerNavUL;
-
-    ul, li, button{
-        height:100%;
-    }
-    .workingButton{
-        background-color: green;
-        color:white;
-    }
-    .nonWorkingButton{
-        background-color:darkred;
-        color:white;
+    button:active{
+        background-color:darken($backDashBackgroundColor, 20%);
     }
 }

@@ -1,0 +1,10 @@
+@import './variables.scss';
+
+.paymentData{
+    height:100vh;
+    background-color: $backDashBackgroundColor;
+
+    h2{
+        margin:0 auto;
+    }
+}

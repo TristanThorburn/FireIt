@@ -1,6 +1,6 @@
 @import './variables.scss';
 
-.navTabs{
+.frontDashNav{
     height:7.5vh;
     border-bottom:2px solid black;
     display:flex;
@@ -14,5 +14,47 @@
     }
     li{
         cursor: pointer;
+        color:white;
+        font-size:2rem;
     }
+}
+.frontLowerNav{
+    background-color: $backgroundColor;
+    @include frontLowerNav;
+    @include frontLowerNavUL;
+
+    ul, li, button{
+        height:100%;
+    }
+    .workingButton{
+        border-color:green;
+        background-color: green;
+        color:white;
+    }
+    button.workingButton:active{
+        background-color:lighten(green, 5%);
+    }
+    .nonWorkingButton{
+        border-color:darkred;
+        background-color:darkred;
+        color:white;
+    }
+    button.nonWorkingButton:active{
+        background-color:lighten(red, 5%);
+    }
+    li{
+        width:150px;
+        color:white;
+        font-size: 1.5rem;
+        display:flex;
+        align-items: center;
+    }
+    button{
+        width:100%;
+    }
+}
+.navCurrentUser{
+    @include flexCenterCenter;
+    text-align: center;
+    background-color: darkblue;
 }
