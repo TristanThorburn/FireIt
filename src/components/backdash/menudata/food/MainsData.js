@@ -28,8 +28,8 @@ const MainsData = (props) => {
         <div>
             <div className='itemList'>
                 <h3>Mains List</h3>
+                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>
-                    <li><button onClick={handleNewItem}>New Item</button></li>
                     {mainsData.map(main => 
                         <li 
                             key={main.id}

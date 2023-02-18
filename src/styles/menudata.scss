@@ -1,6 +1,9 @@
 @import './variables.scss';
 
 .menuData{
+    height:100vh;
+    background-color: $backDashBackgroundColor;
+
     h2{
         text-align:center;
         font-size:3rem;
@@ -26,21 +29,71 @@
 }
 
 .itemList{
-    margin:1.5rem auto;
+    background-color:white;
+    margin:1rem auto;
     border:2px solid black;
     max-width:90%;
-    
+    height:275px;
+    display:flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    h3{
+        margin:0.25rem auto 1rem;
+        font-size:1.5rem;
+    }
     ul{
         width:100%;
+        flex-wrap:wrap;
     }
+    li{
+        width:20%;
+    }
+    button{
+        margin:0 auto;
+    }
+}
+
+.newItemButton{
+    width:250px;
+    border-color:green;
+    border-radius:10px;
+    background-color:green;
+    color:white;
+    font-size:1.25rem;
+}
+
+.deleteItemButton{
+    border-color:red;
+    background-color:red;
+}
+
+button.newItemButton:active{
+    background-color:lighten(green, 10%);
+}
+
+button.deleteItemButton:active{
+    background-color:darken(red, 10%);
 }
 
 .alcoholNavButtons{
     display:flex;
     justify-content: space-around;
+
+    button{
+        width:200px;
+        font-size: 1.15rem;
+        border-radius:10px;
+        background-color:$backgroundColor;
+        color:white;
+    }
+    button:active{
+        background-color:lighten($backgroundColor, 10%);
+    }
 }
 
 .menuItemForm{
+    background-color: $backDashBackgroundColor;
     display:flex;
     flex-wrap:wrap;
     justify-content: space-evenly;
@@ -58,6 +111,47 @@
     button{
         margin:10px auto;
     }
+    }
+}
+
+.itemTypes{
+    height:300px;
+    width:200px;
+
+    h4{
+        margin:0 auto;
+        text-transform: capitalize;
+    }
+}
+
+.itemPopUps{
+    width:350px;
+    height:300px;
+    overflow-y:scroll;
+
+    h4{
+        margin:0 auto;
+        text-align: center;
+    }
+}
+
+.popUpButtonsContainer{
+    margin:0 auto;
+    @include flexCenterCenter;
+
+    button{
+        margin:0 5px;
+        width:40%;
+    }
+}
+
+.popUpOptions{
+    width:80%;
+
+    h5{
+        margin:0 auto;
+        font-size:1.1rem;
+        text-align: center;
     }
 }
 

@@ -108,13 +108,37 @@ const TableMap = (props) => {
                     <ul>
                         <li>
                             {enableDrag
-                            ?<button onClick={handleAllowDragging}>Disable Table Reposition</button>
-                            :<button onClick={handleAllowDragging}>Enable Table Reposition</button>
+                            ?<button
+                                className='newItemButton deleteItemButton'
+                                onClick={handleAllowDragging}
+                                >Disable Table Reposition
+                            </button>
+                            :<button
+                                className='newItemButton enableDrag'
+                                onClick={handleAllowDragging}
+                                >Enable Table Reposition
+                            </button>
                         }</li>
-                        <li><button onClick={handleSave}>Save Table Positions</button></li>
-                        <li><button onClick={handleAddTable}>Add Table</button></li>
-                        <li><button onClick={handleUpdateStyle}>Change Table Style</button></li>
-                        <li><button onClick={handleDelete}>Delete Table</button></li>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleSave}
+                            >Save Table Positions
+                        </button></li>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleAddTable}
+                            >Add Table
+                        </button></li>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleUpdateStyle}
+                            >Change Table Style
+                        </button></li>
+                        <li><button
+                            className='newItemButton deleteItemButton'
+                            onClick={handleDelete}
+                            >Delete Table
+                        </button></li>
                     </ul>
                     {enableDrag 
                         ? <p className='tableMapDirections'>Click to move, click again to set</p>

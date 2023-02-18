@@ -1,6 +1,9 @@
 @import './variables.scss';
 
-.summaryTabNav{
-    @include frontLowerNav;
-    @include frontLowerNavUL;
+.summaryTab{
+
+    h2{
+        margin:0;
+        color:white;
+    }
 }

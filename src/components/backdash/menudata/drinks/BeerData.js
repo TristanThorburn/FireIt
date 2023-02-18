@@ -58,17 +58,25 @@ const BeerData = (props) => {
         <div>
             <div className='itemList'>
                 {props.activeTab === 'beer bottle'
-                    ? <h3>Beer Bottle List</h3>
+                    ?<>
+                        <h3>Beer Bottle List</h3>
+                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                    </>
                     : props.activeTab === 'beer can'
-                        ?<h3>Beer Cans List</h3>
+                        ?<>
+                            <h3>Beer Can List</h3>
+                            <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                        </>
                         : props.activeTab === 'beer draft'
-                            ? <h3>Draft Beer List</h3>
+                            ? <>
+                                <h3>Beer Bottle List</h3>
+                                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                            </>
                             : null
                 }
 
                 {props.activeTab === 'beer bottle' || props.activeTab === 'beer can' || props.activeTab === 'beer draft'
                     ?<ul>
-                        <li><button onClick={handleNewItem}>New Item</button></li>
                         {beerData.map(beer => 
                             <li 
                                 key={beer.id}

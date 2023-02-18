@@ -1,6 +1,9 @@
 @import './variables.scss';
 
 .backendDash{
+    height:100vh;
+    background-color: $backDashBackgroundColor;
+
     .buttonContainer{
         height:80vh;
         @include flexCenterCenter;

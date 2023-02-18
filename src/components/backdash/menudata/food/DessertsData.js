@@ -28,8 +28,8 @@ const DessertsData = (props) => {
         <div>
             <div className='itemList'>
                 <h3>Dessert List</h3>
+                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>
-                    <li><button onClick={handleNewItem}>New Item</button></li>
                     {dessertsData.map(dessert => 
                         <li 
                             key={dessert.id}

@@ -26,13 +26,15 @@ const EmployeeData = () => {
     }
  
     return(
-        <div className='employeeData'>
+        <section className='employeeData'>
             <header>
-                <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
+                <Link to='/backend-dash'>
+                    <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
+                </Link>
 
                 <h2>Employees List</h2>
 
-                <button onClick={handleNewEmployee}>New Employee</button>
+                <button className='newItemButton' onClick={handleNewEmployee}>New Employee</button>
             </header>
             
             <div className='employeeDataContainer'>
@@ -70,7 +72,7 @@ const EmployeeData = () => {
                     />
                 : <h3>Select an employee, or create new</h3>
             }
-        </div>
+        </section>
     )
 }
 

@@ -8,8 +8,17 @@ Primarily inspired by my 3 years working exclusively with Squirrel (https://www.
 
 Tristan Thorburn 2023
 
-
                                     CHANGELOG:
+                                    2023-02-18
+Front Dashboard
+
+MenuTab
+    -Begun adding the ability to punch in items from food categories on to checks, kept separate between tables and servers, and seat numbers
+
+Firebase
+    -Database persistence added for now to limit firebase reads when working on the app
+
+**********************************************************************************************************
                                     2023-02-14
 Admin ('Back-end') Dashboard
 
@@ -17,7 +26,6 @@ Employee Data Setup:
     -Now checks for existing employee numbers, or userID when adding or updating employees
 
 **********************************************************************************************************
-                                    CHANGELOG:
                                     2023-02-13
 Admin ('Back-end') Dashboard
 

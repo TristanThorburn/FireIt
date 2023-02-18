@@ -407,13 +407,21 @@ const EmployeeDataForm = (props) => {
                 <div className='employeeButtonContainer'>
                     {!props.newEmployee && props.id !== ''
                         ? <div className='employeeSubmit'>
-                            <button onClick={handleUpdateEmployee}>Update Employee</button>
-                            <button onClick={handleDelete}>Delete Employee</button>
+                            <button
+                                className='newItemButton'
+                                onClick={handleUpdateEmployee}
+                                >Update Employee
+                            </button>
+                            <button
+                                className='newItemButton deleteItemButton'
+                                onClick={handleDelete}
+                                >Delete Employee
+                            </button>
                         </div>
                         : props.newEmployee 
                             ? <button
                                 onClick={handleAddEmployee}
-                                className='employeeNewButtonSubmit'
+                                className='newItemButton'
                                 >Add Emmployee</button>
                             : null
                     }

@@ -17,13 +17,23 @@ const TableMapData = () => {
     return(
         <div className='tableBackDash'>
             <header>
-                <Link to='/backend-dash'><button>Back to Dashboard</button></Link>
+                <Link to='/backend-dash'>
+                    <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
+                </Link>
 
                 <h2>Tables and Map Setup</h2>
 
                 {mapUpdateable
-                    ? <button onClick={disableUpdate}>Disable Updates</button>
-                    : <button onClick={enableUpdate}>Update Map</button>
+                    ? <button
+                        className='newItemButton deleteItemButton'
+                        onClick={disableUpdate}
+                        >Disable Updates
+                    </button>
+                    : <button
+                        className='newItemButton'
+                        onClick={enableUpdate}
+                        >Update Map
+                    </button>
                 }
             </header>
             

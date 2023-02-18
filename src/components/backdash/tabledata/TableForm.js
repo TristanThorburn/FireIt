@@ -56,7 +56,7 @@ const TableForm = (props) => {
 
                 <form>
                     <div className='tableFormName'>
-                        <label htmlFor='tableName'>Table Name</label>
+                        <label htmlFor='tableName'>Table Name:</label>
                         <input
                             id='tableName'
                             name='tableName'
@@ -126,8 +126,16 @@ const TableForm = (props) => {
                 </form>
 
                 <footer>
-                    <button onClick={handleAddTable}>Add Table</button>
-                    <button onClick={handleCancel}>Cancel</button>
+                    <button
+                        className='newItemButton'
+                        onClick={handleAddTable}
+                        >Add Table
+                    </button>
+                    <button
+                        className='newItemButton deleteItemButton'
+                        onClick={handleCancel}
+                        >Cancel
+                    </button>
                 </footer>
             </div>
         </div>

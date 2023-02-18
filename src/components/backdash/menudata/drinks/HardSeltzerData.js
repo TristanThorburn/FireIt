@@ -28,8 +28,8 @@ const HardSeltzerData = (props) => {
         <div>
             <div className='itemList'>
                 <h3>Hard Seltzer List</h3>
+                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>
-                    <li><button onClick={handleNewItem}>New Item</button></li>
                     {hardSeltzerData.map(hardSeltzer => 
                         <li 
                             key={hardSeltzer.id}

@@ -134,7 +134,7 @@ const MenuData = () => {
     }
 
     return(
-        <div className='menuData'>
+        <section className='menuData'>
             <h2>Menu Entry Setup</h2>
 
             <div className='buttonContainer'>
@@ -201,7 +201,7 @@ const MenuData = () => {
                 : null
             }
 
-        </div>
+        </section>
     )
 }
 

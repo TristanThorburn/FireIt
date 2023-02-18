@@ -58,17 +58,25 @@ const WineData = (props) => {
         <div>
             <div className='itemList'>
                 {props.activeTab === 'red wine'
-                    ? <h3>Red Wine List</h3>
+                    ?<>
+                        <h3>Red Wine List</h3>
+                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                    </>
                     : props.activeTab === 'white wine'
-                        ?<h3>White Wine List</h3>
+                        ?<>
+                            <h3>White Wine List</h3>
+                            <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                        </>
                         : props.activeTab === 'bubbly'
-                            ? <h3>Champagne and Prosecco List</h3>
+                            ?<>
+                                <h3>Bubbly List</h3>
+                                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                            </>
                             : null
                 }
 
                 {props.activeTab === 'red wine' || props.activeTab === 'white wine' || props.activeTab === 'bubbly'
                     ?<ul>
-                        <li><button onClick={handleNewItem}>New Item</button></li>
                         {wineData.map(wine => 
                             <li 
                                 key={wine.id}

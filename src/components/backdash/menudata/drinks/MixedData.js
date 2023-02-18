@@ -47,15 +47,20 @@ const MixedData = (props) => {
         <div>
             <div className='itemList'>
                 {props.activeTab === 'cocktails'
-                    ? <h3>Cocktails List</h3>
+                    ? <>
+                        <h3>Cocktails List</h3>
+                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                    </>
                     : props.activeTab === 'shots'
-                        ?<h3>Shots List</h3>
+                        ?<>
+                            <h3>Shots List</h3>
+                            <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                        </>
                         : null
                 }
 
                 {props.activeTab === 'cocktails' || props.activeTab === 'shots'
                     ? <ul>
-                        <li><button onClick={handleNewItem}>New Item</button></li>
                         {mixedData.map(mixed => 
                             <li 
                                 key={mixed.id}

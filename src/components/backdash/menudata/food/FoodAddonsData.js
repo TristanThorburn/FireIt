@@ -28,8 +28,8 @@ const FoodAddonsData = (props) => {
         <div>
             <div className='itemList'>
                 <h3>Food Addons List</h3>
+                <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>
-                    <li><button onClick={handleNewItem}>New Item</button></li>
                     {foodAddsData.map(fAddon => 
                         <li 
                             key={fAddon.id}

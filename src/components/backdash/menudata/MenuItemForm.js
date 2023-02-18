@@ -418,68 +418,6 @@ const MenuItemForm = (props) => {
                                 />
                         }
                     </div>
-                {/* Item Type */}
-                    <fieldset>
-                        <legend>Select Item Type</legend>
-                        {props.id !== '' && itemData?.type
-                            ? <> Current type: {itemData?.type}</>
-                            : null
-                        }
-                        <div>
-                            <label htmlFor='itemType'>Item</label>
-                            <input 
-                                id='item'
-                                type='radio'
-                                name='itemType'
-                                value='item'
-                                onClick={handleItemType}
-                                />
-                        </div>
-
-                        <div>
-                            <label htmlFor='itemType'>Addon</label>
-                            <input 
-                                id='addon'
-                                type='radio'
-                                name='itemType'
-                                value='addon'
-                                onClick={handleItemType}
-                                />
-                        </div>
-
-                        <div>
-                            <label htmlFor='itemType'>Modifier</label>
-                            <input  
-                                id='modifier'
-                                type='radio'
-                                name='itemType'
-                                value='modifier'
-                                onClick={handleItemType}
-                                />
-                        </div>
-
-                        <div>
-                            <label htmlFor='itemType'>Non Item</label>
-                            <input  
-                                id='nonItem'
-                                type='radio'
-                                name='itemType'
-                                value='non item'
-                                onClick={handleItemType}
-                                />
-                        </div>
-
-                        <div>
-                            <label htmlFor='itemType'>Transformer</label>
-                            <input 
-                                id='transformer'
-                                type='radio'
-                                name='itemType'
-                                value='transformer'
-                                onClick={handleItemType}
-                                />
-                        </div>
-                    </fieldset>
                 {/* Tax Group */}
                     <div>
                         <label htmlFor='taxGroup'>Tax Group:</label>
@@ -514,18 +452,91 @@ const MenuItemForm = (props) => {
                             ))}
                         </select>
                     </div>
+                {/* Item Type */}
+                    <fieldset className='itemTypes'>
+                        <legend>Select Item Type</legend>
+                        {props.id !== '' && itemData?.type
+                            ? <h4> Current type: {itemData?.type}</h4>
+                            : null
+                        }
+                        <div>
+                            <input 
+                                id='item'
+                                type='radio'
+                                name='itemType'
+                                value='item'
+                                onClick={handleItemType}
+                                />
+                            <label htmlFor='itemType'> Item</label>
+                        </div>
+
+                        <div>
+                            <input 
+                                id='addon'
+                                type='radio'
+                                name='itemType'
+                                value='addon'
+                                onClick={handleItemType}
+                                />
+                            <label htmlFor='itemType'> Addon</label>
+                        </div>
+
+                        <div>
+                            <input  
+                                id='modifier'
+                                type='radio'
+                                name='itemType'
+                                value='modifier'
+                                onClick={handleItemType}
+                                />
+                            <label htmlFor='itemType'> Modifier</label>
+                        </div>
+
+                        <div>
+                            <input  
+                                id='nonItem'
+                                type='radio'
+                                name='itemType'
+                                value='non item'
+                                onClick={handleItemType}
+                                />
+                            <label htmlFor='itemType'> Non Item</label>
+                        </div>
+
+                        <div>
+                            <input 
+                                id='transformer'
+                                type='radio'
+                                name='itemType'
+                                value='transformer'
+                                onClick={handleItemType}
+                                />
+                            <label htmlFor='itemType'> Transformer</label>
+                        </div>
+                    </fieldset>
                 {/* Pop Up Groups */}
-                    <fieldset>
+                    <fieldset className='itemPopUps'>
                         <legend htmlFor='popUpGroup'>Pop Up Group(s):</legend>
 
                         {props.id !== '' && itemData?.popUps
-                            ? <>Current Pop Ups: {itemData?.popUps.join(', ')}</>
+                            ? <h4>Current Pop Ups:
+                                <br />
+                                 {itemData?.popUps.join(', ')}
+                            </h4>
                             : null
                         }
 
-                        <div>
-                            <button onClick={handleAddPopUp}>Add</button>
-                            <button onClick={handleRemovePopUp}>Remove</button>
+                        <div className='popUpButtonsContainer'>
+                            <button
+                                className='newItemButton'
+                                onClick={handleAddPopUp}
+                                >Add
+                            </button>
+                            <button
+                                className='newItemButton deleteItemButton'
+                                onClick={handleRemovePopUp}
+                                >Remove
+                            </button>
                         </div>
 
                         {popUpsAction === 'add' || popUpsAction === 'remove'
@@ -541,12 +552,28 @@ const MenuItemForm = (props) => {
                 ? null
                 : props.id !== ''
                     ? <div className='updateButtons'>
-                        <button type='submit' onClick={handleUpdateItem}>Update Item</button>
-                        <button onClick={handleClone}>Clone Item</button>
-                        <button onClick={handleDelete}>Delete Item</button>
+                        <button
+                            type='submit'
+                            className='newItemButton'
+                            onClick={handleUpdateItem}
+                            >Update Item
+                        </button>
+                        <button
+                            className='newItemButton'
+                            onClick={handleClone}
+                            >Clone Item
+                        </button>
+                        <button
+                            className='newItemButton deleteItemButton'
+                            onClick={handleDelete}
+                            >Delete Item
+                        </button>
                     </div>
                     : props.newItem
-                ? <button type='submit' onClick={handleAddItem}>Add Item</button>
+                ? <button
+                    type='submit'
+                    className='newItemButton'
+                    onClick={handleAddItem}>Add Item</button>
                 : null
             }
         </form>

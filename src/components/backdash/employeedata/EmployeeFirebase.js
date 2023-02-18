@@ -51,7 +51,12 @@ const EmployeeFirebase = (props) => {
                 ? <h3>Server UserID and UserPW are Active</h3>
                 : <>
                     <h3>Server UserID and UserPW are Disabled</h3>
-                    <button onClick={handleActivate} disabled={loading}>Activate Employee?</button>
+                    <button
+                        className='newItemButton'
+                        onClick={handleActivate}
+                        disabled={loading}
+                        >Activate Employee?
+                    </button>
                     <p>Logs out user upon submit</p>
                 </>
             }
