@@ -33,9 +33,10 @@ const MenuTab = () => {
     const [ winesCategory, setWinesCategory ] = useState(false);
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
+    const [ doesSeatExist, setDoesSeatExist ] = useState(false)
 
     const handleTest = () => {
-        console.log(tableData, serverData.firstName)
+        console.log('hi')
     }
 
     // Get data for current employee and table
@@ -61,6 +62,33 @@ const MenuTab = () => {
             .then(() => {getServer()}).catch(error => console.log(error))
         }
     }, [contextTable, employeeContext]);
+
+    // Confirm if seat exists on check
+    useEffect(() => {
+        const doesSeatExist = async () => {
+            if(selectedSeat === ''){
+                const docRef = 
+                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, 'seat1')
+                const docSnap = await getDoc(docRef)
+                if(docSnap.exists()){
+                    setDoesSeatExist(true)
+                } else {
+                    setDoesSeatExist(false)
+                }
+            }
+            if(selectedSeat !== ''){
+                const docRef = 
+                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, `seat${selectedSeat}`)
+                const docSnap = await getDoc(docRef)
+                if(docSnap.exists()){
+                    setDoesSeatExist(true)
+                } else {
+                    setDoesSeatExist(false)
+                }
+            }
+        }
+        doesSeatExist()
+    }, [selectedSeat, serverData.employeeNumber, tableData.name])
 
     const handleGoApps = () => {
         setDirectory(false);
@@ -192,6 +220,8 @@ const MenuTab = () => {
 
             <article className='activeCheck'>
                 <TableCheck
+                    doesSeatExist={doesSeatExist}
+                    selectedSeatExists={doesSeatExist}
                     selectedSeat={selectedSeat}
                     serverData={serverData}
                     tableData={tableData}
@@ -219,6 +249,8 @@ const MenuTab = () => {
 
                 {appsCategory
                     ? <AppsScreen
+                        appsActive={appsCategory}
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -228,6 +260,7 @@ const MenuTab = () => {
 
                 {mainsCategory
                     ? <MainsScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -237,6 +270,7 @@ const MenuTab = () => {
 
                 {dessertsCategory
                     ? <DessertsScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -246,6 +280,7 @@ const MenuTab = () => {
 
                 {nonAlchCategory
                     ? <NonAlchScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -255,6 +290,7 @@ const MenuTab = () => {
 
                 {beerCategory
                     ? <BeerScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -264,6 +300,7 @@ const MenuTab = () => {
 
                 {cidSprCategory
                     ? <CiderSeltzScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -273,6 +310,7 @@ const MenuTab = () => {
 
                 {mixedCategory
                     ? <MixedDrinksScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -282,6 +320,7 @@ const MenuTab = () => {
 
                 {liquorsCategory
                     ? <LiquorsScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
@@ -291,6 +330,7 @@ const MenuTab = () => {
 
                 {winesCategory
                     ? <WinesScreen
+                        selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}

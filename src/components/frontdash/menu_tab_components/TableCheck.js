@@ -1,26 +1,17 @@
 import { db } from '../../../firebase';
-import { doc, orderBy, onSnapshot, query, collection, setDoc } from 'firebase/firestore';
+import { orderBy, onSnapshot, query, collection } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
 const TableCheck = (props) => {
     // props.serverData, props.tableData
     const [ checkData, setCheckData ] = useState([])
     // query where()
-    // const checkRef = doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, props.selectedSeat)
-    const checkRef = 
-        doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat')
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`)
 
 
     const handleTest = async () => {
-        console.log('server:', props.serverData.employeeNumber, 'table:', props.tableData.name);
-        setDoc(checkRef, {
-            seat:true,
-            seatNumber:'1',
-            items:['bruschetta', 'caesar salad', 'curry'],
-            checkTotal:'15',
-        })
+        console.log('server:', props.serverData.employeeNumber, 'table:', props.tableData.name, 'seat:', props.selectedSeat, 'doesSeatExist:', props.doesSeatExist);
     }
     // Get Data for the check from current server and table
     useEffect(() => {
@@ -47,18 +38,36 @@ const TableCheck = (props) => {
                     <h2>No Table Selected</h2>
                 </div>
             }
-            <ul>
-                {checkData?.map(seat =>
-                    <div key={seat.id}>
-                        <h4>Seat: {seat.data.seatNumber}</h4>
-                        <p>Total: {seat.data.checkTotal}</p>
-                        <div>{seat.data.items.map((item, i) => 
-                            <p key={i}>{item}</p>)
-                        }</div>
-                    </div> 
-                )}
-            </ul>
+
+            {checkData?.map(seat =>
+                <table
+                    key={seat?.id}
+                    className='checkSeatInfo'
+                    >
+                    <thead>
+                        <tr>
+                            <th colSpan={2}>Seat: {seat.data?.seatNumber}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {seat.data.order.map((order, i) => {
+                                return(
+                                    <tr key={i}>
+                                        <td>{order.item}</td>
+                                        <td
+                                            value={order.cost}
+                                            className='checkItemCost'
+                                            >{order.cost}</td>
+                                    </tr>    
+                                )
+                            })
+                        }
+                    </tbody>
+                </table> 
+            )}
+               
             <button onClick={handleTest} className='testButton'>Test</button>
+
             <footer>
                 <p>Check Total:</p>
                 <p>$$$$$$</p>

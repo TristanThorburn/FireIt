@@ -37,6 +37,7 @@ const EmployeeDataForm = (props) => {
             getDoc(docRef).then((doc) => setEmployeeData(doc.data())).catch(error => console.log(error))
         }
     },[props.id])
+
     // Clear form info on submit
     useEffect(() => {
         Array.from(document.querySelectorAll('input')).forEach(
@@ -44,6 +45,7 @@ const EmployeeDataForm = (props) => {
         Array.from(document.querySelectorAll('textarea')).forEach(
                 input => (input.value = ''))
     },[props.id, props.newEmployee])
+    
     // Check that the user isnt trying to modify 1 instance employee number and user ID
     useEffect(()=> {
         getDocs(employeeCollectionRef).then(snap => {
