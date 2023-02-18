@@ -1,23 +1,29 @@
 @import './setup.scss';
 @import './variables.scss';
 
+// LOGINS / KEYPADS
 @import './keypads.scss';
 
+// FRONT DASH TABS
 @import './frontdash.scss';
 @import './summarytab.scss';
 @import './tabletab.scss';
-
-@import './menutab.scss';
-@import './appscreen.scss';
-@import './beerscreen.scss';
-
 @import './checktab.scss';
 @import './paymenttab.scss';
 
+// FRONT MENU SCREENS
+@import './menutab.scss';
+@import './appscreen.scss';
+@import './mainscreen.scss';
+@import './dessertscreen.scss';
+@import './beerscreen.scss';
+
+// BACK DASH TABS
 @import './backenddash.scss';
 @import './menudata.scss';
 @import './employeedata.scss';
 
+// APP WIDE TEMP CSS
 html{
     font-size:125%;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -27,17 +33,14 @@ body{
     margin:0;
     padding:0;
 }
-
 body.adminOpen{
     overflow-y: hidden;
 }
-
 .App{
     button{
         cursor: pointer;
     }
 }
-
 button.testButton{
     background-color: yellow;
     border:4px solid red;

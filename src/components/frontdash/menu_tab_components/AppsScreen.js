@@ -89,7 +89,9 @@ const AppsScreen = (props) => {
                             >
                             <button
                                 id={appetizer.id}
-                                onClick={handleClick}>{appetizer.data.name}</button>
+                                onClick={handleClick}
+                                >{appetizer.data.name}
+                            </button>
                         </li>)}
                     <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 </ul>

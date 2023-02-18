@@ -38,13 +38,13 @@ const MenuTabNav = (props) => {
     return(
         <div className='menuTabNav'>
             <ul>
-                <li>SEND ORDER</li>
-                <li><button onClick={handleSeatNum}>SEAT #?</button></li>
-                <li>SEAT NAME</li>
-                <li>HIDE OLD</li>
-                <li onClick={handleDirectory}>DIRECTORY</li>
-                <li>CHNG TBL</li>
-                <li>HELP</li>
+                <li><button className='nonWorkingButton'>SEND ORDER</button></li>
+                <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
+                <li><button className='nonWorkingButton'>SEAT NAME</button></li>
+                <li><button className='nonWorkingButton'>HIDE OLD</button></li>
+                <li><button onClick={handleDirectory} className='workingButton'>DIRECTORY</button></li>
+                <li><button className='nonWorkingButton'>CHNG TBL</button></li>
+                <li><button className='nonWorkingButton'>HELP</button></li>
                 <li>{error
                         ? <>{error}</>
                             : employeeContext
@@ -52,7 +52,7 @@ const MenuTabNav = (props) => {
                                 : <>No User</>
                     }
                 </li>
-                <li onClick={handleLogout}><button>LogOut</button></li>
+                <li><button onClick={handleLogout} className='workingButton'>LogOut</button></li>
             </ul>
         </div>
     )
