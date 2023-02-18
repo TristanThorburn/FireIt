@@ -260,6 +260,7 @@ const MenuTab = () => {
 
                 {mainsCategory
                     ? <MainsScreen
+                        mainsActive={mainsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -270,6 +271,7 @@ const MenuTab = () => {
 
                 {dessertsCategory
                     ? <DessertsScreen
+                        dessertsActive={dessertsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -280,6 +282,7 @@ const MenuTab = () => {
 
                 {nonAlchCategory
                     ? <NonAlchScreen
+                        nonAlchActive={nonAlchCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -290,6 +293,7 @@ const MenuTab = () => {
 
                 {beerCategory
                     ? <BeerScreen
+                        beerActive={beerCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -300,6 +304,7 @@ const MenuTab = () => {
 
                 {cidSprCategory
                     ? <CiderSeltzScreen
+                        cidSprActive={cidSprCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -310,6 +315,7 @@ const MenuTab = () => {
 
                 {mixedCategory
                     ? <MixedDrinksScreen
+                        mixedActive={mixedCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -320,6 +326,7 @@ const MenuTab = () => {
 
                 {liquorsCategory
                     ? <LiquorsScreen
+                        liquorsActive={liquorsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
@@ -330,6 +337,7 @@ const MenuTab = () => {
 
                 {winesCategory
                     ? <WinesScreen
+                        winesActive={winesCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
                         serverData={serverData}
