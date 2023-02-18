@@ -14,7 +14,7 @@
     height:90%;
 
     h2, h3{
-        margin:0 auto;
+        margin:0.5rem auto;
         text-align: center;
     }
     footer{
@@ -26,6 +26,15 @@
         left:0;
         right:0;
         bottom:0;
+    }
+}
+
+.checkSeatInfo{
+    width:80%;
+    margin:10px auto;
+
+    .checkItemCost{
+        text-align: right;
     }
 }
 
