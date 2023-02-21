@@ -1,13 +1,13 @@
 @import './variables.scss';
 
-.beerScreenList{
+.mixedScreenList{
     height:100%;
     width:100%;
     display:flex;
     flex-direction: column;
 }
 
-.beerScreenContainer{
+.mixedScreenContainer{
     margin:0 auto;
     width:80%;
 
@@ -15,7 +15,6 @@
         font-size:2rem;
         text-transform:uppercase;
         text-align: center;
-        margin:0.5rem auto;
     }
     ul{
         @include cleanUl;

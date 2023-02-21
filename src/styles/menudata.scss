@@ -92,6 +92,18 @@ button.deleteItemButton:active{
     }
 }
 
+.ciderSeltzBack{
+        width:200px;
+        font-size: 1.15rem;
+        border-radius:10px;
+        background-color:$backgroundColor;
+        color:white;
+}
+.ciderSeltzBack:active{
+    background-color:lighten($backgroundColor, 10%);
+}
+
+
 .menuItemForm{
     background-color: $backDashBackgroundColor;
     display:flex;

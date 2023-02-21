@@ -7,12 +7,7 @@ const MainsScreen = (props) => {
     const [ mainsData, setMainsData ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
-    // const [ testData, setTestData ] = useState()
-
-    const handleTest = () => {
-        console.log('selected:', selectedItem, 'data:', itemData)
-    }
-
+    
     // Initial Data Population
     useEffect(() => {
         const q = query(mainsCollectionRef, orderBy('name'));
@@ -93,7 +88,6 @@ const MainsScreen = (props) => {
                                 >{main.data.name}
                             </button>
                         </li>)}
-                    <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 </ul>
             </div>
         </div>
