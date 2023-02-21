@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db } from '../../../firebase';
+import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 const NonAlchScreen = (props) => {
     const [ coldDrinkData, setColdDrinkData ] = useState([]);
     const [ hotDrinkData, setHotDrinkData ] = useState([]);
-    // const [ selectedItem, setSelectedItem ] = useState('');
+    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ selectedItem, setSelectedItem ] = useState('');
+    const [ itemData, setItemData ] = useState('');
 
+    // Initial data population
     useEffect(() => {
         const fetchCold = () => {
             const q = query(coldDrinksCollectionRef, orderBy('name'));
@@ -31,29 +35,100 @@ const NonAlchScreen = (props) => {
         fetchCold()
         fetchHot()
     },[])
+
+    // GetDoc for selected item
+    useEffect(() => {
+        if(selectedItem !== '' && collectionRef === 'cold'){
+            const docRef = doc(coldDrinksCollectionRef, selectedItem)
+            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        }
+        if(selectedItem !== '' && collectionRef === 'hot'){
+            const docRef = doc(hotDrinksCollectionRef, selectedItem)
+            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        }
+    }, [selectedItem, collectionRef])
+
+    // Push selected item to check....
+    // logic for seat number, no seat number add/update
+    useEffect(() => {
+        if(props.nonAlchActive){
+            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem){
+                const checkRef = 
+                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
+                setDoc(checkRef, {
+                seat:true,
+                seatNumber:'1',
+                order:[{item:itemData.name, cost:itemData.price}],
+            })
+            }
+            if(!props.selectedSeatExists && props.selectedSeat !== ''){
+                const checkRef = 
+                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
+                setDoc(checkRef, {
+                seat:true,
+                seatNumber:props.selectedSeat,
+                order:[{item:itemData.name, cost:itemData.price}],
+            })
+            }
+            if(props.selectedSeatExists && props.selectedSeat === ''){
+                const checkRef = 
+                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
+                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
+                updateDoc(checkRef, {
+                    order:arrayUnion(...orderToAdd),
+            })
+            }
+            if(props.selectedSeatExists && props.selectedSeat !== ''){
+                const checkRef = 
+                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
+                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
+                updateDoc(checkRef, {
+                    order:arrayUnion(...orderToAdd),
+            })
+            }
+        }
+    }, [itemData, props.selectedSeat, props.nonAlchActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+
+    const handleColdClick =(e) => {
+        setSelectedItem(e.target.id)
+        setCollectionRef('cold')
+    }
+
+    const handleHotClick =(e) => {
+        setSelectedItem(e.target.id)
+        setCollectionRef('hot')
+    }
  
     return(
-        <div>
-            <div className='itemList'>
+        <div className='nonAlchScreenList'>
+            <div className='nonAlchScreenContainer'>
                 <h3>Cold Drinks List</h3>
                 <ul>
                     {coldDrinkData.map(coldDrink => 
                         <li 
                             key={coldDrink.id}
                             >
-                                {coldDrink.data.name}
+                            <button
+                                id={coldDrink.id}
+                                onClick={handleColdClick}
+                                >{coldDrink.data.name}
+                            </button>
                         </li>)}
                 </ul>
             </div>
 
-            <div className='itemList'>
+            <div className='nonAlchScreenContainer'>
                 <h3>Hot Drinks List</h3>
                 <ul>
                     {hotDrinkData.map(hotDrink => 
                         <li 
                             key={hotDrink.id}
                             >
-                                {hotDrink.data.name}
+                            <button
+                                id={hotDrink.id}
+                                onClick={handleHotClick}
+                                >{hotDrink.data.name}
+                            </button>
                         </li>)}
                 </ul>
             </div>

@@ -278,7 +278,7 @@ const AlchData = (props) => {
 
             {ciderTab
                 ? <>
-                    <button onClick={handleBack}>Back</button>
+                    <button onClick={handleBack} className='ciderSeltzBack'>Back</button>
                     <CiderData
                         activeTab={props.activeTab}
                         docQuery={props.docQuery} 
@@ -289,7 +289,7 @@ const AlchData = (props) => {
 
             {hardSeltzerTab
                 ? <>
-                    <button onClick={handleBack}>Back</button>
+                    <button onClick={handleBack} className='ciderSeltzBack'>Back</button>
                     <HardSeltzerData
                         activeTab={props.activeTab}
                         docQuery={props.docQuery} 

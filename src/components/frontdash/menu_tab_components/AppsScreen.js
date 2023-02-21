@@ -7,11 +7,6 @@ const AppsScreen = (props) => {
     const [ appsData, setAppsData ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
-    // const [ testData, setTestData ] = useState()
-
-    const handleTest = () => {
-        console.log('selected:', selectedItem, 'data:', itemData)
-    }
 
     // Initial Data Population
     useEffect(() => {
@@ -93,7 +88,6 @@ const AppsScreen = (props) => {
                                 >{appetizer.data.name}
                             </button>
                         </li>)}
-                    <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 </ul>
             </div>
         </div>

@@ -9,10 +9,6 @@ const TableCheck = (props) => {
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`)
 
-
-    const handleTest = async () => {
-        console.log('server:', props.serverData.employeeNumber, 'table:', props.tableData.name, 'seat:', props.selectedSeat, 'doesSeatExist:', props.doesSeatExist);
-    }
     // Get Data for the check from current server and table
     useEffect(() => {
         if(props.tableData.name !== undefined){
@@ -50,7 +46,7 @@ const TableCheck = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {seat.data.order.map((order, i) => {
+                        {seat.data.order?.map((order, i) => {
                                 return(
                                     <tr key={i}>
                                         <td>{order.item}</td>
@@ -66,8 +62,6 @@ const TableCheck = (props) => {
                 </table> 
             )}
                
-            <button onClick={handleTest} className='testButton'>Test</button>
-
             {props.tableData.name !== undefined
                 ?<footer>
                     <p>Check Total:</p>

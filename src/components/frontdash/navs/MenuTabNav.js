@@ -42,7 +42,7 @@ const MenuTabNav = (props) => {
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li><button className='nonWorkingButton'>SEAT NAME</button></li>
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
-                <li><button onClick={handleDirectory} className='workingButton'>SHOW ALL</button></li>
+                <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
                 <li><button className='nonWorkingButton'>HELP</button></li>
                 <li className='navCurrentUser'>{error
