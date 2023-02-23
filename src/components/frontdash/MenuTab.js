@@ -35,10 +35,6 @@ const MenuTab = () => {
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
     const [ doesSeatExist, setDoesSeatExist ] = useState(false)
 
-    const handleTest = () => {
-        console.log('hi')
-    }
-
     // Get data for current employee and table
     useEffect(() => {
         if(contextTable !== '' ){
@@ -240,7 +236,7 @@ const MenuTab = () => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCH</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li onClick={handleTest}><button className='testButton'>Test</button></li>
+                            <li></li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>
