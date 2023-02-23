@@ -3,9 +3,7 @@ import { orderBy, onSnapshot, query, collection } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
 const TableCheck = (props) => {
-    // props.serverData, props.tableData
     const [ checkData, setCheckData ] = useState([])
-    // query where()
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`)
 
