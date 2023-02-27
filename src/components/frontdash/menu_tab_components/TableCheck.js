@@ -4,8 +4,25 @@ import { useState, useEffect } from 'react';
 
 const TableCheck = (props) => {
     const [ checkData, setCheckData ] = useState([])
+    // const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`)
+
+    const handleTest = () => {
+        // const sum = checkTotal.reduce((a, b) => a + b, 0)
+        console.log('test')
+    }
+
+    // Add up costs of items for check total
+    // useEffect(() => {
+    //     let costsArray = []
+    //     const itemCosts = document.querySelectorAll('.checkItemCost')
+    //     itemCosts.forEach((item) => {
+    //         costsArray.push(Number(item.dataset.value))
+    //     })
+    //     const sum = costsArray.reduce((a, b) => a + b, 0)
+    //     setCheckTotal(sum)
+    // },[])
 
     // Get Data for the check from current server and table
     useEffect(() => {
@@ -22,7 +39,8 @@ const TableCheck = (props) => {
     },[checkCollectionRef, props.tableData.name])
 
     return(
-        <div>
+        <div>            
+            <button onClick={handleTest} className='testButton'>TEST</button>
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>
@@ -49,7 +67,7 @@ const TableCheck = (props) => {
                                     <tr key={i}>
                                         <td>{order.item}</td>
                                         <td
-                                            value={order.cost}
+                                            data-value={order.cost}
                                             className='checkItemCost'
                                             >{order.cost}</td>
                                     </tr>    
@@ -63,11 +81,10 @@ const TableCheck = (props) => {
             {props.tableData.name !== undefined
                 ?<footer>
                     <p>Check Total:</p>
-                    <p>$$$$$$</p>
+                    {/* <p>${checkTotal}</p> */}
                 </footer>
                 :null
             }
-            
         </div>
     )
 }
