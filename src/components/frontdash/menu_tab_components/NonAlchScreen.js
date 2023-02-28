@@ -52,7 +52,7 @@ const NonAlchScreen = (props) => {
     // logic for seat number, no seat number add/update
     useEffect(() => {
         if(props.nonAlchActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem){
+            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
                 setDoc(checkRef, {
@@ -61,7 +61,7 @@ const NonAlchScreen = (props) => {
                 order:[{item:itemData.name, cost:itemData.price}],
             })
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== ''){
+            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
                 setDoc(checkRef, {
@@ -70,7 +70,7 @@ const NonAlchScreen = (props) => {
                 order:[{item:itemData.name, cost:itemData.price}],
             })
             }
-            if(props.selectedSeatExists && props.selectedSeat === ''){
+            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
                 const orderToAdd = [{item:itemData.name, cost:itemData.price}]
@@ -78,7 +78,7 @@ const NonAlchScreen = (props) => {
                     order:arrayUnion(...orderToAdd),
             })
             }
-            if(props.selectedSeatExists && props.selectedSeat !== ''){
+            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
                 const orderToAdd = [{item:itemData.name, cost:itemData.price}]

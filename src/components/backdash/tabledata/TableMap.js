@@ -98,6 +98,11 @@ const TableMap = (props) => {
     }
 
     const handleNoPropagation = (e) => {
+        if(props.tableTabActive){
+            props.setTableTabActive(false);
+            props.setMenuTabActive(true);
+            setContextTable(e.target.parentElement.id);
+        }
         e.stopPropagation()
     }
 
