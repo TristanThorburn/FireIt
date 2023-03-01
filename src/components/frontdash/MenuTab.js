@@ -16,7 +16,7 @@ import LiquorsScreen from './menu_tab_components/LiquorsScreen';
 import WinesScreen from './menu_tab_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
 
-const MenuTab = () => {
+const MenuTab = (props) => {
     const { employeeContext } = useAuth()
     const { contextTable } = useTable();
     const [ tableData, setTableData ] = useState([])
@@ -33,7 +33,9 @@ const MenuTab = () => {
     const [ winesCategory, setWinesCategory ] = useState(false);
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
-    const [ doesSeatExist, setDoesSeatExist ] = useState(false)
+    const [ doesSeatExist, setDoesSeatExist ] = useState(false);
+    const [ currentOrderData, setCurrentOrderData ] = useState('');
+    const [ sendOrder, setSendOrder ] = useState(false);
 
     // Get data for current employee and table
     useEffect(() => {
@@ -59,7 +61,7 @@ const MenuTab = () => {
         }
     }, [contextTable, employeeContext]);
 
-    // Confirm if seat exists on check
+    // Confirm if seat exists on check, if none is selected assume we are using seat 1
     useEffect(() => {
         const doesSeatExist = async () => {
             if(selectedSeat === ''){
@@ -221,6 +223,12 @@ const MenuTab = () => {
                     selectedSeat={selectedSeat}
                     serverData={serverData}
                     tableData={tableData}
+                    currentOrderData={currentOrderData}
+                    setCurrentOrderData={setCurrentOrderData}
+                    sendOrder={sendOrder}
+                    setSendOrder={setSendOrder}
+                    setTableTabActive={props.setTableTabActive}
+                    setMenuTabActive={props.setMenuTabActive}
                     />
             </article>
             
@@ -250,6 +258,9 @@ const MenuTab = () => {
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
+                        setCurrentOrderData={setCurrentOrderData}
+                        currentOrderData={currentOrderData}
+                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
@@ -356,6 +367,8 @@ const MenuTab = () => {
                 toWines={setWinesCategory}
                 setSelectedSeat={setSelectedSeat}
                 setSeatKeyPadActive={setSeatKeyPadActive}
+                setCurrentOrderData={setCurrentOrderData}
+                setSendOrder={setSendOrder}
                 />
         </div>
     )
