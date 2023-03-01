@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cocktailCollectionRef, shotsCollectionRef } from '../../../library/firestoreCollections';
-import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const MixedDrinksScreen = (props) => {
     const [ cocktailData, setCocktailData ] = useState([]);
@@ -10,6 +9,7 @@ const MixedDrinksScreen = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
 
+    // Initial data population screen display
     useEffect(() => {
         const fetchCocktails = () => {
             const q = query(cocktailCollectionRef, orderBy('name'));
@@ -47,46 +47,23 @@ const MixedDrinksScreen = (props) => {
         }
     }, [selectedItem, collectionRef])
 
-    // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.mixedActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.mixedActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
     const handleCocktailClick =(e) => {
         setSelectedItem(e.target.id)
@@ -111,7 +88,7 @@ const MixedDrinksScreen = (props) => {
                             <button
                                 id={cocktail.id}
                                 onClick={handleCocktailClick}
-                                >{cocktail.data.name}
+                                >{cocktail.data.screenName}
                             </button>
                         </li>)}
                 </ul>
@@ -127,7 +104,7 @@ const MixedDrinksScreen = (props) => {
                             <button
                                 id={shot.id}
                                 onClick={handleShotClick}
-                                >{shot.data.name}
+                                >{shot.data.screenName}
                             </button>
                         </li>)}
                 </ul>

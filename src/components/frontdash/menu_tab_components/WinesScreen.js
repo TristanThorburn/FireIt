@@ -4,52 +4,57 @@ import {
     whiteWineCollectionRef,
     bubblyCollectionRef
     } from '../../../library/firestoreCollections';
-    import { db } from '../../../firebase';
-    import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+    import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const WinesScreen = (props) => {
     const [ bubblyData, setBubblyData ] = useState([]);
     const [ redsData, setRedsData ] = useState([]);    
     const [ whitesData, setWhitesData ] = useState([]);
-    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ collectionRef, setCollectionRef ] = useState('bubbly');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
 
     useEffect(() => {
-        const fetchBubbly = () => {
-            const q = query(bubblyCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setBubblyData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'bubbly'){
+            const fetchBubbly = () => {
+                const q = query(bubblyCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setBubblyData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchBubbly()
         }
-        const fetchReds = () => {
-            const q = query(redWineCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setRedsData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'red'){
+            const fetchReds = () => {
+                const q = query(redWineCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setRedsData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchReds()
         }
-        const fetchWhites = () => {
-            const q = query(whiteWineCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setWhitesData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'white'){
+            const fetchWhites = () => {
+                const q = query(whiteWineCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setWhitesData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchWhites()
         }
-        fetchBubbly()
-        fetchReds()
-        fetchWhites()
-    },[])
+    },[collectionRef])
 
     // GetDoc for selected item
     useEffect(() => {
@@ -67,111 +72,104 @@ const WinesScreen = (props) => {
         }
     }, [selectedItem, collectionRef])
 
-    // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.winesActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.winesActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
-    const handleRedClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleBubblyCategory = () => {
+        setCollectionRef('bubbly')
+    }
+
+    const handleRedCategory = () => {
         setCollectionRef('red')
     }
 
-    const handleWhiteClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleWhiteCategory = () => {
         setCollectionRef('white')
     }
 
-    const handleBubblyClick =(e) => {
+    const handleClick =(e) => {
         setSelectedItem(e.target.id)
-        setCollectionRef('bubbly')
     }
     
     return(
         <div className='wineScreenList'>
-            <div className='wineScreenContainer'>
-                <h3>Bubbly List</h3>
-                <ul>
-                    {bubblyData.map(bubbly => 
-                        <li 
-                            key={bubbly.id}
-                            >
-                            <button
-                                id={bubbly.id}
-                                onClick={handleBubblyClick}
-                                >{bubbly.data.name}
-                            </button>
-                        </li>)}
-                </ul>
+            <div className='wineScreenSubNav'>
+                <button onClick={handleBubblyCategory}>Bubbly</button>
+                <button onClick={handleRedCategory}>Red</button>
+                <button onClick={handleWhiteCategory}>White</button>
             </div>
 
-            <div className='wineScreenContainer'>
-                <h3>Red Wine List</h3>
-                <ul>
-                    {redsData.map(red => 
-                        <li 
-                            key={red.id}
-                            >
-                            <button
-                                id={red.id}
-                                onClick={handleRedClick}
-                                >{red.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
-
-            <div className='wineScreenContainer'>
-                <h3>White Wine List</h3>
-                <ul>
-                    {whitesData.map(white => 
-                        <li 
-                            key={white.id}
-                            >
-                            <button
-                                id={white.id}
-                                onClick={handleWhiteClick}
-                                >{white.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
+            {collectionRef === 'bubbly'
+                ? <div className='wineScreenContainer'>
+                    <h3>Bubbly List</h3>
+                    <ul>
+                        {bubblyData.map(bubbly => 
+                            <li 
+                                key={bubbly.id}
+                                >
+                                <button
+                                    id={bubbly.id}
+                                    onClick={handleClick}
+                                    >{bubbly.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
+            {collectionRef === 'red'
+                ? <div className='wineScreenContainer'>
+                    <h3>Red Wine List</h3>
+                    <ul>
+                        {redsData.map(red => 
+                            <li 
+                                key={red.id}
+                                >
+                                <button
+                                    id={red.id}
+                                    onClick={handleClick}
+                                    >{red.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
+            {collectionRef === 'white'
+                ? <div className='wineScreenContainer'>
+                    <h3>White Wine List</h3>
+                    <ul>
+                        {whitesData.map(white => 
+                            <li 
+                                key={white.id}
+                                >
+                                <button
+                                    id={white.id}
+                                    onClick={handleClick}
+                                    >{white.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
         </div>
     )
 }

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../library/firestoreCollections';
-import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const NonAlchScreen = (props) => {
     const [ coldDrinkData, setColdDrinkData ] = useState([]);
@@ -48,46 +47,23 @@ const NonAlchScreen = (props) => {
         }
     }, [selectedItem, collectionRef])
 
-    // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.nonAlchActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.nonAlchActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
     const handleColdClick =(e) => {
         setSelectedItem(e.target.id)
@@ -111,7 +87,7 @@ const NonAlchScreen = (props) => {
                             <button
                                 id={coldDrink.id}
                                 onClick={handleColdClick}
-                                >{coldDrink.data.name}
+                                >{coldDrink.data.screenName}
                             </button>
                         </li>)}
                 </ul>
@@ -127,7 +103,7 @@ const NonAlchScreen = (props) => {
                             <button
                                 id={hotDrink.id}
                                 onClick={handleHotClick}
-                                >{hotDrink.data.name}
+                                >{hotDrink.data.screenName}
                             </button>
                         </li>)}
                 </ul>
