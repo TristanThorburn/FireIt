@@ -1,24 +1,53 @@
-import { useState } from "react"
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const ServerKeyPad = (props) => {
     const [ error, setError ] = useState('')
-    // let numberCombo = []
+    const [ success, setSuccess ] = useState('')
+    const [ managerCombo, setManagerCombo ] =useState()
+    const { setManagerContext } = useAuth()
+    let numberCombo = []
 
     const handleCloseModal = () => {
-        props.setSeatKeyPadActive(false)
+        if(props.seatKeyPadActive){
+            props.setSeatKeyPadActive(false)
+        }
+
+        if(props.managerKeyPadActive){
+            props.setManagerKeyPadActive(false)
+        }
     }
 
     const handleClick = (e) => {
-        if (props.setSeatKeyPadActive){
+        if (props.seatKeyPadActive){
             props.setSelectedSeat((previous) => previous + `${e.target.innerText}`)
+        }
+
+        if (props.managerKeyPadActive){
+            if (numberCombo.length <3){
+                numberCombo.push(e.target.textContent)
+            } else if(numberCombo.length === 3){
+                numberCombo.push(e.target.textContent)
+                const managerPass = new Array(numberCombo.join().replace(/,/g, '')).toString();
+                setManagerCombo(managerPass);
+            }
         }
     }
 
     const handleClear = () => {
-        // numberCombo = [];
-        if(props.setSeatKeyPadActive){
+        if(props.seatKeyPadActive){
             props.setSelectedSeat('')
             setError('Seat Number Cleared')
+        } else {
+            setError('Combo Cleared')
+        }
+        setTimeout(() => {
+            setError('')
+        }, 1000)
+
+        if(props.managerKeyPadActive){
+            numberCombo = [];
+            setError('Manager Pin Cleared')
         } else {
             setError('Combo Cleared')
         }
@@ -28,8 +57,25 @@ const ServerKeyPad = (props) => {
     }
 
     const handleSubmit = () => {
-        if(props.setSeatKeyPadActive){
+        if(props.seatKeyPadActive){
             props.setSeatKeyPadActive(false)
+        }
+        if(props.managerKeyPadActive){
+            if(managerCombo === '1985') {
+                try{
+                    setManagerContext(true)
+                    setSuccess('Manager Authorized')
+                    setTimeout(() => {
+                        props.setManagerKeyPadActive(false)
+                        setSuccess('')
+                    }, 1000)
+                } catch {
+                    setError('failed log in')
+                }
+            } else {
+                setError('Incorrect PIN')
+                numberCombo = []
+            }
         }
     }
 
@@ -40,9 +86,13 @@ const ServerKeyPad = (props) => {
                 <table>
                     <thead>
                         <tr>
-                            {props.setSeatKeyPadActive
+                            {props.seatKeyPadActive
                                 ? <th colSpan={3}>Seat Number? {props.selectedSeat}</th>
-                                : <th colSpan={3}>?</th>
+                                : null
+                            }
+                            {props.managerKeyPadActive
+                                ? <th colSpan={3}>Manager Password?</th>
+                                : null
                             }
                         </tr>
                     </thead>
@@ -70,7 +120,13 @@ const ServerKeyPad = (props) => {
                     </tbody>
                 </table>
                 
-                <div className='padError'>{error}</div>
+                {success
+                    ? <div className='padSuccess'>{success}</div>
+                    : error
+                        ? <div className='padError'>{error}</div>
+                        : null
+                }
+                
             </div>
         </div>
     )

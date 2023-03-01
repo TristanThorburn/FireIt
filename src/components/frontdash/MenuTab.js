@@ -17,7 +17,7 @@ import WinesScreen from './menu_tab_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
 
 const MenuTab = (props) => {
-    const { employeeContext } = useAuth()
+    const { employeeContext, managerContext } = useAuth()
     const { contextTable } = useTable();
     const [ tableData, setTableData ] = useState([])
     const [ serverData, setServerData ] = useState({})
@@ -33,9 +33,15 @@ const MenuTab = (props) => {
     const [ winesCategory, setWinesCategory ] = useState(false);
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
+    const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ doesSeatExist, setDoesSeatExist ] = useState(false);
     const [ currentOrderData, setCurrentOrderData ] = useState('');
     const [ sendOrder, setSendOrder ] = useState(false);
+
+    const handleTest = () => {
+        console.log('mgrkeyopen:', managerKeyPadActive)
+        console.log('managerContext:', managerContext)
+    }
 
     // Get data for current employee and table
     useEffect(() => {
@@ -209,9 +215,18 @@ const MenuTab = (props) => {
         <div className='menuTab'>
             {seatKeyPadActive
                 ? <ServerKeyPad
+                    seatKeyPadActive={seatKeyPadActive}
                     setSeatKeyPadActive={setSeatKeyPadActive}
                     setSelectedSeat={setSelectedSeat}
                     selectedSeat={selectedSeat}
+                    />
+                : null
+            }
+
+            {managerKeyPadActive
+                ? <ServerKeyPad
+                    managerKeyPadActive={managerKeyPadActive}
+                    setManagerKeyPadActive={setManagerKeyPadActive}
                     />
                 : null
             }
@@ -244,7 +259,7 @@ const MenuTab = (props) => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCH</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li></li>
+                            <li><button onClick={handleTest} className='testButton'>TEST</button></li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>
@@ -393,6 +408,7 @@ const MenuTab = (props) => {
                 setSeatKeyPadActive={setSeatKeyPadActive}
                 setCurrentOrderData={setCurrentOrderData}
                 setSendOrder={setSendOrder}
+                setManagerKeyPadActive={setManagerKeyPadActive}
                 />
         </div>
     )
