@@ -16,7 +16,7 @@ import LiquorsScreen from './menu_tab_components/LiquorsScreen';
 import WinesScreen from './menu_tab_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
 
-const MenuTab = () => {
+const MenuTab = (props) => {
     const { employeeContext } = useAuth()
     const { contextTable } = useTable();
     const [ tableData, setTableData ] = useState([])
@@ -35,6 +35,7 @@ const MenuTab = () => {
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
     const [ doesSeatExist, setDoesSeatExist ] = useState(false);
     const [ currentOrderData, setCurrentOrderData ] = useState('');
+    const [ sendOrder, setSendOrder ] = useState(false);
 
     // Get data for current employee and table
     useEffect(() => {
@@ -224,6 +225,10 @@ const MenuTab = () => {
                     tableData={tableData}
                     currentOrderData={currentOrderData}
                     setCurrentOrderData={setCurrentOrderData}
+                    sendOrder={sendOrder}
+                    setSendOrder={setSendOrder}
+                    setTableTabActive={props.setTableTabActive}
+                    setMenuTabActive={props.setMenuTabActive}
                     />
             </article>
             
@@ -363,6 +368,7 @@ const MenuTab = () => {
                 setSelectedSeat={setSelectedSeat}
                 setSeatKeyPadActive={setSeatKeyPadActive}
                 setCurrentOrderData={setCurrentOrderData}
+                setSendOrder={setSendOrder}
                 />
         </div>
     )

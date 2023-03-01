@@ -39,7 +39,10 @@ const FrontDash = () => {
             }
 
             {menuTabActive
-                ? <MenuTab />
+                ? <MenuTab 
+                    setTableTabActive={setTableTabActive}
+                    setMenuTabActive={setMenuTabActive}
+                    />
                 : null
             }
 

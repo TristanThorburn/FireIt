@@ -7,6 +7,10 @@ const MenuTabNav = (props) => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
+    const handleSendOrder = () => {
+        props.setSendOrder(true)
+    }
+
     const handleSeatNum = () => {
         props.setSeatKeyPadActive(true)
         props.setSelectedSeat('')
@@ -40,7 +44,7 @@ const MenuTabNav = (props) => {
     return(
         <div className='frontLowerNav'>
             <ul>
-                <li><button className='nonWorkingButton'>SEND ORDER</button></li>
+                <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li><button className='nonWorkingButton'>SEAT NAME</button></li>
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>

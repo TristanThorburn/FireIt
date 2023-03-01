@@ -46,7 +46,7 @@ const AppsScreen = (props) => {
         }
     }, [itemData, props, selectedItem])
 
-    // Push selected item to check....
+    // OLD LOGIC TO ADD ITEM DIRECTLY TO FIREBASE AND DISPLAY ON CHECK, CAUSING EMPTY STRING PUSHES:
     // logic for seat number, no seat number add/update
     // useEffect(() => {
     //     if(props.appsActive){
