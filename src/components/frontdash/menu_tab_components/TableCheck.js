@@ -1,6 +1,6 @@
 import { db } from '../../../firebase';
 import { orderBy, onSnapshot, query, collection } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const TableCheck = (props) => {
     const [ checkData, setCheckData ] = useState([])
@@ -10,7 +10,12 @@ const TableCheck = (props) => {
 
     const handleTest = () => {
         // const sum = checkTotal.reduce((a, b) => a + b, 0)
-        console.log('test')
+        // const pending = document.querySelectorAll('.pendingOrder')
+        // console.log(pending)
+        // pending.forEach(item => {
+        //     console.log(item.firstElementChild.innerText, item.lastElementChild.innerText)
+        // })
+        console.log(props.doesSeatExist)
     }
 
     // Add up costs of items for check total
@@ -38,6 +43,58 @@ const TableCheck = (props) => {
         }
     },[checkCollectionRef, props.tableData.name])
 
+    // append pending order to the current check.
+    useEffect(() => {
+        if(props.doesSeatExist === true){
+            props.currentOrderData.forEach(order => {
+                const seatToAppend = document.getElementById(`seat${order.seat}`)
+                const orderName = document.createTextNode(order.name)
+                const orderCost = document.createTextNode(order.cost)
+                const orderInfo = document.createElement('tr')
+                const nameContainer = document.createElement('td')
+                const costContainer = document.createElement('td')
+                costContainer.classList.add('checkItemCost')
+                orderInfo.classList.add('pendingOrder')
+                nameContainer.appendChild(orderName)
+                costContainer.appendChild(orderCost)
+                orderInfo.appendChild(nameContainer)
+                orderInfo.appendChild(costContainer)
+                seatToAppend.appendChild(orderInfo)
+            })
+        }
+        if(props.doesSeatExist === false){
+            props.currentOrderData.forEach(order => {
+                const seatsAndOrders = document.querySelector('.seatsAndOrders')
+                const newTable = document.createElement('table')
+                newTable.classList.add('checkSeatInfo')
+                newTable.classList.add('pendingSeat')
+                const newTableHead = document.createElement('thead')
+                const newTableBody = document.createElement('tbody')
+                newTableBody.setAttribute('id', `seat${order.seat}` )
+                const newTableHeader = document.createElement('th')
+                newTableHeader.setAttribute('colspan', '2')
+                const seatNumber = document.createTextNode(`Seat: ${order.seat}`)
+                newTableHeader.appendChild(seatNumber)
+                const orderName = document.createTextNode(order.name)
+                const orderCost = document.createTextNode(order.cost)
+                const orderInfo = document.createElement('tr')
+                const nameContainer = document.createElement('td')
+                const costContainer = document.createElement('td')
+                costContainer.classList.add('checkItemCost')
+                orderInfo.classList.add('pendingOrder')
+                nameContainer.appendChild(orderName)
+                costContainer.appendChild(orderCost)
+                orderInfo.appendChild(nameContainer)
+                orderInfo.appendChild(costContainer)
+                newTableBody.appendChild(orderInfo)
+                newTableHead.appendChild(newTableHeader)
+                newTable.appendChild(newTableHead)
+                newTable.appendChild(newTableBody)
+                seatsAndOrders.appendChild(newTable)
+            })
+        }
+    }, [props.currentOrderData, props.doesSeatExist])
+
     return(
         <div>            
             <button onClick={handleTest} className='testButton'>TEST</button>
@@ -51,33 +108,49 @@ const TableCheck = (props) => {
                 </div>
             }
 
-            {checkData?.map(seat =>
-                <table
-                    key={seat?.id}
-                    className='checkSeatInfo'
-                    >
-                    <thead>
-                        <tr>
-                            <th colSpan={2}>Seat: {seat.data?.seatNumber}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {seat.data.order?.map((order, i) => {
-                                return(
-                                    <tr key={i}>
-                                        <td>{order.item}</td>
+            <div className='seatsAndOrders'>
+                {checkData?.map(seat =>
+                    <table
+                        key={seat?.id}
+                        className='checkSeatInfo'
+                        >
+                        <thead>
+                                <th
+                                    colSpan={2}
+                                    >Seat: {seat.data?.seatNumber}
+                                </th>
+                        </thead>
+                        <tbody id={seat?.id}>
+                            {seat.data.order?.map((order, i) => {
+                                    return(
+                                        <tr key={i}>
+                                            <td>{order.item}</td>
+                                            <td
+                                                data-value={order.cost}
+                                                className='checkItemCost'
+                                                >{order.cost}</td>
+                                        </tr>    
+                                    )
+                                })
+                            }
+                            {props.currentOrderData.filter(o => o.seat === `${seat?.id}`)
+                                ? props.currentOrderData.filter(o => o.seat === `${seat?.id}`).forEach(item =>{
+                                    <tr>
+                                        <td>{item.name}</td>
                                         <td
-                                            data-value={order.cost}
+                                            data-value={item.cost}
                                             className='checkItemCost'
-                                            >{order.cost}</td>
-                                    </tr>    
-                                )
-                            })
-                        }
-                    </tbody>
-                </table> 
-            )}
-               
+                                            >{item.cost}
+                                        </td>
+                                    </tr>
+                                })
+                                : null
+                            }
+                        </tbody>
+                    </table> 
+                )}
+            </div>
+
             {props.tableData.name !== undefined
                 ?<footer>
                     <p>Check Total:</p>

@@ -9,6 +9,7 @@ const MenuTabNav = (props) => {
 
     const handleSeatNum = () => {
         props.setSeatKeyPadActive(true)
+        props.setSelectedSeat('')
     }
     
     const handleDirectory = () => {

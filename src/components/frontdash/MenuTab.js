@@ -33,7 +33,8 @@ const MenuTab = () => {
     const [ winesCategory, setWinesCategory ] = useState(false);
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
-    const [ doesSeatExist, setDoesSeatExist ] = useState(false)
+    const [ doesSeatExist, setDoesSeatExist ] = useState(false);
+    const [ currentOrderData, setCurrentOrderData ] = useState([]);
 
     // Get data for current employee and table
     useEffect(() => {
@@ -59,7 +60,7 @@ const MenuTab = () => {
         }
     }, [contextTable, employeeContext]);
 
-    // Confirm if seat exists on check
+    // Confirm if seat exists on check, if none is selected assume we are using seat 1
     useEffect(() => {
         const doesSeatExist = async () => {
             if(selectedSeat === ''){
@@ -221,6 +222,7 @@ const MenuTab = () => {
                     selectedSeat={selectedSeat}
                     serverData={serverData}
                     tableData={tableData}
+                    currentOrderData={currentOrderData}
                     />
             </article>
             
@@ -250,6 +252,9 @@ const MenuTab = () => {
                         selectedSeat={selectedSeat}
                         serverData={serverData}
                         tableData={tableData}
+                        setCurrentOrderData={setCurrentOrderData}
+                        currentOrderData={currentOrderData}
+                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
