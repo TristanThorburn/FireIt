@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const MenuTabNav = (props) => {
-    const { currentUser, logout, employeeContext } = useAuth();
+    const { currentUser, logout, employeeContext, managerContext, setManagerContext } = useAuth();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
@@ -15,6 +15,16 @@ const MenuTabNav = (props) => {
         props.setSeatKeyPadActive(true)
         props.setSelectedSeat('')
         props.setCurrentOrderData('')
+    }
+
+    const handleMgrOveride = () => {
+        if(managerContext === false){
+            props.setManagerKeyPadActive(true)
+        }
+        
+        if(managerContext === true){
+            setManagerContext(false)
+        }
     }
     
     const handleDirectory = () => {
@@ -46,7 +56,13 @@ const MenuTabNav = (props) => {
             <ul>
                 <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
-                <li><button className='nonWorkingButton'>SEAT NAME</button></li>
+                <li><button onClick={handleMgrOveride} className='workingButton'>
+                    {managerContext
+                        ? 'CANCEL MGR'
+                        : 'MGR OVER'
+                    }
+                    </button>
+                </li>
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
                 <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>

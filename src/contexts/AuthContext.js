@@ -14,6 +14,7 @@ const AuthProvider = ({children}) => {
     const auth = getAuth(app);
     const [ currentUser, setCurrentUser ] = useState('');
     const [ employeeContext, setEmployeeContext ] = useState([]);
+    const [ managerContext, setManagerContext ] = useState(false)
     const [ fireitID, setFireitID ] = useState('');
     const [ loading, setLoading ] = useState(true)
     const [ loggedIn, setLoggedIn ] = useState(false);
@@ -88,6 +89,8 @@ const AuthProvider = ({children}) => {
         signUp,
         employeeContext,
         setLoggedIn,
+        setManagerContext,
+        managerContext
     }
 
     return(
