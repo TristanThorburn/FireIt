@@ -163,8 +163,26 @@ const MenuItemForm = (props) => {
 
     const handleAddItem = (e) => {
         e.preventDefault()
-
-        if(props.newItem === true && nameRef.current.value !== ''){
+        // Ensure there is a screen Name
+        if(props.newItem === true 
+            && nameRef.current.value !== '' 
+            && onScreenNameRef.current.value === ''){
+            addDoc(collectionRef, {
+                name:nameRef.current.value,
+                itemStock:itemStockRef.current.value,
+                screenName:nameRef.current.value,
+                chitName:chitNameRef.current.value,
+                price:itemPriceRef.current.value,
+                type:itemType,
+                taxGroup:taxGroup,
+                printerRoute:printerRoute,
+                popUps:popUps.popUpsList,
+            });
+        }
+        // Original add item code
+        if(props.newItem === true 
+            && nameRef.current.value !== ''
+            && onScreenNameRef.current.value !== ''){
             addDoc(collectionRef, {
                 name:nameRef.current.value,
                 itemStock:itemStockRef.current.value,
