@@ -4,52 +4,58 @@ import {
     beerCanCollectionRef,
     beerDraftCollectionRef }
     from '../../../library/firestoreCollections';
-    import { db } from '../../../firebase';
-    import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+    import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const BeerScreen = (props) => {
     const [ bottlesData, setBottlesData ] = useState([]);
     const [ cansData, setCansData ] = useState([]);    
     const [ draftData, setDraftData ] = useState([]);
-    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ collectionRef, setCollectionRef ] = useState('bottle');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
 
+    // Data population based on beer type
     useEffect(() => {
-        const fetchBottles = () => {
-            const q = query(beerBottleCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setBottlesData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'bottle'){
+            const fetchBottles = () => {
+                const q = query(beerBottleCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setBottlesData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchBottles()
         }
-        const fetchCans = () => {
-            const q = query(beerCanCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setCansData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'can'){
+            const fetchCans = () => {
+                const q = query(beerCanCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setCansData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchCans()
         }
-        const fetchDraft = () => {
-            const q = query(beerDraftCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setDraftData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'draft'){
+            const fetchDraft = () => {
+                const q = query(beerDraftCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setDraftData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchDraft()
         }
-        fetchBottles()
-        fetchCans()
-        fetchDraft()
-    },[])
+    },[collectionRef])
 
     // GetDoc for selected item
     useEffect(() => {
@@ -67,111 +73,105 @@ const BeerScreen = (props) => {
         }
     }, [selectedItem, collectionRef])
 
-    // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.beerActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.beerActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
-    const handleBottleClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleBottlesCategory = () => {
         setCollectionRef('bottle')
     }
 
-    const handleCanClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleCansCategory = () => {
         setCollectionRef('can')
     }
 
-    const handleDraftClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleDraftCategory = () => {
         setCollectionRef('draft')
+    }
+
+    const handleClick =(e) => {
+        setSelectedItem(e.target.id)
     }
   
     return(
         <div className='beerScreenList'>
-            <div className='beerScreenContainer'>
-                <h3>Bottles List</h3>
-                <ul>
-                    {bottlesData.map(bottle => 
-                        <li 
-                            key={bottle.id}
-                            >
-                            <button
-                                id={bottle.id}
-                                onClick={handleBottleClick}
-                                >{bottle.data.name}
-                            </button>
-                        </li>)}
-                </ul>
+            <div className='beerScreenSubNav'>
+                <button onClick={handleBottlesCategory}>Bottles</button>
+                <button onClick={handleCansCategory}>Cans</button>
+                <button onClick={handleDraftCategory}>Draft</button>
             </div>
 
-            <div className='beerScreenContainer'>
-                <h3>Cans List</h3>
-                <ul>
-                    {cansData.map(can => 
-                        <li 
-                            key={can.id}
-                            >
-                            <button
-                                id={can.id}
-                                onClick={handleCanClick}
-                                >{can.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
+            {collectionRef === 'bottle'
+                ?<div className='beerScreenContainer'>
+                    <h3>Bottles List</h3>
+                    <ul>
+                        {bottlesData.map(bottle => 
+                            <li 
+                                key={bottle.id}
+                                >
+                                <button
+                                    id={bottle.id}
+                                    onClick={handleClick}
+                                    >{bottle.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
 
-            <div className='beerScreenContainer'>
-                <h3>Draft List</h3>
-                <ul>
-                    {draftData.map(draft => 
-                        <li 
-                            key={draft.id}
-                            >
-                            <button
-                                id={draft.id}
-                                onClick={handleDraftClick}
-                                >{draft.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
+            {collectionRef === 'can'
+                ?<div className='beerScreenContainer'>
+                    <h3>Cans List</h3>
+                    <ul>
+                        {cansData.map(can => 
+                            <li 
+                                key={can.id}
+                                >
+                                <button
+                                    id={can.id}
+                                    onClick={handleClick}
+                                    >{can.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
+            {collectionRef === 'draft'
+                ?<div className='beerScreenContainer'>
+                    <h3>Draft List</h3>
+                    <ul>
+                        {draftData.map(draft => 
+                            <li 
+                                key={draft.id}
+                                >
+                                <button
+                                    id={draft.id}
+                                    onClick={handleClick}
+                                    >{draft.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
         </div>
     )
 }

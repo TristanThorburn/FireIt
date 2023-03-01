@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/firestoreCollections';
-import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
@@ -47,46 +46,23 @@ const CiderSeltzScreen = (props) => {
         }
     }, [selectedItem, collectionRef])
 
-    // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.cidSprActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.cidSprActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
     const handleCiderClick =(e) => {
         setSelectedItem(e.target.id)
@@ -110,7 +86,7 @@ const CiderSeltzScreen = (props) => {
                             <button
                                 id={cider.id}
                                 onClick={handleCiderClick}
-                                >{cider.data.name}
+                                >{cider.data.screenName}
                             </button>
                         </li>)}
                 </ul>
@@ -126,7 +102,7 @@ const CiderSeltzScreen = (props) => {
                             <button
                                 id={seltzer.id}
                                 onClick={handleSeltzerClick}
-                                >{seltzer.data.name}
+                                >{seltzer.data.screenName}
                             </button>
                         </li>)}
                 </ul>

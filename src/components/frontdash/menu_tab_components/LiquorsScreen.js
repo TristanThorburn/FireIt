@@ -6,8 +6,7 @@ import {
     vodkaCollectionRef,
     whiskeyCollectionRef,
 } from '../../../library/firestoreCollections';
-import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const LiquorsScreen = (props) => {
     const [ ginData, setGinData ] = useState([]);
@@ -15,67 +14,78 @@ const LiquorsScreen = (props) => {
     const [ tequilaData, setTequilaData ] = useState([]);
     const [ vodkaData, setVodkaData ] = useState([]);
     const [ whiskeyData, setWhiskeyData ] = useState([]);
-    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ collectionRef, setCollectionRef ] = useState('gin');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
 
+    // Initial population of screen from data
     useEffect(() => {
-        const fetchGins = () => {
-            const q = query(ginCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setGinData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'gin'){
+            const fetchGins = () => {
+                const q = query(ginCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setGinData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchGins()
         }
-        const fetchRums = () => {
-            const q = query(rumCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setRumData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'rum'){
+            const fetchRums = () => {
+                const q = query(rumCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setRumData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchRums()
         }
-        const fetchTequilas = () => {
-            const q = query(tequilaCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setTequilaData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'tequila'){
+            const fetchTequilas = () => {
+                const q = query(tequilaCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setTequilaData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchTequilas()
         }
-        const fetchVodkas = () => {
-            const q = query(vodkaCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setVodkaData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'vodka'){
+            const fetchVodkas = () => {
+                const q = query(vodkaCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setVodkaData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchVodkas()
         }
-        const fetchWhiskeys = () => {
-            const q = query(whiskeyCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setWhiskeyData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'whiskey'){
+            const fetchWhiskeys = () => {
+                const q = query(whiskeyCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setWhiskeyData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchWhiskeys()
         }
-        fetchGins()
-        fetchRums()
-        fetchTequilas()
-        fetchVodkas()
-        fetchWhiskeys()
-    },[])
+    },[collectionRef])
 
     // GetDoc for selected item
     useEffect(() => {
@@ -101,153 +111,151 @@ const LiquorsScreen = (props) => {
         }
     }, [selectedItem, collectionRef])
 
-    // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.liquorsActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.liquorsActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
-    const handleGinClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleGinCategory = () => {
         setCollectionRef('gin')
     }
 
-    const handleRumClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleRumCategory = () => {
         setCollectionRef('rum')
     }
 
-    const handleTequilaClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleTequilaCategory = () => {
         setCollectionRef('tequila')
     }
 
-    const handleVodkaClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleVodkaCategory = () => {
         setCollectionRef('vodka')
     }
 
-    const handleWhiskeyClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleWhiskeyCategory = () => {
         setCollectionRef('whiskey')
+    }
+
+    const handleClick =(e) => {
+        setSelectedItem(e.target.id)
     }
      
     return(
         <div className='liquorScreenList'>
-            <div className='liquorScreenContainer'>
-                <h3>Gins List</h3>
-                <ul>
-                    {ginData.map(gin => 
-                        <li 
-                            key={gin.id}
-                            >
-                            <button
-                                id={gin.id}
-                                onClick={handleGinClick}
-                                >{gin.data.name}
-                            </button>
-                        </li>)}
-                </ul>
+            <div className='liquorScreenSubNav'>
+                <button onClick={handleGinCategory}>Gin</button>
+                <button onClick={handleRumCategory}>Rum</button>
+                <button onClick={handleTequilaCategory}>Tequila</button>
+                <button onClick={handleVodkaCategory}>Vodka</button>
+                <button onClick={handleWhiskeyCategory}>Whiskey</button>
             </div>
 
-            <div className='liquorScreenContainer'>
-                <h3>Rums List</h3>
-                <ul>
-                    {rumData.map(rum => 
-                        <li 
-                            key={rum.id}
-                            >
-                            <button
-                                id={rum.id}
-                                onClick={handleRumClick}
-                                >{rum.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
-
-            <div className='liquorScreenContainer'>
-                <h3>Tequilas List</h3>
-                <ul>
-                    {tequilaData.map(tequilas => 
-                        <li 
-                            key={tequilas.id}
-                            >
-                            <button
-                                id={tequilas.id}
-                                onClick={handleTequilaClick}
-                                >{tequilas.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
-
-            <div className='liquorScreenContainer'>
-                <h3>Vodkas List</h3>
-                <ul>
-                    {vodkaData.map(vodka => 
-                        <li 
-                            key={vodka.id}
-                            >
-                            <button
-                                id={vodka.id}
-                                onClick={handleVodkaClick}
-                                >{vodka.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
-
-            <div className='liquorScreenContainer'>
-                <h3>Whiskeys List</h3>
-                <ul>
-                    {whiskeyData.map(whiskey => 
-                        <li 
-                            key={whiskey.id}
-                            >
-                            <button
-                                id={whiskey.id}
-                                onClick={handleWhiskeyClick}
-                                >{whiskey.data.name}
-                            </button>
-                        </li>)}
-                </ul>
-            </div>
+            {collectionRef === 'gin'
+                ? <div className='liquorScreenContainer'>
+                    <h3>Gins List</h3>
+                    <ul>
+                        {ginData.map(gin => 
+                            <li 
+                                key={gin.id}
+                                >
+                                <button
+                                    id={gin.id}
+                                    onClick={handleClick}
+                                    >{gin.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            {collectionRef === 'rum'
+                ? <div className='liquorScreenContainer'>
+                    <h3>Rums List</h3>
+                    <ul>
+                        {rumData.map(rum => 
+                            <li 
+                                key={rum.id}
+                                >
+                                <button
+                                    id={rum.id}
+                                    onClick={handleClick}
+                                    >{rum.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
+            {collectionRef === 'tequila'
+                ? <div className='liquorScreenContainer'>
+                    <h3>Tequilas List</h3>
+                    <ul>
+                        {tequilaData.map(tequilas => 
+                            <li 
+                                key={tequilas.id}
+                                >
+                                <button
+                                    id={tequilas.id}
+                                    onClick={handleClick}
+                                    >{tequilas.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
+            {collectionRef === 'vodka'
+                ? <div className='liquorScreenContainer'>
+                    <h3>Vodkas List</h3>
+                    <ul>
+                        {vodkaData.map(vodka => 
+                            <li 
+                                key={vodka.id}
+                                >
+                                <button
+                                    id={vodka.id}
+                                    onClick={handleClick}
+                                    >{vodka.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
+            
+            {collectionRef === 'whiskey'
+                ? <div className='liquorScreenContainer'>
+                    <h3>Whiskeys List</h3>
+                    <ul>
+                        {whiskeyData.map(whiskey => 
+                            <li 
+                                key={whiskey.id}
+                                >
+                                <button
+                                    id={whiskey.id}
+                                    onClick={handleClick}
+                                    >{whiskey.data.screenName}
+                                </button>
+                            </li>)}
+                    </ul>
+                </div>
+                : null
+            }
         </div>
     )
 }

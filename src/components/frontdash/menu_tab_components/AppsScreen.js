@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../library/firestoreCollections';
-// import { db } from '../../../firebase';
 import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const AppsScreen = (props) => {

@@ -1,17 +1,11 @@
 import { useState, useEffect } from 'react';
 import { dessertsCollectionRef } from '../../../library/firestoreCollections';
-import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
 
 const DessertsScreen = (props) => {
     const [ dessertsData, setDessertsData ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
-    // const [ testData, setTestData ] = useState()
-
-    const handleTest = () => {
-        console.log('selected:', selectedItem, 'data:', itemData)
-    }
 
     // Initial Data Population
     useEffect(() => {
@@ -33,46 +27,23 @@ const DessertsScreen = (props) => {
         }
     }, [selectedItem])
 
-        // Push selected item to check....
-    // logic for seat number, no seat number add/update
+    // add selected item to display as pending order on check
     useEffect(() => {
-        if(props.dessertsActive){
-            if(!props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:'1',
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
+        if(selectedItem !== ''){
+            if(itemData.name && props.selectedSeat === ''){
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
-            if(!props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                setDoc(checkRef, {
-                seat:true,
-                seatNumber:props.selectedSeat,
-                order:[{item:itemData.name, cost:itemData.price}],
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat === '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, 'seat1')
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
-            }
-            if(props.selectedSeatExists && props.selectedSeat !== '' && selectedItem !== ''){
-                const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `seat${props.selectedSeat}`)
-                const orderToAdd = [{item:itemData.name, cost:itemData.price}]
-                updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd),
-            })
+            if(itemData.name && props.selectedSeat !== ''){
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                props.setCurrentOrderData(orderToAdd)
+                setSelectedItem('')
+                setItemData('')
             }
         }
-    }, [itemData, props.selectedSeat, props.dessertsActive, props.selectedSeatExists, props.serverData.employeeNumber, props.tableData.name, selectedItem])
+    }, [itemData, props, selectedItem])
 
     const handleClick =(e) => {
         setSelectedItem(e.target.id)
@@ -81,7 +52,7 @@ const DessertsScreen = (props) => {
     return(
         <div className='dessertScreenList'>
             <div className='dessertScreenContainer'>
-                <h3>Dessertss List</h3>
+                <h3>Desserts List</h3>
                 <ul>
                     {dessertsData.map(desserts => 
                         <li 
@@ -90,10 +61,9 @@ const DessertsScreen = (props) => {
                             <button
                                 id={desserts.id}
                                 onClick={handleClick}
-                                >{desserts.data.name}
+                                >{desserts.data.screenName}
                             </button>
                         </li>)}
-                <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 </ul>
             </div>
         </div>
