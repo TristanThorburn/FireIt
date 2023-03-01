@@ -10,6 +10,7 @@ const MenuTabNav = (props) => {
     const handleSeatNum = () => {
         props.setSeatKeyPadActive(true)
         props.setSelectedSeat('')
+        props.setCurrentOrderData('')
     }
     
     const handleDirectory = () => {

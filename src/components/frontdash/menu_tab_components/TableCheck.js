@@ -10,12 +10,11 @@ const TableCheck = (props) => {
 
     const handleTest = () => {
         // const sum = checkTotal.reduce((a, b) => a + b, 0)
-        // const pending = document.querySelectorAll('.pendingOrder')
-        // console.log(pending)
-        // pending.forEach(item => {
-        //     console.log(item.firstElementChild.innerText, item.lastElementChild.innerText)
-        // })
-        console.log(props.doesSeatExist)
+        const what = document.getElementById(`seat${props.selectedSeat}`)
+        console.log('getbyid:', what)
+        console.log('does seat exist?:', props.doesSeatExist)
+        console.log('current order data?:', props.currentOrderData)
+        console.log('selected seat:', props.selectedSeat)
     }
 
     // Add up costs of items for check total
@@ -45,11 +44,12 @@ const TableCheck = (props) => {
 
     // append pending order to the current check.
     useEffect(() => {
-        if(props.doesSeatExist === true){
-            props.currentOrderData.forEach(order => {
-                const seatToAppend = document.getElementById(`seat${order.seat}`)
-                const orderName = document.createTextNode(order.name)
-                const orderCost = document.createTextNode(order.cost)
+        if(props.doesSeatExist === true
+            && document.getElementById(`seat${props.selectedSeat}`) !== null
+            && props.currentOrderData !== ''){
+                const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
+                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 const costContainer = document.createElement('td')
@@ -60,23 +60,63 @@ const TableCheck = (props) => {
                 orderInfo.appendChild(nameContainer)
                 orderInfo.appendChild(costContainer)
                 seatToAppend.appendChild(orderInfo)
-            })
+                props.setCurrentOrderData('')
         }
-        if(props.doesSeatExist === false){
-            props.currentOrderData.forEach(order => {
+        if(props.doesSeatExist === false
+            && document.getElementById(`seat${props.selectedSeat}`) !== null
+            && props.currentOrderData !== ''){
+                const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
+                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderCost = document.createTextNode(props.currentOrderData.cost)
+                const orderInfo = document.createElement('tr')
+                const nameContainer = document.createElement('td')
+                const costContainer = document.createElement('td')
+                costContainer.classList.add('checkItemCost')
+                orderInfo.classList.add('pendingOrder')
+                nameContainer.appendChild(orderName)
+                costContainer.appendChild(orderCost)
+                orderInfo.appendChild(nameContainer)
+                orderInfo.appendChild(costContainer)
+                seatToAppend.appendChild(orderInfo)
+                props.setCurrentOrderData('')
+        }
+        if(props.doesSeatExist === true
+            && document.getElementById(`seat${props.selectedSeat}`) === null
+            && props.selectedSeat === ''
+            && props.currentOrderData !== ''){
+                const seatToAppend = document.getElementById('seat1')
+                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderCost = document.createTextNode(props.currentOrderData.cost)
+                const orderInfo = document.createElement('tr')
+                const nameContainer = document.createElement('td')
+                const costContainer = document.createElement('td')
+                costContainer.classList.add('checkItemCost')
+                orderInfo.classList.add('pendingOrder')
+                nameContainer.appendChild(orderName)
+                costContainer.appendChild(orderCost)
+                orderInfo.appendChild(nameContainer)
+                orderInfo.appendChild(costContainer)
+                seatToAppend.appendChild(orderInfo)
+                props.setCurrentOrderData('')
+        }
+        if(props.doesSeatExist === false 
+            && document.getElementById(`seat${props.selectedSeat}`) === null
+            && props.currentOrderData !== ''){
                 const seatsAndOrders = document.querySelector('.seatsAndOrders')
                 const newTable = document.createElement('table')
                 newTable.classList.add('checkSeatInfo')
                 newTable.classList.add('pendingSeat')
                 const newTableHead = document.createElement('thead')
+                const newTableHeadRow = document.createElement('tr')
                 const newTableBody = document.createElement('tbody')
-                newTableBody.setAttribute('id', `seat${order.seat}` )
+                newTableBody.setAttribute('id', `seat${props.currentOrderData.seat}` )
                 const newTableHeader = document.createElement('th')
                 newTableHeader.setAttribute('colspan', '2')
-                const seatNumber = document.createTextNode(`Seat: ${order.seat}`)
+                const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
-                const orderName = document.createTextNode(order.name)
-                const orderCost = document.createTextNode(order.cost)
+                newTableHeadRow.appendChild(newTableHeader)
+                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 const costContainer = document.createElement('td')
@@ -87,13 +127,13 @@ const TableCheck = (props) => {
                 orderInfo.appendChild(nameContainer)
                 orderInfo.appendChild(costContainer)
                 newTableBody.appendChild(orderInfo)
-                newTableHead.appendChild(newTableHeader)
+                newTableHead.appendChild(newTableHeadRow)
                 newTable.appendChild(newTableHead)
                 newTable.appendChild(newTableBody)
                 seatsAndOrders.appendChild(newTable)
-            })
+                props.setCurrentOrderData('')
         }
-    }, [props.currentOrderData, props.doesSeatExist])
+    }, [props.currentOrderData, props.doesSeatExist, props.selectedSeat, props])
 
     return(
         <div>            
@@ -115,10 +155,12 @@ const TableCheck = (props) => {
                         className='checkSeatInfo'
                         >
                         <thead>
+                            <tr>
                                 <th
                                     colSpan={2}
                                     >Seat: {seat.data?.seatNumber}
                                 </th>
+                            </tr>
                         </thead>
                         <tbody id={seat?.id}>
                             {seat.data.order?.map((order, i) => {
@@ -132,19 +174,6 @@ const TableCheck = (props) => {
                                         </tr>    
                                     )
                                 })
-                            }
-                            {props.currentOrderData.filter(o => o.seat === `${seat?.id}`)
-                                ? props.currentOrderData.filter(o => o.seat === `${seat?.id}`).forEach(item =>{
-                                    <tr>
-                                        <td>{item.name}</td>
-                                        <td
-                                            data-value={item.cost}
-                                            className='checkItemCost'
-                                            >{item.cost}
-                                        </td>
-                                    </tr>
-                                })
-                                : null
                             }
                         </tbody>
                     </table> 

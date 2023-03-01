@@ -32,13 +32,13 @@ const AppsScreen = (props) => {
     useEffect(() => {
         if(selectedItem !== ''){
             if(itemData.name && props.selectedSeat === ''){
-                const orderToAdd = [{seat: '1', name:itemData.screenName, cost:itemData.price}]
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
                 props.setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
             if(itemData.name && props.selectedSeat !== ''){
-                const orderToAdd = [{seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}]
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
                 props.setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
@@ -103,7 +103,7 @@ const AppsScreen = (props) => {
                             <button
                                 id={appetizer.id}
                                 onClick={handleClick}
-                                >{appetizer.data.name}
+                                >{appetizer.data.screenName}
                             </button>
                         </li>)}
                 </ul>

@@ -34,7 +34,7 @@ const MenuTab = () => {
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
     const [ doesSeatExist, setDoesSeatExist ] = useState(false);
-    const [ currentOrderData, setCurrentOrderData ] = useState([]);
+    const [ currentOrderData, setCurrentOrderData ] = useState('');
 
     // Get data for current employee and table
     useEffect(() => {
@@ -223,6 +223,7 @@ const MenuTab = () => {
                     serverData={serverData}
                     tableData={tableData}
                     currentOrderData={currentOrderData}
+                    setCurrentOrderData={setCurrentOrderData}
                     />
             </article>
             
@@ -361,6 +362,7 @@ const MenuTab = () => {
                 toWines={setWinesCategory}
                 setSelectedSeat={setSelectedSeat}
                 setSeatKeyPadActive={setSeatKeyPadActive}
+                setCurrentOrderData={setCurrentOrderData}
                 />
         </div>
     )
