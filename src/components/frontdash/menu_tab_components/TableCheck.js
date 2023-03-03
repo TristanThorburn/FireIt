@@ -1,17 +1,19 @@
 import { db } from '../../../firebase';
 import { orderBy, onSnapshot, query, collection, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { useAuth } from '../../../contexts/AuthContext';
 import { useState, useEffect } from 'react';
 
 const TableCheck = (props) => {
+    const { managerContext } = useAuth();
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
     // const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
-        collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`)
+        collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
 
     const handleTest = () => {
         // const sum = checkTotal.reduce((a, b) => a + b, 0)
-        console.log(pendingOrder)
+        console.log(props.tableData.name.replace(/ /g, '').toLowerCase())
     }
 
     // Add up costs of items for check total
@@ -167,7 +169,7 @@ const TableCheck = (props) => {
         if(props.sendOrder === true && pendingOrder !== ''){
             pendingOrder.forEach(order => {
                 const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.name}`, `${order.seat}`)
+                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
                     if(order.new === 'false'){
                         const orderToAdd = [{item:order.name, cost:order.cost}]
                         updateDoc(checkRef, {
@@ -196,6 +198,21 @@ const TableCheck = (props) => {
         props.setTableTabActive(true)
         }
     }, [props.sendOrder, pendingOrder, props])
+    
+    const handleCheckItemClick = (e) => {
+        if(managerContext === false){
+            alert('Editing sent items requires manager authorization')
+        }
+        if(managerContext === true){
+            props.setCheckItemModData({
+                seat:e.target.dataset.seat,
+                index:e.target.dataset.index,
+                cost:e.target.dataset.cost,
+                name:e.target.dataset.name,
+            })
+            props.setModifyCheckItem(true)
+        }
+    }
 
     return(
         <div>            
@@ -227,10 +244,21 @@ const TableCheck = (props) => {
                         <tbody id={seat?.id}>
                             {seat.data.order?.map((order, i) => {
                                     return(
-                                        <tr key={i}>
-                                            <td>{order.item}</td>
+                                        <tr 
+                                            key={i}>
                                             <td
-                                                data-value={order.cost}
+                                                onClick={handleCheckItemClick}
+                                                data-index={i}
+                                                data-seat={seat.id}
+                                                data-name={order.item}
+                                                data-cost={order.cost}
+                                                >{order.item}</td>
+                                            <td
+                                                onClick={handleCheckItemClick}
+                                                data-index={i}
+                                                data-seat={seat.id}
+                                                data-name={order.item}
+                                                data-cost={order.cost}
                                                 className='checkItemCost'
                                                 >{order.cost}</td>
                                         </tr>    
