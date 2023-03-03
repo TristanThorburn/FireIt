@@ -33,7 +33,7 @@ const UserPad = (props) => {
     }
     return(
         <div className='keypad'>
-                <table>
+                <table className='loginUserKeyPadTable'>
                     <thead>
                         <tr>
                             <th colSpan={3}>User?</th>

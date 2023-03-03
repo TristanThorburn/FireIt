@@ -12,7 +12,7 @@ const Login = () => {
             <h1>Fire it</h1>
                         
             {email
-            ? <PassPad setPassword={setPassword} email={email} password={password}/>
+            ? <PassPad setEmail={setEmail} setPassword={setPassword} email={email} password={password}/>
             : <UserPad setEmail={setEmail}/>
             }
 
