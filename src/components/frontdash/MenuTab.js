@@ -234,6 +234,7 @@ const MenuTab = (props) => {
                     modifyCheckItem={modifyCheckItem}
                     setModifyCheckItem={setModifyCheckItem}
                     checkItemModData={checkItemModData}
+                    setCheckItemModData={setCheckItemModData}
                     />
                 : null
             }
