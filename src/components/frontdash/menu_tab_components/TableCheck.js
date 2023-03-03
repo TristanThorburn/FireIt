@@ -7,25 +7,22 @@ const TableCheck = (props) => {
     const { managerContext } = useAuth();
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
-    // const [ checkTotal, setCheckTotal ] = useState()
+    const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
 
-    const handleTest = () => {
-        // const sum = checkTotal.reduce((a, b) => a + b, 0)
-        console.log(props.tableData.name.replace(/ /g, '').toLowerCase())
-    }
-
     // Add up costs of items for check total
-    // useEffect(() => {
-    //     let costsArray = []
-    //     const itemCosts = document.querySelectorAll('.checkItemCost')
-    //     itemCosts.forEach((item) => {
-    //         costsArray.push(Number(item.dataset.value))
-    //     })
-    //     const sum = costsArray.reduce((a, b) => a + b, 0)
-    //     setCheckTotal(sum)
-    // },[])
+    useEffect(() => {
+        if(checkData !== []){
+            let costsArray = []
+            const itemCosts = document.querySelectorAll('.checkItemCost')
+            itemCosts.forEach((item) => {
+                costsArray.push(Number(item.dataset.cost))
+            })
+            const sum = costsArray.reduce((a, b) => a + b, 0)
+            setCheckTotal(sum)
+        }
+    }, [checkData])
 
     // Get Data for the check from current server and table
     useEffect(() => {
@@ -43,6 +40,7 @@ const TableCheck = (props) => {
 
     // append pending order to the current check, check for seats and compare to selected to determine how to append
     useEffect(() => {
+        // Seat exists in firebase. User selected seat exists on check. Is there item data?
         if(props.doesSeatExist === true
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
@@ -53,6 +51,7 @@ const TableCheck = (props) => {
                 const nameContainer = document.createElement('td')
                 const costContainer = document.createElement('td')
                 costContainer.classList.add('checkItemCost')
+                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', false)
@@ -64,6 +63,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setCurrentOrderData('')
         }
+        // Seat  does not exists in firebase. Seat exsits on check in pending order. Is there item data?
         if(props.doesSeatExist === false
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
@@ -74,10 +74,12 @@ const TableCheck = (props) => {
                 const nameContainer = document.createElement('td')
                 const costContainer = document.createElement('td')
                 costContainer.classList.add('checkItemCost')
+                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', true)
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -85,6 +87,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setCurrentOrderData('')
         }
+        // Seat does exist in firebase. User has not selected a seat leaving it '' so use seat 1, is there item data?
         if(props.doesSeatExist === true
             && document.getElementById(`seat${props.selectedSeat}`) === null
             && props.selectedSeat === ''
@@ -96,10 +99,12 @@ const TableCheck = (props) => {
                 const nameContainer = document.createElement('td')
                 const costContainer = document.createElement('td')
                 costContainer.classList.add('checkItemCost')
+                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', false)
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -107,6 +112,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setCurrentOrderData('')
         }
+        // Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data.
         if(props.doesSeatExist === false 
             && document.getElementById(`seat${props.selectedSeat}`) === null
             && props.currentOrderData !== ''){
@@ -129,10 +135,12 @@ const TableCheck = (props) => {
                 const nameContainer = document.createElement('td')
                 const costContainer = document.createElement('td')
                 costContainer.classList.add('checkItemCost')
+                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', true)
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -235,8 +243,7 @@ const TableCheck = (props) => {
     }
 
     return(
-        <div>            
-            <button onClick={handleTest} className='testButton'>TEST</button>
+        <div>
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>
@@ -296,7 +303,7 @@ const TableCheck = (props) => {
             {props.tableData.name !== undefined
                 ?<footer>
                     <p>Check Total:</p>
-                    {/* <p>${checkTotal}</p> */}
+                    <p>${checkTotal}</p>
                 </footer>
                 :null
             }
