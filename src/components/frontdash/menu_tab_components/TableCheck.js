@@ -175,7 +175,8 @@ const TableCheck = (props) => {
                             item:order.name, 
                             cost:order.cost, 
                             discount:'0',
-                            originalCost:order.cost
+                            originalCost:order.cost,
+                            qsa:'false',
                         }]
                         updateDoc(checkRef, {
                         order:arrayUnion(...orderToAdd)})
@@ -188,7 +189,8 @@ const TableCheck = (props) => {
                                     item:order.name, 
                                     cost:order.cost, 
                                     discount:'0',
-                                    originalCost:order.cost
+                                    originalCost:order.cost,
+                                    qsa:'false',
                                 }]
                                 updateDoc(checkRef, {
                                 order:arrayUnion(...orderToAdd),})
@@ -198,11 +200,12 @@ const TableCheck = (props) => {
                                     seatNumber:order.number,
                                     order:[{
                                         item:order.name, 
-                                        cost:order.price, 
+                                        cost:order.cost, 
                                         discount:'0',
-                                        originalCost:order.cost
+                                        originalCost:order.cost,
+                                        qsa:'false',
                                     }],
-                                    })
+                                })
                             }
                         }
                         doesSeatExist()
@@ -224,7 +227,8 @@ const TableCheck = (props) => {
                 discount:e.target.dataset.discount,
                 cost:e.target.dataset.cost,
                 name:e.target.dataset.name,
-                originalCost:e.target.dataset.originalcost
+                originalCost:e.target.dataset.originalcost,
+                qsa:e.target.dataset.qsa,
             })
             props.setModifyCheckItem(true)
         }
@@ -269,6 +273,7 @@ const TableCheck = (props) => {
                                                 data-name={order.item}
                                                 data-cost={order.cost}
                                                 data-originalcost={order.originalCost}
+                                                data-qsa={order.qsa}
                                                 >{order.item}</td>
                                             <td
                                                 onClick={handleCheckItemClick}

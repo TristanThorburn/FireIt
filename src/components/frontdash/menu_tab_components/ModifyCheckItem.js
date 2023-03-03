@@ -9,14 +9,17 @@ const ModifyCheckItem = (props) => {
     const { contextTable } = useTable();
     const [ infoMessage, setInfoMessage ] = useState('')
     const [ promoOptions, setPromoOptions ] =  useState(false)
-    const [ confirmDelete, setConfirmDelete ] = useState(false)
+    const [ confirmPromoDelete, setConfirmPromoDelete ] = useState(false)
     const [ deletePromoItem, setDeletePromoItem ] = useState(false)
+    const [ confirmQsaDelete, setConfirmQsaDelete ] = useState(false)
     const [ discountAmount, setDiscountAmount ] = useState('')
+    const [ qsaItem, setQsaItem ] = useState(false);
+    const [ deleteQsaItem, setDeleteQsaItem ] = useState(false);
     const docRef = doc(db, 'checks', employeeContext.employeeNumber, contextTable, props.checkItemModData.seat)
 
-    // const handleTest = () => {
-    //     console.log(props.checkItemModData)
-    // }
+    const handleTest = () => {
+        console.log(props.checkItemModData)
+    }
 
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)
@@ -25,20 +28,42 @@ const ModifyCheckItem = (props) => {
     // Delete Promo'd Item after Confirmation
     useEffect(() => {
         if(deletePromoItem === true){
-            setConfirmDelete(false)
+            setConfirmPromoDelete(false)
             updateDoc(docRef, {
                 order:arrayRemove({
                     item:props.checkItemModData.name, 
                     cost:props.checkItemModData.cost, 
-                    discount:props.checkItemModData.discount})
+                    discount:props.checkItemModData.discount,
+                    originalCost:props.checkItemModData.originalCost,
+                    qsa:props.checkItemModData.qsa,
+                })
             })
+            setDeletePromoItem(false)
             setInfoMessage(`${props.checkItemModData.name} deleted`)
             setTimeout(() => {
                 props.setModifyCheckItem(false)
                 setInfoMessage('')
             }, 1000)
         }
-    }, [deletePromoItem, docRef, props])
+        if(deleteQsaItem === true){
+            setConfirmQsaDelete(false)
+            updateDoc(docRef, {
+                order:arrayRemove({
+                    item:props.checkItemModData.name, 
+                    cost:props.checkItemModData.cost, 
+                    discount:props.checkItemModData.discount,
+                    originalCost:props.checkItemModData.originalCost,
+                    qsa:props.checkItemModData.qsa,
+                })
+            })
+            setDeleteQsaItem(false)
+            setInfoMessage(`${props.checkItemModData.name} deleted`)
+            setTimeout(() => {
+                props.setModifyCheckItem(false)
+                setInfoMessage('')
+            }, 1000)
+        }
+    }, [deletePromoItem, docRef, props ,deleteQsaItem])
 
     // Promo item based on selected amount
     useEffect(() => {
@@ -50,6 +75,7 @@ const ModifyCheckItem = (props) => {
                     cost:props.checkItemModData.cost,
                     discount:'25',
                     originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -58,6 +84,7 @@ const ModifyCheckItem = (props) => {
                         cost:`${props.checkItemModData.cost * 4/3}`, 
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
                     })
                 })
                )
@@ -77,6 +104,7 @@ const ModifyCheckItem = (props) => {
                     cost:props.checkItemModData.cost,
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -85,6 +113,7 @@ const ModifyCheckItem = (props) => {
                         cost:`${props.checkItemModData.cost * 3/4}`, 
                         discount:'25',
                         originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
                     })
                 })
                )
@@ -104,6 +133,7 @@ const ModifyCheckItem = (props) => {
                     cost:props.checkItemModData.cost,
                     discount:'50',
                     originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -112,6 +142,7 @@ const ModifyCheckItem = (props) => {
                         cost:`${props.checkItemModData.cost * 2}`, 
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
                     })
                 })
                )
@@ -131,6 +162,7 @@ const ModifyCheckItem = (props) => {
                     cost:props.checkItemModData.cost,
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -139,6 +171,7 @@ const ModifyCheckItem = (props) => {
                         cost:`${props.checkItemModData.cost /2}`, 
                         discount:'50',
                         originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
                     })
                 })
                )
@@ -158,6 +191,7 @@ const ModifyCheckItem = (props) => {
                     cost:'0',
                     discount:'100',
                     originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -166,6 +200,7 @@ const ModifyCheckItem = (props) => {
                         cost:props.checkItemModData.originalCost,
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
                     })
                 })
                )
@@ -185,6 +220,7 @@ const ModifyCheckItem = (props) => {
                     cost:props.checkItemModData.cost,
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -193,6 +229,7 @@ const ModifyCheckItem = (props) => {
                         cost:'0', 
                         discount:'100',
                         originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
                     })
                 })
                )
@@ -206,9 +243,74 @@ const ModifyCheckItem = (props) => {
         }
     }, [discountAmount, docRef, props.checkItemModData.cost, props.checkItemModData.discount, props.checkItemModData.name, props.checkItemModData.originalCost, props])
 
+    // QSA item
+    useEffect(() => {
+        // Undo QSA
+        if(qsaItem === true && props.checkItemModData.qsa === 'true'){
+            updateDoc(docRef, {
+                order:arrayRemove({
+                    item:props.checkItemModData.name, 
+                    cost:'0',
+                    discount:'100',
+                    originalCost:props.checkItemModData.originalCost,
+                    qsa:'true',
+                }),
+               }).then(
+                updateDoc(docRef, {
+                    order:arrayUnion({
+                        item:props.checkItemModData.name.replace(/-QSA/g, ''), 
+                        cost:props.checkItemModData.originalCost,
+                        discount:'0',
+                        originalCost:props.checkItemModData.originalCost,
+                        qsa:'false',
+                    })
+                })
+               )
+            setPromoOptions(false)
+            setQsaItem(false)
+            setInfoMessage(`${props.checkItemModData.name} QSA Removed`)
+            setTimeout(() => {
+                setInfoMessage('')
+                props.setModifyCheckItem(false)
+            }, 1000)
+        }
+        // Apply QSA
+        if(qsaItem === true && props.checkItemModData.qsa === 'false'){
+            updateDoc(docRef, {
+                order:arrayRemove({
+                    item:props.checkItemModData.name, 
+                    cost:props.checkItemModData.cost,
+                    discount:'0',
+                    originalCost:props.checkItemModData.originalCost,
+                    qsa:'false',
+                }),
+               }).then(
+                updateDoc(docRef, {
+                    order:arrayUnion({
+                        item:props.checkItemModData.name + '-QSA', 
+                        cost:'0', 
+                        discount:'100',
+                        originalCost:props.checkItemModData.originalCost,
+                        qsa:'true',
+                    })
+                })
+               )
+            setPromoOptions(false)
+            setQsaItem(false)
+            setInfoMessage(`${props.checkItemModData.name} QSA Applied`)
+            setTimeout(() => {
+                setInfoMessage('')
+                props.setModifyCheckItem(false)
+            }, 1000)
+        }
+    },[qsaItem, props, docRef])
+
     const handleDeleteItem = () => {
+        if(props.checkItemModData.qsa === 'true' && props.checkItemModData.discount !=='0'){
+            setConfirmQsaDelete(true)
+        }
         if(props.checkItemModData.discount !== '0'){
-            setConfirmDelete(true)
+            setConfirmPromoDelete(true)
         }
         if(props.checkItemModData.discount === '0'){
             updateDoc(docRef, {
@@ -216,7 +318,8 @@ const ModifyCheckItem = (props) => {
                     item:props.checkItemModData.name, 
                     cost:props.checkItemModData.cost, 
                     discount:'0',
-                    originalCost:props.checkItemModData.originalCost
+                    originalCost:props.checkItemModData.originalCost,
+                    qsa:props.checkItemModData.qsa
                 })
             })
             setInfoMessage(`${props.checkItemModData.name} deleted`)
@@ -248,11 +351,25 @@ const ModifyCheckItem = (props) => {
     }
 
     const handleDeletePromoItem = () => {
-        setDeletePromoItem(true)
+        if(confirmPromoDelete === true){
+            setDeletePromoItem(true)
+        }
+        if(confirmQsaDelete === true){
+            setDeleteQsaItem(true)
+        }
     }
 
     const handleCancelDeletePromoItem = () => {
-        setConfirmDelete(false)
+        if(confirmPromoDelete === true){
+            setConfirmPromoDelete(false)
+        }
+        if(confirmQsaDelete === true){
+            setConfirmQsaDelete(false)
+        }
+    }
+
+    const handleQSAItem = () => {
+        setQsaItem(true)
     }
 
     return(
@@ -276,20 +393,32 @@ const ModifyCheckItem = (props) => {
                             <button onClick={handleCancelPromo}>CANCEL</button>
                         </li>
                     </ul>
-                    :confirmDelete
-                        ? <div className='confirmPromoDeleteContainer'>
-                            <h4>This item has a discount, 100% Promo or QSA recommended. Are you sure  you want to delete?</h4>
+                    :confirmQsaDelete
+                        ?  <div className='confirmPromoDeleteContainer'>
+                            <h4>This item has a QSA to account for waste, are you sure  you want to delete it?</h4>
                             <button onClick={handleDeletePromoItem}>DELETE</button>
                             <button onClick={handleCancelDeletePromoItem}>CANCEL</button>
                         </div>
-                        : <ul>
-                            <li>
-                                <button onClick={handleDeleteItem}>DELETE</button>
-                            </li>
-                            <li>
-                                <button onClick={handlePromoItem}>PROMO</button>
-                            </li>
-                        </ul>
+                        :confirmPromoDelete
+                            ? <div className='confirmPromoDeleteContainer'>
+                                <h4>This item has a discount, 100% Promo or QSA recommended. Are you sure  you want to delete it?</h4>
+                                <button onClick={handleDeletePromoItem}>DELETE</button>
+                                <button onClick={handleCancelDeletePromoItem}>CANCEL</button>
+                            </div>
+                            : <ul>
+                                <li>
+                                    <button onClick={handleTest}>Test</button>
+                                </li>
+                                <li>
+                                    <button onClick={handleDeleteItem}>DELETE</button>
+                                </li>
+                                <li>
+                                    <button onClick={handlePromoItem}>PROMO</button>
+                                </li>
+                                <li>
+                                    <button onClick={handleQSAItem}>QSA</button>
+                                </li>
+                            </ul>
                 }
 
                 {infoMessage
