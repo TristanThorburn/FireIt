@@ -54,8 +54,6 @@ const MenuTabNav = (props) => {
     return(
         <div className='frontLowerNav'>
             <ul>
-                <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
-                <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li><button onClick={handleMgrOveride} className='workingButton'>
                     {managerContext
                         ? 'CANCEL MGR'
@@ -63,6 +61,8 @@ const MenuTabNav = (props) => {
                     }
                     </button>
                 </li>
+                <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
+                <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
                 <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
