@@ -47,7 +47,7 @@
 .checkModifyContainer{
     border: 5px solid black;
     width:400px;
-    height:400px;
+    min-height:400px;
     display:flex;
     flex-direction:column;
     color:white;
@@ -65,19 +65,29 @@
         button{
             width:250px;
             height:50px;
+            border-radius: 10px;
         }
     }
-    footer{
-        width:90%;
-        margin:2rem auto 0;
-        display:flex;
-        justify-content: space-evenly;
+}
 
-        button{
-            width:100px;
-            height:50px;
-            font-size: 1.5rem;
-        }
+.confirmPromoDeleteContainer{
+    width:90%;
+    margin:0 auto;
+    @include flexCenterCenter;
+    flex-direction: column;
+
+    h4{
+        margin:0 auto;
+    }
+    button{
+        background-color:$backDashBackgroundColor;
+        margin:20px auto;
+        border-radius: 10px;
+        width:250px;
+        height:50px;
+    }
+    button:active{
+        background-color:darken($backDashBackgroundColor, 25%);
     }
 }
 

@@ -171,7 +171,12 @@ const TableCheck = (props) => {
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
                     if(order.new === 'false'){
-                        const orderToAdd = [{item:order.name, cost:order.cost}]
+                        const orderToAdd = [{
+                            item:order.name, 
+                            cost:order.cost, 
+                            discount:'0',
+                            originalCost:order.cost
+                        }]
                         updateDoc(checkRef, {
                         order:arrayUnion(...orderToAdd)})
                     }
@@ -179,14 +184,24 @@ const TableCheck = (props) => {
                         const doesSeatExist = async () => {
                             const docSnap = await getDoc(checkRef)
                             if(docSnap.exists()){
-                                const orderToAdd = [{item:order.name, cost:order.cost}]
+                                const orderToAdd = [{
+                                    item:order.name, 
+                                    cost:order.cost, 
+                                    discount:'0',
+                                    originalCost:order.cost
+                                }]
                                 updateDoc(checkRef, {
                                 order:arrayUnion(...orderToAdd),})
                             } else {
                                 setDoc(checkRef, {
                                     seat:true,
                                     seatNumber:order.number,
-                                    order:[{item:order.name, cost:order.price}],
+                                    order:[{
+                                        item:order.name, 
+                                        cost:order.price, 
+                                        discount:'0',
+                                        originalCost:order.cost
+                                    }],
                                     })
                             }
                         }
@@ -206,9 +221,10 @@ const TableCheck = (props) => {
         if(managerContext === true){
             props.setCheckItemModData({
                 seat:e.target.dataset.seat,
-                index:e.target.dataset.index,
+                discount:e.target.dataset.discount,
                 cost:e.target.dataset.cost,
                 name:e.target.dataset.name,
+                originalCost:e.target.dataset.originalcost
             })
             props.setModifyCheckItem(true)
         }
@@ -248,17 +264,19 @@ const TableCheck = (props) => {
                                             key={i}>
                                             <td
                                                 onClick={handleCheckItemClick}
-                                                data-index={i}
+                                                data-discount={order?.discount}
                                                 data-seat={seat.id}
                                                 data-name={order.item}
                                                 data-cost={order.cost}
+                                                data-originalcost={order.originalCost}
                                                 >{order.item}</td>
                                             <td
                                                 onClick={handleCheckItemClick}
-                                                data-index={i}
+                                                data-discount={order?.discount}
                                                 data-seat={seat.id}
                                                 data-name={order.item}
                                                 data-cost={order.cost}
+                                                data-originalcost={order.originalCost}
                                                 className='checkItemCost'
                                                 >{order.cost}</td>
                                         </tr>    
