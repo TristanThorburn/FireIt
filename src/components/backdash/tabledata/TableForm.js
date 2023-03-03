@@ -19,6 +19,7 @@ const TableForm = (props) => {
                 }
             setDoc(tableRef , {
                 name:tableNameRef.current.value,
+                searchId:tableNameRef.current.value.replace(/ /g, '').toLowerCase(),
                 tableStyle:design,
                 top:'50px',
                 left:'50px',

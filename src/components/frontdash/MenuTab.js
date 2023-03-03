@@ -15,9 +15,10 @@ import MixedDrinksScreen from './menu_tab_components/MixedDrinksScreen';
 import LiquorsScreen from './menu_tab_components/LiquorsScreen';
 import WinesScreen from './menu_tab_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
+import ModifyCheckItem from "./menu_tab_components/ModifyCheckItem";
 
 const MenuTab = (props) => {
-    const { employeeContext, managerContext } = useAuth()
+    const { employeeContext } = useAuth()
     const { contextTable } = useTable();
     const [ tableData, setTableData ] = useState([])
     const [ serverData, setServerData ] = useState({})
@@ -37,11 +38,8 @@ const MenuTab = (props) => {
     const [ doesSeatExist, setDoesSeatExist ] = useState(false);
     const [ currentOrderData, setCurrentOrderData ] = useState('');
     const [ sendOrder, setSendOrder ] = useState(false);
-
-    const handleTest = () => {
-        console.log('mgrkeyopen:', managerKeyPadActive)
-        console.log('managerContext:', managerContext)
-    }
+    const [ modifyCheckItem, setModifyCheckItem ] = useState(false)
+    const [ checkItemModData, setCheckItemModData ] = useState()
 
     // Get data for current employee and table
     useEffect(() => {
@@ -72,7 +70,7 @@ const MenuTab = (props) => {
         const doesSeatExist = async () => {
             if(selectedSeat === ''){
                 const docRef = 
-                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, 'seat1')
+                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.searchId}`, 'seat1')
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -82,7 +80,7 @@ const MenuTab = (props) => {
             }
             if(selectedSeat !== ''){
                 const docRef = 
-                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.name}`, `seat${selectedSeat}`)
+                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.searchId}`, `seat${selectedSeat}`)
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -92,7 +90,7 @@ const MenuTab = (props) => {
             }
         }
         doesSeatExist()
-    }, [selectedSeat, serverData.employeeNumber, tableData.name])
+    }, [selectedSeat, serverData.employeeNumber, tableData.searchId])
 
     const handleGoApps = () => {
         setDirectory(false);
@@ -231,6 +229,15 @@ const MenuTab = (props) => {
                 : null
             }
 
+            {modifyCheckItem
+                ? <ModifyCheckItem
+                    modifyCheckItem={modifyCheckItem}
+                    setModifyCheckItem={setModifyCheckItem}
+                    checkItemModData={checkItemModData}
+                    />
+                : null
+            }
+
             <article className='activeCheck'>
                 <TableCheck
                     doesSeatExist={doesSeatExist}
@@ -244,6 +251,8 @@ const MenuTab = (props) => {
                     setSendOrder={setSendOrder}
                     setTableTabActive={props.setTableTabActive}
                     setMenuTabActive={props.setMenuTabActive}
+                    setModifyCheckItem={setModifyCheckItem}
+                    setCheckItemModData={setCheckItemModData}
                     />
             </article>
             
@@ -259,7 +268,7 @@ const MenuTab = (props) => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCH</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li><button onClick={handleTest} className='testButton'>TEST</button></li>
+                            <li></li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>

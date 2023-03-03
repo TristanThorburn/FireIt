@@ -91,7 +91,7 @@ const ServerKeyPad = (props) => {
                                 : null
                             }
                             {props.managerKeyPadActive
-                                ? <th colSpan={3}>Manager Password?</th>
+                                ? <th colSpan={3}>Manager Password?(1985)</th>
                                 : null
                             }
                         </tr>

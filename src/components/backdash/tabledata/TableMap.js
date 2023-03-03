@@ -17,6 +17,7 @@ const TableMap = (props) => {
     const [ selectedTable, setSelectedTable ] = useState('');
     const activeTable = document.getElementById(`${selectedTable}`)
 
+    // Populate screen from table Data
     useEffect(() => {
         const q = query(tableMapCollectionRef, orderBy('name'));
         const unsubscribe = onSnapshot(q, snapshot => {

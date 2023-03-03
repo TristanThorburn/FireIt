@@ -62,19 +62,22 @@
     td:active{
         background-color:darken($backDashBackgroundColor, 50%);
     }
-    .padError, .padSuccess{
-        text-align:center;
-        margin:1rem auto;
-        width:80%;
-        font-weight: 600;
-        font-size:1.25rem;
-    }
-    .padError{
-        background-color:$fireItColor;
-    }
-    .padSuccess{
-        background-color:lightgreen;
-    }
+}
+
+.padError, .padSuccess{
+    text-align:center;
+    margin:1rem auto;
+    width:80%;
+    font-weight: 600;
+    font-size:1.25rem;
+}
+
+.padError{
+    background-color:$fireItColor;
+}
+
+.padSuccess{
+    background-color:lightgreen;
 }
 
 .adminPad, .serverPad{

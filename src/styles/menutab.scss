@@ -39,6 +39,48 @@
     background-color: lightblue;
 }
 
+.checkModifyModal{
+    @include popUpModal;
+    @include flexCenterCenter;
+}
+
+.checkModifyContainer{
+    border: 5px solid black;
+    width:400px;
+    height:400px;
+    display:flex;
+    flex-direction:column;
+    color:white;
+    background-color:$backgroundColor;
+
+    h3{
+        text-align: center;
+    }
+    ul{
+        @include cleanUl;
+    }
+    li{
+        margin:1rem auto;
+
+        button{
+            width:250px;
+            height:50px;
+        }
+    }
+    footer{
+        width:90%;
+        margin:2rem auto 0;
+        display:flex;
+        justify-content: space-evenly;
+
+        button{
+            width:100px;
+            height:50px;
+            font-size: 1.5rem;
+        }
+    }
+}
+
 .activeMenuCategory{
     border:4px solid black;
     width:80%;
