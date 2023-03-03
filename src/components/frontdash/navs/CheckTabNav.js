@@ -2,8 +2,8 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const CheckTabNav = () => {
-    const { currentUser, logout, employeeContext } = useAuth();
+const CheckTabNav = (props) => {
+    const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
@@ -22,17 +22,33 @@ const CheckTabNav = () => {
         }
     }
 
+    const handleMgrOveride = () => {
+        if(managerContext === false){
+            props.setManagerKeyPadActive(true)
+        }
+        
+        if(managerContext === true){
+            setManagerContext(false)
+        }
+    }
+
     return(
         <div className='frontLowerNav'>
             <ul>
+                <li><button onClick={handleMgrOveride} className='workingButton'>
+                    {managerContext
+                        ? 'CANCEL MGR'
+                        : 'MGR OVER'
+                    }
+                    </button>
+                </li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
-                <li>Demo</li>
-                <li>HELP</li>
+                <li><button className='nonWorkingButton'>HELP</button></li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext
