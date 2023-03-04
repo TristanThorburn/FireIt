@@ -2,15 +2,32 @@ Fire It:
 
 Netlify Hosting             https://peppy-khapse-d2cdad.netlify.app/
 
-Created to explore the logic of some of the Point of Sale systems I used while working in a prior carrer, and also to demonstrate how working with them lead me to pursue an industry change.
+Created to explore the logic of some of the Point of Sale systems I used while working in a prior carrer, and also to demonstrate how working with them lead me to pursue an industry change. For more information see info and help buttons in the app.
+
+This app is designed to mimic desktop touch screen terminals used in restaurants/bars. There will be future tablet styling to come, however this app will not have mobile styling.
 
 Primarily inspired by my 3 years working exclusively with Squirrel (https://www.squirrelsystems.com/)
 
 Tristan Thorburn 2023
 
                                     CHANGELOG:
+                                    2023-03-03
+Landing Page
+    -Updated to replicate initial touch before log in
+    -Link to info about the app
+
+Front Dashboard:
+    -All tabs lower navs help buttons now functional with explainations for current functionality
+    -Manager context authorization toggles added
+
+MenuTab
+    -Item punch in refactored to similuates pending orders that are saved upon 'sending order' to kitchen/bar
+    -Items stored to check can be deleted / discounted with manager authorization
+    -Check tab now updates current total from sent and pending items
+
+**********************************************************************************************************
                                     2023-02-18
-Front Dashboard
+Front Dashboard:
 
 MenuTab
     -Begun adding the ability to punch in items from food categories on to checks, kept separate between tables and servers, and seat numbers

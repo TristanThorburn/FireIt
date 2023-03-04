@@ -1,0 +1,131 @@
+@import './variables.scss';
+
+.loginContainer{
+    @include flexCenterCenter;
+    height:100vh;
+    flex-direction: column;
+    position:relative;
+}
+
+.landingContainer{
+    @include flexCenterCenter;
+    flex-direction:column;
+    border: 5px solid black;
+    width:500px;
+    height:550px;
+}
+
+.landingLogin, .landingInfo{
+    position: relative;
+    @include flexCenterCenter;
+    flex-direction:column;
+    margin:0 auto;
+    width: 100%;
+
+    h1, h2{
+        margin:0 auto;
+        color:$fireItColor;
+        background-color: black;
+        border-radius: 10px;
+        position:absolute;
+        top:50%;
+        cursor: pointer;
+        text-align: center;
+    }
+    button{
+        height:100%;
+        width:100%;
+        background-color:$backgroundColor;
+        border:none;
+    }
+}
+
+.landingLogin{
+    height:80%;
+
+    h1{
+        font-size: 3rem;
+        width:60%;
+    }
+    button{
+        font-size:12rem;
+    }
+}
+
+.landingInfo{
+    height:20%;
+
+    h2{
+        font-size: 1.25rem;
+        width:20%;
+    }
+    button{
+        font-size:4rem;
+    }
+}
+
+.appLandingInfo{
+    height:100%;
+    width:100%;
+
+    .appLandingInfoNav{
+        position: relative;
+    }
+    button{
+        position:absolute;
+        width:250px;
+        height:50px;
+    }
+    h2{
+        color:$fireItColor;
+        margin:0;
+        font-size:2rem;
+        position:absolute;
+        top:0;
+        left:46%;
+        transform:translateX(-50%);
+    }
+    .ulsContainer{
+        @include flexCenterCenter;
+        margin:1.5rem auto 0rem;
+        width:95%;
+    }
+    ul{
+        @include cleanUl;
+    }
+    img{
+        width:100px;
+    }
+    li{
+        margin:0 auto;
+        @include flexCenterCenter;
+        flex-direction: column;
+    }
+    p{
+        margin:10px auto;
+        line-height: 1.1;
+        color:white;
+    }
+    .qAndA{
+        width:90%;
+        li{
+            border-bottom:2px solid $fireItColor;
+        }
+    }
+    .junoCollege{
+        text-decoration: none;
+        color:#ea593e;
+    }
+    .squirrelLink{
+        margin:0 auto;
+    }
+    .tristanLinks{
+        width:5%;
+        display:flex;
+        flex-direction: column;
+        
+        li{
+            margin:100px auto;
+        }
+    }
+}

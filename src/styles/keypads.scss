@@ -1,31 +1,5 @@
 @import './variables.scss';
 
-.loginContainer{
-    @include flexCenterCenter;
-    height:100vh;
-    flex-direction: column;
-    position:relative;
-
-    h1{
-        text-transform: uppercase;
-        font-size:3rem;
-        margin:0 auto;
-        color:$fireItColor;
-    }
-    .demoGuide{
-        position:absolute;
-        top:0px;
-        font-size:2rem;
-
-        p{
-            margin:0;
-            color:white;
-        }
-    }
-    .loginUserKeyPadTable{
-        margin-top:65px;
-    }
-}
 
 .keypad{
     border: 5px solid black;

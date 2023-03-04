@@ -1,9 +1,9 @@
 import AuthProvider from '../contexts/AuthContext';
 import TableProvider from '../contexts/TableContext';
-import Login from './user/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from '../components/PrivateRoutes';
-import ErrorPage from './ErrorPage';
+import LandingPage from './LandingPage';
+import ErrorPage from './help/ErrorPage';
 import FrontDash from './FrontDash';
 import BackendDash from './BackendDash';
 import MenuData from './backdash/MenuData';
@@ -21,7 +21,7 @@ function App() {
         <TableProvider>
 
           <Routes>
-            <Route path='/login' element={<Login />} />
+            <Route path='/login' element={<LandingPage />} />
             <Route path='*' element={<ErrorPage />} />
             
             <Route element={<PrivateRoutes />}>
