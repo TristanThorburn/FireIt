@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
-import EmployeeDataForm from './employeedata/EmployeeDataForm';
 import { useState, useEffect } from 'react';
 import { employeeCollectionRef } from '../../library/firestoreCollections';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
+import EmployeeDataForm from './employeedata/EmployeeDataForm';
+import BackDashHelp from '../help/BackDashHelp';
 
 const EmployeeData = () => {
     const [ employeeData, setEmployeeData ] = useState([]);
     const [ newEmployee, setNewEmployee ] = useState(false);
     const [ selectedEmployee, setSelectedEmployee ] = useState('');
+    const [ employeeDataHelp, setEmployeeDataHelp ] = useState(false)
 
     useEffect(() => {
         const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'));
@@ -24,6 +26,10 @@ const EmployeeData = () => {
         setSelectedEmployee('')
         setNewEmployee(true)
     }
+
+    const handleEmployeeDataHelp = () => {
+        setEmployeeDataHelp(true)
+    }
  
     return(
         <section className='employeeData'>
@@ -32,10 +38,24 @@ const EmployeeData = () => {
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
                 </Link>
 
-                <h2>Employees List</h2>
+                <div className='backDashHelpButtonDiv'>
+                    <h2>Employee Data</h2>
+
+                    <button onClick={handleEmployeeDataHelp}>🔥</button>
+                    
+                    <h3 onClick={handleEmployeeDataHelp}>INFO</h3>
+                </div>
 
                 <button className='newItemButton' onClick={handleNewEmployee}>New Employee</button>
             </header>
+
+            {employeeDataHelp
+                ? <BackDashHelp
+                        employeeDataHelp={employeeDataHelp}
+                        setEmployeeDataHelp={setEmployeeDataHelp}
+                    />
+                : null
+            }
             
             <div className='employeeDataContainer'>
                 <table>

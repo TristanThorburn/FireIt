@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import TableMap from '../backdash/tabledata/TableMap';
-import TableTabNav from '../frontdash/navs/TableTabNav';
 import { useState } from 'react';
+import BackDashHelp from '../help/BackDashHelp';
 
 const TableMapData = () => {
-    const [ mapUpdateable, setMapUpdateable ] = useState(false)
+    const [ mapUpdateable, setMapUpdateable ] = useState(false);
+    const [ tableSetupHelp, setTableSetupHelp ] = useState(false);
 
     const enableUpdate = () => {
         setMapUpdateable(true)
@@ -14,6 +15,10 @@ const TableMapData = () => {
         setMapUpdateable(false)
     }
 
+    const handleTableSetupHelp = () => {
+        setTableSetupHelp(true)
+    }
+
     return(
         <div className='tableBackDash'>
             <header>
@@ -21,7 +26,21 @@ const TableMapData = () => {
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
                 </Link>
 
-                <h2>Tables and Map Setup</h2>
+                <div className='backDashHelpButtonDiv'>
+                    <h2>Tables Setup</h2>
+
+                    <button onClick={handleTableSetupHelp}>🔥</button>
+
+                    <h3 onClick={handleTableSetupHelp}>INFO</h3>
+                </div>
+
+                {tableSetupHelp
+                    ? <BackDashHelp
+                        tableSetupHelp={tableSetupHelp}
+                        setTableSetupHelp={setTableSetupHelp}
+                        />
+                    : null
+                }
 
                 {mapUpdateable
                     ? <button
@@ -39,7 +58,6 @@ const TableMapData = () => {
             
             <div className='tableTab'>
                 <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
-                <TableTabNav />
             </div>
         </div>
     )

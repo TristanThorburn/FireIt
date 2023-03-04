@@ -112,6 +112,16 @@ const TableMap = (props) => {
             {props.updateable === true
                 ?<div className='updateMapNav'>
                     <ul>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleSave}
+                            >Save Table Positions
+                        </button></li>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleAddTable}
+                            >Add Table
+                        </button></li>
                         <li>
                             {enableDrag
                             ?<button
@@ -125,16 +135,6 @@ const TableMap = (props) => {
                                 >Enable Table Reposition
                             </button>
                         }</li>
-                        <li><button
-                            className='newItemButton'
-                            onClick={handleSave}
-                            >Save Table Positions
-                        </button></li>
-                        <li><button
-                            className='newItemButton'
-                            onClick={handleAddTable}
-                            >Add Table
-                        </button></li>
                         <li><button
                             className='newItemButton'
                             onClick={handleUpdateStyle}
