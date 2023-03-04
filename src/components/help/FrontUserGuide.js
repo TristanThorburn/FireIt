@@ -1,10 +1,4 @@
 const FrontUserGuide = (props) => {
-    // tableTabActive={props.tableTabActive}
-    // menuTabActive={props.menuTabActive}
-    // checkTabActive={props.checkTabActive}
-    // paymentTabActive={props.paymentTabActive}
-    // summaryTabActive={props.summaryTabActive}
-
     return(
         <div className='frontUserGuideContainer'>
             <div>

@@ -29,7 +29,7 @@ const AppLandingInfo = (props) => {
                         <p>My previous work history involves over 10 years in the restaurant industry. During the four recent years before starting to make an industry change a large part of my roles became technology based, primarily working with the Squirrel Systems GUI. Things like menu updates, specials, employee turnover and other customizations offered me many hours of working with this system teaching myself through documentation and late nights of trials, errors and reboots in order meet these changing needs.
                         </p>
                         <p>In August 2022 I decided I wanted to focus more on technology and attended a Front End Developer boot camp offered by <a href='https://junocollege.com/' target='_blank' rel='noreferrer' className='junoCollege'>Juno College</a> in Toronto. In January 2023 after graduating I realized I wanted to better blend the two industries together to match my experience, and Fire It was born.</p>
-                        <p>Lastly I wanted to create something that wasnt just another YouTube tutorial or repeat project from the bootcamp, something where I didnt have easy access to solutions and would have to form my own logic.</p>
+                        <p>Lastly I wanted to create something that wasnt just another YouTube tutorial walkthrough, something where I didnt have easy access to solutions and would have to form my own logic.</p>
                         <a
                             className='squirrelLink'
                             href='https://www.squirrelsystems.com/'
@@ -45,7 +45,7 @@ const AppLandingInfo = (props) => {
                     </li>
                     <li>
                         <p>How do you use this app?</p>
-                        <p>Each section of this app will contain a guide that provides more information on how to use them, as well as some insights of my code strategics to replicate the logic.</p>
+                        <p>Each section of this app will contain a guide that provides more information on how to use them, as well as some insights of my code strategies to replicate the logic.</p>
                     </li>
                     <li>
                         <p>What is the MVP?</p>

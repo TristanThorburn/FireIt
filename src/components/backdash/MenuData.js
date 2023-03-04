@@ -17,6 +17,7 @@ import AlchData from './menudata/drinks/AlchData';
 import FoodAddonsData from './menudata/food/FoodAddonsData';
 import DrinkAddonsData from './menudata/drinks/DrinkAddonsData';
 import MenuModsData from './menudata/MenuModsData';
+import BackDashHelp from '../help/BackDashHelp';
 
 const MenuData = () => {
     const [ appTab, setAppsTab ] = useState(false);
@@ -29,6 +30,7 @@ const MenuData = () => {
     const [ menuModsTab, setMenuModsTab ] = useState(false);
     const [ activeDataDoc, setActiveDataDoc ] = useState('');
     const [ docQuery, setDocQuery ] = useState('')
+    const [ menuEntryHelp, setMenuEntryHelp ] = useState(false)
 
     // ACTIVE DATA DOC / ACTIVE TAB PROP === which collection ref to look for useeffect display
     // DOC QUERY === data address for selecting specific docs / used in update functions
@@ -133,9 +135,27 @@ const MenuData = () => {
         setDocQuery(['menu mods'])
     }
 
+    const handleMenuEntryHelp = () => {
+        setMenuEntryHelp(true)
+    }
+
     return(
         <section className='menuData'>
-            <h2>Menu Entry Setup</h2>
+            <div className='backDashHelpButtonDiv'>
+                <h2>Menu Entry Setup</h2>
+
+                <button onClick={handleMenuEntryHelp}>🔥</button>
+                
+                <h3 onClick={handleMenuEntryHelp}>INFO</h3>
+            </div>
+
+            {menuEntryHelp
+                ? <BackDashHelp
+                    menuEntryHelp={menuEntryHelp}
+                    setMenuEntryHelp={setMenuEntryHelp}
+                    />
+                : null
+            }
 
             <div className='buttonContainer'>
                 <ul>
