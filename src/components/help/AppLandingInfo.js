@@ -55,6 +55,10 @@ const AppLandingInfo = (props) => {
                         <p>Who is the creator?</p>
                         <p>My name is Tristan Thorburn, I'm currently located in Toronto, feel free to check out my Github, Portfolio or LinkedIn.</p>
                     </li>
+                    <li>
+                        <p>Fire?</p>
+                        <p>This is a term used by the head chef to let others in the kitchen know it's time to start cooking or prepping a dish.</p>
+                    </li>
                 </ul>
                 <ul className='tristanLinks'>
                     <li>
