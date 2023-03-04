@@ -26,10 +26,10 @@ const AppLandingInfo = (props) => {
                     </li>
                     <li>
                         <p>Why did I want to try to replicate them?</p>
-                        <p>My previous work history involves over 10 years in the restaurant industry. During the four recent years before starting to make an industry change a large part of my roles became technology based, primarily working with the Squirrel Systems GUI. Things like menu changes, specials, employee additions and other customizations offered me many hours of working with this system teaching myself through documentation and late nights of trials, errors and reboots in order meet these changing needs.
+                        <p>My previous work history involves over 10 years in the restaurant industry. During the four recent years before starting to make an industry change a large part of my roles became technology based, primarily working with the Squirrel Systems GUI. Things like menu updates, specials, employee turnover and other customizations offered me many hours of working with this system teaching myself through documentation and late nights of trials, errors and reboots in order meet these changing needs.
                         </p>
                         <p>In August 2022 I decided I wanted to focus more on technology and attended a Front End Developer boot camp offered by <a href='https://junocollege.com/' target='_blank' rel='noreferrer' className='junoCollege'>Juno College</a> in Toronto. In January 2023 after graduating I realized I wanted to better blend the two industries together to match my experience, and Fire It was born.</p>
-                        <p>Lastly I wanted to create something that wasnt just another YouTube tutorial or repeat project from the bootcamp, something where I didnt have easy access to solutions and would have to logic out results on my own as much as possible.</p>
+                        <p>Lastly I wanted to create something that wasnt just another YouTube tutorial or repeat project from the bootcamp, something where I didnt have easy access to solutions and would have to form my own logic.</p>
                         <a
                             className='squirrelLink'
                             href='https://www.squirrelsystems.com/'
@@ -41,15 +41,15 @@ const AppLandingInfo = (props) => {
                     </li>
                     <li>
                         <p>What is involved in Fire It?</p>
-                        <p>This is a React.JS project. Firebase handles user authorization from email/password, as well as data for employees, menu items, table map layout, checks etc. Any styling is written in SASS. I have not installed any packages aside from a brief stint of Font Awesome, I wanted to figure out as much as I can myself.</p>
+                        <p>This is a React.JS project. Firebase handles user authorization from email/password, as well as data for employees, menu items, table map layout, checks etc. Any styling is written in SASS. I have not installed any packages aside from a brief stint of Font Awesome.</p>
                     </li>
                     <li>
                         <p>How do you use this app?</p>
-                        <p>Each section of this app will contain a guide that provides more information on how to use them.</p>
+                        <p>Each section of this app will contain a guide that provides more information on how to use them, as well as some insights of my code strategics to replicate the logic.</p>
                     </li>
                     <li>
                         <p>What is the MVP?</p>
-                        <p>User auth from Firebase. CRUD for employees, menu items, table map layout in the 'backend'. The ability to punch in items based on server & table & seat, as well as delete and promo. Styling is not a focus as I want to spend more time manipulating data than coloring buttons. Most of this is functional. Please be advised these apps are used by desktop terminals and tablets, at the moment it is styled for w:1920px</p>
+                        <p>User auth from Firebase. CRUD for employees, menu items, table map layout in the 'backend'. The ability to punch in items based on server & table & seat, as well as delete and promo. Styling is not a focus as I want to spend more time manipulating data than coloring buttons. Most of this is functional. Please be advised these apps are used by desktop terminals and tablets, at the moment it is styled for w:1920px, tablet is in the future, but mobile is not.</p>
                     </li>
                     <li>
                         <p>Who is the creator?</p>
