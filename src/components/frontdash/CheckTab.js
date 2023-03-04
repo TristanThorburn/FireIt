@@ -2,7 +2,7 @@ import CheckTabNav from "./navs/CheckTabNav";
 import ServerKeyPad from "../user/ServerKeyPad";
 import { useState } from "react";
 
-const CheckTab = () => {
+const CheckTab = (props) => {
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
 
     return(
@@ -17,7 +17,8 @@ const CheckTab = () => {
             
             <h2>Check Tab Under Construction</h2>
 
-            <CheckTabNav 
+            <CheckTabNav
+                setHelpModal={props.setHelpModal}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 />
         </div>

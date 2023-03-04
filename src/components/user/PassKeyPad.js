@@ -52,7 +52,7 @@ const PassPad = (props) => {
             <table>
                 <thead>
                     <tr>
-                        <th colSpan={3}>Password?</th>
+                        <th colSpan={3}>Pass? (Demo:5555🔥)</th>
                     </tr>
                 </thead>
                 <tbody>

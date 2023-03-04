@@ -403,7 +403,8 @@ const MenuTab = (props) => {
                 }
             </section>
             
-            <MenuTabNav 
+            <MenuTabNav
+                setHelpModal={props.setHelpModal}
                 toDirectory={setDirectory}
                 toApps={setAppsCategory}
                 toMains={setMainsCategory}

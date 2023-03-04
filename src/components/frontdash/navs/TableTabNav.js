@@ -10,6 +10,20 @@ const TableTabNav = (props) => {
     const handleTest = () => {
         console.log(employeeContext)
     }
+    
+    const handleMgrOveride = () => {
+        if(managerContext === false){
+            props.setManagerKeyPadActive(true)
+        }
+        
+        if(managerContext === true){
+            setManagerContext(false)
+        }
+    }
+    
+    const handleHelp = () => {
+        props.setHelpModal(true)
+    }
 
     const handleLogout = async () => { 
         if(currentUser.email){
@@ -22,15 +36,6 @@ const TableTabNav = (props) => {
         }
     }
 
-    const handleMgrOveride = () => {
-        if(managerContext === false){
-            props.setManagerKeyPadActive(true)
-        }
-        
-        if(managerContext === true){
-            setManagerContext(false)
-        }
-    }
 
     return(
         <div className='frontLowerNav'>
@@ -48,7 +53,7 @@ const TableTabNav = (props) => {
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
-                <li><button className='nonWorkingButton'>HELP</button></li>
+                <li><button onClick={handleHelp} className='workingButton'>HELP</button></li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext

@@ -2,7 +2,7 @@ import PaymentTabNav from './navs/PaymentTabNav';
 import ServerKeyPad from "../user/ServerKeyPad";
 import { useState } from "react";
 
-const PaymentTab = () => {
+const PaymentTab = (props) => {
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
 
     return(
@@ -17,7 +17,8 @@ const PaymentTab = () => {
 
             <h2>Payment Tab Under Construction</h2>
 
-            <PaymentTabNav 
+            <PaymentTabNav
+                setHelpModal={props.setHelpModal}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 />
         </div>

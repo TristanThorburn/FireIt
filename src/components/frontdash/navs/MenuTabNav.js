@@ -39,6 +39,10 @@ const MenuTabNav = (props) => {
         props.toLiquors(false);
         props.toWines(false);
     }
+    
+    const handleHelp = () => {
+        props.setHelpModal(true)
+    }
 
     const handleLogout = async () => { 
         if(currentUser.email){
@@ -66,7 +70,7 @@ const MenuTabNav = (props) => {
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
                 <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
-                <li><button className='nonWorkingButton'>HELP</button></li>
+                <li><button onClick={handleHelp} className='workingButton'>HELP</button></li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext

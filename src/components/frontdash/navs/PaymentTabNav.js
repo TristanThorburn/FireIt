@@ -21,6 +21,10 @@ const PaymentTabNav = (props) => {
             }
         }
     }
+    
+    const handleHelp = () => {
+        props.setHelpModal(true)
+    }
 
     const handleMgrOveride = () => {
         if(managerContext === false){
@@ -48,7 +52,7 @@ const PaymentTabNav = (props) => {
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
-                <li><button className='nonWorkingButton'>HELP</button></li>
+                <li><button onClick={handleHelp} className='workingButton'>HELP</button></li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext

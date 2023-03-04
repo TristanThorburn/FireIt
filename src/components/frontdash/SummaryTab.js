@@ -2,7 +2,7 @@ import SummaryTabNav from "./navs/SummaryTabNav";
 import ServerKeyPad from "../user/ServerKeyPad";
 import { useState } from "react";
 
-const SummaryTab = () => {
+const SummaryTab = (props) => {
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
 
     return(
@@ -17,7 +17,8 @@ const SummaryTab = () => {
 
             <h2>Summary Tab Under Construction</h2>
 
-            <SummaryTabNav 
+            <SummaryTabNav
+                setHelpModal={props.setHelpModal}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 />
         </div>

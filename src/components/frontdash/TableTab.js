@@ -23,6 +23,7 @@ const TableTab = (props) => {
                  />
             <TableTabNav 
                 setManagerKeyPadActive={setManagerKeyPadActive}
+                setHelpModal={props.setHelpModal}
                 />
         </div>
     )
