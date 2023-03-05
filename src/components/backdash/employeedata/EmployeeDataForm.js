@@ -212,9 +212,13 @@ const EmployeeDataForm = (props) => {
         setUserChecker(userIDRef.current.value)
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
+
     return(
-        <>
-            <form className='employeeForm' id='employeeForm'>
+        <section>
+            <form className='employeeForm' id='employeeForm' onSubmit={handleSubmit}>
             {/* Employee # */}
                 <div>
                     <label htmlFor='employeeNumber'>Employee #</label>
@@ -427,13 +431,14 @@ const EmployeeDataForm = (props) => {
                     }
                 </div>
             </form>
+            
             <EmployeeFirebase 
                 user={employeeData?.email}
                 pw={employeeData?.userPW}
                 firebaseId={props.id}
                 firebaseAuth={employeeData?.firebaseAuth}
                 />
-        </>
+        </section>
         
     )
 }

@@ -337,8 +337,12 @@ const MenuItemForm = (props) => {
         setPopUpsAction('remove')
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
+
     return(
-        <form className='menuItemForm' id='menuItemForm'>
+        <form className='menuItemForm' id='menuItemForm' onSubmit={handleSubmit}>
             {props.id !== '' || props.newItem === true
                 ? <>
                 {/* Item Name */}
