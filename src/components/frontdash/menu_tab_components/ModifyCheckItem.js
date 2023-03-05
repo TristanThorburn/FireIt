@@ -17,10 +17,6 @@ const ModifyCheckItem = (props) => {
     const [ deleteQsaItem, setDeleteQsaItem ] = useState(false);
     const docRef = doc(db, 'checks', employeeContext.employeeNumber, contextTable, props.checkItemModData.seat)
 
-    const handleTest = () => {
-        console.log(props.checkItemModData)
-    }
-
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)
     }
@@ -406,9 +402,6 @@ const ModifyCheckItem = (props) => {
                                 <button onClick={handleCancelDeletePromoItem}>CANCEL</button>
                             </div>
                             : <ul>
-                                <li>
-                                    <button onClick={handleTest}>Test</button>
-                                </li>
                                 <li>
                                     <button onClick={handleDeleteItem}>DELETE</button>
                                 </li>

@@ -63,7 +63,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setCurrentOrderData('')
         }
-        // Seat  does not exists in firebase. Seat exsits on check in pending order. Is there item data?
+        // Seat  does NOT exists in firebase. Seat exsits on check in pending order. Is there item data?
         if(props.doesSeatExist === false
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
@@ -112,7 +112,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setSelectedSeat('1')
                 props.setCurrentOrderData('')
-        }// Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data, ALSO if selected seat is '' setSelectedSeat to 1
+        }// Seat does NOT exist in firebase, seat does not exist on check, create new seat table if there is item data, ALSO if selected seat is '' setSelectedSeat to 1
         if(props.doesSeatExist === false 
             && document.getElementById(`seat${props.selectedSeat}`) === null
             && props.selectedSeat === ''
@@ -277,7 +277,7 @@ const TableCheck = (props) => {
                                     qsa:'false',
                                 }]
                                 updateDoc(checkRef, {
-                                order:arrayUnion(...orderToAdd),})
+                                order:arrayUnion(...orderToAdd)})
                             } else {
                                 setDoc(checkRef, {
                                     seat:true,
