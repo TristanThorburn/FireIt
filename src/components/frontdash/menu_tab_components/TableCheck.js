@@ -84,7 +84,7 @@ const TableCheck = (props) => {
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
-                orderInfo.setAttribute('data-new', 'confirm')
+                orderInfo.setAttribute('data-new', 'false')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.setAttribute('data-time', props.currentOrderData.time)
@@ -121,7 +121,8 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setSelectedSeat('1')
                 props.setCurrentOrderData('')
-        }// Seat does NOT exist in firebase, seat does not exist on check, create new seat table if there is item data, ALSO if selected seat is '' setSelectedSeat to 1
+        }
+        // FRESH CHECK: Seat does NOT exist in firebase, seat does not exist on check, create new seat if there is item data, ALSO if selected seat is '' setSelectedSeat to 1
         if(props.doesSeatExist === false 
             && document.getElementById(`seat${props.selectedSeat}`) === null
             && props.selectedSeat === ''
