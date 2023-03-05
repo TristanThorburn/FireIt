@@ -15,7 +15,6 @@ const TableMap = (props) => {
     const [ addingTable, setAddingTable ] = useState(false);    
     const [ stylingTable, setStylingTable ] = useState(false);
     const [ selectedTable, setSelectedTable ] = useState('');
-    const activeTable = document.getElementById(`${selectedTable}`)
 
     // Populate screen from table Data
     useEffect(() => {
@@ -51,7 +50,7 @@ const TableMap = (props) => {
     }
 
     const handleDelete = (e) => {
-        const docRef = doc(db, 'tables', `${selectedTable}`)
+        const docRef = doc(db, 'tables', `${selectedTable.id}`)
         if(props.id !== ''){
             deleteDoc(docRef)
             setSelectedTable('')
@@ -95,7 +94,7 @@ const TableMap = (props) => {
             props.setMenuTabActive(true);
             setContextTable(e.target.id);
         }
-        setSelectedTable(e.target.id)
+        setSelectedTable(e.target)
     }
 
     const handleNoPropagation = (e) => {
@@ -149,7 +148,7 @@ const TableMap = (props) => {
                     {enableDrag 
                         ? <p className='tableMapDirections'>Click to move, click again to set</p>
                         : selectedTable
-                            ? <p className='tableMapDirections'>Selected Table: {activeTable?.innerText}</p>
+                            ? <p className='tableMapDirections'>Selected Table: {selectedTable?.innerText}</p>
                             : <p className='tableMapDirections'>No Selected Table</p>
                     }  
                 </div>
@@ -163,8 +162,8 @@ const TableMap = (props) => {
                 : stylingTable
                     ? <TableStyleUpdate
                         setStylingTable={setStylingTable}
-                        activeTable={activeTable?.innerText}
-                        tableId={selectedTable}
+                        activeTable={selectedTable?.innerText}
+                        tableId={selectedTable.id}
                         />
                     :<ul className='tableMap'>
                             {tablesData.map(table => 

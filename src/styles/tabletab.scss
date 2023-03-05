@@ -135,7 +135,7 @@
 .tableFormContainer{
     border:2px solid white;
     width:750px;
-    height:600px;
+    height:700px;
     background-color:$backgroundColor;
     display:grid;
     grid-template-rows:1fr, 4fr, 1fr;
@@ -147,6 +147,10 @@
         display:flex;
         justify-content: space-evenly;
         flex-wrap:wrap;
+    }
+    .padError{
+        margin:0 auto;
+        height:40px;
     }
     footer{
         text-align: center;
