@@ -6,6 +6,7 @@ const AppsScreen = (props) => {
     const [ appsData, setAppsData ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
+    const time = Date.now().toString()
 
     // Initial Data Population
     useEffect(() => {
@@ -31,19 +32,19 @@ const AppsScreen = (props) => {
     useEffect(() => {
         if(selectedItem !== ''){
             if(itemData.name && props.selectedSeat === ''){
-                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
                 props.setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
             if(itemData.name && props.selectedSeat !== ''){
-                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price, time:time}
                 props.setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
         }
-    }, [itemData, props, selectedItem])
+    }, [itemData, props, selectedItem, time])
 
     // OLD LOGIC TO ADD ITEM DIRECTLY TO FIREBASE AND DISPLAY ON CHECK, CAUSING EMPTY STRING PUSHES:
     // logic for seat number, no seat number add/update

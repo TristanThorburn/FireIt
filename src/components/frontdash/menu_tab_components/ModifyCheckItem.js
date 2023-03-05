@@ -17,6 +17,10 @@ const ModifyCheckItem = (props) => {
     const [ deleteQsaItem, setDeleteQsaItem ] = useState(false);
     const docRef = doc(db, 'checks', employeeContext.employeeNumber, contextTable, props.checkItemModData.seat)
 
+    const handleTest = () => {
+        console.log(props.checkItemModData)
+    }
+
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)
     }
@@ -72,6 +76,7 @@ const ModifyCheckItem = (props) => {
                     discount:'25',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -81,6 +86,7 @@ const ModifyCheckItem = (props) => {
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -101,6 +107,7 @@ const ModifyCheckItem = (props) => {
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -110,6 +117,7 @@ const ModifyCheckItem = (props) => {
                         discount:'25',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -130,6 +138,7 @@ const ModifyCheckItem = (props) => {
                     discount:'50',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -139,6 +148,7 @@ const ModifyCheckItem = (props) => {
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -159,6 +169,7 @@ const ModifyCheckItem = (props) => {
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -168,6 +179,7 @@ const ModifyCheckItem = (props) => {
                         discount:'50',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -188,6 +200,7 @@ const ModifyCheckItem = (props) => {
                     discount:'100',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -197,6 +210,7 @@ const ModifyCheckItem = (props) => {
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -217,6 +231,7 @@ const ModifyCheckItem = (props) => {
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -226,6 +241,7 @@ const ModifyCheckItem = (props) => {
                         discount:'100',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -250,6 +266,7 @@ const ModifyCheckItem = (props) => {
                     discount:'100',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'true',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -259,6 +276,7 @@ const ModifyCheckItem = (props) => {
                         discount:'0',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'false',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -279,6 +297,7 @@ const ModifyCheckItem = (props) => {
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
                     qsa:'false',
+                    time:props.checkItemModData.time,
                 }),
                }).then(
                 updateDoc(docRef, {
@@ -288,6 +307,7 @@ const ModifyCheckItem = (props) => {
                         discount:'100',
                         originalCost:props.checkItemModData.originalCost,
                         qsa:'true',
+                        time:props.checkItemModData.time,
                     })
                 })
                )
@@ -315,7 +335,8 @@ const ModifyCheckItem = (props) => {
                     cost:props.checkItemModData.cost, 
                     discount:'0',
                     originalCost:props.checkItemModData.originalCost,
-                    qsa:props.checkItemModData.qsa
+                    qsa:props.checkItemModData.qsa,
+                    time:props.checkItemModData.time,
                 })
             })
             setInfoMessage(`${props.checkItemModData.name} deleted`)
@@ -402,6 +423,9 @@ const ModifyCheckItem = (props) => {
                                 <button onClick={handleCancelDeletePromoItem}>CANCEL</button>
                             </div>
                             : <ul>
+                                <li>
+                                    <button onClick={handleTest}>TEST</button>
+                                </li>
                                 <li>
                                     <button onClick={handleDeleteItem}>DELETE</button>
                                 </li>
