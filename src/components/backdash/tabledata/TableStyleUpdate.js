@@ -30,7 +30,7 @@ const TableStyleUpdate = (props) => {
                     <h2>Update {props.activeTable}</h2>
                 </header>
 
-                <form>
+                <form onSubmit={handleUpdate}>
                     <fieldset>
                         <legend>Select Table Style</legend>
                             <div className='tableFormStyle'>

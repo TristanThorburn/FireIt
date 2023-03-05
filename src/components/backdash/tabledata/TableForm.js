@@ -21,8 +21,8 @@ const TableForm = (props) => {
                 name:tableNameRef.current.value,
                 searchId:tableNameRef.current.value.replace(/ /g, '').toLowerCase(),
                 tableStyle:design,
-                top:'50px',
-                left:'50px',
+                top:'625px',
+                left:'925px',
             });
             props.setAddingTable(false)
             }
@@ -55,7 +55,7 @@ const TableForm = (props) => {
                     <h2>Add New Table?</h2>
                 </header>
 
-                <form>
+                <form onSubmit={handleAddTable}>
                     <div className='tableFormName'>
                         <label htmlFor='tableName'>Table Name:</label>
                         <input
