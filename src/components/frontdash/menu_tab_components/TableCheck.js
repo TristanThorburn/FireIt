@@ -12,8 +12,7 @@ const TableCheck = (props) => {
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
 
     const handleTest = () => {
-        const id = Date.now().toString()
-        console.log(id)
+        console.log(props.doesSeatExist)
     }
 
     // Add up costs of items for check total
@@ -37,7 +36,7 @@ const TableCheck = (props) => {
                 setCheckData(snapshot.docs.map(doc => ({
                     id: doc.id,
                     data: doc.data(),
-                    // seatNumber:doc.id.replace(/seat/g, ''),
+                    seatNumber:doc.id.replace(/seat/g, ''),
                 })))
             })
             return unsubscribe

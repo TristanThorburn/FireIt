@@ -1,5 +1,5 @@
 import { db } from "../../../firebase"
-import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore"
+import { doc, updateDoc, arrayRemove, arrayUnion, getDoc, deleteDoc } from "firebase/firestore"
 import { useAuth } from "../../../contexts/AuthContext";
 import { useTable } from "../../../contexts/TableContext";
 import { useState, useEffect } from "react";
@@ -17,10 +17,6 @@ const ModifyCheckItem = (props) => {
     const [ deleteQsaItem, setDeleteQsaItem ] = useState(false);
     const docRef = doc(db, 'checks', employeeContext.employeeNumber, contextTable, props.checkItemModData.seat)
 
-    const handleTest = () => {
-        console.log(props.checkItemModData)
-    }
-
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)
     }
@@ -36,6 +32,7 @@ const ModifyCheckItem = (props) => {
                     discount:props.checkItemModData.discount,
                     originalCost:props.checkItemModData.originalCost,
                     qsa:props.checkItemModData.qsa,
+                    time:props.checkItemModData.time,
                 })
             })
             setDeletePromoItem(false)
@@ -54,6 +51,7 @@ const ModifyCheckItem = (props) => {
                     discount:props.checkItemModData.discount,
                     originalCost:props.checkItemModData.originalCost,
                     qsa:props.checkItemModData.qsa,
+                    time:props.checkItemModData.time,
                 })
             })
             setDeleteQsaItem(false)
@@ -63,6 +61,14 @@ const ModifyCheckItem = (props) => {
                 setInfoMessage('')
             }, 1000)
         }
+        const deleteCleanUp = async () =>{
+            const docSnap = await getDoc(docRef)
+            if(docSnap.data() !== undefined && docSnap.data().order.length < 1){
+                deleteDoc(docRef)
+                props.setDoesSeatExist(false)
+            }
+        }
+        deleteCleanUp()
     }, [deletePromoItem, docRef, props ,deleteQsaItem])
 
     // Promo item based on selected amount
@@ -321,7 +327,7 @@ const ModifyCheckItem = (props) => {
         }
     },[qsaItem, props, docRef])
 
-    const handleDeleteItem = () => {
+    const handleDeleteItem = async () => {
         if(props.checkItemModData.qsa === 'true' && props.checkItemModData.discount !=='0'){
             setConfirmQsaDelete(true)
         }
@@ -339,6 +345,11 @@ const ModifyCheckItem = (props) => {
                     time:props.checkItemModData.time,
                 })
             })
+            const docSnap = await getDoc(docRef)
+            if(docSnap.data() !== undefined && docSnap.data().order.length < 1){
+                deleteDoc(docRef)
+                props.setDoesSeatExist(false)
+            }
             setInfoMessage(`${props.checkItemModData.name} deleted`)
             setTimeout(() => {
                 props.setModifyCheckItem(false)
@@ -423,9 +434,6 @@ const ModifyCheckItem = (props) => {
                                 <button onClick={handleCancelDeletePromoItem}>CANCEL</button>
                             </div>
                             : <ul>
-                                <li>
-                                    <button onClick={handleTest}>TEST</button>
-                                </li>
                                 <li>
                                     <button onClick={handleDeleteItem}>DELETE</button>
                                 </li>
