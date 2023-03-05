@@ -8,6 +8,7 @@ const MixedDrinksScreen = (props) => {
     const [ collectionRef, setCollectionRef ] = useState('');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
+    const time = Date.now().toString()
 
     // Initial data population screen display
     useEffect(() => {
@@ -51,19 +52,19 @@ const MixedDrinksScreen = (props) => {
     useEffect(() => {
         if(selectedItem !== ''){
             if(itemData.name && props.selectedSeat === ''){
-                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price}
+                const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
                 props.setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
             if(itemData.name && props.selectedSeat !== ''){
-                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price}
+                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price, time:time}
                 props.setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
         }
-    }, [itemData, props, selectedItem])
+    }, [itemData, props, selectedItem, time])
 
     const handleCocktailClick =(e) => {
         setSelectedItem(e.target.id)

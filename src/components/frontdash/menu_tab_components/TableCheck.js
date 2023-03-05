@@ -1,5 +1,5 @@
 import { db } from '../../../firebase';
-import { orderBy, onSnapshot, query, collection, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useState, useEffect } from 'react';
 
@@ -10,6 +10,11 @@ const TableCheck = (props) => {
     const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
+
+    const handleTest = () => {
+        const id = Date.now().toString()
+        console.log(id)
+    }
 
     // Add up costs of items for check total
     useEffect(() => {
@@ -26,17 +31,18 @@ const TableCheck = (props) => {
 
     // Get Data for the check from current server and table
     useEffect(() => {
-        if(props.tableData.name !== undefined){
+        if(props.tableData.searchId !== undefined){
             const q = query(checkCollectionRef, orderBy('seatNumber'));
             const unsubscribe = onSnapshot(q, snapshot => {
                 setCheckData(snapshot.docs.map(doc => ({
                     id: doc.id,
-                    data: doc.data()
+                    data: doc.data(),
+                    // seatNumber:doc.id.replace(/seat/g, ''),
                 })))
             })
             return unsubscribe
         }
-    },[checkCollectionRef, props.tableData.name])
+    },[checkCollectionRef, props.tableData.searchId])
 
     // append pending order to the current check, check for seats and compare to selected to determine how to append
     useEffect(() => {
@@ -56,6 +62,8 @@ const TableCheck = (props) => {
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', 'false')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
+                orderInfo.setAttribute('data-time', props.currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -80,6 +88,7 @@ const TableCheck = (props) => {
                 orderInfo.setAttribute('data-new', 'confirm')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
+                orderInfo.setAttribute('data-time', props.currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -105,6 +114,7 @@ const TableCheck = (props) => {
                 orderInfo.setAttribute('data-new', 'false')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
+                orderInfo.setAttribute('data-time', props.currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -142,6 +152,7 @@ const TableCheck = (props) => {
                 orderInfo.setAttribute('data-new', 'true')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
+                orderInfo.setAttribute('data-time', props.currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -184,6 +195,7 @@ const TableCheck = (props) => {
                 orderInfo.setAttribute('data-new', 'true')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
+                orderInfo.setAttribute('data-time', props.currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -202,98 +214,52 @@ const TableCheck = (props) => {
         if(props.sendOrder === true && document.querySelectorAll('.pendingOrder') !== null){
             let ordersToSend = [];
             const pendingOrders = document.querySelectorAll('.pendingOrder')
-            pendingOrders.forEach(order => {
+            pendingOrders.forEach((order, i) => {
                 ordersToSend.push({
                     seat:order.dataset.seat, 
                     name:order.firstElementChild.innerText,
                     cost:order.lastElementChild.innerText,
                     new:order.dataset.new,
                     number:order.dataset.number,
+                    time:order.dataset.time,
                 })
             })
             setPendingOrder(ordersToSend)
         }
     }, [props.sendOrder])
 
-    // Send order to Firebase
+    // Add item to firebase, check for duplicates and allow.
     useEffect(() => {
         if(props.sendOrder === true && pendingOrder !== ''){
             pendingOrder.forEach(order => {
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
-                    if(order.new === 'true'){
-                        setDoc(checkRef, {
-                            seat:true,
-                            seatNumber:order.number,
-                            order:[{
-                                item:order.name, 
-                                cost:order.cost, 
-                                discount:'0',
-                                originalCost:order.cost,
-                                qsa:'false',
-                            }],
-                        })
-                    }
-                    if(order.new === 'false'){
-                        const doesItemExist = async () => {
-                            const docSnap = await getDoc(checkRef)
-                            if(docSnap.data().order.find(o => o.item === `${order.name}`)){
-                                const orderToAdd = [{
-                                    item:order.name, 
-                                    cost:order.cost, 
-                                    discount:'0',
-                                    originalCost:order.cost,
-                                    qsa:'false',
-                                }]
-                                docSnap.data().order.forEach(order => {
-                                    orderToAdd.push(order)
-                                })
-                                updateDoc(checkRef, {
-                                    order:orderToAdd
-                                })
-                            } else {
-                                const orderToAdd = [{
-                                    item:order.name, 
-                                    cost:order.cost, 
-                                    discount:'0',
-                                    originalCost:order.cost,
-                                    qsa:'false',
-                                }]
-                                updateDoc(checkRef, {
-                                order:arrayUnion(...orderToAdd)})
-                            }
-                        }
-                        doesItemExist()
-                    }
-                    if(order.new === 'confirm'){
-                        const doesSeatExist = async () => {
-                            const docSnap = await getDoc(checkRef)
-                            if(docSnap.exists()){
-                                const orderToAdd = [{
-                                    item:order.name, 
-                                    cost:order.cost, 
-                                    discount:'0',
-                                    originalCost:order.cost,
-                                    qsa:'false',
-                                }]
-                                updateDoc(checkRef, {
-                                order:arrayUnion(...orderToAdd)})
-                            } else {
-                                setDoc(checkRef, {
-                                    seat:true,
-                                    seatNumber:order.number,
-                                    order:[{
-                                        item:order.name, 
-                                        cost:order.cost, 
-                                        discount:'0',
-                                        originalCost:order.cost,
-                                        qsa:'false',
-                                    }],
-                                })
-                            }
-                        }
-                        doesSeatExist()
-                    }
+                if(order.new === 'true'){
+                    setDoc(checkRef, {
+                        seat:true,
+                        seatNumber:order.number,
+                        order:[{
+                            item:order.name, 
+                            cost:order.cost, 
+                            discount:'0',
+                            originalCost:order.cost,
+                            qsa:'false',
+                            time:order.time,
+                        }],
+                    })
+                }
+                if(order.new === 'false'){
+                    const orderToAdd = [{
+                        item:order.name, 
+                        cost:order.cost, 
+                        discount:'0',
+                        originalCost:order.cost,
+                        qsa:'false',
+                        time:order.time,
+                    }]
+                    updateDoc(checkRef, {
+                    order:arrayUnion(...orderToAdd)})
+                }
             })
         props.setSendOrder(false)
         props.setMenuTabActive(false)
@@ -313,6 +279,7 @@ const TableCheck = (props) => {
                 name:e.target.dataset.name,
                 originalCost:e.target.dataset.originalcost,
                 qsa:e.target.dataset.qsa,
+                time:e.target.dataset.time,
             })
             props.setModifyCheckItem(true)
         }
@@ -320,6 +287,7 @@ const TableCheck = (props) => {
 
     return(
         <div>
+            <button onClick={handleTest} className='testButton'>TEST</button>
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>
@@ -357,6 +325,7 @@ const TableCheck = (props) => {
                                                 data-cost={order.cost}
                                                 data-originalcost={order.originalCost}
                                                 data-qsa={order.qsa}
+                                                data-time={order.time}
                                                 >{order.item}</td>
                                             <td
                                                 onClick={handleCheckItemClick}
@@ -365,6 +334,8 @@ const TableCheck = (props) => {
                                                 data-name={order.item}
                                                 data-cost={order.cost}
                                                 data-originalcost={order.originalCost}
+                                                data-qsa={order.qsa}
+                                                data-time={order.time}
                                                 className='checkItemCost'
                                                 >{order.cost}</td>
                                         </tr>    
