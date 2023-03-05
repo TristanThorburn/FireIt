@@ -4,30 +4,42 @@ import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 
 const TableForm = (props) => {
-    const [ design, setDesign ] = useState('squareTable')
+    const [ design, setDesign ] = useState('')
     const tableNameRef = useRef('')
     const [ existingTable, setExistingTable ] = useState('')
+    const [ error, setError ] = useState('')
 
     useEffect(() => {
         if(tableNameRef.current.value !== '' && existingTable === false){
-            const designOptions = document.getElementsByName('design');
             const tableRef = doc(db, 'tables', `${tableNameRef.current.value.toLowerCase()}`)
-                for (var radio of designOptions){
-                    if (radio.checked) {    
-                        setDesign(radio.value)
-                    }
+            // const designOptions = document.getElementsByName('design');
+            //     for (var radio of designOptions){
+            //         if (radio.checked) {    
+            //             setDesign(radio.value)
+            //         }
+            //     }
+                if(design === ''){
+                    setError('Choose a table design')
+                    setTimeout(() => {
+                        setError('')
+                    }, 2000)
                 }
-            setDoc(tableRef , {
-                name:tableNameRef.current.value,
-                searchId:tableNameRef.current.value.replace(/ /g, '').toLowerCase(),
-                tableStyle:design,
-                top:'625px',
-                left:'925px',
-            });
-            props.setAddingTable(false)
+                if(design !== ''){
+                    setDoc(tableRef , {
+                        name:tableNameRef.current.value,
+                        searchId:tableNameRef.current.value.replace(/ /g, '').toLowerCase(),
+                        tableStyle:design,
+                        top:'625px',
+                        left:'925px',
+                    })
+                props.setAddingTable(false)
+                }
             }
         if(tableNameRef.current.value !== '' && existingTable === true){
-            alert('Table already exists')
+            setError('Table already exists')
+            setTimeout(() => {
+                setError('')
+            }, 2000)
         }
     }, [existingTable, props, design])
 
@@ -41,11 +53,21 @@ const TableForm = (props) => {
             // check if table table is in the list
             const tableExists = tablesList.indexOf(tableNameRef?.current.value) > -1
             setExistingTable(tableExists)
+            const designOptions = document.getElementsByName('design');
+                for (var radio of designOptions){
+                    if (radio.checked) {    
+                        setDesign(radio.value)
+                    }
+                }
         })
     }
 
     const handleCancel = () => {
         props.setAddingTable(false)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
     }
 
     return(
@@ -55,7 +77,7 @@ const TableForm = (props) => {
                     <h2>Add New Table?</h2>
                 </header>
 
-                <form onSubmit={handleAddTable}>
+                <form onSubmit={handleSubmit}>
                     <div className='tableFormName'>
                         <label htmlFor='tableName'>Table Name:</label>
                         <input
@@ -125,6 +147,11 @@ const TableForm = (props) => {
                             </div>
                     </fieldset>
                 </form>
+
+                {error
+                    ? <div className='padError'>{error}</div>
+                    : null
+                }
 
                 <footer>
                     <button
