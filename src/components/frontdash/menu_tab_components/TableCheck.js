@@ -54,7 +54,7 @@ const TableCheck = (props) => {
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
-                orderInfo.setAttribute('data-new', false)
+                orderInfo.setAttribute('data-new', 'false')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
@@ -77,7 +77,7 @@ const TableCheck = (props) => {
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
-                orderInfo.setAttribute('data-new', true)
+                orderInfo.setAttribute('data-new', 'confirm')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 nameContainer.appendChild(orderName)
@@ -102,7 +102,7 @@ const TableCheck = (props) => {
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
-                orderInfo.setAttribute('data-new', false)
+                orderInfo.setAttribute('data-new', 'false')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 nameContainer.appendChild(orderName)
@@ -110,11 +110,12 @@ const TableCheck = (props) => {
                 orderInfo.appendChild(nameContainer)
                 orderInfo.appendChild(costContainer)
                 seatToAppend.appendChild(orderInfo)
+                props.setSelectedSeat('1')
                 props.setCurrentOrderData('')
-        }
-        // Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data.
+        }// Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data, ALSO if selected seat is '' setSelectedSeat to 1
         if(props.doesSeatExist === false 
             && document.getElementById(`seat${props.selectedSeat}`) === null
+            && props.selectedSeat === ''
             && props.currentOrderData !== ''){
                 const seatsAndOrders = document.querySelector('.seatsAndOrders')
                 const newTable = document.createElement('table')
@@ -138,7 +139,49 @@ const TableCheck = (props) => {
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
                 orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
-                orderInfo.setAttribute('data-new', true)
+                orderInfo.setAttribute('data-new', 'true')
+                orderInfo.setAttribute('data-number', props.currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
+                nameContainer.appendChild(orderName)
+                costContainer.appendChild(orderCost)
+                orderInfo.appendChild(nameContainer)
+                orderInfo.appendChild(costContainer)
+                newTableBody.appendChild(orderInfo)
+                newTableHead.appendChild(newTableHeadRow)
+                newTable.appendChild(newTableHead)
+                newTable.appendChild(newTableBody)
+                seatsAndOrders.appendChild(newTable)
+                props.setSelectedSeat('1')
+                props.setCurrentOrderData('')
+        }
+        // Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data.
+        if(props.doesSeatExist === false 
+            && document.getElementById(`seat${props.selectedSeat}`) === null
+            && props.selectedSeat !== ''
+            && props.currentOrderData !== ''){
+                const seatsAndOrders = document.querySelector('.seatsAndOrders')
+                const newTable = document.createElement('table')
+                newTable.classList.add('checkSeatInfo')
+                newTable.classList.add('pendingSeat')
+                const newTableHead = document.createElement('thead')
+                const newTableHeadRow = document.createElement('tr')
+                const newTableBody = document.createElement('tbody')
+                newTableBody.setAttribute('id', `seat${props.currentOrderData.seat}` )
+                const newTableHeader = document.createElement('th')
+                newTableHeader.setAttribute('colspan', '2')
+                const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
+                newTableHeader.appendChild(seatNumber)
+                newTableHeadRow.appendChild(newTableHeader)
+                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderCost = document.createTextNode(props.currentOrderData.cost)
+                const orderInfo = document.createElement('tr')
+                const nameContainer = document.createElement('td')
+                const costContainer = document.createElement('td')
+                costContainer.classList.add('checkItemCost')
+                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
+                orderInfo.classList.add('pendingOrder')
+                orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
+                orderInfo.setAttribute('data-new', 'true')
                 orderInfo.setAttribute('data-number', props.currentOrderData.seat)
                 orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
                 nameContainer.appendChild(orderName)
@@ -178,18 +221,51 @@ const TableCheck = (props) => {
             pendingOrder.forEach(order => {
                 const checkRef = 
                     doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
-                    if(order.new === 'false'){
-                        const orderToAdd = [{
-                            item:order.name, 
-                            cost:order.cost, 
-                            discount:'0',
-                            originalCost:order.cost,
-                            qsa:'false',
-                        }]
-                        updateDoc(checkRef, {
-                        order:arrayUnion(...orderToAdd)})
-                    }
                     if(order.new === 'true'){
+                        setDoc(checkRef, {
+                            seat:true,
+                            seatNumber:order.number,
+                            order:[{
+                                item:order.name, 
+                                cost:order.cost, 
+                                discount:'0',
+                                originalCost:order.cost,
+                                qsa:'false',
+                            }],
+                        })
+                    }
+                    if(order.new === 'false'){
+                        const doesItemExist = async () => {
+                            const docSnap = await getDoc(checkRef)
+                            if(docSnap.data().order.find(o => o.item === `${order.name}`)){
+                                const orderToAdd = [{
+                                    item:order.name, 
+                                    cost:order.cost, 
+                                    discount:'0',
+                                    originalCost:order.cost,
+                                    qsa:'false',
+                                }]
+                                docSnap.data().order.forEach(order => {
+                                    orderToAdd.push(order)
+                                })
+                                updateDoc(checkRef, {
+                                    order:orderToAdd
+                                })
+                            } else {
+                                const orderToAdd = [{
+                                    item:order.name, 
+                                    cost:order.cost, 
+                                    discount:'0',
+                                    originalCost:order.cost,
+                                    qsa:'false',
+                                }]
+                                updateDoc(checkRef, {
+                                order:arrayUnion(...orderToAdd)})
+                            }
+                        }
+                        doesItemExist()
+                    }
+                    if(order.new === 'confirm'){
                         const doesSeatExist = async () => {
                             const docSnap = await getDoc(checkRef)
                             if(docSnap.exists()){

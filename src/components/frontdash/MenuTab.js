@@ -244,6 +244,7 @@ const MenuTab = (props) => {
                     doesSeatExist={doesSeatExist}
                     selectedSeatExists={doesSeatExist}
                     selectedSeat={selectedSeat}
+                    setSelectedSeat={setSelectedSeat}
                     serverData={serverData}
                     tableData={tableData}
                     currentOrderData={currentOrderData}
