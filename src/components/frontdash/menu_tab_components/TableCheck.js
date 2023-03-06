@@ -1,7 +1,7 @@
 import { db } from '../../../firebase';
 import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useAuth } from '../../../contexts/AuthContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const TableCheck = (props) => {
     const { managerContext } = useAuth();
@@ -14,6 +14,30 @@ const TableCheck = (props) => {
     const handleTest = () => {
         console.log(props.doesSeatExist)
     }
+
+    const handlePendingOrderDelete = useCallback((e) => {
+        e.stopPropagation()
+        const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
+        const child = e.target.parentNode
+        seatToAppend.removeChild(child)
+        e.target.removeEventListener('click', handlePendingOrderDelete)
+    },[])
+
+    const handlePendingSeatDelete = useCallback((e) => {
+        e.stopPropagation()
+        const seatToAppend = 
+            document.getElementById(`${e.target.parentNode.dataset.seat}`).parentNode
+        const firstChild = seatToAppend.childNodes[0]
+        const secondChild = seatToAppend.childNodes[1]
+        if(secondChild.childNodes.length <= 1){
+            seatToAppend.removeChild(firstChild)
+            seatToAppend.removeChild(secondChild)
+            e.target.removeEventListener('click', handlePendingOrderDelete)
+        }
+        if(secondChild.childNodes.length > 1){
+            alert('Items which create a new seat can only be deleted when all other items on the seat are removed')
+        }
+    },[handlePendingOrderDelete])
 
     // Add up costs of items for check total
     useEffect(() => {
@@ -54,7 +78,9 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.addEventListener('click', handlePendingOrderDelete)
                 const costContainer = document.createElement('td')
+                costContainer.addEventListener('click', handlePendingOrderDelete)
                 costContainer.classList.add('checkItemCost')
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
@@ -79,7 +105,9 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.addEventListener('click', handlePendingOrderDelete)
                 const costContainer = document.createElement('td')
+                costContainer.addEventListener('click', handlePendingOrderDelete)
                 costContainer.classList.add('checkItemCost')
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
@@ -95,7 +123,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setCurrentOrderData('')
         }
-        // Seat does exist in firebase. User has not selected a seat leaving it '' so use seat 1, is there item data?
+        // AUTO SEAT 1: Seat does exist in firebase. User has not selected a seat leaving it '' so use seat 1, is there item data?
         if(props.doesSeatExist === true
             && document.getElementById(`seat${props.selectedSeat}`) === null
             && props.selectedSeat === ''
@@ -105,7 +133,9 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.addEventListener('click', handlePendingOrderDelete)
                 const costContainer = document.createElement('td')
+                costContainer.addEventListener('click', handlePendingOrderDelete)
                 costContainer.classList.add('checkItemCost')
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
@@ -144,7 +174,9 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.addEventListener('click', handlePendingSeatDelete)
                 const costContainer = document.createElement('td')
+                costContainer.addEventListener('click', handlePendingSeatDelete)
                 costContainer.classList.add('checkItemCost')
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
@@ -165,7 +197,7 @@ const TableCheck = (props) => {
                 props.setSelectedSeat('1')
                 props.setCurrentOrderData('')
         }
-        // Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data.
+        // FRESH SEAT: Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data.
         if(props.doesSeatExist === false 
             && document.getElementById(`seat${props.selectedSeat}`) === null
             && props.selectedSeat !== ''
@@ -187,7 +219,9 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.addEventListener('click', handlePendingSeatDelete)
                 const costContainer = document.createElement('td')
+                costContainer.addEventListener('click', handlePendingSeatDelete)
                 costContainer.classList.add('checkItemCost')
                 costContainer.setAttribute('data-cost', props.currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
@@ -207,7 +241,7 @@ const TableCheck = (props) => {
                 seatsAndOrders.appendChild(newTable)
                 props.setCurrentOrderData('')
         }
-    }, [props.currentOrderData, props.doesSeatExist, props.selectedSeat, props])
+    }, [props.currentOrderData, props.doesSeatExist, props.selectedSeat, props, handlePendingOrderDelete, handlePendingSeatDelete])
 
     // Make array of pending orders to send to firebase
     useEffect(() => {
