@@ -91,6 +91,9 @@
         border-radius:10px;
         text-align: center;
     }
+    h3:active{
+        border:4px solid $fireItColor;
+    }
     button{
         font-size: 3rem;
         border: none;

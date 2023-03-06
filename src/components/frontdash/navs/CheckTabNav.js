@@ -52,7 +52,10 @@ const CheckTabNav = (props) => {
                 <li>Demo</li>
                 <li>Demo</li>
                 <li>Demo</li>
-                <li><button onClick={handleHelp} className='workingButton'>HELP</button></li>
+                <li className='infoButton'>
+                    <button onClick={handleHelp} className='workingButton'>🔥</button>
+                    <p onClick={handleHelp}>INFO</p>
+                </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext

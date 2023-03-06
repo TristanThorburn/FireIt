@@ -70,7 +70,10 @@ const MenuTabNav = (props) => {
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
                 <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
-                <li><button onClick={handleHelp} className='workingButton'>HELP</button></li>
+                <li className='infoButton'>
+                    <button onClick={handleHelp} className='workingButton'>🔥</button>
+                    <p onClick={handleHelp}>INFO</p>
+                </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext

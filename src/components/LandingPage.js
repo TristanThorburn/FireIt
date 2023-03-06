@@ -40,9 +40,9 @@ const Login = () => {
                                 <button onClick={handleLogin}>🔥</button>
                                 <h1 onClick={handleLogin}>FIRE IT</h1>
                             </div>
-                            <div className='landingInfo'>
+                            <div className='infoButton'>
                                 <button onClick={handleAppInfo}>🔥</button>
-                                <h2 onClick={handleAppInfo}>INFO</h2>
+                                <p onClick={handleAppInfo}>INFO</p>
                             </div>
                         </div>
             }

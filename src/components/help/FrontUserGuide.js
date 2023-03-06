@@ -128,7 +128,7 @@ const FrontUserGuide = (props) => {
                             - Button under construction. 
                         </li>
                         <li>
-                            HELP
+                            INFO
                             <br />
                             - Opens modal for user info, or insights to code logic. 
                         </li>
@@ -179,7 +179,7 @@ const FrontUserGuide = (props) => {
                             - Under construction. Change active table without using table map. 
                         </li>
                         <li>
-                            HELP
+                            INFO
                             <br />
                             - Opens modal for user info, or insights to code logic. 
                         </li>
@@ -215,7 +215,7 @@ const FrontUserGuide = (props) => {
                             - Button under construction. 
                         </li>
                         <li>
-                            HELP
+                            INFO
                             <br />
                             - Opens modal for user info, or insights to code logic. 
                         </li>
@@ -251,7 +251,7 @@ const FrontUserGuide = (props) => {
                             - Button under construction. 
                         </li>
                         <li>
-                            HELP
+                            INFO
                             <br />
                             - Opens modal for user info, or insights to code logic. 
                         </li>
@@ -287,7 +287,7 @@ const FrontUserGuide = (props) => {
                             - Button under construction. 
                         </li>
                         <li>
-                            HELP
+                            INFO
                             <br />
                             - Opens modal for user info, or insights to code logic. 
                         </li>

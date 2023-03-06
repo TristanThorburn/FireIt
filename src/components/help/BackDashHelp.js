@@ -65,6 +65,7 @@ const BackDashHelp = (props) => {
                             ? <ul>
                                 <li>Begin by selecting an employee from the list or creating a new employee.</li>
                                 <li>You cannot update, or create a new employee if the employee number or user ID is already in use to prevent duplicates, a name is also required.</li>
+                                <li>UserID and UserPW must be 4 characters.</li>
                                 <li>The email field is auto populated at this time to enable firebase authorization.</li>
                                 <li>A second form will populate on the bottom for new employees who are created and are not firebase activated, they must be at this point in order to be a new server using the app.</li>
                                 <li>When a new user is activated to firebase, the current user is logged out, as currently authorizing a new employee will update which user firebase considers to be active.</li>
