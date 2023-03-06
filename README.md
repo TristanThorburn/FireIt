@@ -11,13 +11,25 @@ Primarily inspired by my 3 years working exclusively with Squirrel (https://www.
 Tristan Thorburn 2023
 
                                     CHANGELOG:
+                                    2023-03-06
+App:
+    Custom alerts added
+
+Back Dashboard:
+    -All data sections now have info buttons with explainations for current functionality
+
+MenuTab
+    -Corrected an error limiting duplicate items due to arrayUnion, as well as an error allowing only one pending item push on new seats
+    -Server access can removing PENDING orders with a click
+
+**********************************************************************************************************
                                     2023-03-03
 Landing Page
     -Updated to replicate initial touch before log in
     -Link to info about the app
 
 Front Dashboard:
-    -All tabs lower navs help buttons now functional with explainations for current functionality
+    -All tabs lower navs info buttons now functional with explainations for current functionality
     -Manager context authorization toggles added
 
 MenuTab
