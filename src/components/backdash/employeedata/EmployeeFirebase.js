@@ -25,7 +25,7 @@ const EmployeeFirebase = (props) => {
                                 setUserExistsFireAuth(false)
                             }
                     } catch (error) {
-                        console.log(error.message)
+                        setError(error.message)
                     }
             }
             checkFirebaseAuthStatus()

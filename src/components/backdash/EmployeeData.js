@@ -4,12 +4,14 @@ import { employeeCollectionRef } from '../../library/firestoreCollections';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import EmployeeDataForm from './employeedata/EmployeeDataForm';
 import BackDashHelp from '../help/BackDashHelp';
+import FireItAlert from '../user/FireItAlert';
 
 const EmployeeData = () => {
     const [ employeeData, setEmployeeData ] = useState([]);
     const [ newEmployee, setNewEmployee ] = useState(false);
     const [ selectedEmployee, setSelectedEmployee ] = useState('');
     const [ employeeDataHelp, setEmployeeDataHelp ] = useState(false)
+    const [ fireItAlert, setFireItAlert ] = useState('')
 
     useEffect(() => {
         const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'));
@@ -56,6 +58,14 @@ const EmployeeData = () => {
                     />
                 : null
             }
+
+            {fireItAlert !== ''
+                ? <FireItAlert
+                    fireItAlert={fireItAlert}
+                    setFireItAlert={setFireItAlert}
+                    />
+                : null
+            }
             
             <div className='employeeDataContainer'>
                 <table>
@@ -89,6 +99,7 @@ const EmployeeData = () => {
                     setNewEmployee={setNewEmployee}
                     setSelectedEmployee={setSelectedEmployee}
                     id={selectedEmployee}
+                    setFireItAlert={setFireItAlert}
                     />
                 : <h3>Select an employee, or create new</h3>
             }

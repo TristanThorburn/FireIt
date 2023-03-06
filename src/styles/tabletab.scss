@@ -1,6 +1,6 @@
 @import './variables.scss';
 
-.tableBackDash{
+.tableData{
     background-color: $backDashBackgroundColor;
 
     header{
@@ -10,16 +10,6 @@
         margin:0;
         font-size: 3rem;
         text-align: center;
-    }
-    .frontLowerNav{
-    background-color: $backDashBackgroundColor;
-    
-        li{
-            color:black;
-        }
-        p{
-            color:white;
-        }
     }
     .backDashHelpButtonDiv{
         h3, button{

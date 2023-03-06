@@ -94,7 +94,7 @@ const EmployeeDataForm = (props) => {
             document.getElementById('employeeForm').reset(); 
         }
         if( empNumberExists === true || empUserExists === true){
-            alert('Employee #, or User ID, already exists. Please change them to values that are not already in use and retry to add employee')
+            props.setFireItAlert('EmployeeDataForm duplicate id')
         }
     }
 
@@ -187,7 +187,7 @@ const EmployeeDataForm = (props) => {
             document.getElementById('employeeForm').reset(); 
         }
         if( empNumberExists === true || empUserExists === true){
-            alert('Employee #, or User ID, already exists. Please change them to values that are not already in use and retry to update employee')
+            props.setFireItAlert('EmployeeDataForm duplicate id')
         }
     }
 
