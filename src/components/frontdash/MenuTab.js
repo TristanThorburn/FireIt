@@ -16,6 +16,7 @@ import LiquorsScreen from './menu_tab_components/LiquorsScreen';
 import WinesScreen from './menu_tab_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
 import ModifyCheckItem from "./menu_tab_components/ModifyCheckItem";
+import FireItAlert from "../user/FireItAlert";
 
 const MenuTab = (props) => {
     const { employeeContext } = useAuth()
@@ -40,6 +41,7 @@ const MenuTab = (props) => {
     const [ sendOrder, setSendOrder ] = useState(false);
     const [ modifyCheckItem, setModifyCheckItem ] = useState(false)
     const [ checkItemModData, setCheckItemModData ] = useState()
+    const [ fireItAlert, setFireItAlert ] = useState('')
 
     // Get data for current employee and table
     useEffect(() => {
@@ -211,6 +213,14 @@ const MenuTab = (props) => {
 
     return(
         <div className='menuTab'>
+            {fireItAlert !== ''
+                ? <FireItAlert
+                    fireItAlert={fireItAlert}
+                    setFireItAlert={setFireItAlert}
+                    />
+                : null
+            }
+
             {seatKeyPadActive
                 ? <ServerKeyPad
                     seatKeyPadActive={seatKeyPadActive}
@@ -256,6 +266,7 @@ const MenuTab = (props) => {
                     setMenuTabActive={props.setMenuTabActive}
                     setModifyCheckItem={setModifyCheckItem}
                     setCheckItemModData={setCheckItemModData}
+                    setFireItAlert={setFireItAlert}
                     />
             </article>
             

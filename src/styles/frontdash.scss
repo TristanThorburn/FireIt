@@ -22,6 +22,11 @@
     }
 }
 
+.popUpModal{
+    @include popUpModal;
+    @include flexCenterCenter;
+}
+
 .frontDashNav{
     height:7.5vh;
     border-bottom:2px solid black;

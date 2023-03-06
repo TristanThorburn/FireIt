@@ -20,7 +20,7 @@ const TableMapData = () => {
     }
 
     return(
-        <div className='tableBackDash'>
+        <div className='tableData'>
             <header>
                 <Link to='/backend-dash'>
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>

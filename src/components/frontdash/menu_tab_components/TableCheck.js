@@ -11,10 +11,6 @@ const TableCheck = (props) => {
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
 
-    const handleTest = () => {
-        console.log(props.doesSeatExist)
-    }
-
     const handlePendingOrderDelete = useCallback((e) => {
         e.stopPropagation()
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
@@ -35,9 +31,9 @@ const TableCheck = (props) => {
             e.target.removeEventListener('click', handlePendingOrderDelete)
         }
         if(secondChild.childNodes.length > 1){
-            alert('Items which create a new seat can only be deleted when all other items on the seat are removed')
+            props.setFireItAlert('tableCheck seat delete')
         }
-    },[handlePendingOrderDelete])
+    },[handlePendingOrderDelete, props])
 
     // Add up costs of items for check total
     useEffect(() => {
@@ -303,7 +299,7 @@ const TableCheck = (props) => {
     
     const handleCheckItemClick = (e) => {
         if(managerContext === false){
-            alert('Editing sent items requires manager authorization')
+            props.setFireItAlert('tableCheck edit sent')
         }
         if(managerContext === true){
             props.setCheckItemModData({
@@ -321,7 +317,6 @@ const TableCheck = (props) => {
 
     return(
         <div>
-            <button onClick={handleTest} className='testButton'>TEST</button>
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>
