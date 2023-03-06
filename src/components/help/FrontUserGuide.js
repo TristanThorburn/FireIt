@@ -19,10 +19,10 @@ const FrontUserGuide = (props) => {
 
                 {props.tableTabActive
                     ? <ul>
-                        <li><p>This represents the layout of the restaurant, tables can be 'touched' to select the table and link to the menu for food and drink orders. Table designs, names and positions can be updated and saved by using the Admin tab to enter the back dash.</p></li>
-                        <li><p>Stretch Goals: 
+                        <li>This represents the layout of the restaurant, tables can be 'touched' to select the table and link to the menu for food and drink orders. Table designs, names and positions can be updated and saved by using the Admin tab to enter the back dash.</li>
+                        <li>Stretch Goals: 
                             <br />
-                            Color change tables to designate if the table already has ordered items from the server. Prohibit orders on tables in use by any server.</p>
+                            Color change tables to designate if the table already has ordered items from the server. Prohibit orders on tables in use by any server.
                         </li>
                     </ul>
                     : null
@@ -30,34 +30,22 @@ const FrontUserGuide = (props) => {
 
                 {props.menuTabActive
                     ? <ul>
-                        <li><p>This is the main area where orders are punched in to simulate sending to the bar. Users can select the seat they wish to punch the items in on for future check organization, otherwise seat 1 will be assumed by default. 
-                            <br />
-                            Pending orders will appear on the check in blue, this also simulates the functionality of unset orders servers could edit without the help of a manager, as nothing has been 'sent' so there is no potential product loss.
-                            <br />
-                            Unsent orders will currently be lost when switching tabs.
-                        </p>
-                        </li>
-                        <li>
-                            <p>When manager override is active, SENT items on the check can be modified. This includes deletion, 25% / 50% / 100% discount application and removal, as well as QSA application and removal of a 100% discount.
-                                <br />
-                                Attempting to delete an item with a discount will prompt a warning and a confirmation, as future data will account for discount totals and type.
-                            </p>
-                        </li>
-                        <li>
-                            <p>New items can be added to the menu categories using the Admin tab and the back dash.</p>
-                        </li>
-                        <li><p>Stretch Goals:
+                        <li>This is the main area where orders are punched in to simulate sending to the bar. Users can select the seat they wish to punch the items in on for future check organization, otherwise seat 1 will be assumed by default.</li>
+                        <li>Pending orders will appear on the check in blue, this also simulates the functionality of unsent orders, thus servers could delete without the help of a manager, as nothing has been 'sent' so there is no potential product loss.</li>
+                        <li>~Pending orders will currently be lost when switching tabs.~</li>
+                        <li>Click on the item name to delete PENDING orders, pending orders which create a new seat can only be deleted if no other items are on the seat.</li>
+                        <li>When manager override is active, SENT items on the check can be modified. This includes deletion, 25% / 50% / 100% discount application and removal, as well as QSA application and removal of a 100% discount.</li>
+                        <li>Attempting to delete an item with a discount will prompt a warning and a confirmation, as future data will account for discount totals and type.</li>
+                        <li>New items can be added to the menu categories using the Admin tab and the back dash.</li>
+                        <li>Stretch Goals:
                             <br />
                             Add quick navigation between menu subcategories.
-                            <br />
-                            Allow servers to UNDO pending orders.
                             <br />
                             Store Pending orders to database.
                             <br />
                             Add pop-ups to items to choose addons/sides, such as fries or salad to add to burgers. Pop-ups to based on data from menu items in the back dash.
                             <br />
                             Organize appended orders by increasing seat number.
-                            </p>
                         </li>
                     </ul>
                     : null
@@ -65,13 +53,13 @@ const FrontUserGuide = (props) => {
 
                 {props.checkTabActive
                     ? <ul>
-                        <li><p>Under Construction: 
+                        <li>Under Construction: 
                             <br />
-                            .</p>
+                            .
                         </li>
-                        <li><p>Stretch Goals: 
+                        <li>Stretch Goals: 
                             <br />
-                            Organize seats into different billing methods, for example split checks.  Allow for the transfer of items between seats.</p>
+                            Organize seats into different billing methods, for example split checks.  Allow for the transfer of items between seats.
                         </li>
                     </ul>
                     : null
@@ -79,13 +67,13 @@ const FrontUserGuide = (props) => {
 
                 {props.paymentTabActive
                     ? <ul>
-                        <li><p>Under Construction: 
+                        <li>Under Construction: 
                             <br />
-                            .</p>
+                            .
                         </li>
-                        <li><p>Stretch Goals: 
+                        <li>Stretch Goals: 
                             <br />
-                            Settle payments by various methods, cash/visa/amex/mastercard, clearing the orders from the table and allowing it to be used again as a fresh table. Store payment data for reporting</p>
+                            Settle payments by various methods, cash/visa/amex/mastercard, clearing the orders from the table and allowing it to be used again as a fresh table. Store payment data for reporting
                         </li>
                     </ul>
                     : null
@@ -93,13 +81,13 @@ const FrontUserGuide = (props) => {
 
                 {props.summaryTabActive
                     ? <ul>
-                        <li><p>Under Construction: 
+                        <li>Under Construction: 
                             <br />
-                            .</p>
+                            .
                         </li>
-                        <li><p>Stretch Goals: 
+                        <li>Stretch Goals: 
                             <br />
-                            Display all tables currently in use by the server for easy reference, allow for the transfer of tables between servers. Allow for the transfer of items between seats. Select items to be repeated for another 'round'.</p>
+                            Display all tables currently in use by the server for easy reference, allow for the transfer of tables between servers. Allow for the transfer of items between seats. Select items to be repeated for another 'round'.
                         </li>
                     </ul>
                     : null
@@ -125,28 +113,34 @@ const FrontUserGuide = (props) => {
                 {props.tableTabActive
                     ? <ul>
                         <li>
-                            <p>MGR OVER</p>
-                            <p>- Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished.</p> 
+                            MGR OVER
+                            <br />
+                            - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            <p>TEST</p>
-                            <p>- Test buttons exist for coding console.log and has no user functionality.</p> 
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
-                            <p>DEMO</p>
-                            <p>- Button under construction.</p> 
+                            DEMO
+                            <br />
+                            - Button under construction. 
                         </li>
                         <li>
-                            <p>HELP</p>
-                            <p>- Opens modal for user info, or insights to code logic.</p> 
+                            HELP
+                            <br />
+                            - Opens modal for user info, or insights to code logic. 
                         </li>
                         <li>
-                            <p>USER</p>
-                            <p>- Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard.</p> 
+                            USER
+                            <br />
+                            - Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard. 
                         </li>
                         <li>
-                            <p>LOGOUT</p>
-                            <p>- Logout user/sever and return to the landing page</p> 
+                            LOGOUT
+                            <br />
+                            - Logout user/sever and return to the landing page 
                         </li>
                     </ul>
                     :null
@@ -155,40 +149,49 @@ const FrontUserGuide = (props) => {
                 {props.menuTabActive
                     ? <ul>
                         <li>
-                            <p>MGR OVER</p>
-                            <p>- Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished.</p> 
+                            MGR OVER
+                            <br />
+                            - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            <p>SEND ORDER</p>
-                            <p>- Store the pending orders to firebase, simulating sending orders to the kitchen or bar</p> 
+                            SEND ORDER
+                            <br />
+                            - Store the pending orders to firebase, simulating sending orders to the kitchen or bar 
                         </li>
                         <li>
-                            <p>SEAT#?</p>
-                            <p>- Select the seat number to order the item on. The number can be 1 or 2 digits, seat 1 will be assumed by default.</p> 
+                            SEAT#?
+                            <br />
+                            - Select the seat number to order the item on. The number can be 1 or 2 digits, seat 1 will be assumed by default. 
                         </li>
                         <li>
-                            <p>HIDE OLD</p>
-                            <p>- Under construction. Hide non pending orders.</p> 
+                            HIDE OLD
+                            <br />
+                            - Under construction. Hide non pending orders. 
                         </li>
                         <li>
-                            <p>MAIN MENU</p>
-                            <p>- Return to the main directory of menu categories.</p> 
+                            MAIN MENU
+                            <br />
+                            - Return to the main directory of menu categories. 
                         </li>
                         <li>
-                            <p>CHNG TBL</p>
-                            <p>- Under construction. Change active table without using table map.</p> 
+                            CHNG TBL
+                            <br />
+                            - Under construction. Change active table without using table map. 
                         </li>
                         <li>
-                            <p>HELP</p>
-                            <p>- Opens modal for user info, or insights to code logic.</p> 
+                            HELP
+                            <br />
+                            - Opens modal for user info, or insights to code logic. 
                         </li>
                         <li>
-                            <p>USER</p>
-                            <p>- Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard.</p> 
+                            USER
+                            <br />
+                            - Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard. 
                         </li>
                         <li>
-                            <p>LOGOUT</p>
-                            <p>- Logout user/sever and return to the landing page.</p> 
+                            LOGOUT
+                            <br />
+                            - Logout user/sever and return to the landing page. 
                         </li>
                     </ul>
                     :null
@@ -197,28 +200,34 @@ const FrontUserGuide = (props) => {
                 {props.checkTabActive
                     ? <ul>
                         <li>
-                            <p>MGR OVER</p>
-                            <p>- Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished.</p> 
+                            MGR OVER
+                            <br />
+                            - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            <p>TEST</p>
-                            <p>- Test buttons exist for coding console.log and has no user functionality.</p> 
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
-                            <p>DEMO</p>
-                            <p>- Button under construction.</p> 
+                            DEMO
+                            <br />
+                            - Button under construction. 
                         </li>
                         <li>
-                            <p>HELP</p>
-                            <p>- Opens modal for user info, or insights to code logic.</p> 
+                            HELP
+                            <br />
+                            - Opens modal for user info, or insights to code logic. 
                         </li>
                         <li>
-                            <p>USER</p>
-                            <p>- Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard.</p> 
+                            USER
+                            <br />
+                            - Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard. 
                         </li>
                         <li>
-                            <p>LOGOUT</p>
-                            <p>- Logout user/sever and return to the landing page.</p> 
+                            LOGOUT
+                            <br />
+                            - Logout user/sever and return to the landing page. 
                         </li>
                     </ul>
                     :null
@@ -227,28 +236,34 @@ const FrontUserGuide = (props) => {
                 {props.paymentTabActive
                     ? <ul>
                         <li>
-                            <p>MGR OVER</p>
-                            <p>- Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished.</p> 
+                            MGR OVER
+                            <br />
+                            - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            <p>TEST</p>
-                            <p>- Test buttons exist for coding console.log and has no user functionality.</p> 
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
-                            <p>DEMO</p>
-                            <p>- Button under construction.</p> 
+                            DEMO
+                            <br />
+                            - Button under construction. 
                         </li>
                         <li>
-                            <p>HELP</p>
-                            <p>- Opens modal for user info, or insights to code logic.</p> 
+                            HELP
+                            <br />
+                            - Opens modal for user info, or insights to code logic. 
                         </li>
                         <li>
-                            <p>USER</p>
-                            <p>- Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard.</p> 
+                            USER
+                            <br />
+                            - Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard. 
                         </li>
                         <li>
-                            <p>LOGOUT</p>
-                            <p>- Logout user/sever and return to the landing page.</p> 
+                            LOGOUT
+                            <br />
+                            - Logout user/sever and return to the landing page. 
                         </li>
                     </ul>
                     :null
@@ -257,28 +272,34 @@ const FrontUserGuide = (props) => {
                 {props.summaryTabActive
                     ? <ul>
                         <li>
-                            <p>MGR OVER</p>
-                            <p>- Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished.</p> 
+                            MGR OVER
+                            <br />
+                            - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            <p>TEST</p>
-                            <p>- Test buttons exist for coding console.log and has no user functionality.</p> 
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
-                            <p>DEMO</p>
-                            <p>- Button under construction.</p> 
+                            DEMO
+                            <br />
+                            - Button under construction. 
                         </li>
                         <li>
-                            <p>HELP</p>
-                            <p>- Opens modal for user info, or insights to code logic.</p> 
+                            HELP
+                            <br />
+                            - Opens modal for user info, or insights to code logic. 
                         </li>
                         <li>
-                            <p>USER</p>
-                            <p>- Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard.</p> 
+                            USER
+                            <br />
+                            - Displays the name of the current user / server in the terminal. New users can be added using the Admin tab and back dashboard. 
                         </li>
                         <li>
-                            <p>LOGOUT</p>
-                            <p>- Logout user/sever and return to the landing page.</p> 
+                            LOGOUT
+                            <br />
+                            - Logout user/sever and return to the landing page. 
                         </li>
                     </ul>
                     :null
