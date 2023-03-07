@@ -316,7 +316,7 @@ const TableCheck = (props) => {
     }
 
     return(
-        <div>
+        <div className='activeCheck'>
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>

@@ -21,7 +21,7 @@ import FireItAlert from "../user/FireItAlert";
 const MenuTab = (props) => {
     const { employeeContext } = useAuth()
     const { contextTable } = useTable();
-    const [ tableData, setTableData ] = useState([])
+    const [ tableData, setTableData ] = useState({})
     const [ serverData, setServerData ] = useState({})
     const [ directory, setDirectory ] = useState(true);
     const [ appsCategory, setAppsCategory ] = useState(false);
@@ -250,25 +250,23 @@ const MenuTab = (props) => {
                 : null
             }
 
-            <article className='activeCheck'>
-                <TableCheck
-                    doesSeatExist={doesSeatExist}
-                    selectedSeatExists={doesSeatExist}
-                    selectedSeat={selectedSeat}
-                    setSelectedSeat={setSelectedSeat}
-                    serverData={serverData}
-                    tableData={tableData}
-                    currentOrderData={currentOrderData}
-                    setCurrentOrderData={setCurrentOrderData}
-                    sendOrder={sendOrder}
-                    setSendOrder={setSendOrder}
-                    setTableTabActive={props.setTableTabActive}
-                    setMenuTabActive={props.setMenuTabActive}
-                    setModifyCheckItem={setModifyCheckItem}
-                    setCheckItemModData={setCheckItemModData}
-                    setFireItAlert={setFireItAlert}
-                    />
-            </article>
+            <TableCheck
+                doesSeatExist={doesSeatExist}
+                selectedSeatExists={doesSeatExist}
+                selectedSeat={selectedSeat}
+                setSelectedSeat={setSelectedSeat}
+                serverData={serverData}
+                tableData={tableData}
+                currentOrderData={currentOrderData}
+                setCurrentOrderData={setCurrentOrderData}
+                sendOrder={sendOrder}
+                setSendOrder={setSendOrder}
+                setTableTabActive={props.setTableTabActive}
+                setMenuTabActive={props.setMenuTabActive}
+                setModifyCheckItem={setModifyCheckItem}
+                setCheckItemModData={setCheckItemModData}
+                setFireItAlert={setFireItAlert}
+                />
             
             <section className='activeMenuCategory'>
                 {directory
