@@ -47,20 +47,22 @@ const TableTabNav = (props) => {
                     }
                     </button>
                 </li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
-                <li>Demo</li>
-                <li>Demo</li>
-                <li>Demo</li>
-                <li>Demo</li>
-                <li>Demo</li>
                 <li className='infoButton'>
-                    <button onClick={handleHelp} className='workingButton'>🔥</button>
+                    <button onClick={handleHelp}>🔥</button>
                     <p onClick={handleHelp}>INFO</p>
                 </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext
-                                ? <p>User: {employeeContext.firstName}</p>
+                                ? <p>User:
+                                    <br />
+                                    {employeeContext.firstName}</p>
                                 : <p>No User</p>
                     }
                 </li>

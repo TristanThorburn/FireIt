@@ -3,7 +3,7 @@ import { setDoc, getDocs, doc } from 'firebase/firestore';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 
-const TableForm = (props) => {
+const AddTableForm = (props) => {
     const [ design, setDesign ] = useState('')
     const tableNameRef = useRef('')
     const [ existingTable, setExistingTable ] = useState('')
@@ -11,13 +11,8 @@ const TableForm = (props) => {
 
     useEffect(() => {
         if(tableNameRef.current.value !== '' && existingTable === false){
-            const tableRef = doc(db, 'tables', `${tableNameRef.current.value.toLowerCase()}`)
-            // const designOptions = document.getElementsByName('design');
-            //     for (var radio of designOptions){
-            //         if (radio.checked) {    
-            //             setDesign(radio.value)
-            //         }
-            //     }
+            const tableRef = 
+                doc(db, 'tables', `${tableNameRef.current.value.replace(/ /g, '').toLowerCase()}`)
                 if(design === ''){
                     setError('Choose a table design')
                     setTimeout(() => {
@@ -168,4 +163,4 @@ const TableForm = (props) => {
     )
 }
 
-export default TableForm;
+export default AddTableForm;

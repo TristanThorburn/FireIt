@@ -67,17 +67,19 @@ const MenuTabNav = (props) => {
                 </li>
                 <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
-                <li><button className='nonWorkingButton'>HIDE OLD</button></li>
-                <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
+                <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
+                <li><button className='nonWorkingButton'>HIDE OLD</button></li>
                 <li className='infoButton'>
-                    <button onClick={handleHelp} className='workingButton'>🔥</button>
+                    <button onClick={handleHelp}>🔥</button>
                     <p onClick={handleHelp}>INFO</p>
                 </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext
-                                ? <p>User: {employeeContext.firstName}</p>
+                                ? <p>User:
+                                    <br />
+                                    {employeeContext.firstName}</p>
                                 : <p>No User</p>
                     }
                 </li>

@@ -31,7 +31,7 @@ const TableCheck = (props) => {
             e.target.removeEventListener('click', handlePendingOrderDelete)
         }
         if(secondChild.childNodes.length > 1){
-            props.setFireItAlert('tableCheck seat delete')
+            props.setFireItAlert('TableCheck seat delete')
         }
     },[handlePendingOrderDelete, props])
 
@@ -299,7 +299,7 @@ const TableCheck = (props) => {
     
     const handleCheckItemClick = (e) => {
         if(managerContext === false){
-            props.setFireItAlert('tableCheck edit sent')
+            props.setFireItAlert('TableCheck edit sent')
         }
         if(managerContext === true){
             props.setCheckItemModData({

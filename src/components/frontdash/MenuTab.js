@@ -1,22 +1,22 @@
-import TableCheck from "./menu_tab_components/TableCheck";
+import TableCheck from './check_components/TableCheck';
 import MenuTabNav from "./navs/MenuTabNav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTable } from "../../contexts/TableContext";
 import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import AppsScreen from './menu_tab_components/AppsScreen';
-import MainsScreen from './menu_tab_components/MainsScreen';
-import DessertsScreen from './menu_tab_components/DessertsScreen';
-import NonAlchScreen from './menu_tab_components/NonAlchScreen';
-import BeerScreen from './menu_tab_components/BeerScreen';
-import CiderSeltzScreen from './menu_tab_components/CiderSeltzScreen';
-import MixedDrinksScreen from './menu_tab_components/MixedDrinksScreen';
-import LiquorsScreen from './menu_tab_components/LiquorsScreen';
-import WinesScreen from './menu_tab_components/WinesScreen';
+import AppsScreen from './menu_components/AppsScreen';
+import MainsScreen from './menu_components/MainsScreen';
+import DessertsScreen from './menu_components/DessertsScreen';
+import NonAlchScreen from './menu_components/NonAlchScreen';
+import BeerScreen from './menu_components/BeerScreen';
+import CiderSeltzScreen from './menu_components/CiderSeltzScreen';
+import MixedDrinksScreen from './menu_components/MixedDrinksScreen';
+import LiquorsScreen from './menu_components/LiquorsScreen';
+import WinesScreen from './menu_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
-import ModifyCheckItem from "./menu_tab_components/ModifyCheckItem";
-import FireItAlert from "../user/FireItAlert";
+import ModifyCheckItem from "./check_components/ModifyCheckItem";
+import FireItAlert from "../help/FireItAlert";
 
 const MenuTab = (props) => {
     const { employeeContext } = useAuth()

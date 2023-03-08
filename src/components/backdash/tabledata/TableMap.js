@@ -3,9 +3,9 @@ import { useTable } from './../../../contexts/TableContext';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
-import TableForm from './TableForm';
+import AddTableForm from './AddTableForm';
 import TableStyleUpdate from './TableStyleUpdate';
-import FireItAlert from '../../user/FireItAlert';
+import FireItAlert from '../../help/FireItAlert';
 
 const TableMap = (props) => {
     const tableMap = document.querySelector('.tableMap');
@@ -166,7 +166,7 @@ const TableMap = (props) => {
             }
 
             {addingTable
-                ? <TableForm
+                ? <AddTableForm
                     setAddingTable={setAddingTable}
                     />
                 : stylingTable

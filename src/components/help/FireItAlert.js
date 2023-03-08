@@ -12,12 +12,12 @@ const FireItAlert = (props) => {
                     <p>FireIt Alert:</p>
                 </div>
                 <article>
-                    {props.fireItAlert === 'tableCheck seat delete'
+                    {props.fireItAlert === 'TableCheck seat delete'
                         ? <div className='padError'>Items that create a new seat cannot be deleted until other items on the created seat are removed first.
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'tableCheck edit sent'
+                    {props.fireItAlert === 'TableCheck edit sent'
                         ? <div className='padError'>Manager authorization is required to edit items that have been sent to the kitchen or bar.
                         </div>
                         : null
@@ -29,6 +29,16 @@ const FireItAlert = (props) => {
                     }
                     {props.fireItAlert === 'TableMap no table'
                         ? <div className='padError'>Please select the table you wish to edit.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'CheckTab less than one'
+                        ? <div className='padError'>One receipt at minimum is required to present to the guest.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'CheckTab more than ten'
+                        ? <div className='padError'>The current limit for number of additional separated checks is 10.
                         </div>
                         : null
                     }
