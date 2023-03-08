@@ -4,7 +4,7 @@ import { employeeCollectionRef } from '../../library/firestoreCollections';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import EmployeeDataForm from './employeedata/EmployeeDataForm';
 import BackDashHelp from '../help/BackDashHelp';
-import FireItAlert from '../user/FireItAlert';
+import FireItAlert from '../help/FireItAlert';
 
 const EmployeeData = () => {
     const [ employeeData, setEmployeeData ] = useState([]);

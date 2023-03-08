@@ -7,8 +7,44 @@ const CheckTabNav = (props) => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
+    // porps
+    // setNewReceipts={setNewReceipts}
+    // newReceipts={newReceipts}
+
     const handleTest = () => {
-        console.log('test')
+        console.log(props.newReceipts)
+    }
+
+    const handleMgrOveride = () => {
+        if(managerContext === false){
+            props.setManagerKeyPadActive(true)
+        }
+        
+        if(managerContext === true){
+            setManagerContext(false)
+        }
+    }
+
+    const handleAddSeparate = () => {
+        if(props.newReceipts < 10){
+            props.setNewReceipts(props.newReceipts + 1)
+        }
+        if(props.newReceipts === 10){
+            props.setFireItAlert('CheckTab more than ten')
+        }
+    }
+
+    const handleRemoveSeparate = () => {
+        if(props.newReceipts > 1){
+            props.setNewReceipts(props.newReceipts - 1)
+        }
+        if(props.newReceipts === 1){
+            props.setFireItAlert('CheckTab less than one')
+        }
+    }
+
+    const handleHelp = () => {
+        props.setHelpModal(true)
     }
 
     const handleLogout = async () => { 
@@ -22,20 +58,6 @@ const CheckTabNav = (props) => {
         }
     }
 
-    const handleMgrOveride = () => {
-        if(managerContext === false){
-            props.setManagerKeyPadActive(true)
-        }
-        
-        if(managerContext === true){
-            setManagerContext(false)
-        }
-    }
-
-    const handleHelp = () => {
-        props.setHelpModal(true)
-    }
-
     return(
         <div className='frontLowerNav'>
             <ul>
@@ -46,20 +68,26 @@ const CheckTabNav = (props) => {
                     }
                     </button>
                 </li>
+                <li>
+                    <button onClick={handleAddSeparate} className='workingButton'>ADD SEPARATE</button>
+                </li>
+                <li>
+                    <button onClick={handleRemoveSeparate} className='workingButton'>REMOVE SEPARATE</button>
+                </li>
+                <li><button className='nonWorkingButton'>CHNG TBL</button></li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
-                <li>Demo</li>
-                <li>Demo</li>
-                <li>Demo</li>
-                <li>Demo</li>
-                <li>Demo</li>
                 <li className='infoButton'>
-                    <button onClick={handleHelp} className='workingButton'>🔥</button>
+                    <button onClick={handleHelp}>🔥</button>
                     <p onClick={handleHelp}>INFO</p>
                 </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>
                             : employeeContext
-                                ? <p>User: {employeeContext.firstName}</p>
+                                ? <p>User:
+                                    <br />
+                                    {employeeContext.firstName}</p>
                                 : <p>No User</p>
                     }
                 </li>

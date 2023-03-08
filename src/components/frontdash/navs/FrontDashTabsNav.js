@@ -55,7 +55,7 @@ const FrontDashNavTabs = (props) => {
     }
 
     return(
-        <div className='frontDashNav'>
+        <div className='frontDashTopNav'>
             <ul>
                 <li onClick={handleSummary}>Summary</li>
                 <li onClick={handleTable}>TableMap</li>
