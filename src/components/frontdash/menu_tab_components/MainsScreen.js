@@ -51,8 +51,8 @@ const MainsScreen = (props) => {
     }
  
     return(
-        <div className='mainScreenList'>
-            <div className='mainScreenContainer'>
+        <div className='menuSubcategoryContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Mains List</h3>
                 <ul>
                     {mainsData.map(main => 

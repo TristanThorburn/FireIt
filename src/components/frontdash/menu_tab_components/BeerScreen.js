@@ -109,15 +109,15 @@ const BeerScreen = (props) => {
     }
   
     return(
-        <div className='beerScreenList'>
-            <div className='beerScreenSubNav'>
+        <div className='menuSubcategoryContainer'>
+            <div className='alcoholSubcategoryNav'>
                 <button onClick={handleBottlesCategory}>Bottles</button>
                 <button onClick={handleCansCategory}>Cans</button>
                 <button onClick={handleDraftCategory}>Draft</button>
             </div>
 
             {collectionRef === 'bottle'
-                ?<div className='beerScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Bottles List</h3>
                     <ul>
                         {bottlesData.map(bottle => 
@@ -136,7 +136,7 @@ const BeerScreen = (props) => {
             }
 
             {collectionRef === 'can'
-                ?<div className='beerScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Cans List</h3>
                     <ul>
                         {cansData.map(can => 
@@ -155,7 +155,7 @@ const BeerScreen = (props) => {
             }
             
             {collectionRef === 'draft'
-                ?<div className='beerScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Draft List</h3>
                     <ul>
                         {draftData.map(draft => 

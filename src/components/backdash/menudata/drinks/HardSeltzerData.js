@@ -26,7 +26,7 @@ const HardSeltzerData = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='backDataList'>
                 <h3>Hard Seltzer List</h3>
                 <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>

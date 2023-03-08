@@ -76,8 +76,8 @@ const CiderSeltzScreen = (props) => {
     }
  
     return(
-        <div className='ciderSpritzScreenList'>
-            <div className='ciderSpritzScreenContainer'>
+        <div className='menuSubcategoryContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Ciders List</h3>
                 <ul>
                     {ciderData.map(cider => 
@@ -93,7 +93,7 @@ const CiderSeltzScreen = (props) => {
                 </ul>
             </div>
 
-            <div className='ciderSpritzScreenContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Hard Seltzers List</h3>
                 <ul>
                     {seltzerData.map(seltzer => 

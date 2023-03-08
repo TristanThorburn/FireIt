@@ -7,10 +7,10 @@ const FireItAlert = (props) => {
         <div className='popUpModal'>
             <div className='fireItAlert'>
                 <button onClick={handleCloseModal} className='closePad'>X</button>
-                <header className='infoButton'>
+                <div className='infoButton'>
                     <button>🔥</button>
                     <p>FireIt Alert:</p>
-                </header>
+                </div>
                 <article>
                     {props.fireItAlert === 'tableCheck seat delete'
                         ? <div className='padError'>Items that create a new seat cannot be deleted until other items on the created seat are removed first.
@@ -24,6 +24,11 @@ const FireItAlert = (props) => {
                     }
                     {props.fireItAlert === 'EmployeeDataForm duplicate id'
                         ? <div className='padError'>You cannot create or update an employee using an Employee # or User ID that is already in use.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'TableMap no table'
+                        ? <div className='padError'>Please select the table you wish to edit.
                         </div>
                         : null
                     }

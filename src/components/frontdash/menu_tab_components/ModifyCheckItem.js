@@ -401,7 +401,7 @@ const ModifyCheckItem = (props) => {
     }
 
     return(
-        <div className='checkModifyModal'>
+        <div className='popUpModal'>
             <div className='checkModifyContainer'>
                 <button onClick={handleCloseModal} className='closePad'>X</button>
 

@@ -18,7 +18,7 @@ const FrontDashHelp = (props) => {
     }
 
     return(
-        <div className='frontDashHelpModal'>
+        <div className='popUpModal'>
             <div className='frontDashHelpContainer'>
 
                 <button onClick={handleCloseModal} className='closePad'>Exit Help</button>

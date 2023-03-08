@@ -1,11 +1,13 @@
 @import './variables.scss';
 
-.backendDash{
+.backendDash, .employeeData, .menuData, .paymentData, .settingsData, .tableData{
     height:100vh;
     background-color: $backDashBackgroundColor;
+}
 
+.backendDash{
     .buttonContainer{
-        height:80vh;
+        height:75vh;
         @include flexCenterCenter;
     }
     h2{
@@ -18,85 +20,91 @@
         display:flex;
         flex-wrap: wrap;
         justify-content: space-evenly;
-        width:100%;
+        width:80%;
     }
     li{
-        height:300px;
-        width:300px;
+        width:33%;
         text-align: center;
+        @include flexColumnCenter;
+        margin-bottom:2rem;
     }
     img{
-        width:100%;
+        height:300px;
+        width:300px;
     }
 }
 
-.backDashHelpModal{
-    @include popUpModal;
-    @include flexCenterCenter;
-    flex-direction: column;
-}
-
-.backDashHelpContainer{
+.backDashHeader{
     display:flex;
-    flex-direction: column;
-    align-items: center;
-    height:90%;
-    width:90%;
-    background-color:$backDashBackgroundColor;
-    border:4px solid black;
-}
-
-.backUserGuideContainer{
-    height:100%;
-    width:100%;
-    display:flex;
-    justify-content: space-evenly;
-
-    h3{
-        text-align: center;
-        color:black;
-    }
-    div{
-        margin:1rem auto;
-        border:2px solid black;
-        width:47.5%;
-        height:92.5%;
-        overflow-y: scroll;
-
-        ul{
-            display:block;
-        }
-        li{
-            display:block;
-            margin:1.5rem auto;
-            cursor:auto;
-        }
-    }
-    
-}
-
-.backDashHelpButtonDiv{
+    justify-content: center;
     position: relative;
 
-    h3, button{
+    h2{
+        font-size:3rem;
+        margin:0;
+    }
+    .infoButton{
         position:absolute;
-        transform:translateX(-50%);
-        cursor: pointer;
-    }
-    h3{
-        margin:0 auto;
-        color:$fireItColor;
-        background-color: black;
-        width:75px;
-        border-radius:10px;
-        text-align: center;
-    }
-    h3:active{
-        border:4px solid $fireItColor;
-    }
-    button{
-        font-size: 3rem;
-        border: none;
-        background-color: $backDashBackgroundColor;
+        top:-5%;
+        right:33%;
+
+        button{
+            background-color:$backDashBackgroundColor;
+            border:none;
+            font-size:3rem;
+        }
+        p{
+            top:15px;
+            left:-12px;
+        }
     }
 }
+
+.backDataList{
+    background-color:white;
+    margin:1rem auto;
+    border:2px solid black;
+    max-width:90%;
+    height:275px;
+    display:flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    h3{
+        margin:0.25rem auto 1rem;
+        font-size:1.5rem;
+    }
+    ul{
+        width:100%;
+        flex-wrap:wrap;
+    }
+    li{
+        width:20%;
+    }
+    button{
+        margin:0 auto;
+    }
+}
+
+.newItemButton{
+    width:250px;
+    border-color:green;
+    border-radius:10px;
+    background-color:green;
+    color:white;
+    font-size:1.25rem;
+}
+
+.deleteItemButton{
+    border-color:red;
+    background-color:red;
+}
+
+button.newItemButton:active{
+    background-color:lighten(green, 10%);
+}
+
+button.deleteItemButton:active{
+    background-color:darken(red, 10%);
+}
+

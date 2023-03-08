@@ -1,58 +1,25 @@
 @import './setup.scss';
 @import './variables.scss';
 
-// LOGINS / KEYPADS
+
+// MAIN DIRECTORIES
 @import './landingpage.scss';
+@import './frontdash.scss';
+@import './backenddash.scss';
+
+// POP-UP MODALS
 @import './keypads.scss';
 @import './fireitalert.scss';
+@import './checkmodmodal.scss';
+@import './helpmodal.scss';
 
-// FRONT DASH TABS
-@import './frontdash.scss';
-@import './summarytab.scss';
-@import './tabletab.scss';
-@import './checktab.scss';
-@import './paymenttab.scss';
+// FRONT DISPLAYS
+@import './checkdisplay.scss';
+@import './general.scss';
+@import './menuscreens.scss';
+@import './table.scss';
 
-// FRONT MENU SCREENS
-@import './menutab.scss';
-@import './appscreen.scss';
-@import './mainscreen.scss';
-@import './dessertscreen.scss';
-@import './nonalchscreen.scss';
-@import './beerscreen.scss';
-@import './ciderspritzscreen.scss';
-@import './mixeddrinkscreen.scss';
-@import './liquorscreen.scss';
-@import './winescreen.scss';
-
-// BACK DASH TABS
-@import './backenddash.scss';
+// BACK DISPLAYS
 @import './menudata.scss';
 @import './employeedata.scss';
-@import './paymentdata.scss';
-@import './settingsdata.scss';
 
-// APP WIDE TEMP CSS
-html{
-    font-size:125%;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color:$backgroundColor;
-}
-body{
-    margin:0;
-    padding:0;
-}
-body.adminOpen{
-    overflow-y: hidden;
-}
-.App{
-    button{
-        cursor: pointer;
-    }
-}
-button.testButton{
-    background-color: yellow;
-    border:4px solid red;
-    color:black;
-    border-radius:10px;
-}

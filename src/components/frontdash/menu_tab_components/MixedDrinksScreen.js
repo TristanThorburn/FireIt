@@ -78,8 +78,8 @@ const MixedDrinksScreen = (props) => {
  
  
     return(
-        <div className='mixedScreenList'>
-            <div className='mixedScreenContainer'>
+        <div className='menuSubcategoryContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Cocktails List</h3>
                 <ul>
                     {cocktailData.map(cocktail => 
@@ -95,7 +95,7 @@ const MixedDrinksScreen = (props) => {
                 </ul>
             </div>
 
-            <div className='mixedScreenContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Shots List</h3>
                 <ul>
                     {shotData.map(shot => 

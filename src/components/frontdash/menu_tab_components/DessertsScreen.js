@@ -51,8 +51,8 @@ const DessertsScreen = (props) => {
     }
  
     return(
-        <div className='dessertScreenList'>
-            <div className='dessertScreenContainer'>
+        <div className='menuSubcategoryContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Desserts List</h3>
                 <ul>
                     {dessertsData.map(desserts => 

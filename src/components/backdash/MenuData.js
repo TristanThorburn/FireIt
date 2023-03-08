@@ -141,13 +141,13 @@ const MenuData = () => {
 
     return(
         <section className='menuData'>
-            <div className='backDashHelpButtonDiv'>
+            <header className='backDashHeader'>
                 <h2>Menu Entry Setup</h2>
-
-                <button onClick={handleMenuEntryHelp}>🔥</button>
-                
-                <h3 onClick={handleMenuEntryHelp}>INFO</h3>
-            </div>
+                <div className='infoButton'>
+                    <button onClick={handleMenuEntryHelp}>🔥</button>
+                    <p onClick={handleMenuEntryHelp}>INFO</p>
+                </div>
+            </header>
 
             {menuEntryHelp
                 ? <BackDashHelp

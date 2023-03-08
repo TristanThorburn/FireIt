@@ -59,7 +59,7 @@ const NonAlchData = (props) => {
             </div>
 
             {drinkType === 'cold'
-                    ?<div className='itemList'>
+                    ?<div className='backDataList'>
                         <h3>Cold Drinks List</h3>
                         <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                         <ul>
@@ -76,7 +76,7 @@ const NonAlchData = (props) => {
                         </ul>
                     </div>
                     :drinkType === 'hot'
-                        ?<div className='itemList'>
+                        ?<div className='backDataList'>
                             <h3>Hot Drinks List</h3>
                             <button onClick={handleNewItem} className='newItemButton'>New Item</button><ul>
                             {nonAlchData.map(nonAlch => 

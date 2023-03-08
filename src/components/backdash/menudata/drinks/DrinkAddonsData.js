@@ -26,7 +26,7 @@ const DrinkAddonsData = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='backDataList'>
                 <h3>Drink Addons List</h3>
                 <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>

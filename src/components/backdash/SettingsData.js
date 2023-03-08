@@ -11,14 +11,13 @@ const SettingsData = () => {
 
     return(
         <section className='settingsData'>
-
-            <div className='backDashHelpButtonDiv'>
-                <h2>Settings</h2>
-
-                <button onClick={handleSettingsHelp}>🔥</button>
-
-                <h3 onClick={handleSettingsHelp}>INFO</h3>
-            </div>
+            <header className='backDashHeader'>
+                <h2>Settings Data</h2>
+                <div className='infoButton'>
+                    <button onClick={handleSettingsHelp}>🔥</button>
+                    <p onClick={handleSettingsHelp}>INFO</p>
+                </div>
+            </header>
 
             {settingsHelp
                 ? <BackDashHelp

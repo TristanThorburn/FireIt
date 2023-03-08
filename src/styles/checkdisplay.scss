@@ -1,0 +1,37 @@
+@import './variables.scss';
+
+.activeCheck{
+    background-color: white;
+    border:4px solid black;
+    width:20%;
+    height:90%;
+    overflow-y: scroll;
+
+    h2, h3{
+        margin:0.5rem auto;
+        text-align: center;
+    }
+    th{
+        text-align: left;
+    }
+    footer{
+        margin:0 auto;
+        width:90%;
+        display:flex;
+        justify-content: space-between;
+    }
+}
+
+.checkSeatInfo{
+    width:80%;
+    margin:10px auto;
+
+    .checkItemCost{
+        text-align: right;
+    }
+}
+
+.pendingOrder, .pendingSeat{
+    color:blue;
+    background-color: lightblue;
+}

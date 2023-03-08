@@ -18,7 +18,7 @@ const Login = () => {
     }
 
     return(
-        <div className='loginContainer'>
+        <div className='landingContainer'>
             {appInfo
                 ? <AppLandingInfo
                     setAppInfo={setAppInfo}
@@ -35,8 +35,8 @@ const Login = () => {
                             setEmail={setEmail}
                             setLoginToApp={setLoginToApp}
                             />
-                        : <div className='landingContainer'>
-                            <div className='landingLogin'>
+                        : <div className='loginPad'>
+                            <div className='loginLogo'>
                                 <button onClick={handleLogin}>🔥</button>
                                 <h1 onClick={handleLogin}>FIRE IT</h1>
                             </div>

@@ -5,6 +5,7 @@ import { db } from '../../../firebase';
 import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import TableForm from './TableForm';
 import TableStyleUpdate from './TableStyleUpdate';
+import FireItAlert from '../../user/FireItAlert';
 
 const TableMap = (props) => {
     const tableMap = document.querySelector('.tableMap');
@@ -15,6 +16,7 @@ const TableMap = (props) => {
     const [ addingTable, setAddingTable ] = useState(false);    
     const [ stylingTable, setStylingTable ] = useState(false);
     const [ selectedTable, setSelectedTable ] = useState('');
+    const [ fireItAlert, setFireItAlert ] = useState('')
 
     // Populate screen from table Data
     useEffect(() => {
@@ -45,7 +47,7 @@ const TableMap = (props) => {
         if(selectedTable !== ''){
             setStylingTable(!stylingTable)
         } else {
-            alert('Select a Table')
+            setFireItAlert('TableMap no table')
         }
     }
 
@@ -107,20 +109,10 @@ const TableMap = (props) => {
     }
 
     return(
-        <>
+        <section>
             {props.updateable === true
                 ?<div className='updateMapNav'>
                     <ul>
-                        <li><button
-                            className='newItemButton'
-                            onClick={handleSave}
-                            >Save Table Positions
-                        </button></li>
-                        <li><button
-                            className='newItemButton'
-                            onClick={handleAddTable}
-                            >Add Table
-                        </button></li>
                         <li>
                             {enableDrag
                             ?<button
@@ -134,6 +126,16 @@ const TableMap = (props) => {
                                 >Enable Table Reposition
                             </button>
                         }</li>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleSave}
+                            >Save Table Positions
+                        </button></li>
+                        <li><button
+                            className='newItemButton'
+                            onClick={handleAddTable}
+                            >Add Table
+                        </button></li>
                         <li><button
                             className='newItemButton'
                             onClick={handleUpdateStyle}
@@ -153,6 +155,14 @@ const TableMap = (props) => {
                     }  
                 </div>
                 :null
+            }
+
+            {fireItAlert !==''
+                ? <FireItAlert
+                    fireItAlert={fireItAlert}
+                    setFireItAlert={setFireItAlert}
+                    />
+                : null
             }
 
             {addingTable
@@ -179,7 +189,7 @@ const TableMap = (props) => {
                         </ul>
             }
             
-        </>
+        </section>
     )
 }
 

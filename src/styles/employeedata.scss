@@ -1,29 +1,14 @@
 @import './variables.scss';
 
 .employeeData{
-    height:100vh;
-    background-color: $backDashBackgroundColor;
-
     header{
         @include backDashHeader;
     }
-    h2{
-        font-size: 3rem;
-        margin:0.5rem auto;
+    .infoButton{
+        right:-25%;
     }
     h3{
         text-align: center;
-    }
-    .backDashHelpButtonDiv{
-        h3, button{
-            left:120%;
-        }
-        h3{
-            top:40%;
-        }
-        button{
-            top:5%;
-        }
     }
 }
 
@@ -63,7 +48,6 @@
         margin:1rem auto;
         display:flex;
         flex-direction: column;
-        
     }
     textarea{
         margin:0 auto;

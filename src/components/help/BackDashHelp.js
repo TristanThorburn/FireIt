@@ -19,8 +19,7 @@ const BackDashHelp = (props) => {
     }
 
     return(
-        <div className='backDashHelpModal'>
-
+        <div className='popUpModal'>
             <div className='backDashHelpContainer'>
 
                 <button onClick={handleCloseModal} className='closePad'>Exit Help</button>

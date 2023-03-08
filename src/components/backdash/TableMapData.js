@@ -26,12 +26,12 @@ const TableMapData = () => {
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
                 </Link>
 
-                <div className='backDashHelpButtonDiv'>
-                    <h2>Tables Setup</h2>
-
-                    <button onClick={handleTableSetupHelp}>🔥</button>
-
-                    <h3 onClick={handleTableSetupHelp}>INFO</h3>
+                <div className='backDashHeader'>
+                    <h2>Table Setup</h2>
+                    <div className='infoButton'>
+                        <button onClick={handleTableSetupHelp}>🔥</button>
+                        <p onClick={handleTableSetupHelp}>INFO</p>
+                    </div>
                 </div>
 
                 {tableSetupHelp

@@ -268,9 +268,9 @@ const MenuTab = (props) => {
                 setFireItAlert={setFireItAlert}
                 />
             
-            <section className='activeMenuCategory'>
+            <section className='menuDirectoryContainer'>
                 {directory
-                    ? <div className='menuCategories'>
+                    ? <div className='menuDirectoriesScreen'>
                         <ul>
                             <li onClick={handleGoApps}><button>APPS</button></li>
                             <li onClick={handleGoBeer}><button>BEER</button></li>

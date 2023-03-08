@@ -1,90 +1,20 @@
 @import './variables.scss';
 
-.menuData{
-    height:100vh;
-    background-color: $backDashBackgroundColor;
-
-    h2{
-        text-align:center;
-        font-size:3rem;
-        margin:0 auto;
-    }
+.menuData{ 
     ul{
         @include cleanUl;
         display:flex;
-        flex-wrap:wrap;
         justify-content: space-evenly;
         width:80%;
     }
     li{
-        display:flex;
-        flex-direction: column;
-        align-items: center;
+        @include flexColumnCenter;
         margin:1.5rem auto;
         cursor: pointer;
     }
     img{
         width:50px;
     }
-    .backDashHelpButtonDiv{
-        h3, button{
-            left:65%;
-        }
-        h3{
-            top:50%;
-        }
-        button{
-            top:5%;
-        }
-    }
-}
-
-.itemList{
-    background-color:white;
-    margin:1rem auto;
-    border:2px solid black;
-    max-width:90%;
-    height:275px;
-    display:flex;
-    flex-direction: column;
-    overflow-y: scroll;
-
-    h3{
-        margin:0.25rem auto 1rem;
-        font-size:1.5rem;
-    }
-    ul{
-        width:100%;
-        flex-wrap:wrap;
-    }
-    li{
-        width:20%;
-    }
-    button{
-        margin:0 auto;
-    }
-}
-
-.newItemButton{
-    width:250px;
-    border-color:green;
-    border-radius:10px;
-    background-color:green;
-    color:white;
-    font-size:1.25rem;
-}
-
-.deleteItemButton{
-    border-color:red;
-    background-color:red;
-}
-
-button.newItemButton:active{
-    background-color:lighten(green, 10%);
-}
-
-button.deleteItemButton:active{
-    background-color:darken(red, 10%);
 }
 
 .alcoholNavButtons{
@@ -103,18 +33,6 @@ button.deleteItemButton:active{
     }
 }
 
-.ciderSeltzBack{
-        width:200px;
-        font-size: 1.15rem;
-        border-radius:10px;
-        background-color:$backgroundColor;
-        color:white;
-}
-.ciderSeltzBack:active{
-    background-color:lighten($backgroundColor, 10%);
-}
-
-
 .menuItemForm{
     background-color: $backDashBackgroundColor;
     display:flex;
@@ -131,9 +49,9 @@ button.deleteItemButton:active{
     display:flex;
     flex-direction:column;
 
-    button{
-        margin:10px auto;
-    }
+        button{
+            margin:10px auto;
+        }
     }
 }
 

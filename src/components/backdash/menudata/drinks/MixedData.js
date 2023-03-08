@@ -45,7 +45,7 @@ const MixedData = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='backDataList'>
                 {props.activeTab === 'cocktails'
                     ? <>
                         <h3>Cocktails List</h3>

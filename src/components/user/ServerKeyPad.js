@@ -80,7 +80,7 @@ const ServerKeyPad = (props) => {
     }
 
     return(
-        <div className='serverPad'>
+        <div className='popUpModal'>
             <div className='keypad'>
                 <button onClick={handleCloseModal} className='closePad'>X</button>
                 <table>
