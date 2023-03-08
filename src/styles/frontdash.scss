@@ -1,30 +1,17 @@
 @import './variables.scss';
 
-.infoButton{
-    position: relative;
+.summaryTab, .tableTab, .menuTab, .checkTab, .paymentTab{
+    position:relative;
+    height:92.5vh;
+    display:flex;
 
-    button{
-        font-size:3.5rem;
-    }
-    p{
-        position:absolute;
-        color:$fireItColor;
-        background:black;
-        border-radius:10px;
-        top:10px;
-        left:25px;
-        width:100px;
-        text-align: center;
-        cursor: pointer;
-    }
-    p:active{
-        border:4px solid $fireItColor;
-    }
-}
+    .infoButton{
+        background-color:$backgroundColor;
 
-.popUpModal{
-    @include popUpModal;
-    @include flexCenterCenter;
+        button{
+            background-color:$backgroundColor;
+        }
+    }
 }
 
 .frontDashNav{
@@ -86,59 +73,4 @@
     @include flexCenterCenter;
     text-align: center;
     background-color: darkblue;
-}
-
-.frontDashHelpModal{
-    @include popUpModal;
-    @include flexCenterCenter;
-    flex-direction: column;
-}
-
-.frontDashHelpContainer{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    height:90%;
-    width:90%;
-    background-color:$backgroundColor;
-    border:4px solid black;
-}
-
-.frontDashHelpNav{
-    width:80%;
-    margin:10px auto 0px;
-    display:flex;
-    justify-content: space-evenly;
-
-    button{
-        width:250px;
-        height:50px;
-    }
-}
-
-.frontUserGuideContainer{
-    height:100%;
-    width:100%;
-    display:flex;
-    justify-content: space-evenly;
-
-    h3{
-        text-align: center;
-        color:white;
-    }
-    div{
-        margin:1rem auto;
-        border:2px solid black;
-        width:47.5%;
-        height:92.5%;
-        overflow-y: scroll;
-    }
-    ul{
-        width:95%;
-        @include cleanUl;
-    }
-    li{
-        margin-top:20px;
-        color:white;
-    }
 }

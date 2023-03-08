@@ -60,7 +60,11 @@ const EmployeeFirebase = (props) => {
                     <p>Logs out user upon submit</p>
                 </>
             }
-            <div className='padError'>{error}</div>
+
+            {error === 'Firebase: Error (auth/missing-identifier).'
+                ? null
+                : <div className='padError'>{error}</div>
+            }
         </div>
     )
 }

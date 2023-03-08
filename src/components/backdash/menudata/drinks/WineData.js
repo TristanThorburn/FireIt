@@ -56,7 +56,7 @@ const WineData = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='backDataList'>
                 {props.activeTab === 'red wine'
                     ?<>
                         <h3>Red Wine List</h3>

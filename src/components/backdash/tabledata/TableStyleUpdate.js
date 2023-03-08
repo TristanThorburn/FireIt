@@ -24,11 +24,9 @@ const TableStyleUpdate = (props) => {
     }
 
     return(
-        <div className='tableFormModal'>
+        <div className='popUpModal'>
             <div className='tableFormContainer'>
-                <header>
-                    <h2>Update {props.activeTable}</h2>
-                </header>
+                <h2>Update {props.activeTable}</h2>
 
                 <form onSubmit={handleUpdate}>
                     <fieldset>

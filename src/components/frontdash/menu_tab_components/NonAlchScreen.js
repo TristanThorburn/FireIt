@@ -77,8 +77,8 @@ const NonAlchScreen = (props) => {
     }
  
     return(
-        <div className='nonAlchScreenList'>
-            <div className='nonAlchScreenContainer'>
+        <div className='menuSubcategoryContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Cold Drinks List</h3>
                 <ul>
                     {coldDrinkData.map(coldDrink => 
@@ -94,7 +94,7 @@ const NonAlchScreen = (props) => {
                 </ul>
             </div>
 
-            <div className='nonAlchScreenContainer'>
+            <div className='menuSubcategoryScreen'>
                 <h3>Hot Drinks List</h3>
                 <ul>
                     {hotDrinkData.map(hotDrink => 

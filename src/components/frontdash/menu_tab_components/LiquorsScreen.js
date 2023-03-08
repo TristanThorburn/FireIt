@@ -155,8 +155,8 @@ const LiquorsScreen = (props) => {
     }
      
     return(
-        <div className='liquorScreenList'>
-            <div className='liquorScreenSubNav'>
+        <div className='menuSubcategoryContainer'>
+            <div className='alcoholSubcategoryNav'>
                 <button onClick={handleGinCategory}>Gin</button>
                 <button onClick={handleRumCategory}>Rum</button>
                 <button onClick={handleTequilaCategory}>Tequila</button>
@@ -165,7 +165,7 @@ const LiquorsScreen = (props) => {
             </div>
 
             {collectionRef === 'gin'
-                ? <div className='liquorScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Gins List</h3>
                     <ul>
                         {ginData.map(gin => 
@@ -183,7 +183,7 @@ const LiquorsScreen = (props) => {
                 : null
             }
             {collectionRef === 'rum'
-                ? <div className='liquorScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Rums List</h3>
                     <ul>
                         {rumData.map(rum => 
@@ -202,7 +202,7 @@ const LiquorsScreen = (props) => {
             }
             
             {collectionRef === 'tequila'
-                ? <div className='liquorScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Tequilas List</h3>
                     <ul>
                         {tequilaData.map(tequilas => 
@@ -221,7 +221,7 @@ const LiquorsScreen = (props) => {
             }
             
             {collectionRef === 'vodka'
-                ? <div className='liquorScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Vodkas List</h3>
                     <ul>
                         {vodkaData.map(vodka => 
@@ -240,7 +240,7 @@ const LiquorsScreen = (props) => {
             }
             
             {collectionRef === 'whiskey'
-                ? <div className='liquorScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Whiskeys List</h3>
                     <ul>
                         {whiskeyData.map(whiskey => 

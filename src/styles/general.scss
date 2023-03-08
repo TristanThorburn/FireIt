@@ -1,0 +1,53 @@
+@import './variables.scss';
+
+html{
+    font-size:125%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color:$backgroundColor;
+}
+body{
+    margin:0;
+    padding:0;
+}
+body.adminOpen{
+    overflow-y: hidden;
+}
+.App{
+    button{
+        cursor: pointer;
+    }
+}
+
+button.testButton{
+    background-color: yellow;
+    border:4px solid red;
+    color:black;
+    border-radius:10px;
+}
+
+.infoButton{
+    position: relative;
+
+    button{
+        font-size:3.5rem;
+    }
+    p{
+        position:absolute;
+        color:$fireItColor;
+        background:black;
+        border-radius:10px;
+        top:10px;
+        left:25px;
+        width:100px;
+        text-align: center;
+        cursor: pointer;
+    }
+    p:active{
+        border:4px solid $fireItColor;
+    }
+}
+
+.popUpModal{
+    @include popUpModal;
+    @include flexCenterCenter;
+}

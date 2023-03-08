@@ -40,12 +40,12 @@ const EmployeeData = () => {
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
                 </Link>
 
-                <div className='backDashHelpButtonDiv'>
+                <div className='backDashHeader'>
                     <h2>Employee Data</h2>
-
-                    <button onClick={handleEmployeeDataHelp}>🔥</button>
-                    
-                    <h3 onClick={handleEmployeeDataHelp}>INFO</h3>
+                    <div className='infoButton'>
+                        <button onClick={handleEmployeeDataHelp}>🔥</button>
+                        <p onClick={handleEmployeeDataHelp}>INFO</p>
+                    </div>
                 </div>
 
                 <button className='newItemButton' onClick={handleNewEmployee}>New Employee</button>

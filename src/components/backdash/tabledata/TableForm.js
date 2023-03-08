@@ -71,11 +71,9 @@ const TableForm = (props) => {
     }
 
     return(
-        <div className='tableFormModal'>
+        <div className='popUpModal'>
             <div className='tableFormContainer'>
-                <header>
-                    <h2>Add New Table?</h2>
-                </header>
+                <h2>Add New Table?</h2>
 
                 <form onSubmit={handleSubmit}>
                     <div className='tableFormName'>

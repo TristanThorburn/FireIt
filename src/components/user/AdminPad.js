@@ -47,7 +47,7 @@ const AdminPad = (props) => {
     }
 
     return(
-        <div className='adminPad'>
+        <div className='popUpModal'>
             <div className='keypad'>
                 <button onClick={closeAdmin} className='closePad'>X</button>
                     <table>

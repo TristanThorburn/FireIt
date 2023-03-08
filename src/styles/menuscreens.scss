@@ -1,13 +1,46 @@
 @import './variables.scss';
 
-.beerScreenList{
-    height:100%;
-    width:100%;
-    display:flex;
-    flex-direction: column;
+.menuDirectoryContainer{
+    border:4px solid black;
+    width:80%;
+    height:90%;
+    @include flexCenterCenter;
+
+    h3{
+        color:white;
+    }
 }
 
-.beerScreenContainer{
+.menuDirectoriesScreen{
+    width:100%;
+
+    ul{
+        @include cleanUl;
+        display:flex;
+        flex-wrap: wrap;
+    }
+    li{
+        width:50%;
+        height:150px;
+        @include flexCenterCenter;
+        font-size:3rem;
+    }
+    button{
+        border-radius:10px;
+        width:500px;
+        background-color:$backDashBackgroundColor;
+    }
+    button:active{
+        background-color:darken($backDashBackgroundColor, 20%);
+    }
+}
+
+.menuSubcategoryContainer{
+    height:100%;
+    width:100%;
+}
+
+.menuSubcategoryScreen{
     margin:0 auto;
     width:90%;
 
@@ -15,7 +48,6 @@
         font-size:2rem;
         text-transform:uppercase;
         text-align: center;
-        margin:0.5rem auto;
     }
     ul{
         @include cleanUl;
@@ -35,14 +67,14 @@
     }
 }
 
-.beerScreenSubNav{
+.alcoholSubcategoryNav{
     width:90%;
     margin:0 auto;
     display:flex;
     justify-content: space-evenly;
 
     button{
-        width:350px;
+        width:250px;
         height:50px;
         font-size:1.5rem;
         background-color:$backDashBackgroundColor;

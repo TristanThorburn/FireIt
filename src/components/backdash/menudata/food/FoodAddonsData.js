@@ -26,7 +26,7 @@ const FoodAddonsData = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='backDataList'>
                 <h3>Food Addons List</h3>
                 <button onClick={handleNewItem} className='newItemButton'>New Item</button>
                 <ul>

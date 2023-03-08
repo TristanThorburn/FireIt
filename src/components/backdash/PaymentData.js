@@ -11,14 +11,13 @@ const PaymentData = () => {
 
     return(
         <section className='paymentData'>
-
-            <div className='backDashHelpButtonDiv'>
-                <h2>Payments Data</h2>
-
-                <button onClick={handlePaymentDataHelp}>🔥</button>
-
-                <h3 onClick={handlePaymentDataHelp}>INFO</h3>
-            </div>
+            <header className='backDashHeader'>
+                <h2>Payment Data</h2>
+                <div className='infoButton'>
+                    <button onClick={handlePaymentDataHelp}>🔥</button>
+                    <p onClick={handlePaymentDataHelp}>INFO</p>
+                </div>
+            </header>
 
             {paymentDataHelp
                 ? <BackDashHelp

@@ -108,15 +108,15 @@ const WinesScreen = (props) => {
     }
     
     return(
-        <div className='wineScreenList'>
-            <div className='wineScreenSubNav'>
+        <div className='menuSubcategoryContainer'>
+            <div className='alcoholSubcategoryNav'>
                 <button onClick={handleBubblyCategory}>Bubbly</button>
                 <button onClick={handleRedCategory}>Red</button>
                 <button onClick={handleWhiteCategory}>White</button>
             </div>
 
             {collectionRef === 'bubbly'
-                ? <div className='wineScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Bubbly List</h3>
                     <ul>
                         {bubblyData.map(bubbly => 
@@ -135,7 +135,7 @@ const WinesScreen = (props) => {
             }
             
             {collectionRef === 'red'
-                ? <div className='wineScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>Red Wine List</h3>
                     <ul>
                         {redsData.map(red => 
@@ -154,7 +154,7 @@ const WinesScreen = (props) => {
             }
             
             {collectionRef === 'white'
-                ? <div className='wineScreenContainer'>
+                ? <div className='menuSubcategoryScreen'>
                     <h3>White Wine List</h3>
                     <ul>
                         {whitesData.map(white => 

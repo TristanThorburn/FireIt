@@ -78,7 +78,7 @@ const LiquorsData = (props) => {
  
     return(
         <div>
-            <div className='itemList'>
+            <div className='backDataList'>
                 {props.activeTab === 'gin'
                     ? <>
                         <h3>Gin List</h3>

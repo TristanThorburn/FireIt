@@ -2,9 +2,9 @@
 
 
 .keypad{
-    border: 5px solid black;
+    border: 4px solid black;
     width:500px;
-    height:550px;
+    height:525px;
     display:flex;
     flex-direction:column;
     color:white;
@@ -55,15 +55,6 @@
 
 .padSuccess{
     background-color:lightgreen;
-}
-
-.adminPad, .serverPad{
-    @include popUpModal;
-    @include flexCenterCenter;
-
-    .keypad{
-        height:525px;
-    }
 }
 
 .closePad{
