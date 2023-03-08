@@ -47,17 +47,10 @@ const CheckTab = (props) => {
         }
     }, [contextTable, employeeContext]);
 
-    // Populate / Remove separate check components
+    // Populate / Remove array to determine render # of seperate check components
     useEffect(() => {
         setReceiptsToDisplay(Array(newReceipts).fill(0))
-        console.log(receiptsToDisplay)
-        // Array(newReceipts).fill(0).map((_, i) => <YourComponent key={i} />)
-
-        // Array(10): Create an empty array that can hold 10 values (replace 10 with a dynamic value in your code).
-        // .fill(0): Fill it with some dummy value like 0. The array is now populated with 0 10 times.
-        // .map((_, i) => (...)): Transform an array of 0 to an array of YourComponent. You can change the name of an unused argument to _ to remove the the no-unused-vars warning from ESLint.
-
-    }, [newReceipts, receiptsToDisplay])
+    }, [newReceipts])
 
     return(
         <div className='checkTab'>
