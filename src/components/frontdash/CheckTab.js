@@ -2,7 +2,7 @@ import CheckTabNav from "./navs/CheckTabNav";
 import ServerKeyPad from "../user/ServerKeyPad";
 import { useTable } from "../../contexts/TableContext";
 import { useAuth } from "../../contexts/AuthContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
@@ -27,6 +27,13 @@ const CheckTab = (props) => {
     const handleTest = () => {
         console.log('targ rec:',targetReceiptNumber, 'append rec', appendReceipt)
     }
+
+    const handleDeletePendingSeat = useCallback((e) => {
+        const seatToDeleteParent = e.currentTarget.parentNode
+        const child = e.currentTarget
+        seatToDeleteParent.removeChild(child)
+        e.currentTarget.removeEventListener('click', handleDeletePendingSeat)
+    },[])
 
     // Get data for current employee and table
     useEffect(() => {
@@ -106,9 +113,13 @@ const CheckTab = (props) => {
             })
             table.appendChild(tableHead)
             table.appendChild(tableBody)
+            table.classList.add('pendingSeperateSeat')
+            table.addEventListener('click', handleDeletePendingSeat, true)
             targetReceipt.appendChild(table)
+           setAppendReceipt('')
+           setSeperatedSeatData('')
         }
-    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber])
+    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber, handleDeletePendingSeat])
 
     return(
         <div className='checkTab'>
@@ -155,14 +166,6 @@ const CheckTab = (props) => {
                         <SeparateCheck 
                             key={i}
                             receiptNum={i}
-                            seperatedSeatData={seperatedSeatData}
-                            setSeperatedSeatData={setSeperatedSeatData}
-                            targetReceiptNumber={targetReceiptNumber}
-                            selectReceiptTarget={selectReceiptTarget}
-                            appendReceipt={appendReceipt}
-                            setAppendReceipt={setAppendReceipt}
-                            employeeNumber={serverData.employeeNumber}
-                            tableId={tableData.searchId}
                             />
                         )}
                 </div>
