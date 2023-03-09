@@ -17,6 +17,7 @@ const app = initializeApp(firebaseConfig);
 
 initializeFirestore(app, {
   ignoreUndefinedProperties: true,
+  cacheSizeBytes: 50000000,
 });
 
 export const auth = getAuth(app)

@@ -59,6 +59,7 @@ const FrontDash = () => {
                     setHelpModal={setHelpModal}
                     setTableTabActive={setTableTabActive}
                     setMenuTabActive={setMenuTabActive}
+                    menuTabActive={menuTabActive}
                     />
                 : null
             }
@@ -66,6 +67,7 @@ const FrontDash = () => {
             {checkTabActive
                 ? <CheckTab
                     setHelpModal={setHelpModal}
+                    checkTabActive={checkTabActive}
                     />
                 : null
             }

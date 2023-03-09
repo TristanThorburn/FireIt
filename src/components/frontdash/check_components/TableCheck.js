@@ -12,7 +12,6 @@ const TableCheck = (props) => {
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
 
     const handlePendingOrderDelete = useCallback((e) => {
-        e.stopPropagation()
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
         const child = e.target.parentNode
         seatToAppend.removeChild(child)
@@ -20,7 +19,6 @@ const TableCheck = (props) => {
     },[])
 
     const handlePendingSeatDelete = useCallback((e) => {
-        e.stopPropagation()
         const seatToAppend = 
             document.getElementById(`${e.target.parentNode.dataset.seat}`).parentNode
         const firstChild = seatToAppend.childNodes[0]
@@ -297,21 +295,42 @@ const TableCheck = (props) => {
         }
     }, [props.sendOrder, pendingOrder, props])
     
-    const handleCheckItemClick = (e) => {
-        if(managerContext === false){
+    const handleCheckItemClickCapture = (e) => {
+        if(props.menuTabActive && managerContext === false){
             props.setFireItAlert('TableCheck edit sent')
         }
-        if(managerContext === true){
+        if(props.menuTabActive && managerContext === true){
             props.setCheckItemModData({
-                seat:e.target.dataset.seat,
-                discount:e.target.dataset.discount,
-                cost:e.target.dataset.cost,
-                name:e.target.dataset.name,
-                originalCost:e.target.dataset.originalcost,
-                qsa:e.target.dataset.qsa,
-                time:e.target.dataset.time,
+                seat:e.currentTarget.dataset.seat,
+                discount:e.currentTarget.dataset.discount,
+                cost:e.currentTarget.dataset.cost,
+                name:e.currentTarget.dataset.name,
+                originalCost:e.currentTarget.dataset.originalcost,
+                qsa:e.currentTarget.dataset.qsa,
+                time:e.currentTarget.dataset.time,
             })
             props.setModifyCheckItem(true)
+        }
+    }
+
+    const handleSeperateSeatCapture = (e) => {
+        if(props.checkTabActive){
+            let seatOrders = []
+            props.setTargetReceiptNumber('')
+            const targetSeat = e.currentTarget
+            const seatItems = targetSeat.querySelectorAll('.seatItemList')
+            seatItems.forEach(order => {
+                seatOrders.push({
+                    item:order.dataset.name,
+                    cost:order.dataset.cost,
+                })
+            })
+            props.setSeperatedSeatData({
+                seat:targetSeat.lastChild.id,
+                order:seatOrders,
+                seatNumber:targetSeat.lastChild.id.replace(/\D+/g, '')
+            })
+            props.setSelectReceiptTarget('true')
         }
     }
 
@@ -330,6 +349,7 @@ const TableCheck = (props) => {
             <div className='seatsAndOrders'>
                 {checkData?.map(seat =>
                     <table
+                        onClickCapture={handleSeperateSeatCapture}
                         key={seat?.id}
                         className='checkSeatInfo'
                         >
@@ -344,29 +364,22 @@ const TableCheck = (props) => {
                         <tbody id={seat?.id}>
                             {seat.data.order?.map((order, i) => {
                                     return(
-                                        <tr 
-                                            key={i}>
-                                            <td
-                                                onClick={handleCheckItemClick}
-                                                data-discount={order?.discount}
-                                                data-seat={seat.id}
-                                                data-name={order.item}
-                                                data-cost={order.cost}
-                                                data-originalcost={order.originalCost}
-                                                data-qsa={order.qsa}
-                                                data-time={order.time}
-                                                >{order.item}</td>
-                                            <td
-                                                onClick={handleCheckItemClick}
-                                                data-discount={order?.discount}
-                                                data-seat={seat.id}
-                                                data-name={order.item}
-                                                data-cost={order.cost}
-                                                data-originalcost={order.originalCost}
-                                                data-qsa={order.qsa}
-                                                data-time={order.time}
-                                                className='checkItemCost'
-                                                >{order.cost}</td>
+                                        <tr
+                                            className='seatItemList'
+                                            key={i}
+                                            onClickCapture={handleCheckItemClickCapture}
+                                            data-discount={order?.discount}
+                                            data-seat={seat.id}
+                                            data-name={order.item}
+                                            data-cost={order.cost}
+                                            data-originalcost={order.originalCost}
+                                            data-qsa={order.qsa}
+                                            data-time={order.time}>
+                                                <td>{order.item}</td>
+                                                <td
+                                                    data-cost={order.cost}
+                                                    className='checkItemCost'
+                                                    >{order.cost}</td>
                                         </tr>    
                                     )
                                 })

@@ -266,6 +266,7 @@ const MenuTab = (props) => {
                 setModifyCheckItem={setModifyCheckItem}
                 setCheckItemModData={setCheckItemModData}
                 setFireItAlert={setFireItAlert}
+                menuTabActive={props.menuTabActive}
                 />
             
             <section className='menuDirectoryContainer'>

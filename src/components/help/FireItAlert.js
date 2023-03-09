@@ -42,6 +42,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'CheckTab receipt undefined'
+                        ? <div className='padError'>Receipt not found. Use ADD SEPERATE to make sure the number of split receipts matches your search.
+                        </div>
+                        : null
+                    }
                 </article>
             </div>
         </div>

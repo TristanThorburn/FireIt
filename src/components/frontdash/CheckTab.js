@@ -18,9 +18,14 @@ const CheckTab = (props) => {
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ newReceipts, setNewReceipts ] = useState(1);
     const [ receiptsToDisplay, setReceiptsToDisplay ] = useState([0]);
+    const [ seperatedSeatData, setSeperatedSeatData ] = useState({});
+    const [ selectReceiptTarget, setSelectReceiptTarget ] = useState('false')
+    const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('')
+    const [ appendReceipt, setAppendReceipt ] = useState()
+    const seperateChecksList = document.querySelector('.seperatedChecksContainer')
 
     const handleTest = () => {
-        console.log(contextTable)
+        console.log('targ rec:',targetReceiptNumber, 'append rec', appendReceipt)
     }
 
     // Get data for current employee and table
@@ -52,6 +57,59 @@ const CheckTab = (props) => {
         setReceiptsToDisplay(Array(newReceipts).fill(0))
     }, [newReceipts])
 
+    // Check if selected receipt exists on display
+    useEffect(() => {
+        if(selectReceiptTarget === 'approved'){
+            const receiptId = 'receipt' + targetReceiptNumber
+            const targetReceipt = seperateChecksList.querySelector(`#${receiptId}`)
+            if(targetReceipt === null){
+                setFireItAlert('CheckTab receipt undefined')
+                setSelectReceiptTarget('true')
+            }
+            if(targetReceipt){
+                setAppendReceipt(targetReceipt)
+            }
+        }
+    }, [selectReceiptTarget, seperateChecksList, targetReceiptNumber])
+
+    // Put the selected seat on the selected check
+    useEffect(() => {
+        if(appendReceipt){
+            const targetReceipt = document.getElementById(appendReceipt.id)
+            const table = document.createElement('table')
+            table.classList.add('checkSeatInfo')
+            // Set up table head with seat
+            const tableHead = document.createElement('thead')
+            const tableHeadRow = document.createElement('tr')
+            const tableHeadRowTh = document.createElement('th')
+            tableHeadRowTh.setAttribute('colspan', '2')
+            const seatNumber = document.createTextNode(`Seat: ${seperatedSeatData.seatNumber}`)
+            tableHeadRowTh.appendChild(seatNumber)
+            tableHeadRow.appendChild(tableHeadRowTh)
+            tableHead.appendChild(tableHeadRow)
+            // Set up table body
+            const tableBody = document.createElement('tbody')
+            // Loop orders
+            seperatedSeatData.order.forEach((order, i) => {
+                const tableBodyRow = document.createElement('tr')
+                tableBodyRow.classList.add('seatItemList')
+                const tableBodyItem = document.createElement('td')
+                const tableBodyCost = document.createElement('td')
+                tableBodyCost.classList.add('receiptItemCost')
+                const item = document.createTextNode(order.item)
+                const cost = document.createTextNode(order.cost)
+                tableBodyItem.appendChild(item)
+                tableBodyCost.appendChild(cost)
+                tableBodyRow.appendChild(tableBodyItem)
+                tableBodyRow.appendChild(tableBodyCost)
+                tableBody.appendChild(tableBodyRow)
+            })
+            table.appendChild(tableHead)
+            table.appendChild(tableBody)
+            targetReceipt.appendChild(table)
+        }
+    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber])
+
     return(
         <div className='checkTab'>
             {managerKeyPadActive
@@ -62,6 +120,17 @@ const CheckTab = (props) => {
                 : null
             }
 
+            {selectReceiptTarget === 'true'
+                ? <ServerKeyPad
+                    selectReceiptTarget={selectReceiptTarget}
+                    setSelectReceiptTarget={setSelectReceiptTarget}
+                    setTargetReceiptNumber={setTargetReceiptNumber}
+                    targetReceiptNumber={targetReceiptNumber}
+                    seperatedSeatData={seperatedSeatData}
+                    />
+                : null
+            }
+            {/* KEEP LAST FOR PRIORITY */}
             {fireItAlert !== ''
                 ? <FireItAlert
                     fireItAlert={fireItAlert}
@@ -73,16 +142,30 @@ const CheckTab = (props) => {
             <TableCheck
                     serverData={serverData}
                     tableData={tableData}
+                    checkTabActive={props.checkTabActive}
+                    setSeperatedSeatData={setSeperatedSeatData}
+                    setSelectReceiptTarget={setSelectReceiptTarget}
+                    setTargetReceiptNumber={setTargetReceiptNumber}
                     />
 
-            <header>
-                <button onClick={handleTest} className='testButton'>TEST</button>
-                
-                <h2>Check Tab Under Construction</h2>
-            </header>
-
-            <section>
-                {receiptsToDisplay.map((_, i) => <SeparateCheck key={i} />)}
+            <section className='checkTabDisplay'>
+<button onClick={handleTest} className='testButton'>TEST</button>
+                <div className='seperatedChecksContainer'>
+                    {receiptsToDisplay.map((_, i) => 
+                        <SeparateCheck 
+                            key={i}
+                            receiptNum={i}
+                            seperatedSeatData={seperatedSeatData}
+                            setSeperatedSeatData={setSeperatedSeatData}
+                            targetReceiptNumber={targetReceiptNumber}
+                            selectReceiptTarget={selectReceiptTarget}
+                            appendReceipt={appendReceipt}
+                            setAppendReceipt={setAppendReceipt}
+                            employeeNumber={serverData.employeeNumber}
+                            tableId={tableData.searchId}
+                            />
+                        )}
+                </div>
             </section>
 
             <CheckTabNav
