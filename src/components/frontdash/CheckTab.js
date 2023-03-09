@@ -25,7 +25,7 @@ const CheckTab = (props) => {
     const seperateChecksList = document.querySelector('.seperatedChecksContainer')
 
     const handleTest = () => {
-        console.log(targetReceiptNumber)
+        console.log('targ rec:',targetReceiptNumber, 'append rec', appendReceipt)
     }
 
     // Get data for current employee and table
@@ -72,6 +72,44 @@ const CheckTab = (props) => {
         }
     }, [selectReceiptTarget, seperateChecksList, targetReceiptNumber])
 
+    // Put the selected seat on the selected check
+    useEffect(() => {
+        if(appendReceipt){
+            const targetReceipt = document.getElementById(appendReceipt.id)
+            const table = document.createElement('table')
+            table.classList.add('checkSeatInfo')
+            // Set up table head with seat
+            const tableHead = document.createElement('thead')
+            const tableHeadRow = document.createElement('tr')
+            const tableHeadRowTh = document.createElement('th')
+            tableHeadRowTh.setAttribute('colspan', '2')
+            const seatNumber = document.createTextNode(`Seat: ${seperatedSeatData.seatNumber}`)
+            tableHeadRowTh.appendChild(seatNumber)
+            tableHeadRow.appendChild(tableHeadRowTh)
+            tableHead.appendChild(tableHeadRow)
+            // Set up table body
+            const tableBody = document.createElement('tbody')
+            // Loop orders
+            seperatedSeatData.order.forEach((order, i) => {
+                const tableBodyRow = document.createElement('tr')
+                tableBodyRow.classList.add('seatItemList')
+                const tableBodyItem = document.createElement('td')
+                const tableBodyCost = document.createElement('td')
+                tableBodyCost.classList.add('receiptItemCost')
+                const item = document.createTextNode(order.item)
+                const cost = document.createTextNode(order.cost)
+                tableBodyItem.appendChild(item)
+                tableBodyCost.appendChild(cost)
+                tableBodyRow.appendChild(tableBodyItem)
+                tableBodyRow.appendChild(tableBodyCost)
+                tableBody.appendChild(tableBodyRow)
+            })
+            table.appendChild(tableHead)
+            table.appendChild(tableBody)
+            targetReceipt.appendChild(table)
+        }
+    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber])
+
     return(
         <div className='checkTab'>
             {managerKeyPadActive
@@ -107,6 +145,7 @@ const CheckTab = (props) => {
                     checkTabActive={props.checkTabActive}
                     setSeperatedSeatData={setSeperatedSeatData}
                     setSelectReceiptTarget={setSelectReceiptTarget}
+                    setTargetReceiptNumber={setTargetReceiptNumber}
                     />
 
             <section className='checkTabDisplay'>

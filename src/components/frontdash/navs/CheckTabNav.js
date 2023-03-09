@@ -64,6 +64,7 @@ const CheckTabNav = (props) => {
                     }
                     </button>
                 </li>
+                <li><button className='nonWorkingButton'>PRINT RECEIPTS</button></li>
                 <li>
                     <button onClick={handleAddSeparate} className='workingButton'>ADD SEPERATE</button>
                 </li>
@@ -71,7 +72,6 @@ const CheckTabNav = (props) => {
                     <button onClick={handleRemoveSeparate} className='workingButton'>REMOVE SEPARATE</button>
                 </li>
                 <li><button className='nonWorkingButton'>CHNG TBL</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li className='infoButton'>

@@ -295,33 +295,34 @@ const TableCheck = (props) => {
         }
     }, [props.sendOrder, pendingOrder, props])
     
-    const handleCheckItemClick = (e) => {
+    const handleCheckItemClickCapture = (e) => {
         if(props.menuTabActive && managerContext === false){
             props.setFireItAlert('TableCheck edit sent')
         }
         if(props.menuTabActive && managerContext === true){
             props.setCheckItemModData({
-                seat:e.target.dataset.seat,
-                discount:e.target.dataset.discount,
-                cost:e.target.dataset.cost,
-                name:e.target.dataset.name,
-                originalCost:e.target.dataset.originalcost,
-                qsa:e.target.dataset.qsa,
-                time:e.target.dataset.time,
+                seat:e.currentTarget.dataset.seat,
+                discount:e.currentTarget.dataset.discount,
+                cost:e.currentTarget.dataset.cost,
+                name:e.currentTarget.dataset.name,
+                originalCost:e.currentTarget.dataset.originalcost,
+                qsa:e.currentTarget.dataset.qsa,
+                time:e.currentTarget.dataset.time,
             })
             props.setModifyCheckItem(true)
         }
     }
 
-    const handleSeperateSeat = (e) => {
+    const handleSeperateSeatCapture = (e) => {
         if(props.checkTabActive){
             let seatOrders = []
-            const targetSeat = e.target.parentNode.parentNode.parentNode
+            props.setTargetReceiptNumber('')
+            const targetSeat = e.currentTarget
             const seatItems = targetSeat.querySelectorAll('.seatItemList')
             seatItems.forEach(order => {
                 seatOrders.push({
-                    item:order.firstChild.dataset.name,
-                    cost:order.firstChild.dataset.cost,
+                    item:order.dataset.name,
+                    cost:order.dataset.cost,
                 })
             })
             props.setSeperatedSeatData({
@@ -348,13 +349,13 @@ const TableCheck = (props) => {
             <div className='seatsAndOrders'>
                 {checkData?.map(seat =>
                     <table
+                        onClickCapture={handleSeperateSeatCapture}
                         key={seat?.id}
                         className='checkSeatInfo'
                         >
                         <thead>
                             <tr>
                                 <th
-                                    onClick={handleSeperateSeat}
                                     colSpan={2}
                                     >Seat: {seat.data?.seatNumber}
                                 </th>
@@ -365,28 +366,20 @@ const TableCheck = (props) => {
                                     return(
                                         <tr
                                             className='seatItemList'
-                                            key={i}>
-                                            <td
-                                                onClick={handleCheckItemClick}
-                                                data-discount={order?.discount}
-                                                data-seat={seat.id}
-                                                data-name={order.item}
-                                                data-cost={order.cost}
-                                                data-originalcost={order.originalCost}
-                                                data-qsa={order.qsa}
-                                                data-time={order.time}
-                                                >{order.item}</td>
-                                            <td
-                                                onClick={handleCheckItemClick}
-                                                data-discount={order?.discount}
-                                                data-seat={seat.id}
-                                                data-name={order.item}
-                                                data-cost={order.cost}
-                                                data-originalcost={order.originalCost}
-                                                data-qsa={order.qsa}
-                                                data-time={order.time}
-                                                className='checkItemCost'
-                                                >{order.cost}</td>
+                                            key={i}
+                                            onClickCapture={handleCheckItemClickCapture}
+                                            data-discount={order?.discount}
+                                            data-seat={seat.id}
+                                            data-name={order.item}
+                                            data-cost={order.cost}
+                                            data-originalcost={order.originalCost}
+                                            data-qsa={order.qsa}
+                                            data-time={order.time}>
+                                                <td>{order.item}</td>
+                                                <td
+                                                    data-cost={order.cost}
+                                                    className='checkItemCost'
+                                                    >{order.cost}</td>
                                         </tr>    
                                     )
                                 })
