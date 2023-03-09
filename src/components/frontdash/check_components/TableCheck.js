@@ -12,7 +12,6 @@ const TableCheck = (props) => {
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
 
     const handlePendingOrderDelete = useCallback((e) => {
-        e.stopPropagation()
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
         const child = e.target.parentNode
         seatToAppend.removeChild(child)
@@ -20,7 +19,6 @@ const TableCheck = (props) => {
     },[])
 
     const handlePendingSeatDelete = useCallback((e) => {
-        e.stopPropagation()
         const seatToAppend = 
             document.getElementById(`${e.target.parentNode.dataset.seat}`).parentNode
         const firstChild = seatToAppend.childNodes[0]
@@ -298,10 +296,10 @@ const TableCheck = (props) => {
     }, [props.sendOrder, pendingOrder, props])
     
     const handleCheckItemClick = (e) => {
-        if(managerContext === false){
+        if(props.menuTabActive && managerContext === false){
             props.setFireItAlert('TableCheck edit sent')
         }
-        if(managerContext === true){
+        if(props.menuTabActive && managerContext === true){
             props.setCheckItemModData({
                 seat:e.target.dataset.seat,
                 discount:e.target.dataset.discount,
@@ -312,6 +310,26 @@ const TableCheck = (props) => {
                 time:e.target.dataset.time,
             })
             props.setModifyCheckItem(true)
+        }
+    }
+
+    const handleSeperateSeat = (e) => {
+        if(props.checkTabActive){
+            let seatOrders = []
+            const targetSeat = e.target.parentNode.parentNode.parentNode
+            const seatItems = targetSeat.querySelectorAll('.seatItemList')
+            seatItems.forEach(order => {
+                seatOrders.push({
+                    item:order.firstChild.dataset.name,
+                    cost:order.firstChild.dataset.cost,
+                })
+            })
+            props.setSeperatedSeatData({
+                seat:targetSeat.lastChild.id,
+                order:seatOrders,
+                seatNumber:targetSeat.lastChild.id.replace(/\D+/g, '')
+            })
+            props.setSelectReceiptTarget('true')
         }
     }
 
@@ -336,6 +354,7 @@ const TableCheck = (props) => {
                         <thead>
                             <tr>
                                 <th
+                                    onClick={handleSeperateSeat}
                                     colSpan={2}
                                     >Seat: {seat.data?.seatNumber}
                                 </th>
@@ -344,7 +363,8 @@ const TableCheck = (props) => {
                         <tbody id={seat?.id}>
                             {seat.data.order?.map((order, i) => {
                                     return(
-                                        <tr 
+                                        <tr
+                                            className='seatItemList'
                                             key={i}>
                                             <td
                                                 onClick={handleCheckItemClick}

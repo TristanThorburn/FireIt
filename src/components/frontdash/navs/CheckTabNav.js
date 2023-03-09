@@ -7,10 +7,6 @@ const CheckTabNav = (props) => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
-    // porps
-    // setNewReceipts={setNewReceipts}
-    // newReceipts={newReceipts}
-
     const handleTest = () => {
         console.log(props.newReceipts)
     }
@@ -69,7 +65,7 @@ const CheckTabNav = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button onClick={handleAddSeparate} className='workingButton'>ADD SEPARATE</button>
+                    <button onClick={handleAddSeparate} className='workingButton'>ADD SEPERATE</button>
                 </li>
                 <li>
                     <button onClick={handleRemoveSeparate} className='workingButton'>REMOVE SEPARATE</button>

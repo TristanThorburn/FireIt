@@ -16,10 +16,14 @@ const ServerKeyPad = (props) => {
         if(props.managerKeyPadActive){
             props.setManagerKeyPadActive(false)
         }
+
+        if(props.selectReceiptTarget){
+            props.setSelectReceiptTarget('false')
+        }
     }
 
     const handleClick = (e) => {
-        if (props.seatKeyPadActive){
+        if (props.seatKeyPadActive && props.selectedSeat.length < 2){
             props.setSelectedSeat((previous) => previous + `${e.target.innerText}`)
         }
 
@@ -31,6 +35,10 @@ const ServerKeyPad = (props) => {
                 const managerPass = new Array(numberCombo.join().replace(/,/g, '')).toString();
                 setManagerCombo(managerPass);
             }
+        }
+
+        if (props.selectReceiptTarget && props.targetReceiptNumber.length < 2){
+            props.setTargetReceiptNumber((previous) => previous + `${e.target.innerText}`)
         }
     }
 
@@ -54,12 +62,23 @@ const ServerKeyPad = (props) => {
         setTimeout(() => {
             setError('')
         }, 1000)
+
+        if(props.selectReceiptTarget){
+            props.setTargetReceiptNumber('')
+            setError('Receipt Number Cleared')
+        } else {
+            setError('Combo Cleared')
+        }
+        setTimeout(() => {
+            setError('')
+        }, 1000)
     }
 
     const handleSubmit = () => {
         if(props.seatKeyPadActive){
             props.setSeatKeyPadActive(false)
         }
+
         if(props.managerKeyPadActive){
             if(managerCombo === '1985') {
                 try{
@@ -71,10 +90,29 @@ const ServerKeyPad = (props) => {
                     }, 1000)
                 } catch {
                     setError('failed log in')
+                    setTimeout(() => {
+                        setError('')
+                    }, 1000)
                 }
             } else {
-                setError('Incorrect PIN')
                 numberCombo = []
+                setError('Incorrect PIN')
+                setTimeout(() => {
+                    setError('')
+                }, 1000)
+            }
+        }
+
+        if(props.selectReceiptTarget){
+            const receiptRangeConfirm = parseInt(props.targetReceiptNumber)
+            if(receiptRangeConfirm <= 10){
+                props.setSelectReceiptTarget('approved')
+            }
+            else {
+                setError('Max receipt seperations is 10')
+                setTimeout(() => {
+                    setError('')
+                }, 1000)
             }
         }
     }
@@ -92,6 +130,12 @@ const ServerKeyPad = (props) => {
                             }
                             {props.managerKeyPadActive
                                 ? <th colSpan={3}>Manager Password?(1985)</th>
+                                : null
+                            }
+                            {props.selectReceiptTarget
+                                ? <th colSpan={3}>
+                                    Seat: {props.seperatedSeatData?.seatNumber} to Receipt:
+                                    &nbsp;{props.targetReceiptNumber}</th>
                                 : null
                             }
                         </tr>
