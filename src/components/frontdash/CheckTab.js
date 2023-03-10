@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
 import SeparateCheck from "./check_components/SeperateCheck";
 import FireItAlert from "../help/FireItAlert";
+import AlphaNumericPad from "../user/AlphaNumericPad";
 
 const CheckTab = (props) => {
     const { employeeContext } = useAuth();
@@ -22,10 +23,11 @@ const CheckTab = (props) => {
     const [ selectReceiptTarget, setSelectReceiptTarget ] = useState('false')
     const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('')
     const [ appendReceipt, setAppendReceipt ] = useState()
+    const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false)
     const seperateChecksList = document.querySelector('.seperatedChecksContainer')
 
     const handleTest = () => {
-        console.log('targ rec:',targetReceiptNumber, 'append rec', appendReceipt)
+        console.log(contextTable)
     }
 
     const handleDeletePendingSeat = useCallback((e) => {
@@ -141,6 +143,14 @@ const CheckTab = (props) => {
                     />
                 : null
             }
+
+            {alphaNumericPadOpen
+                ? <AlphaNumericPad
+                    checkTabActive={props.checkTabActive}
+                    setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                    />
+                : null
+            }
             {/* KEEP LAST FOR PRIORITY */}
             {fireItAlert !== ''
                 ? <FireItAlert
@@ -177,6 +187,7 @@ const CheckTab = (props) => {
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setNewReceipts={setNewReceipts}
                 newReceipts={newReceipts}
+                setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                 />
         </div>
     )
