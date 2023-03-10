@@ -17,6 +17,7 @@ import WinesScreen from './menu_components/WinesScreen';
 import ServerKeyPad from '../user/ServerKeyPad';
 import ModifyCheckItem from "./check_components/ModifyCheckItem";
 import FireItAlert from "../help/FireItAlert";
+import AlphaNumericPad from '../user/AlphaNumericPad';
 
 const MenuTab = (props) => {
     const { employeeContext } = useAuth()
@@ -42,6 +43,7 @@ const MenuTab = (props) => {
     const [ modifyCheckItem, setModifyCheckItem ] = useState(false)
     const [ checkItemModData, setCheckItemModData ] = useState()
     const [ fireItAlert, setFireItAlert ] = useState('')
+    const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false)
 
     // Get data for current employee and table
     useEffect(() => {
@@ -239,6 +241,14 @@ const MenuTab = (props) => {
                 : null
             }
 
+            {alphaNumericPadOpen
+                ? <AlphaNumericPad
+                    menuTabActive={props.menuTabActive}
+                    setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                    />
+                : null
+            }
+
             {modifyCheckItem
                 ? <ModifyCheckItem
                     modifyCheckItem={modifyCheckItem}
@@ -432,6 +442,7 @@ const MenuTab = (props) => {
                 setCurrentOrderData={setCurrentOrderData}
                 setSendOrder={setSendOrder}
                 setManagerKeyPadActive={setManagerKeyPadActive}
+                setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                 />
         </div>
     )

@@ -17,6 +17,10 @@ const MenuTabNav = (props) => {
         props.setCurrentOrderData('')
     }
 
+    const handleChangeTable = () => {
+        props.setAlphaNumericPadOpen(true)
+    }
+
     const handleMgrOveride = () => {
         if(managerContext === false){
             props.setManagerKeyPadActive(true)
@@ -67,7 +71,9 @@ const MenuTabNav = (props) => {
                 </li>
                 <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
-                <li><button className='nonWorkingButton'>CHNG TBL</button></li>
+                <li>
+                    <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
+                </li>
                 <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
                 <li><button className='nonWorkingButton'>HIDE OLD</button></li>
                 <li className='infoButton'>

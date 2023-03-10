@@ -21,6 +21,7 @@ const UserPad = (props) => {
             setUserPin(loginUser)
         }
     }
+
     const handleClear = () => {
         userCombo = [];
         setError('Combo Cleared')
@@ -29,9 +30,11 @@ const UserPad = (props) => {
             setError('')
         }, 1000)
     }
+
     const handleUser = () => {
         props.setEmail(userPin);
     }
+    
     return(
         <div className='keypad'>
             <button onClick={handleCloseModal} className='closePad'>X</button>

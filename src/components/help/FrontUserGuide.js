@@ -53,13 +53,14 @@ const FrontUserGuide = (props) => {
 
                 {props.checkTabActive
                     ? <ul>
-                        <li>Under Construction: 
-                            <br />
-                            .
-                        </li>
+                        <h3>Under Construction!
+                        </h3>
+                        <li>Use ADD SEPERATE or REMOVE SEPERATE to populate up to 10 receipts for checks to be split on to.</li>
+                        <li>Click on the seat you want to transfer and select the target receipt number, currently must be less than or equal to 10.</li>
+                        <li>Click on any pending seperate seat on the receipt to remove it.</li>
                         <li>Stretch Goals: 
                             <br />
-                            Organize seats into different billing methods, for example split checks.  Allow for the transfer of items between seats.
+                            Organize seats into different billing methods, for example split checks.  Allow for the transfer of items between seats. PRINT RECEIPTS to store data to firebase.
                         </li>
                     </ul>
                     : null
@@ -118,14 +119,14 @@ const FrontUserGuide = (props) => {
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            TEST
-                            <br />
-                            - Test buttons exist for coding console.log and has no user functionality. 
-                        </li>
-                        <li>
                             DEMO
                             <br />
                             - Button under construction. 
+                        </li>
+                        <li>
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
                             INFO
@@ -164,11 +165,6 @@ const FrontUserGuide = (props) => {
                             - Select the seat number to order the item on. The number can be 1 or 2 digits, seat 1 will be assumed by default. 
                         </li>
                         <li>
-                            HIDE OLD
-                            <br />
-                            - Under construction. Hide non pending orders. 
-                        </li>
-                        <li>
                             MAIN MENU
                             <br />
                             - Return to the main directory of menu categories. 
@@ -176,7 +172,12 @@ const FrontUserGuide = (props) => {
                         <li>
                             CHNG TBL
                             <br />
-                            - Under construction. Change active table without using table map. 
+                            - Change active table using the alphanumeric pad instead of TableMap. There is currently no logic to notify if searched table does not exist.
+                        </li>
+                        <li>
+                            HIDE OLD
+                            <br />
+                            - Under construction. Hide non pending orders. 
                         </li>
                         <li>
                             INFO
@@ -205,14 +206,34 @@ const FrontUserGuide = (props) => {
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            TEST
+                            PRINT RECEIPTS
                             <br />
-                            - Test buttons exist for coding console.log and has no user functionality. 
+                            - Button under construction to send receipt data to firebase, simulating printing. 
+                        </li>
+                        <li>
+                            ADD SEPERATE
+                            <br />
+                            - Add an additional receipt to seperate the original check on to. 
+                        </li>
+                        <li>
+                            REMOVE SEPERATE
+                            <br />
+                            - Remove an un-needed additional seperate receipt. 
+                        </li>
+                        <li>
+                            CHNG TBL
+                            <br />
+                            - Change active table using the alphanumeric pad instead of TableMap. There is currently no logic to notify if searched table does not exist.
                         </li>
                         <li>
                             DEMO
                             <br />
                             - Button under construction. 
+                        </li>
+                        <li>
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
                             INFO
@@ -241,14 +262,14 @@ const FrontUserGuide = (props) => {
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            TEST
-                            <br />
-                            - Test buttons exist for coding console.log and has no user functionality. 
-                        </li>
-                        <li>
                             DEMO
                             <br />
                             - Button under construction. 
+                        </li>
+                        <li>
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
                             INFO
@@ -277,14 +298,14 @@ const FrontUserGuide = (props) => {
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            TEST
-                            <br />
-                            - Test buttons exist for coding console.log and has no user functionality. 
-                        </li>
-                        <li>
                             DEMO
                             <br />
                             - Button under construction. 
+                        </li>
+                        <li>
+                            TEST
+                            <br />
+                            - Test buttons exist for coding console.log and has no user functionality. 
                         </li>
                         <li>
                             INFO

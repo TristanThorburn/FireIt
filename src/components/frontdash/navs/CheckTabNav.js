@@ -39,6 +39,10 @@ const CheckTabNav = (props) => {
         }
     }
 
+    const handleChangeTable = () => {
+        props.setAlphaNumericPadOpen(true)
+    }
+
     const handleHelp = () => {
         props.setHelpModal(true)
     }
@@ -71,7 +75,9 @@ const CheckTabNav = (props) => {
                 <li>
                     <button onClick={handleRemoveSeparate} className='workingButton'>REMOVE SEPARATE</button>
                 </li>
-                <li><button className='nonWorkingButton'>CHNG TBL</button></li>
+                <li>
+                    <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
+                </li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li className='infoButton'>
