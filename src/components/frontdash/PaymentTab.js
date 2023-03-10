@@ -1,5 +1,5 @@
 import PaymentTabNav from './navs/PaymentTabNav';
-import ServerKeyPad from "../user/ServerKeyPad";
+import ServerKeyPad from "../keypads/ServerKeyPad";
 import { useState } from "react";
 
 const PaymentTab = (props) => {

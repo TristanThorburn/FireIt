@@ -1,6 +1,6 @@
 import TableTabNav from './navs/TableTabNav';
 import TableMap from '../backdash/tabledata/TableMap';
-import ServerKeyPad from '../user/ServerKeyPad';
+import ServerKeyPad from '../keypads/ServerKeyPad';
 import { useState } from 'react';
 
 const TableTab = (props) => {

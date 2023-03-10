@@ -1,5 +1,5 @@
 import SummaryTabNav from "./navs/SummaryTabNav";
-import ServerKeyPad from "../user/ServerKeyPad";
+import ServerKeyPad from "../keypads/ServerKeyPad";
 import { useState } from "react";
 
 const SummaryTab = (props) => {

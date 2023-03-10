@@ -1,33 +1,38 @@
 import CheckTabNav from "./navs/CheckTabNav";
-import ServerKeyPad from "../user/ServerKeyPad";
+import ServerKeyPad from "../keypads/ServerKeyPad";
 import { useTable } from "../../contexts/TableContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
-import SeparateCheck from "./check_components/SeperateCheck";
 import FireItAlert from "../help/FireItAlert";
-import AlphaNumericPad from "../user/AlphaNumericPad";
+import AlphaNumericPad from "../keypads/AlphaNumericPad";
 
 const CheckTab = (props) => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ tableData, setTableData ] = useState({});
     const [ serverData, setServerData ] = useState({});
+    const [ receiptData, setReceiptData ] = useState();
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
-    const [ newReceipts, setNewReceipts ] = useState(1);
+    const [ newReceipts, setNewReceipts ] = useState(0);
     const [ receiptsToDisplay, setReceiptsToDisplay ] = useState([0]);
     const [ seperatedSeatData, setSeperatedSeatData ] = useState({});
-    const [ selectReceiptTarget, setSelectReceiptTarget ] = useState('false')
-    const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('')
-    const [ appendReceipt, setAppendReceipt ] = useState()
-    const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false)
-    const seperateChecksList = document.querySelector('.seperatedChecksContainer')
+    const [ selectReceiptTarget, setSelectReceiptTarget ] = useState('false');
+    const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('');
+    const [ appendReceipt, setAppendReceipt ] = useState();
+    const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
+    const [ printReceipts, setPrintReceipts ] = useState(true);
+    // const [ recalculateReceiptCost, setRecalculateReceiptCost ] = useState(false)
+    // const [ receiptTotal, setReceiptTotal ] = useState()
+    const seperateChecksList = document.querySelector('.seperatedChecksContainer');
 
     const handleTest = () => {
-        console.log(contextTable)
+        console.log('receipt Data', receiptData)
+        console.log('seats to display', receiptsToDisplay)
+        console.log(printReceipts)
     }
 
     const handleDeletePendingSeat = useCallback((e) => {
@@ -35,9 +40,10 @@ const CheckTab = (props) => {
         const child = e.currentTarget
         seatToDeleteParent.removeChild(child)
         e.currentTarget.removeEventListener('click', handleDeletePendingSeat)
+        // setRecalculateReceiptCost(true)
     },[])
 
-    // Get data for current employee and table
+    // Get data for current employee and table, and tables receipts
     useEffect(() => {
         if(contextTable !== ''){
             const getTable = async () => {
@@ -56,8 +62,20 @@ const CheckTab = (props) => {
                         setServerData(serverInfo)
                     }
                 }
+            const getReceipts = async () => {
+                const receiptCollectionRef = 
+                    collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
+                const q = query(receiptCollectionRef, orderBy('receiptNumber', 'asc'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setReceiptData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data(),
+                    })))
+                })
+                return unsubscribe
+            }
             getTable()
-            .then(() => {getServer()}).catch(error => console.log(error))
+            .then(getServer()).then(getReceipts())
         }
     }, [contextTable, employeeContext]);
 
@@ -83,7 +101,7 @@ const CheckTab = (props) => {
 
     // Put the selected seat on the selected check
     useEffect(() => {
-        if(appendReceipt){
+        if(appendReceipt && seperatedSeatData){
             const targetReceipt = document.getElementById(appendReceipt.id)
             const table = document.createElement('table')
             table.classList.add('checkSeatInfo')
@@ -118,10 +136,12 @@ const CheckTab = (props) => {
             table.classList.add('pendingSeperateSeat')
             table.addEventListener('click', handleDeletePendingSeat, true)
             targetReceipt.appendChild(table)
-           setAppendReceipt('')
-           setSeperatedSeatData('')
+            console.log(seperatedSeatData)
+            setAppendReceipt('')
+            setSeperatedSeatData('')
+        //    setRecalculateReceiptCost(true)
         }
-    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber, handleDeletePendingSeat])
+    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber, handleDeletePendingSeat, seperatedSeatData])
 
     return(
         <div className='checkTab'>
@@ -172,12 +192,22 @@ const CheckTab = (props) => {
             <section className='checkTabDisplay'>
 <button onClick={handleTest} className='testButton'>TEST</button>
                 <div className='seperatedChecksContainer'>
-                    {receiptsToDisplay.map((_, i) => 
-                        <SeparateCheck 
-                            key={i}
-                            receiptNum={i}
-                            />
-                        )}
+                    {receiptData?.map((receipt, i) => {
+                        return(
+                            <article
+                                className='seperatedCheck'
+                                key={i}>
+                                <h3>Receipt {receipt.data.receiptNumber}</h3>
+                    
+                                <div id={receipt.id}></div>
+                    
+                                <footer>
+                                    <p>Check Total:</p>
+                                    <p>${receipt.data.receiptTotalCost}</p>
+                                </footer>
+                            </article>
+                        )
+                    })}
                 </div>
             </section>
 
@@ -188,6 +218,9 @@ const CheckTab = (props) => {
                 setNewReceipts={setNewReceipts}
                 newReceipts={newReceipts}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                setPrintReceipts={setPrintReceipts}
+                employeeNumber={serverData.employeeNumber}
+                tableId={tableData.searchId}
                 />
         </div>
     )

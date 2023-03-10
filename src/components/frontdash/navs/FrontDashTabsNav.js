@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AdminPad from '../../user/AdminPad';
+import AdminPad from '../../keypads/AdminPad';
 
 const FrontDashNavTabs = (props) => {
     const [ adminPad, setAdminPad ] = useState(false)
