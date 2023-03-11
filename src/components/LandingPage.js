@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AppLandingInfo from './help/AppLandingInfo';
-import UserPad from './user/UserKeyPad';
-import PassPad from './user/PassKeyPad';
+import UserPad from './keypads/UserKeyPad';
+import PassPad from './keypads/PassKeyPad';
 
 const Login = () => {
     const [ loginToApp, setLoginToApp ] = useState(false);

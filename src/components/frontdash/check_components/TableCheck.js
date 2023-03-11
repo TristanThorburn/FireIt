@@ -10,7 +10,6 @@ const TableCheck = (props) => {
     const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
-
     const handlePendingOrderDelete = useCallback((e) => {
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
         const child = e.target.parentNode
@@ -316,10 +315,12 @@ const TableCheck = (props) => {
     const handleSeperateSeatCapture = (e) => {
         if(props.checkTabActive){
             let seatOrders = []
+            let costsArray = []
             props.setTargetReceiptNumber('')
             const targetSeat = e.currentTarget
             const seatItems = targetSeat.querySelectorAll('.seatItemList')
             seatItems.forEach(order => {
+                costsArray.push(Number(order.dataset.cost))
                 seatOrders.push({
                     item:order.dataset.name,
                     cost:order.dataset.cost,
@@ -328,7 +329,8 @@ const TableCheck = (props) => {
             props.setSeperatedSeatData({
                 seat:targetSeat.lastChild.id,
                 order:seatOrders,
-                seatNumber:targetSeat.lastChild.id.replace(/\D+/g, '')
+                seatNumber:targetSeat.lastChild.id.replace(/\D+/g, ''),
+                seatTotalCost:costsArray.reduce((a, b) => a + b, 0)
             })
             props.setSelectReceiptTarget('true')
         }

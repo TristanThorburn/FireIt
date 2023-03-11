@@ -42,6 +42,7 @@ button.testButton{
         width:100px;
         text-align: center;
         cursor: pointer;
+        font-weight: bold;
     }
     p:active{
         border:4px solid $fireItColor;

@@ -32,8 +32,8 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'CheckTab less than one'
-                        ? <div className='padError'>One receipt at minimum is required to present to the guest.
+                    {props.fireItAlert === 'CheckTab less than zero'
+                        ? <div className='padError'>You cannot have less than zero checks.
                         </div>
                         : null
                     }

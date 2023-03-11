@@ -14,10 +14,10 @@ import CiderSeltzScreen from './menu_components/CiderSeltzScreen';
 import MixedDrinksScreen from './menu_components/MixedDrinksScreen';
 import LiquorsScreen from './menu_components/LiquorsScreen';
 import WinesScreen from './menu_components/WinesScreen';
-import ServerKeyPad from '../user/ServerKeyPad';
+import ServerKeyPad from '../keypads/ServerKeyPad';
 import ModifyCheckItem from "./check_components/ModifyCheckItem";
 import FireItAlert from "../help/FireItAlert";
-import AlphaNumericPad from '../user/AlphaNumericPad';
+import AlphaNumericPad from '../keypads/AlphaNumericPad';
 
 const MenuTab = (props) => {
     const { employeeContext } = useAuth()

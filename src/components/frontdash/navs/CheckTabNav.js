@@ -1,14 +1,18 @@
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTable } from '../../../contexts/TableContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { db } from '../../../firebase';
+import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
+    const { contextTable } = useTable();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
     const handleTest = () => {
-        console.log(props.newReceipts)
+        console.log(props.receiptNumber)
     }
 
     const handleMgrOveride = () => {
@@ -21,22 +25,45 @@ const CheckTabNav = (props) => {
         }
     }
 
+    const handlePrintReceipts = () => {
+        props.setPrintReceipts(true)
+    }
+
     const handleAddSeparate = () => {
-        if(props.newReceipts < 10){
-            props.setNewReceipts(props.newReceipts + 1)
+        const receiptRef = 
+                doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${props.receiptsNumber + 1}`)
+        const createSeperateReceipt = async () => {
+            const docSnap = await getDoc(receiptRef)
+            if(props.receiptsNumber < 10){
+                if(!docSnap.exists()){
+                    setDoc(receiptRef, {
+                        receiptTotalCost:0,
+                        receiptNumber:props.receiptsNumber + 1,
+                    })
+                }
+            }
+            if(props.receiptsNumber === 10){
+                props.setFireItAlert('CheckTab more than ten')
+            }
         }
-        if(props.newReceipts === 10){
-            props.setFireItAlert('CheckTab more than ten')
-        }
+        createSeperateReceipt()
     }
 
     const handleRemoveSeparate = () => {
-        if(props.newReceipts > 1){
-            props.setNewReceipts(props.newReceipts - 1)
+        const receiptRef = 
+            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${props.receiptsNumber}`)
+        const removeSeperateReceipt = async () => {
+            const docSnap = await getDoc(receiptRef)
+            if(props.receiptsNumber > 0){
+                if(docSnap.exists()){
+                    deleteDoc(receiptRef)
+                }
+            }
+            if(props.receiptsNumber === 0){
+                props.setFireItAlert('CheckTab less than zero')
+            }
         }
-        if(props.newReceipts === 1){
-            props.setFireItAlert('CheckTab less than one')
-        }
+        removeSeperateReceipt()
     }
 
     const handleChangeTable = () => {
@@ -68,7 +95,7 @@ const CheckTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>PRINT RECEIPTS</button></li>
+                <li><button onClick={handlePrintReceipts} className='workingButton'>PRINT RECEIPTS</button></li>
                 <li>
                     <button onClick={handleAddSeparate} className='workingButton'>ADD SEPERATE</button>
                 </li>
