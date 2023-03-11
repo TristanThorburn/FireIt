@@ -14,25 +14,20 @@ const CheckTab = (props) => {
     const { contextTable } = useTable();
     const [ tableData, setTableData ] = useState({});
     const [ serverData, setServerData ] = useState({});
-    const [ receiptData, setReceiptData ] = useState();
+    const [ receiptData, setReceiptData ] = useState([]);
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
-    const [ newReceipts, setNewReceipts ] = useState(0);
-    const [ receiptsToDisplay, setReceiptsToDisplay ] = useState([0]);
     const [ seperatedSeatData, setSeperatedSeatData ] = useState({});
     const [ selectReceiptTarget, setSelectReceiptTarget ] = useState('false');
     const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('');
     const [ appendReceipt, setAppendReceipt ] = useState();
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ printReceipts, setPrintReceipts ] = useState(true);
-    // const [ recalculateReceiptCost, setRecalculateReceiptCost ] = useState(false)
-    // const [ receiptTotal, setReceiptTotal ] = useState()
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
 
     const handleTest = () => {
-        console.log('receipt Data', receiptData)
-        console.log('seats to display', receiptsToDisplay)
         console.log(printReceipts)
+        console.log('receipt Data', receiptData.length)
     }
 
     const handleDeletePendingSeat = useCallback((e) => {
@@ -40,7 +35,6 @@ const CheckTab = (props) => {
         const child = e.currentTarget
         seatToDeleteParent.removeChild(child)
         e.currentTarget.removeEventListener('click', handleDeletePendingSeat)
-        // setRecalculateReceiptCost(true)
     },[])
 
     // Get data for current employee and table, and tables receipts
@@ -79,10 +73,11 @@ const CheckTab = (props) => {
         }
     }, [contextTable, employeeContext]);
 
+    // OLD SPLIT CHECKS LOGIC:
     // Populate / Remove array to determine render # of seperate check components
-    useEffect(() => {
-        setReceiptsToDisplay(Array(newReceipts).fill(0))
-    }, [newReceipts])
+    // useEffect(() => {
+    //     setReceiptsToDisplay(Array(newReceipts).fill(0))
+    // }, [newReceipts])
 
     // Check if selected receipt exists on display
     useEffect(() => {
@@ -139,7 +134,6 @@ const CheckTab = (props) => {
             console.log(seperatedSeatData)
             setAppendReceipt('')
             setSeperatedSeatData('')
-        //    setRecalculateReceiptCost(true)
         }
     }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber, handleDeletePendingSeat, seperatedSeatData])
 
@@ -215,8 +209,7 @@ const CheckTab = (props) => {
                 setHelpModal={props.setHelpModal}
                 setFireItAlert={setFireItAlert}
                 setManagerKeyPadActive={setManagerKeyPadActive}
-                setNewReceipts={setNewReceipts}
-                newReceipts={newReceipts}
+                receiptsNumber={receiptData.length}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                 setPrintReceipts={setPrintReceipts}
                 employeeNumber={serverData.employeeNumber}
