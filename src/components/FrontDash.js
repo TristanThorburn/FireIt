@@ -16,7 +16,7 @@ const FrontDash = () => {
     const [ helpModal, setHelpModal ] = useState(false);
 
     return(
-        <div>
+        <div className='frontDash'>
             <FrontDashNavTabs 
                 tableTab={setTableTabActive} 
                 menuTab={setMenuTabActive} 

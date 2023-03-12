@@ -124,3 +124,17 @@
         }
     }
 }
+
+@media (min-width:1000px) and (max-width:1423px){
+    .appLandingInfo{
+        .ulsContainer{
+            width:98%;
+        }
+        .qAndA{
+            width:90%;
+        }
+        .tristanLinks{
+            width:10%;
+        }
+    }
+}

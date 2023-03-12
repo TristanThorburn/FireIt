@@ -1,9 +1,11 @@
 @import './variables.scss';
 
+.frontDash{
+    height:100vh;
+}
 .summaryTab, .tableTab, .menuTab, .checkTab, .paymentTab{
     position:relative;
     height:92.5vh;
-    display:flex;
 
     .infoButton{
         background-color:$backgroundColor;
@@ -14,6 +16,10 @@
             padding:0;
         }
     }
+}
+
+.menuTab, .checkTab{
+    display:flex;
 }
 
 .frontDashTopNav{
@@ -46,8 +52,11 @@
     .workingButton, .nonWorkingButton, li{
         color:white;
         text-transform: uppercase;
-        font-size: 1.25rem;
         text-align: center;
+    }
+    .workingButton, .nonWorkingButton, .navCurrentUser{
+        // 20px-25px
+        font-size: clamp(1rem, 0.3125rem + 0.7813vw, 1.5rem)
     }
     .workingButton{
         border:2px solid darkgreen;
@@ -64,12 +73,23 @@
         background-color:lighten(red, 5%);
     }
     li{
-        width:150px;
+        // 100px-150px
+        width: clamp(5rem, 2.1429rem + 4.4643vw, 7.5rem);
         display:flex;
         align-items: center;
     }
     button{
         width:100%;
+    }
+    .infoButton{
+        p{
+            top:30%;
+            left:0%;
+            // 100px-150px
+            width: clamp(5rem, 2.1429rem + 4.4643vw, 7.5rem);
+            // 20px-25px
+            font-size: clamp(1rem, 0.3125rem + 0.7813vw, 1.25rem)
+        }
     }
 }
 

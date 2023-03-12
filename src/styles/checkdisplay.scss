@@ -48,11 +48,52 @@
 }
 
 .seperatedChecksContainer{
+    overflow-y: scroll;
     width:100%;
     height:100%;
     padding:1rem;
     display:grid;
     grid-template-columns:repeat(5, 1fr);
-    grid-template-rows:repeat(2, 1fr);
     gap:1rem;
+}
+
+.seperatedCheck{
+    height:400px;
+}
+
+
+@media (min-width:1000px) and (max-width:1220px){
+    .activeCheck{
+        width:30%;
+    }
+    .checkTabDisplay{
+        width:70%;
+    }
+    .seperatedChecksContainer{
+        grid-template-columns:repeat(2, 1fr);
+    }
+}
+
+@media (min-width:1220px) and (max-width:1420px){
+    .activeCheck{
+        width:25%;
+    }
+    .checkTabDisplay{
+        width:75%;
+    }
+    .seperatedChecksContainer{
+        grid-template-columns:repeat(3, 1fr);
+    }
+}
+
+@media (min-width:1420px) and (max-width:1619px){
+    .activeCheck{
+        width:25%;
+    }
+    .checkTabDisplay{
+        width:75%;
+    }
+    .seperatedChecksContainer{
+        grid-template-columns:repeat(4, 1fr);
+    }
 }

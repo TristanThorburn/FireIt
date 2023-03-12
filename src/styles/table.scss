@@ -1,21 +1,24 @@
 @import './variables.scss';
 
-.tableTab{
-    background-color:black;
-    @include frontLowerNavUL;
-}
+.tableDisplay{
+    background-color: black;
+    height:92.5vh;
+    margin:0;
+    display:flex;
 
-.tableMap{
-    height:100%;
-    position:relative;
+    .tableMap{
+        height:100%;
+        width:100%;
+        position:relative;
+        margin:0;
+        padding:0;
+        list-style: none;
 
-    ul{
-        @include cleanUl;
-    }
-    li{
-        position:absolute;
-        cursor: pointer;
-        transform:translate(-50%, -50%)
+        li{
+            position:absolute;
+            cursor: pointer;
+            transform:translate(-50%, -50%)
+        }
     }
 }
 
@@ -23,6 +26,7 @@
     border:1px solid black;
     background-color:$buttonColor;
     color:white;
+    font-size: 1.3rem;
 }
 
 .diamondTable{
@@ -35,9 +39,9 @@
         margin:0 auto;
         rotate:(-45deg);
         position:absolute;
-        top:30%;
+        top:35%;
         transform:translateX(-50%);
-        left:20%;
+        left:19%;
         transform:translateY(-50%);
         width:100%;
     }
@@ -54,14 +58,14 @@
     height:100px;
 
     p{
-        margin-left:69px;
+        margin-left:54px;
         margin-top:35px;
     }
 }
 
 .circleTable{
-    width:100px;
-    height:100px;
+    width:120px;
+    height:120px;
     @include flexCenterCenter;
     border-radius:50%;
 }
@@ -69,8 +73,10 @@
 .tableData{
     header{
        @include backDashHeader;
+       height:7.5vh;
     }
     .backDashHeader{
+        margin:0 2rem;
         .infoButton{
             right:-37%;
         }
@@ -79,13 +85,21 @@
 
 .updateMapNav{
     position:absolute;
-    top:0;
-    left:100px;
+    bottom:0;
+    left:5%;
     border:2px solid white;
-    height:4rem;
+    height:10%;
     width:90%;
     z-index: 1;
-
+    
+    ul{
+        display:flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        list-style:none;
+        margin:0 auto;
+        padding:0;
+    }
     button.enableDrag{
         width:300px
     }
@@ -149,4 +163,79 @@
 .demoTable{
     transform:scale(0.75);
     margin:15px auto;
+}
+
+
+@media (min-width:1000px) and (max-width:1423px){
+    .updateMapNav{
+        p{
+            margin:0;
+        }
+    }
+    .tableData{
+        header{
+            width:100%;
+        }
+        .backDashHeader{
+            margin:0 5rem;
+
+            .infoButton{
+                right:-28%
+            }
+        }
+    }
+}
+
+@media (min-width:1424px) and (max-width:1619px){
+    .updateMapNav{
+        p{
+            margin:0;
+        }
+    }
+    .tableData{
+        header{
+            width:100%;
+        }
+        .backDashHeader{
+            margin:0 8rem;
+        }
+    }
+}
+
+
+// Table map scale meqia queries
+@media (min-width: 1000px) and (max-width: 1123px){
+    .tableMap{
+        scale:(0.59);
+    }
+}
+
+@media (min-width: 1124px) and (max-width: 1223px){
+    .tableMap{
+        scale:(0.65);
+    }
+}
+
+@media (min-width: 1224px) and (max-width: 1323px){
+    .tableMap{
+        scale:(0.7);
+    }
+}
+
+@media (min-width: 1324px) and (max-width: 1423px){
+    .tableMap{
+        scale:(0.75);
+    }
+}
+
+@media (min-width: 1424px) and (max-width: 1523px){
+    .tableMap{
+        scale:(0.8);
+    }
+}
+
+@media (min-width: 1524px) and (max-width: 1720px){
+    .tableMap{
+        scale:(0.9);
+    }
 }

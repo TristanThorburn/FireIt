@@ -440,39 +440,47 @@ const MenuItemForm = (props) => {
                                 />
                         }
                     </div>
-                {/* Tax Group */}
                     <div>
-                        <label htmlFor='taxGroup'>Tax Group:</label>
-                        <p>{itemData?.taxGroup}</p>
-                        <select
-                            id='taxGroup'
-                            name='taxGroup'
-                            value={taxGroup}
-                            onChange={handleTaxGroup}
-                            >
-                            {taxOptions.map(option => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                {/* Printer Route */}
-                    <div>
-                        <label htmlFor='printerRoute'>Printer Route:</label>
-                        <p>{itemData?.printerRoute}</p>
-                        <select
-                            id='printerRoute'
-                            name='printerRoute'
-                            value={printerRoute}
-                            onChange={handlePrinterRoute}
-                            >
-                            {printOptions.map(option => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
+                    {/* Tax Group */}
+                        <div className='taxGroup'>
+                            <label 
+                                htmlFor='taxGroup'
+                                >Tax Group:&nbsp;{itemData?.taxGroup}
+                            </label>
+                            <br />
+                            <select
+                                id='taxGroup'
+                                name='taxGroup'
+                                value={taxGroup}
+                                onChange={handleTaxGroup}
+                                >
+                                {taxOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    {/* Printer Route */}
+                        <div className='printerRoute'>
+                            <label 
+                                htmlFor='printerRoute'
+                                >Printer Route:&nbsp;{itemData?.printerRoute}
+                            </label>
+                            <br />
+                            <select
+                                id='printerRoute'
+                                name='printerRoute'
+                                value={printerRoute}
+                                onChange={handlePrinterRoute}
+                                >
+                                {printOptions.map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 {/* Item Type */}
                     <fieldset className='itemTypes'>

@@ -121,7 +121,7 @@ const TableMap = (props) => {
     }
 
     return(
-        <section>
+        <section className='tableDisplay'>
             {props.updateable === true
                 ?<div className='updateMapNav'>
                     <ul>
@@ -193,14 +193,13 @@ const TableMap = (props) => {
                                     key={table.id}
                                     id={table.id}
                                     className={['table', table.data?.tableStyle].join(' ')}
-                                    onClick={handleTableClick}
+                                    onClickCapture={handleTableClick}
                                     style={{left:table?.data.left, top: table?.data.top}}
                                     >
                                         <p onClick={handleNoPropagation}>{table.data.name}</p>
                                 </li>)}
                         </ul>
-            }
-            
+            }            
         </section>
     )
 }

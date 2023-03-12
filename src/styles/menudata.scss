@@ -15,6 +15,9 @@
     img{
         width:50px;
     }
+    div:last-child{
+        background-color: $backDashBackgroundColor;
+    }
 }
 
 .alcoholNavButtons{
@@ -22,7 +25,7 @@
     justify-content: space-around;
 
     button{
-        width:200px;
+        width: clamp(8rem, 5.7143rem + 3.5714vw, 10rem);
         font-size: 1.15rem;
         border-radius:10px;
         background-color:$backgroundColor;
@@ -44,6 +47,9 @@
 
     div, fieldset{
         margin:1rem auto;
+    }
+    .taxGroup, .printerRoute{
+        margin:2rem auto;
     }
     .updateButtons{
     display:flex;
@@ -93,6 +99,50 @@
         margin:0 auto;
         font-size:1.1rem;
         text-align: center;
+    }
+}
+
+@media (min-width:1000px) and (max-width:1419px){
+    .menuData{
+        .backDashHeader{
+            .infoButton{
+                right:18%;
+            }
+        }
+        ul{
+            width:100%;
+        }
+    }
+    .menuItemForm{
+        max-width:98%;
+        overflow-y: scroll;
+    
+        div, fieldset{
+            margin:0.5rem auto;
+        }
+        .taxGroup, .printerRoute{
+            margin:0.5rem auto;
+        }
+    }
+}
+
+@media (min-width:1420px) and (max-width:1619px){
+    .menuData{
+        .backDashHeader{
+            .infoButton{
+                right:22%;
+            }
+        }
+    }
+}
+
+@media (min-width:1620px) and (max-width:1819px){
+    .menuData{
+        .backDashHeader{
+            .infoButton{
+                right:27%;
+            }
+        }
     }
 }
 

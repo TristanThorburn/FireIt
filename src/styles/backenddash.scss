@@ -29,8 +29,8 @@
         margin-bottom:2rem;
     }
     img{
-        height:300px;
-        width:300px;
+        height: clamp(10rem, -2.8571rem + 20.0893vw, 21.25rem);
+        width: clamp(10rem, -2.8571rem + 20.0893vw, 21.25rem);
     }
 }
 
@@ -46,7 +46,7 @@
     .infoButton{
         position:absolute;
         top:-5%;
-        right:33%;
+        right:30%;
 
         button{
             background-color:$backDashBackgroundColor;
@@ -54,8 +54,8 @@
             font-size:3rem;
         }
         p{
-            top:15px;
-            left:-12px;
+            top:15%;
+            left:-12%;
         }
     }
 }
