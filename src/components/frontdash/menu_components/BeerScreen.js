@@ -11,7 +11,10 @@ const BeerScreen = (props) => {
     const [ collectionRef, setCollectionRef ] = useState('bottle');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
-    const time = Date.now().toString()
+    const time = Date.now().toString();
+    const bottleButton = document.getElementById('bottle')
+    const canButton = document.getElementById('can')
+    const draftButton = document.getElementById('draft')
 
     // Data population based on beer type
     useEffect(() => {
@@ -137,14 +140,23 @@ const BeerScreen = (props) => {
 
     const handleBottlesCategory = () => {
         setCollectionRef('bottle')
+        bottleButton.classList.add('activeSub')
+        canButton.classList.remove('activeSub')
+        draftButton.classList.remove('activeSub')
     }
 
     const handleCansCategory = () => {
         setCollectionRef('can')
+        bottleButton.classList.remove('activeSub')
+        canButton.classList.add('activeSub')
+        draftButton.classList.remove('activeSub')
     }
 
     const handleDraftCategory = () => {
         setCollectionRef('draft')
+        bottleButton.classList.remove('activeSub')
+        canButton.classList.remove('activeSub')
+        draftButton.classList.add('activeSub')
     }
 
     const handleClick =(e) => {
@@ -154,21 +166,12 @@ const BeerScreen = (props) => {
     return(
         <div className='menuSubcategoryContainer'>
             <div className='alcoholSubcategoryNav'>
-                <button onClick={handleBottlesCategory}>Bottles</button>
-                <button onClick={handleCansCategory}>Cans</button>
-                <button onClick={handleDraftCategory}>Draft</button>
+                <button onClick={handleBottlesCategory} id='bottle' className='activeSub'>Bottles</button>
+                <button onClick={handleCansCategory} id='can'>Cans</button>
+                <button onClick={handleDraftCategory} id='draft'>Draft</button>
             </div>
             
             <div className='menuSubcategoryScreen'>
-                <h3>{collectionRef === 'bottle'
-                        ? 'Bottles List'
-                        : collectionRef === 'can'
-                            ? 'Cans List'
-                            : collectionRef === 'draft'
-                                ? 'Draft List'
-                                : null
-                    }
-                </h3>
                 <ul>
                     {beerData.map(beer => 
                         <li 

@@ -7,6 +7,9 @@
     .infoButton{
         right:-25%;
     }
+    h2{
+        font-size: clamp(2.5rem, 1.5rem + 1.5625vw, 3.375rem);
+    }
     h3{
         text-align: center;
     }
@@ -93,5 +96,35 @@ div.employeeSubmit{
     
     h3, p{
         margin:0.5rem auto;
+    }
+}
+
+@media (min-width:1000px) and (max-width:1419px){
+    .employeeData{
+        header{
+            width:100%;
+        }
+        h2{
+            margin:0rem 2.5rem;
+        }
+        .infoButton{
+            right:-59%;
+            top:105%;
+        }
+    }
+}
+
+@media (min-width:1420px) and (max-width:1820px){
+    .employeeData{
+        header{
+            width:100%;
+        }
+        h2{
+            margin:0rem 2.5rem;
+        }
+        .infoButton{
+            right:-85%;
+            top:105%;
+        }
     }
 }

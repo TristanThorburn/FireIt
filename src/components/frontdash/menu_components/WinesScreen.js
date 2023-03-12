@@ -12,6 +12,9 @@ const WinesScreen = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
     const time = Date.now().toString()
+    const bubblyButton = document.getElementById('bubbly')
+    const redButton = document.getElementById('red')
+    const whiteButton = document.getElementById('white')
 
     useEffect(() => {
         if(collectionRef === 'bubbly'){
@@ -118,14 +121,23 @@ const WinesScreen = (props) => {
 
     const handleBubblyCategory = () => {
         setCollectionRef('bubbly')
+        bubblyButton.classList.add('activeSub')
+        redButton.classList.remove('activeSub')
+        whiteButton.classList.remove('activeSub')
     }
 
     const handleRedCategory = () => {
         setCollectionRef('red')
+        bubblyButton.classList.remove('activeSub')
+        redButton.classList.add('activeSub')
+        whiteButton.classList.remove('activeSub')
     }
 
     const handleWhiteCategory = () => {
         setCollectionRef('white')
+        bubblyButton.classList.remove('activeSub')
+        redButton.classList.remove('activeSub')
+        whiteButton.classList.add('activeSub')
     }
 
     const handleClick =(e) => {
@@ -135,25 +147,12 @@ const WinesScreen = (props) => {
     return(
         <div className='menuSubcategoryContainer'>
             <div className='alcoholSubcategoryNav'>
-                <button onClick={handleBubblyCategory}>Bubbly</button>
-                <button onClick={handleRedCategory}>Red</button>
-                <button onClick={handleWhiteCategory}>White</button>
+                <button onClick={handleBubblyCategory} id='bubbly' className='activeSub'>Bubbly</button>
+                <button onClick={handleRedCategory} id='red'>Red</button>
+                <button onClick={handleWhiteCategory} id='white'>White</button>
             </div>
 
             <div className='menuSubcategoryScreen'>
-                <h3>{collectionRef === 'bubbly'
-                        ? 'Champagne & Prosecco List'
-                        : null                
-                    }
-                    {collectionRef === 'red'
-                        ? 'Red Wine List'
-                        : null                
-                    }
-                    {collectionRef === 'white'
-                        ? 'White Wine List'
-                        : null                
-                    }
-                </h3>
                 <ul>
                     {wineData.map(wine => 
                         <li 

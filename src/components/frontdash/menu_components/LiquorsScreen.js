@@ -14,6 +14,11 @@ const LiquorsScreen = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
     const time = Date.now().toString()
+    const ginButton = document.getElementById('gin')
+    const rumButton = document.getElementById('rum')
+    const tequilaButton = document.getElementById('tequila')
+    const vodkaButton = document.getElementById('vodka')
+    const whiskeyButton = document.getElementById('whiskey')
 
     // Initial population of screen from data
     useEffect(() => {
@@ -201,22 +206,47 @@ const LiquorsScreen = (props) => {
 
     const handleGinCategory = () => {
         setCollectionRef('gin')
+        ginButton.classList.add('activeSub')
+        rumButton.classList.remove('activeSub')
+        tequilaButton.classList.remove('activeSub')
+        vodkaButton.classList.remove('activeSub')
+        whiskeyButton.classList.remove('activeSub')
     }
 
     const handleRumCategory = () => {
         setCollectionRef('rum')
+        ginButton.classList.remove('activeSub')
+        rumButton.classList.add('activeSub')
+        tequilaButton.classList.remove('activeSub')
+        vodkaButton.classList.remove('activeSub')
+        whiskeyButton.classList.remove('activeSub')
     }
 
     const handleTequilaCategory = () => {
         setCollectionRef('tequila')
+        ginButton.classList.remove('activeSub')
+        rumButton.classList.remove('activeSub')
+        tequilaButton.classList.add('activeSub')
+        vodkaButton.classList.remove('activeSub')
+        whiskeyButton.classList.remove('activeSub')
     }
 
     const handleVodkaCategory = () => {
         setCollectionRef('vodka')
+        ginButton.classList.remove('activeSub')
+        rumButton.classList.remove('activeSub')
+        tequilaButton.classList.remove('activeSub')
+        vodkaButton.classList.add('activeSub')
+        whiskeyButton.classList.remove('activeSub')
     }
 
     const handleWhiskeyCategory = () => {
         setCollectionRef('whiskey')
+        ginButton.classList.remove('activeSub')
+        rumButton.classList.remove('activeSub')
+        tequilaButton.classList.remove('activeSub')
+        vodkaButton.classList.remove('activeSub')
+        whiskeyButton.classList.add('activeSub')
     }
 
     const handleClick =(e) => {
@@ -226,35 +256,14 @@ const LiquorsScreen = (props) => {
     return(
         <div className='menuSubcategoryContainer'>
             <div className='alcoholSubcategoryNav'>
-                <button onClick={handleGinCategory}>Gin</button>
-                <button onClick={handleRumCategory}>Rum</button>
-                <button onClick={handleTequilaCategory}>Tequila</button>
-                <button onClick={handleVodkaCategory}>Vodka</button>
-                <button onClick={handleWhiskeyCategory}>Whiskey</button>
+                <button onClick={handleGinCategory} id='gin' className='activeSub'>Gin</button>
+                <button onClick={handleRumCategory} id='rum'>Rum</button>
+                <button onClick={handleTequilaCategory} id='tequila'>Tequila</button>
+                <button onClick={handleVodkaCategory} id='vodka'>Vodka</button>
+                <button onClick={handleWhiskeyCategory} id='whiskey'>Whiskey</button>
             </div>
 
             <div className='menuSubcategoryScreen'>
-                <h3>{collectionRef === 'gin'
-                        ? 'Gins List'
-                        : null                
-                    }
-                    {collectionRef === 'rum'
-                        ? 'Rums List'
-                        : null                
-                    }
-                    {collectionRef === 'tequila'
-                        ? 'Tequilas List'
-                        : null                
-                    }
-                    {collectionRef === 'vodka'
-                        ? 'Vodkas List'
-                        : null                
-                    }
-                    {collectionRef === 'whiskey'
-                        ? 'Whiskeys List'
-                        : null                
-                    }
-                </h3>
                 <ul>
                     {liquorData.map(liquor => 
                         <li 

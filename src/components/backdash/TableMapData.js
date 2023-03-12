@@ -56,9 +56,7 @@ const TableMapData = () => {
                 }
             </header>
             
-            <div className='tableTab'>
-                <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
-            </div>
+            <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
         </div>
     )
 }

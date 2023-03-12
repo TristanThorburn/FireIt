@@ -23,11 +23,13 @@
         width:50%;
         height:150px;
         @include flexCenterCenter;
-        font-size:3rem;
+        // 30px-60px
+        font-size: clamp(1.875rem, 0.5893rem + 2.0089vw, 3rem);
     }
     button{
         border-radius:10px;
-        width:500px;
+        // 300px-500px
+        width: clamp(15rem, 3.5714rem + 17.8571vw, 25rem);
         background-color:$backDashBackgroundColor;
     }
     button:active{
@@ -48,6 +50,8 @@
         font-size:2rem;
         text-transform:uppercase;
         text-align: center;
+        margin-top:0.5rem;
+        margin-bottom:0rem;
     }
     ul{
         @include cleanUl;
@@ -69,19 +73,42 @@
 
 .alcoholSubcategoryNav{
     width:90%;
-    margin:0 auto;
+    margin:0.5rem auto;
     display:flex;
     justify-content: space-evenly;
 
     button{
-        width:250px;
+        width:clamp(6.25rem, -0.8929rem + 11.1607vw, 12.5rem);
         height:50px;
-        font-size:1.5rem;
+        font-size: clamp(1.25rem, 0.9643rem + 0.4464vw, 1.5rem);
         background-color:$backDashBackgroundColor;
         border-radius:10px;
         border:2px solid $backDashBackgroundColor;
     }
     button:active{
         background-color: darken($backDashBackgroundColor, 25%);
+    }
+    .activeSub{
+        background-color: green;
+    }
+}
+
+@media (min-width:1000px) and (max-width:1420px){
+    .menuDirectoryContainer{
+        width:70%;
+    }
+    .menuSubcategoryScreen{
+        li{
+            width:calc(100% / 2);
+        }
+    }
+}
+
+@media (min-width:1420px) and (max-width:1620px){
+    .menuDirectoryContainer{
+        width:75%;
+    }
+    .activeCheck{
+        width:25%;
     }
 }

@@ -95,12 +95,24 @@ const CheckTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button onClick={handlePrintReceipts} className='workingButton'>PRINT RECEIPTS</button></li>
+                <li><button 
+                    onClick={handlePrintReceipts} 
+                    id='printReceipts' 
+                    className='workingButton'
+                    >PRINT ALL RECEIPT</button></li>
                 <li>
-                    <button onClick={handleAddSeparate} className='workingButton'>ADD SEPERATE</button>
+                    <button
+                        onClick={handleAddSeparate}
+                        id='addReceipt'
+                        className='workingButton'
+                        >ADD RECEIPT</button>
                 </li>
                 <li>
-                    <button onClick={handleRemoveSeparate} className='workingButton'>REMOVE SEPARATE</button>
+                    <button
+                        onClick={handleRemoveSeparate}
+                        id='removeReceipt'
+                        className='workingButton'
+                        >REMOVE RECEIPT</button>
                 </li>
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
