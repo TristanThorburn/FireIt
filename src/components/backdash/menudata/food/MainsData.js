@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { mainsCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
 
 const MainsData = (props) => {
     const [ mainsData, setMainsData ] = useState([]);
@@ -9,14 +9,26 @@ const MainsData = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        const q = query(mainsCollectionRef, orderBy('name'));
-        const unsubscribe = onSnapshot(q, snapshot => {
-            setMainsData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })));
-        });
-        return unsubscribe
+        const getMenuCategory = async () => {
+            const q = query(mainsCollectionRef, orderBy('name'));
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setMainsData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setMainsData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+        }
+        getMenuCategory()
     },[])
 
     const handleNewItem = () => {

@@ -4,7 +4,7 @@ import { useTable } from "../../contexts/TableContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
-import { doc, getDoc, collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, collection, query, orderBy, onSnapshot, getDocs } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
 import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from "../keypads/AlphaNumericPad";
@@ -42,31 +42,56 @@ const CheckTab = (props) => {
         if(contextTable !== ''){
             const getTable = async () => {
                 const docRef = doc(db, 'tables', contextTable)
-                const tableDataRequest = await getDoc(docRef)
+                const tableDataRequest = await getDoc(docRef, {source: 'cache'})
                 const tableInfo = tableDataRequest.data();
                     if(tableInfo){
                         setTableData(tableInfo)
-                    }
-                }
+                    } else {
+                        const serverDataRequest = await getDoc(docRef)
+                        const serverData = serverDataRequest.data()
+                        if(serverData){
+                            setTableData(serverData)
+                        } else {
+                            setFireItAlert('CheckTab data error')
+                        }
+                    } 
+            }
             const getServer = async () => {
                 const docRef = doc(db, 'employees', employeeContext.employeeNumber)
                 const serverDataRequest = await getDoc(docRef)
                 const serverInfo = serverDataRequest.data();
                     if(serverInfo){
                         setServerData(serverInfo)
+                    } else {
+                        const serverDataRequest = await getDoc(docRef)
+                        const serverData = serverDataRequest.data()
+                        if(serverData){
+                            setServerData(serverData)
+                        } else {
+                            setFireItAlert('CheckTab data error')
+                        }
                     }
-                }
+            }
             const getReceipts = async () => {
                 const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
                 const q = query(receiptCollectionRef, orderBy('receiptNumber', 'asc'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setReceiptData(snapshot.docs.map(doc => ({
+                const querySnapshot = await getDocs(q, { source: 'cache' })
+                if(!querySnapshot.empty){
+                    const receiptData = querySnapshot.docs.map(doc => ({
                         id: doc.id,
                         data: doc.data(),
-                    })))
-                })
-                return unsubscribe
+                      }))
+                      setReceiptData(receiptData)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setReceiptData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data(),
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             getTable()
             .then(getServer()).then(getReceipts())

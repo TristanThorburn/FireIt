@@ -9,6 +9,7 @@ const AddTableForm = (props) => {
     const [ existingTable, setExistingTable ] = useState('')
     const [ error, setError ] = useState('')
 
+    // Push the new table to firestore
     useEffect(() => {
         if(tableNameRef.current.value !== '' && existingTable === false){
             const tableRef = 
@@ -40,21 +41,24 @@ const AddTableForm = (props) => {
 
     const handleAddTable = (e) => {
         e.preventDefault()
-        getDocs(tableMapCollectionRef).then(snap => {
+        const confirmTableInfo = async () => {
             let tablesList = []
-            snap.forEach(doc => {                
-                tablesList.push(doc.data().name)
-            })            
-            // check if table table is in the list
-            const tableExists = tablesList.indexOf(tableNameRef?.current.value) > -1
-            setExistingTable(tableExists)
-            const designOptions = document.getElementsByName('design');
-                for (var radio of designOptions){
-                    if (radio.checked) {    
-                        setDesign(radio.value)
+            getDocs(tableMapCollectionRef).then(snap => {
+                snap.forEach(doc => {                
+                    tablesList.push(doc.data().name)
+                })            
+                // check if table table is in the list
+                const tableExists = tablesList.indexOf(tableNameRef?.current.value) > -1
+                setExistingTable(tableExists)
+                const designOptions = document.getElementsByName('design');
+                    for (var radio of designOptions){
+                        if (radio.checked) {    
+                            setDesign(radio.value)
+                        }
                     }
-                }
-        })
+            })
+        }
+        confirmTableInfo()
     }
 
     const handleCancel = () => {

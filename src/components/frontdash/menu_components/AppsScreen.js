@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const AppsScreen = (props) => {
     const [ appsData, setAppsData ] = useState([]);
@@ -10,22 +10,42 @@ const AppsScreen = (props) => {
 
     // Initial Data Population
     useEffect(() => {
-        const q = query(appCollectionRef, orderBy('name'));
-        const unsubscribe = onSnapshot(q, snapshot => {
-            setAppsData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })))
-        })
-        return unsubscribe
+        const getMenuCategory = async () => {
+            const q = query(appCollectionRef, orderBy('name'));
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setAppsData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setAppsData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+        }
+        getMenuCategory()
     },[])
 
     // GetDoc for selected item
     useEffect(() => {
-        if(selectedItem !== ''){
-            const docRef = doc(appCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        const getItem = async () => {
+            if(selectedItem !== ''){
+                const docRef = doc(appCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
+                    getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                }
+            }
         }
+        getItem()
     }, [selectedItem])
 
     // add selected item to display as pending order on check

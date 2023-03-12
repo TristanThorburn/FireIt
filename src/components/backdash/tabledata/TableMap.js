@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTable } from './../../../contexts/TableContext';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, getDocs } from 'firebase/firestore';
 import AddTableForm from './AddTableForm';
 import TableStyleUpdate from './TableStyleUpdate';
 import FireItAlert from '../../help/FireItAlert';
@@ -20,14 +20,26 @@ const TableMap = (props) => {
 
     // Populate screen from table Data
     useEffect(() => {
-        const q = query(tableMapCollectionRef, orderBy('name'));
-        const unsubscribe = onSnapshot(q, snapshot => {
-            setTablesData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })))
-        })
-        return unsubscribe
+        const getTables = async () => {
+            const q = query(tableMapCollectionRef, orderBy('name'));
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setTablesData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setTablesData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
+        }
+        getTables()
     },[])
     
     const handleAllowDragging = () => {

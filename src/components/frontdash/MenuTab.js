@@ -50,24 +50,40 @@ const MenuTab = (props) => {
         if(contextTable !== '' ){
             const getTable = async () => {
                 const docRef = doc(db, 'tables', contextTable)
-                const tableDataRequest = await getDoc(docRef)
+                const tableDataRequest = await getDoc(docRef, { source: 'cache'})
                 const tableInfo = tableDataRequest.data();
                     if(tableInfo){
                         setTableData(tableInfo)
+                    } else {
+                        const serverDataRequest = await getDoc(docRef)
+                        const serverData = serverDataRequest.data()
+                        if(serverData){
+                            setTableData(serverData)
+                        } else {
+                            setFireItAlert('MenuTab data error')
+                        }
                     }
                 }
             const getServer = async () => {
                 const docRef = doc(db, 'employees', employeeContext.employeeNumber)
-                const serverDataRequest = await getDoc(docRef)
+                const serverDataRequest = await getDoc(docRef, { source: 'cache'})
                 const serverInfo = serverDataRequest.data();
                     if(serverInfo){
                         setServerData(serverInfo)
+                    } else {
+                        const serverDataRequest = await getDoc(docRef)
+                        const employeeData = serverDataRequest.data()
+                        if(serverData){
+                            setServerData(employeeData)
+                        } else {
+                            setFireItAlert('MenuTab data error')
+                        }
                     }
                 }
             getTable()
-            .then(() => {getServer()}).catch(error => console.log(error))
+            .then(getServer)
         }
-    }, [contextTable, employeeContext]);
+    }, [contextTable, employeeContext, serverData]);
 
     // Confirm if seat exists on check, if none is selected assume we are using seat 1
     useEffect(() => {

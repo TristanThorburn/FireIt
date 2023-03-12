@@ -5,7 +5,7 @@ import {
         beerCanCollectionRef, 
         beerDraftCollectionRef,
         } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
 
 const BeerData = (props) => {
     const [ beerData, setBeerData ] = useState([]);
@@ -13,40 +13,70 @@ const BeerData = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        if(props.activeTab === 'beer bottle'){
-            const q = query(beerBottleCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-                })));
-            });
-            return unsubscribe
+        const getMenuCategory = async () => {
+            if(props.activeTab === 'beer bottle'){
+                const q = query(beerBottleCollectionRef, orderBy('name'));
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setBeerData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setBeerData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
+            }
+            if(props.activeTab === 'beer can'){
+                const q = query(beerCanCollectionRef, orderBy('name'));
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setBeerData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setBeerData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
+            }
+            if(props.activeTab === 'beer draft'){
+                const q = query(beerDraftCollectionRef, orderBy('name'));
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setBeerData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setBeerData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
+            }
+            else {
+                setSelectedItem('');
+                setNewItem(false);
+            }
         }
-        if(props.activeTab === 'beer can'){
-            const q = query(beerCanCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-                })));
-            });
-            return unsubscribe
-        }
-        if(props.activeTab === 'beer draft'){
-            const q = query(beerDraftCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-            setBeerData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-                })));
-            });
-            return unsubscribe
-        }
-        else {
-            setSelectedItem('');
-            setNewItem(false);
-        }
+        getMenuCategory()
     },[props.activeTab])
 
     const handleNewItem = () => {

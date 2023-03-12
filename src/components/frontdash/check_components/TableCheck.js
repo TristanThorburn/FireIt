@@ -1,5 +1,5 @@
 import { db } from '../../../firebase';
-import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion, getDocs } from 'firebase/firestore';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useState, useEffect, useCallback } from 'react';
 
@@ -47,17 +47,29 @@ const TableCheck = (props) => {
 
     // Get Data for the check from current server and table
     useEffect(() => {
-        if(props.tableData.searchId !== undefined){
-            const q = query(checkCollectionRef, orderBy('seatNumber'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setCheckData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data(),
-                    seatNumber:doc.id.replace(/seat/g, ''),
-                })))
-            })
-            return unsubscribe
+        const getCheckData = async () => {
+            if(props.tableData.searchId !== undefined){
+                const q = query(checkCollectionRef, orderBy('seatNumber'));
+                const querySnapshot = await getDocs(q, { source: 'cache'})
+                if(!querySnapshot.empty){
+                    const checkData = querySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data:doc.data(),
+                    }))
+                    setCheckData(checkData)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setCheckData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data(),
+                            seatNumber:doc.id.replace(/seat/g, ''),
+                        })))
+                    })
+                    return unsubscribe
+                }
+            }
         }
+        getCheckData()
     },[checkCollectionRef, props.tableData.searchId])
 
     // append pending order to the current check, check for seats and compare to selected to determine how to append
