@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const NonAlchScreen = (props) => {
     const [ coldDrinkData, setColdDrinkData ] = useState([]);
@@ -12,25 +12,43 @@ const NonAlchScreen = (props) => {
 
     // Initial data population
     useEffect(() => {
-        const fetchCold = () => {
+        const fetchCold = async () => {
             const q = query(coldDrinksCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setColdDrinkData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setColdDrinkData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setColdDrinkData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
         }
-        const fetchHot = () => {
+        const fetchHot = async () => {
             const q = query(hotDrinksCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setHotDrinkData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setHotDrinkData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setHotDrinkData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
         }
         fetchCold()
         fetchHot()
@@ -38,14 +56,27 @@ const NonAlchScreen = (props) => {
 
     // GetDoc for selected item
     useEffect(() => {
-        if(selectedItem !== '' && collectionRef === 'cold'){
-            const docRef = doc(coldDrinksCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        const getItem =  async () => {
+            if(selectedItem !== '' && collectionRef === 'cold'){
+                const docRef = doc(coldDrinksCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
+                    getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                }
+            }
+            if(selectedItem !== '' && collectionRef === 'hot'){
+                const docRef = doc(hotDrinksCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
+                    getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                }
+            }
         }
-        if(selectedItem !== '' && collectionRef === 'hot'){
-            const docRef = doc(hotDrinksCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-        }
+        getItem()
     }, [selectedItem, collectionRef])
 
     // add selected item to display as pending order on check

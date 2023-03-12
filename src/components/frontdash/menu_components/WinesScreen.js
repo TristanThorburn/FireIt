@@ -4,12 +4,10 @@ import {
     whiteWineCollectionRef,
     bubblyCollectionRef
     } from '../../../library/firestoreCollections';
-    import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
+    import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const WinesScreen = (props) => {
-    const [ bubblyData, setBubblyData ] = useState([]);
-    const [ redsData, setRedsData ] = useState([]);    
-    const [ whitesData, setWhitesData ] = useState([]);
+    const [ wineData, setWineData ] = useState([]);
     const [ collectionRef, setCollectionRef ] = useState('bubbly');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
@@ -17,41 +15,68 @@ const WinesScreen = (props) => {
 
     useEffect(() => {
         if(collectionRef === 'bubbly'){
-            const fetchBubbly = () => {
+            const fetchBubbly = async () => {
                 const q = query(bubblyCollectionRef, orderBy('name'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setBubblyData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setWineData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setWineData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             fetchBubbly()
         }
         if(collectionRef === 'red'){
-            const fetchReds = () => {
+            const fetchReds = async () => {
                 const q = query(redWineCollectionRef, orderBy('name'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setRedsData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setWineData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setWineData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             fetchReds()
         }
         if(collectionRef === 'white'){
-            const fetchWhites = () => {
+            const fetchWhites = async () => {
                 const q = query(whiteWineCollectionRef, orderBy('name'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setWhitesData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setWineData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setWineData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             fetchWhites()
         }
@@ -115,62 +140,33 @@ const WinesScreen = (props) => {
                 <button onClick={handleWhiteCategory}>White</button>
             </div>
 
-            {collectionRef === 'bubbly'
-                ? <div className='menuSubcategoryScreen'>
-                    <h3>Bubbly List</h3>
-                    <ul>
-                        {bubblyData.map(bubbly => 
-                            <li 
-                                key={bubbly.id}
-                                >
-                                <button
-                                    id={bubbly.id}
-                                    onClick={handleClick}
-                                    >{bubbly.data.screenName}
-                                </button>
-                            </li>)}
-                    </ul>
-                </div>
-                : null
-            }
-            
-            {collectionRef === 'red'
-                ? <div className='menuSubcategoryScreen'>
-                    <h3>Red Wine List</h3>
-                    <ul>
-                        {redsData.map(red => 
-                            <li 
-                                key={red.id}
-                                >
-                                <button
-                                    id={red.id}
-                                    onClick={handleClick}
-                                    >{red.data.screenName}
-                                </button>
-                            </li>)}
-                    </ul>
-                </div>
-                : null
-            }
-            
-            {collectionRef === 'white'
-                ? <div className='menuSubcategoryScreen'>
-                    <h3>White Wine List</h3>
-                    <ul>
-                        {whitesData.map(white => 
-                            <li 
-                                key={white.id}
-                                >
-                                <button
-                                    id={white.id}
-                                    onClick={handleClick}
-                                    >{white.data.screenName}
-                                </button>
-                            </li>)}
-                    </ul>
-                </div>
-                : null
-            }
+            <div className='menuSubcategoryScreen'>
+                <h3>{collectionRef === 'bubbly'
+                        ? 'Champagne & Prosecco List'
+                        : null                
+                    }
+                    {collectionRef === 'red'
+                        ? 'Red Wine List'
+                        : null                
+                    }
+                    {collectionRef === 'white'
+                        ? 'White Wine List'
+                        : null                
+                    }
+                </h3>
+                <ul>
+                    {wineData.map(wine => 
+                        <li 
+                            key={wine.id}
+                            >
+                            <button
+                                id={wine.id}
+                                onClick={handleClick}
+                                >{wine.data.screenName}
+                            </button>
+                        </li>)}
+                </ul>
+            </div>
         </div>
     )
 }

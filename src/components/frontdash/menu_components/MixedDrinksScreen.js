@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cocktailCollectionRef, shotsCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const MixedDrinksScreen = (props) => {
     const [ cocktailData, setCocktailData ] = useState([]);
@@ -12,25 +12,43 @@ const MixedDrinksScreen = (props) => {
 
     // Initial data population screen display
     useEffect(() => {
-        const fetchCocktails = () => {
+        const fetchCocktails = async () => {
             const q = query(cocktailCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setCocktailData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setCocktailData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setCocktailData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
         }
-        const fetchShots = () => {
+        const fetchShots = async () => {
             const q = query(shotsCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setShotData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setShotData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setShotData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
         }
         fetchCocktails()
         fetchShots()
@@ -38,14 +56,27 @@ const MixedDrinksScreen = (props) => {
 
     // GetDoc for selected item
     useEffect(() => {
-        if(selectedItem !== '' && collectionRef === 'cocktail'){
-            const docRef = doc(cocktailCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        const getItem = async () => {
+            if(selectedItem !== '' && collectionRef === 'cocktail'){
+                const docRef = doc(cocktailCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
+                    getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                }
+            }
+            if(selectedItem !== '' && collectionRef === 'shot'){
+                const docRef = doc(shotsCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
+                    getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                }
+            }
         }
-        if(selectedItem !== '' && collectionRef === 'shot'){
-            const docRef = doc(shotsCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-        }
+        getItem()
     }, [selectedItem, collectionRef])
 
     // add selected item to display as pending order on check

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
@@ -11,25 +11,43 @@ const CiderSeltzScreen = (props) => {
     const time = Date.now().toString()
 
     useEffect(() => {
-        const fetchCider = () => {
+        const fetchCider = async () => {
             const q = query(ciderCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setCiderData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setCiderData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setCiderData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
         }
-        const fetchSeltzer = () => {
+        const fetchSeltzer = async () => {
             const q = query(hardSeltzerCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setSeltzerData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const menuItemList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setSeltzerData(menuItemList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setSeltzerData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
         }
         fetchCider()
         fetchSeltzer()
@@ -37,14 +55,27 @@ const CiderSeltzScreen = (props) => {
 
     // GetDoc for selected item
     useEffect(() => {
-        if(selectedItem !== '' && collectionRef === 'cider'){
-            const docRef = doc(ciderCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        const getItem = async () => {
+            if(selectedItem !== '' && collectionRef === 'cider'){
+                const docRef = doc(ciderCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
+            if(selectedItem !== '' && collectionRef === 'seltzer'){
+                const docRef = doc(hardSeltzerCollectionRef, selectedItem)
+                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
         }
-        if(selectedItem !== '' && collectionRef === 'seltzer'){
-            const docRef = doc(hardSeltzerCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-        }
+        getItem()
     }, [selectedItem, collectionRef])
 
     // add selected item to display as pending order on check

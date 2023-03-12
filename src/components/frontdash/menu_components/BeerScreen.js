@@ -4,12 +4,10 @@ import {
     beerCanCollectionRef,
     beerDraftCollectionRef }
     from '../../../library/firestoreCollections';
-    import { onSnapshot, query, orderBy, doc, getDoc } from 'firebase/firestore';
+    import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const BeerScreen = (props) => {
-    const [ bottlesData, setBottlesData ] = useState([]);
-    const [ cansData, setCansData ] = useState([]);    
-    const [ draftData, setDraftData ] = useState([]);
+    const [ beerData, setBeerData ] = useState([]);
     const [ collectionRef, setCollectionRef ] = useState('bottle');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
@@ -18,41 +16,68 @@ const BeerScreen = (props) => {
     // Data population based on beer type
     useEffect(() => {
         if(collectionRef === 'bottle'){
-            const fetchBottles = () => {
+            const fetchBottles = async () => {
                 const q = query(beerBottleCollectionRef, orderBy('name'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setBottlesData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setBeerData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setBeerData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             fetchBottles()
         }
         if(collectionRef === 'can'){
-            const fetchCans = () => {
+            const fetchCans = async () => {
                 const q = query(beerCanCollectionRef, orderBy('name'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setCansData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setBeerData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setBeerData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             fetchCans()
         }
         if(collectionRef === 'draft'){
-            const fetchDraft = () => {
+            const fetchDraft = async () => {
                 const q = query(beerDraftCollectionRef, orderBy('name'));
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setDraftData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const querySnapShot = await getDocs(q, { source: 'cache' })
+                if(!querySnapShot.empty){
+                    const menuItemList = querySnapShot.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setBeerData(menuItemList)
+                } else {
+                    const unsubscribe = onSnapshot(q, snapshot => {
+                        setBeerData(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        })))
+                    })
+                    return unsubscribe
+                }
             }
             fetchDraft()
         }
@@ -60,18 +85,36 @@ const BeerScreen = (props) => {
 
     // GetDoc for selected item
     useEffect(() => {
-        if(selectedItem !== '' && collectionRef === 'bottle'){
-            const docRef = doc(beerBottleCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+        const getItem = async () => {
+            if(selectedItem !== '' && collectionRef === 'bottle'){
+                const docRef = doc(beerBottleCollectionRef, selectedItem)
+                    const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
+            if(selectedItem !== '' && collectionRef === 'can'){
+                const docRef = doc(beerCanCollectionRef, selectedItem)
+                    const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
+            if(selectedItem !== '' && collectionRef === 'draft'){
+                const docRef = doc(beerDraftCollectionRef, selectedItem)
+                    const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
         }
-        if(selectedItem !== '' && collectionRef === 'can'){
-            const docRef = doc(beerCanCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-        }
-        if(selectedItem !== '' && collectionRef === 'draft'){
-            const docRef = doc(beerDraftCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-        }
+        getItem()
     }, [selectedItem, collectionRef])
 
     // add selected item to display as pending order on check
@@ -115,64 +158,30 @@ const BeerScreen = (props) => {
                 <button onClick={handleCansCategory}>Cans</button>
                 <button onClick={handleDraftCategory}>Draft</button>
             </div>
-
-            {collectionRef === 'bottle'
-                ? <div className='menuSubcategoryScreen'>
-                    <h3>Bottles List</h3>
-                    <ul>
-                        {bottlesData.map(bottle => 
-                            <li 
-                                key={bottle.id}
-                                >
-                                <button
-                                    id={bottle.id}
-                                    onClick={handleClick}
-                                    >{bottle.data.screenName}
-                                </button>
-                            </li>)}
-                    </ul>
-                </div>
-                : null
-            }
-
-            {collectionRef === 'can'
-                ? <div className='menuSubcategoryScreen'>
-                    <h3>Cans List</h3>
-                    <ul>
-                        {cansData.map(can => 
-                            <li 
-                                key={can.id}
-                                >
-                                <button
-                                    id={can.id}
-                                    onClick={handleClick}
-                                    >{can.data.screenName}
-                                </button>
-                            </li>)}
-                    </ul>
-                </div>
-                : null
-            }
             
-            {collectionRef === 'draft'
-                ? <div className='menuSubcategoryScreen'>
-                    <h3>Draft List</h3>
-                    <ul>
-                        {draftData.map(draft => 
-                            <li 
-                                key={draft.id}
-                                >
-                                <button
-                                    id={draft.id}
-                                    onClick={handleClick}
-                                    >{draft.data.screenName}
-                                </button>
-                            </li>)}
-                    </ul>
-                </div>
-                : null
-            }
-            
+            <div className='menuSubcategoryScreen'>
+                <h3>{collectionRef === 'bottle'
+                        ? 'Bottles List'
+                        : collectionRef === 'can'
+                            ? 'Cans List'
+                            : collectionRef === 'draft'
+                                ? 'Draft List'
+                                : null
+                    }
+                </h3>
+                <ul>
+                    {beerData.map(beer => 
+                        <li 
+                            key={beer.id}
+                            >
+                            <button
+                                id={beer.id}
+                                onClick={handleClick}
+                                >{beer.data.screenName}
+                            </button>
+                        </li>)}
+                </ul>
+            </div>
         </div>
     )
 }

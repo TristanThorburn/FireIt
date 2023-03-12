@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { employeeCollectionRef } from '../../library/firestoreCollections';
-import { onSnapshot, orderBy, query } from 'firebase/firestore';
+import { onSnapshot, orderBy, query, getDocs } from 'firebase/firestore';
 import EmployeeDataForm from './employeedata/EmployeeDataForm';
 import BackDashHelp from '../help/BackDashHelp';
 import FireItAlert from '../help/FireItAlert';
@@ -13,15 +13,28 @@ const EmployeeData = () => {
     const [ employeeDataHelp, setEmployeeDataHelp ] = useState(false)
     const [ fireItAlert, setFireItAlert ] = useState('')
 
+    // initial data population on screen
     useEffect(() => {
-        const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'));
-        const unsubscribe = onSnapshot(q, snapshot => {
-            setEmployeeData(snapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })))
-        })
-        return unsubscribe
+        const getEmployees = async () => {
+            const q = query(employeeCollectionRef, orderBy('name'));
+            const querySnapShot = await getDocs(q, { source: 'cache' })
+            if(!querySnapShot.empty){
+                const employeeList = querySnapShot.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setEmployeeData(employeeList)
+            } else {
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setEmployeeData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+        }
+        getEmployees()
     },[])
 
     const handleNewEmployee = () => {
