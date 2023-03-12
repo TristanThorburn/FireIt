@@ -16,7 +16,7 @@ const EmployeeData = () => {
     // initial data population on screen
     useEffect(() => {
         const getEmployees = async () => {
-            const q = query(employeeCollectionRef, orderBy('name'));
+            const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'))
             const querySnapShot = await getDocs(q, { source: 'cache' })
             if(!querySnapShot.empty){
                 const employeeList = querySnapShot.docs.map(doc => ({
