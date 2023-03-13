@@ -26,7 +26,6 @@ const CheckTab = (props) => {
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
 
     const handleTest = () => {
-        console.log('hi')
     }
 
     const handleDeletePendingSeat = useCallback((e) => {
@@ -174,33 +173,43 @@ const CheckTab = (props) => {
     // Print Receipts AKA save to firestore
     useEffect(() => {
         if(printReceipts === true){
-            // Get all the receipts on the screen
+        // Get all the receipts on the screen
             const receiptsList = document.querySelectorAll('.seperatedCheck')
             receiptsList.forEach(receipt => {
-            // Get all the pendingSeats on each receipt
+        // Get all the pendingSeats on each receipt
+                let seatSubtotalList = []
                 const pendingSeats = receipt.querySelectorAll('.pendingSeperateSeat')
                 pendingSeats.forEach(pendingSeat => {
-                let seatsOrders = []
-                const receiptRef = 
-                    doc(db, 'receipts', employeeContext.employeeNumber, contextTable, pendingSeat.dataset.parentreceipt)
-                    // Get all the items on the pending seat and push to the seatsOrders array
-                    const seatItemList = pendingSeat.querySelectorAll('.seatItemList')
-                    seatItemList.forEach(item => {
-                        const orderList = {
-                            item:item.dataset.item,
-                            cost:item.dataset.cost
+                    const receiptRef = 
+                        doc(db, 'receipts', employeeContext.employeeNumber, contextTable, pendingSeat.dataset.parentreceipt)
+        // Push all subtotals to an array as numbers, and then find the sum
+                    seatSubtotalList.push(Number(pendingSeat.dataset.seatcost))
+                    const sum = seatSubtotalList.reduce((a, b) => a + b, 0)
+                    let seatsOrders = []
+                    const confirmDataAndUpdate = async () => {
+        // Get the original total of the receipt
+                        const receiptOriginalTotal = await getDoc(receiptRef)
+        // Get all the items on the pending seat and push to the seatsOrders array
+                        const seatItemList = pendingSeat.querySelectorAll('.seatItemList')
+                        seatItemList.forEach(item => {
+                            const orderList = {
+                                item:item.dataset.item,
+                                cost:item.dataset.cost
+                            }
+                            seatsOrders.push(orderList)
+                        })
+        // Update the receipt on firestore
+                        const seatData = {
+                            seat:pendingSeat.dataset.seat,
+                            seatCost:pendingSeat.dataset.seatcost,
+                            order:seatsOrders,
                         }
-                        seatsOrders.push(orderList)
-                    })
-                    // Update the receipt on firestore
-                    const seatData = {
-                        seat:pendingSeat.dataset.seat,
-                        seatCost:pendingSeat.dataset.seatcost,
-                        order:seatsOrders,
+                        updateDoc(receiptRef, {
+                            seatsList:arrayUnion(seatData),
+                            receiptTotalCost:receiptOriginalTotal.data().receiptTotalCost + sum
+                        })
                     }
-                    updateDoc(receiptRef, {
-                        seatsList:arrayUnion(seatData)
-                    })
+                    confirmDataAndUpdate()
                 })
             })
             setPrintReceipts(false)
@@ -271,7 +280,7 @@ const CheckTab = (props) => {
                                     return(
                                         <table
                                             key={seat.seat}
-                                            className='receiptSeatInfo'
+                                            className='receiptSeatInfo printed'
                                             >
                                             <thead>
                                                 <tr>
@@ -291,6 +300,7 @@ const CheckTab = (props) => {
                                                             <td>{order.item}</td>
                                                             <td
                                                                 className='receiptItemCost'
+                                                                data-cost={order.cost}
                                                                 >
                                                                 {order.cost}</td>
                                                         </tr>  

@@ -83,9 +83,9 @@ const TableMap = (props) => {
         props.setMapUpdateable(false)
     }
 
-    const handleTableClick = (e) => {
+    const handleTableClickCapture = (e) => {
         if(enableDrag === true){
-            const element = e.target
+            const element = e.currentTarget
             element.style.border='2px solid white'
 
             const mouseMove = (e) => {
@@ -106,7 +106,7 @@ const TableMap = (props) => {
         if(props.tableTabActive){
             props.setTableTabActive(false);
             props.setMenuTabActive(true);
-            setContextTable(e.target.id);
+            setContextTable(e.currentTarget.id);
         }
         setSelectedTable(e.target)
     }
@@ -184,7 +184,7 @@ const TableMap = (props) => {
                                     key={table.id}
                                     id={table.id}
                                     className={['table', table.data?.tableStyle].join(' ')}
-                                    onClickCapture={handleTableClick}
+                                    onClickCapture={handleTableClickCapture}
                                     style={{left:table?.data.left, top: table?.data.top}}
                                     >
                                         <p>
