@@ -47,7 +47,12 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'CheckTab data error' || 'MenuTab data error'
+                    {props.fireItAlert === 'CheckTab data error'
+                        ? <div className='padError'>Sorry, no data was found, please try again.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'MenuTab data error'
                         ? <div className='padError'>Sorry, no data was found, please try again.
                         </div>
                         : null
