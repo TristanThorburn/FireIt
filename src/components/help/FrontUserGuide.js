@@ -56,11 +56,15 @@ const FrontUserGuide = (props) => {
                         <h3>Under Construction!
                         </h3>
                         <li>Use ADD RECEIPT or REMOVE RECEIPT to populate up to 10 receipts for checks to be split on to.</li>
+                        <li>REMOVE RECEIPT will delete all information on the receipt upon removal</li>
                         <li>Click on the seat you want to transfer and select the target receipt number, currently must be less than or equal to 10.</li>
+                        <li>A seat from the origin check can only be on one receipt, and cannot be repeated.</li>
                         <li>Click on any pending seperate seat on the receipt to remove it.</li>
+                        <li>PRINT ALL RECEIPT to save the pending seats to each receipt, aka printing the checks out to give to guests.</li>
+                        <li>Clicking on the seat on a printed receipt will prompt for confirmation before deleting.</li>
                         <li>Stretch Goals: 
                             <br />
-                            Organize seats into different billing methods, for example split checks.  Allow for the transfer of items between seats. PRINT ALL RECEIPT to store data to firebase.
+                            Organize seats into different billing methods, for example split checks 50/50.
                         </li>
                     </ul>
                     : null
@@ -206,19 +210,19 @@ const FrontUserGuide = (props) => {
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            PRINT RECEIPTS
+                            PRINT ALL RECEIPT
                             <br />
-                            - Button under construction to send receipt data to firebase, simulating printing. 
+                            - Confirm the seat seperations and 'print' the checks, this stores the data on. 
                         </li>
                         <li>
-                            ADD SEPERATE
+                            ADD RECEIPT
                             <br />
                             - Add an additional receipt to seperate the original check on to. 
                         </li>
                         <li>
-                            REMOVE SEPERATE
+                            REMOVE RECEIPT
                             <br />
-                            - Remove an un-needed additional seperate receipt. 
+                            - Remove an un-needed additional seperate receipt. This will delete all information on the receipt.
                         </li>
                         <li>
                             CHNG TBL

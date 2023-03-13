@@ -10,7 +10,20 @@ Primarily inspired by my 3 years working exclusively with Squirrel (https://www.
 
 Tristan Thorburn 2023
 
+
                                     CHANGELOG:
+                                    2023-03-13
+App:
+    -Laptop and Tablet styling added for prior compontents.
+    -Firestore reads reduced using checks on cache data.
+
+MenuTab, CheckTab
+    -CHNG TBL now allows the user to change the active table with a new alphanumeric keypad.
+
+CheckTab
+    -Split the main check into up to 10 receipts. 
+
+**********************************************************************************************************
                                     2023-03-06
 App:
     Custom alerts added

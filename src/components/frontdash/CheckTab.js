@@ -4,7 +4,7 @@ import { useTable } from "../../contexts/TableContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
-import { doc, getDoc, collection, query, orderBy, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, collection, query, orderBy, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
 import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from "../keypads/AlphaNumericPad";
@@ -23,13 +23,15 @@ const CheckTab = (props) => {
     const [ appendReceipt, setAppendReceipt ] = useState();
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ printReceipts, setPrintReceipts ] = useState(false);
+    const [ confirmSeatRemove, setConfirmSeatRemove ] = useState(false);
+    const [ targetRemovalSeat, setTargetRemovalSeat ] = useState('');
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
-
-    const handleTest = () => {
-        const totalSeatsOnCheck = document.querySelectorAll('.checkSeatInfo')
-        const totalPendingSeats = document.querySelectorAll('.pendingSeperateSeat')
-        console.log(totalSeatsOnCheck.length, totalPendingSeats.length)
-    }
+    
+    // OLD SPLIT CHECKS LOGIC:
+    // Populate / Remove array to determine render # of seperate check components
+    // useEffect(() => {
+    //     setReceiptsToDisplay(Array(newReceipts).fill(0))
+    // }, [newReceipts])
 
     const handleDeletePendingSeat = useCallback((e) => {
         const deletePendingSeat = async () => {
@@ -41,6 +43,11 @@ const CheckTab = (props) => {
         }
         deletePendingSeat()
     },[])
+
+    const handlePrintedSeatDeleteCapture = (e) => {
+        setTargetRemovalSeat(e.currentTarget.dataset.seatnumber)
+        setFireItAlert('CheckTab delete sent seat')
+    }
 
     // Get data for current employee and table, and tables receipts
     useEffect(() => {
@@ -93,12 +100,6 @@ const CheckTab = (props) => {
             .then(getServer()).then(getReceipts())
         }
     }, [contextTable, employeeContext]);
-
-    // OLD SPLIT CHECKS LOGIC:
-    // Populate / Remove array to determine render # of seperate check components
-    // useEffect(() => {
-    //     setReceiptsToDisplay(Array(newReceipts).fill(0))
-    // }, [newReceipts])
 
     // Check if selected receipt exists on display
     useEffect(() => {
@@ -227,6 +228,41 @@ const CheckTab = (props) => {
         }
     }, [printReceipts, contextTable, employeeContext.employeeNumber, props])
 
+    // Remove the selected seat from printed receipt after prompt
+    useEffect(() => {
+        if(confirmSeatRemove === true && targetRemovalSeat !== ''){
+            const targetSeat = document.querySelector(`[data-seatnumber="${targetRemovalSeat}"]`)
+            const receiptRef = doc(db, 'receipts', employeeContext.employeeNumber, contextTable, targetSeat.dataset.receipt)
+            const targetSeatNumber = targetSeat.dataset.seatnumber
+            const seatSubTotal = targetSeat.children[1].dataset.seatcost
+            const seatItemList = targetSeat.querySelectorAll('.seatItemList')
+            let seatOrders = []
+            const deleteSeat = async () => {
+                const docSnap = await getDoc(receiptRef)
+                const receiptOriginalTotal = docSnap.data().receiptTotalCost
+                seatItemList.forEach(order => {
+                    const orderInfo = {
+                        cost:order.dataset.cost,
+                        item:order.dataset.item,
+                    }
+                    seatOrders.push(orderInfo)
+                })
+                const seatInfo = {
+                    order:seatOrders,
+                    seat:targetSeatNumber,
+                    seatCost:seatSubTotal,
+                }
+                updateDoc(receiptRef, {
+                    seatsList:arrayRemove(seatInfo),
+                    receiptTotalCost:receiptOriginalTotal - Number(seatSubTotal),
+                })
+                setConfirmSeatRemove(false)
+                setTargetRemovalSeat('')
+            }
+            deleteSeat()
+        }
+    }, [confirmSeatRemove, contextTable, employeeContext.employeeNumber, targetRemovalSeat])
+
     return(
         <div className='checkTab'>
             {managerKeyPadActive
@@ -260,6 +296,7 @@ const CheckTab = (props) => {
                 ? <FireItAlert
                     fireItAlert={fireItAlert}
                     setFireItAlert={setFireItAlert}
+                    setConfirmSeatRemove={setConfirmSeatRemove}
                     />
                 : null
             }
@@ -274,7 +311,6 @@ const CheckTab = (props) => {
                     />
 
             <section className='checkTabDisplay'>
-<button onClick={handleTest} className='testButton'>TEST</button>
                 <div className='seperatedChecksContainer'>
                     {receiptData?.map((receipt, i) => {
                         return(
@@ -289,7 +325,10 @@ const CheckTab = (props) => {
                                     return(
                                         <table
                                             key={seat.seat}
-                                            className='receiptSeatInfo printed'
+                                            className='receiptSeatInfo'
+                                            data-receipt={receipt.id}
+                                            data-seatnumber={seat.seat}
+                                            onClickCapture={handlePrintedSeatDeleteCapture}
                                             >
                                             <thead>
                                                 <tr>
@@ -299,17 +338,21 @@ const CheckTab = (props) => {
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody data-seatid={'seat' + seat.seat}>
+                                            <tbody 
+                                                data-seatid={'seat' + seat.seat}
+                                                data-seatcost={seat.seatCost}
+                                                >
                                                 {seat.order.map((order, i) => {
                                                     return(
                                                         <tr
                                                             key={i}
                                                             className='seatItemList'
+                                                            data-item={order.item}
+                                                            data-cost={order.cost}
                                                             >
                                                             <td>{order.item}</td>
                                                             <td
                                                                 className='receiptItemCost'
-                                                                data-cost={order.cost}
                                                                 >
                                                                 {order.cost}</td>
                                                         </tr>  
