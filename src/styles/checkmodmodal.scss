@@ -46,3 +46,21 @@
         background-color:darken($backDashBackgroundColor, 25%);
     }
 }
+
+.confirmSeatRemovalContainer{
+    display:flex;
+    justify-content: space-evenly;
+
+    .removeSeat, .cancelRemoveSeat{
+        border-radius:10px;
+        width:125px;
+    }
+    .removeSeat{
+        border-color:green;
+        background-color: green;
+    }
+    .cancelRemoveSeat{
+        border-color:yellow;
+        background-color:yellow
+    }
+}

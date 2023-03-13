@@ -3,6 +3,16 @@ const FireItAlert = (props) => {
         props.setFireItAlert('')
     }
 
+    const handleConfirmSeatRemove = () => {
+        props.setConfirmSeatRemove(true)
+        props.setFireItAlert('')
+    }
+
+    const handleCancelSeatRemove = () => {
+        props.setConfirmSeatRemove(false)
+        props.setFireItAlert('')
+    }
+
     return(
         <div className='popUpModal'>
             <div className='fireItAlert'>
@@ -58,7 +68,25 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'CheckTab seat exists'
-                        ? <div className='padError'>This seat already exists on the receipt.
+                        ? <div className='padError'>This seat already exists on a receipt.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'CheckTab delete sent seat'
+                        ? <div className='padError'>
+                            <p>Are you sure you want to delete this seat?</p>
+                            <div className='confirmSeatRemovalContainer'>
+                                <button 
+                                    onClick={handleConfirmSeatRemove} 
+                                    className='removeSeat'
+                                    >Delete
+                                </button>
+                                <button 
+                                    onClick={handleCancelSeatRemove}
+                                    className='cancelRemoveSeat'
+                                    >Cancel
+                                </button>
+                            </div>
                         </div>
                         : null
                     }
