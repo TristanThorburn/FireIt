@@ -43,7 +43,7 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'CheckTab receipt undefined'
-                        ? <div className='padError'>Receipt not found. Use ADD SEPERATE to make sure the number of split receipts matches your search.
+                        ? <div className='padError'>Receipt not found. Use ADD RECEIPT to make sure the number of split receipts matches your search.
                         </div>
                         : null
                     }
@@ -54,6 +54,11 @@ const FireItAlert = (props) => {
                     }
                     {props.fireItAlert === 'MenuTab data error'
                         ? <div className='padError'>Sorry, no data was found, please try again.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'CheckTab seat exists'
+                        ? <div className='padError'>This seat already exists on the receipt.
                         </div>
                         : null
                     }
