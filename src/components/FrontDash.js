@@ -68,6 +68,8 @@ const FrontDash = () => {
                 ? <CheckTab
                     setHelpModal={setHelpModal}
                     checkTabActive={checkTabActive}
+                    setCheckTabActive={setCheckTabActive}
+                    setPaymentTabActive={setPaymentTabActive}
                     />
                 : null
             }

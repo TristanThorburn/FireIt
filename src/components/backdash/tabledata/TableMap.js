@@ -111,15 +111,6 @@ const TableMap = (props) => {
         setSelectedTable(e.target)
     }
 
-    const handleNoPropagation = (e) => {
-        if(props.tableTabActive){
-            props.setTableTabActive(false);
-            props.setMenuTabActive(true);
-            setContextTable(e.target.parentElement.id);
-        }
-        e.stopPropagation()
-    }
-
     return(
         <section className='tableDisplay'>
             {props.updateable === true
@@ -196,7 +187,9 @@ const TableMap = (props) => {
                                     onClickCapture={handleTableClick}
                                     style={{left:table?.data.left, top: table?.data.top}}
                                     >
-                                        <p onClick={handleNoPropagation}>{table.data.name}</p>
+                                        <p>
+                                            {table.data.name}
+                                        </p>
                                 </li>)}
                         </ul>
             }            
