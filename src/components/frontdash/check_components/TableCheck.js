@@ -10,6 +10,7 @@ const TableCheck = (props) => {
     const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
         collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
+        
     const handlePendingOrderDelete = useCallback((e) => {
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
         const child = e.target.parentNode

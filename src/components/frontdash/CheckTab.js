@@ -4,7 +4,7 @@ import { useTable } from "../../contexts/TableContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
-import { doc, getDoc, collection, query, orderBy, onSnapshot, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, query, orderBy, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
 import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from "../keypads/AlphaNumericPad";
@@ -22,19 +22,22 @@ const CheckTab = (props) => {
     const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('');
     const [ appendReceipt, setAppendReceipt ] = useState();
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
-    const [ printReceipts, setPrintReceipts ] = useState(true);
+    const [ printReceipts, setPrintReceipts ] = useState(false);
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
 
     const handleTest = () => {
-        console.log(printReceipts)
-        console.log('receipt Data', receiptData.length)
+        console.log('hi')
     }
 
     const handleDeletePendingSeat = useCallback((e) => {
-        const seatToDeleteParent = e.currentTarget.parentNode
-        const child = e.currentTarget
-        seatToDeleteParent.removeChild(child)
-        e.currentTarget.removeEventListener('click', handleDeletePendingSeat)
+        const deletePendingSeat = async () => {
+            const seatToDeleteParent = e.currentTarget.parentNode
+            const child = e.currentTarget
+            seatToDeleteParent.removeChild(child)
+            setSeperatedSeatData('')
+            setAppendReceipt('')
+        }
+        deletePendingSeat()
     },[])
 
     // Get data for current employee and table, and tables receipts
@@ -76,23 +79,14 @@ const CheckTab = (props) => {
                 const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
                 const q = query(receiptCollectionRef, orderBy('receiptNumber', 'asc'));
-                const querySnapshot = await getDocs(q, { source: 'cache' })
-                if(!querySnapshot.empty){
-                    const receiptData = querySnapshot.docs.map(doc => ({
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setReceiptData(snapshot.docs.map(doc => ({
                         id: doc.id,
                         data: doc.data(),
-                      }))
-                      setReceiptData(receiptData)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setReceiptData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data(),
-                        })))
-                    })
-                    return unsubscribe
+                    })))
+                })
+                return unsubscribe
                 }
-            }
             getTable()
             .then(getServer()).then(getReceipts())
         }
@@ -121,46 +115,99 @@ const CheckTab = (props) => {
 
     // Put the selected seat on the selected check
     useEffect(() => {
-        if(appendReceipt && seperatedSeatData){
-            const targetReceipt = document.getElementById(appendReceipt.id)
-            const table = document.createElement('table')
-            table.classList.add('checkSeatInfo')
-            // Set up table head with seat
-            const tableHead = document.createElement('thead')
-            const tableHeadRow = document.createElement('tr')
-            const tableHeadRowTh = document.createElement('th')
-            tableHeadRowTh.setAttribute('colspan', '2')
-            const seatNumber = document.createTextNode(`Seat: ${seperatedSeatData.seatNumber}`)
-            tableHeadRowTh.appendChild(seatNumber)
-            tableHeadRow.appendChild(tableHeadRowTh)
-            tableHead.appendChild(tableHeadRow)
-            // Set up table body
-            const tableBody = document.createElement('tbody')
-            // Loop orders
-            seperatedSeatData.order.forEach((order, i) => {
-                const tableBodyRow = document.createElement('tr')
-                tableBodyRow.classList.add('seatItemList')
-                const tableBodyItem = document.createElement('td')
-                const tableBodyCost = document.createElement('td')
-                tableBodyCost.classList.add('receiptItemCost')
-                const item = document.createTextNode(order.item)
-                const cost = document.createTextNode(order.cost)
-                tableBodyItem.appendChild(item)
-                tableBodyCost.appendChild(cost)
-                tableBodyRow.appendChild(tableBodyItem)
-                tableBodyRow.appendChild(tableBodyCost)
-                tableBody.appendChild(tableBodyRow)
-            })
-            table.appendChild(tableHead)
-            table.appendChild(tableBody)
-            table.classList.add('pendingSeperateSeat')
-            table.addEventListener('click', handleDeletePendingSeat, true)
-            targetReceipt.appendChild(table)
-            console.log(seperatedSeatData)
-            setAppendReceipt('')
-            setSeperatedSeatData('')
+        const appendSeatToReceipt = async () => {
+            if(appendReceipt && seperatedSeatData !== '' && seperatedSeatData.order !== undefined){
+                const targetReceipt = document.getElementById(appendReceipt.id)
+                const table = document.createElement('table')
+                table.classList.add('checkSeatInfo')
+                // Set up table head with seat
+                const tableHead = document.createElement('thead')
+                const tableHeadRow = document.createElement('tr')
+                const tableHeadRowTh = document.createElement('th')
+                tableHeadRowTh.setAttribute('colspan', '2')
+                const seatNumber = document.createTextNode(`Seat: ${seperatedSeatData.seatNumber}`)
+                tableHeadRowTh.appendChild(seatNumber)
+                tableHeadRow.appendChild(tableHeadRowTh)
+                tableHead.appendChild(tableHeadRow)
+                // set up subTotal display
+                const subTotal = document.createTextNode(`Subtotal: $${seperatedSeatData.seatTotalCost}`)
+                const subTotalRow = document.createElement('tr')
+                const subTotalTh = document.createElement('th')
+                subTotalTh.setAttribute('colspan', '2')
+                subTotalTh.appendChild(subTotal)
+                subTotalRow.appendChild(subTotalTh)
+                // Set up table body
+                const tableBody = document.createElement('tbody')
+                // Loop orders
+                seperatedSeatData.order.forEach((order, i) => {
+                    const tableBodyRow = document.createElement('tr')
+                    tableBodyRow.classList.add('seatItemList')
+                    const tableBodyItem = document.createElement('td')
+                    const tableBodyCost = document.createElement('td')
+                    tableBodyCost.classList.add('receiptItemCost')
+                    const item = document.createTextNode(order.item)
+                    const cost = document.createTextNode(order.cost)
+                    tableBodyItem.appendChild(item)
+                    tableBodyCost.appendChild(cost)
+                    tableBodyRow.appendChild(tableBodyItem)
+                    tableBodyRow.appendChild(tableBodyCost)
+                    tableBodyRow.setAttribute('data-item', order.item)
+                    tableBodyRow.setAttribute('data-cost', order.cost)
+                    tableBody.appendChild(tableBodyRow)
+                })
+                tableBody.appendChild(subTotalRow)
+                table.appendChild(tableHead)
+                table.appendChild(tableBody)
+                table.classList.add('pendingSeperateSeat')
+                table.setAttribute('data-seat', seperatedSeatData.seatNumber)
+                table.setAttribute('data-seatcost', seperatedSeatData.seatTotalCost)
+                table.setAttribute('data-parentreceipt', appendReceipt.id)
+                table.addEventListener('click', handleDeletePendingSeat, true)
+                targetReceipt.appendChild(table)
+                setAppendReceipt('')
+                setSeperatedSeatData('')
+            }
         }
-    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber, handleDeletePendingSeat, seperatedSeatData])
+        appendSeatToReceipt()
+    }, [appendReceipt, seperatedSeatData.order, seperatedSeatData.seatNumber, handleDeletePendingSeat, seperatedSeatData, contextTable, employeeContext.employeeNumber])
+
+    // Print Receipts AKA save to firestore
+    useEffect(() => {
+        if(printReceipts === true){
+            // Get all the receipts on the screen
+            const receiptsList = document.querySelectorAll('.seperatedCheck')
+            receiptsList.forEach(receipt => {
+            // Get all the pendingSeats on each receipt
+                const pendingSeats = receipt.querySelectorAll('.pendingSeperateSeat')
+                pendingSeats.forEach(pendingSeat => {
+                let seatsOrders = []
+                const receiptRef = 
+                    doc(db, 'receipts', employeeContext.employeeNumber, contextTable, pendingSeat.dataset.parentreceipt)
+                    // Get all the items on the pending seat and push to the seatsOrders array
+                    const seatItemList = pendingSeat.querySelectorAll('.seatItemList')
+                    seatItemList.forEach(item => {
+                        const orderList = {
+                            item:item.dataset.item,
+                            cost:item.dataset.cost
+                        }
+                        seatsOrders.push(orderList)
+                    })
+                    // Update the receipt on firestore
+                    const seatData = {
+                        seat:pendingSeat.dataset.seat,
+                        seatCost:pendingSeat.dataset.seatcost,
+                        order:seatsOrders,
+                    }
+                    updateDoc(receiptRef, {
+                        seatsList:arrayUnion(seatData)
+                    })
+                })
+            })
+            setPrintReceipts(false)
+            props.setCheckTabActive(false)
+            props.setPaymentTabActive(true)
+        }
+    }, [printReceipts, contextTable, employeeContext.employeeNumber, props])
 
     return(
         <div className='checkTab'>
@@ -219,6 +266,41 @@ const CheckTab = (props) => {
                                 <h3>Receipt {receipt.data.receiptNumber}</h3>
                     
                                 <div id={receipt.id}></div>
+
+                                {receipt.data.seatsList?.map((seat) => {
+                                    return(
+                                        <table
+                                            key={seat.seat}
+                                            className='receiptSeatInfo'
+                                            >
+                                            <thead>
+                                                <tr>
+                                                    <th
+                                                        colSpan={2}
+                                                        >Seat: {seat.seat}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id={seat.seat}>
+                                                {seat.order.map((order, i) => {
+                                                    return(
+                                                        <tr
+                                                            key={i}
+                                                            className='seatItemList'
+                                                            >
+                                                            <td>{order.item}</td>
+                                                            <td
+                                                                className='receiptItemCost'
+                                                                >
+                                                                {order.cost}</td>
+                                                        </tr>  
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                        )
+                                    })
+                                }
                     
                                 <footer>
                                     <p>Check Total:</p>
