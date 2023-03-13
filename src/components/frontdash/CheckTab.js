@@ -26,6 +26,9 @@ const CheckTab = (props) => {
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
 
     const handleTest = () => {
+        const totalSeatsOnCheck = document.querySelectorAll('.checkSeatInfo')
+        const totalPendingSeats = document.querySelectorAll('.pendingSeperateSeat')
+        console.log(totalSeatsOnCheck.length, totalPendingSeats.length)
     }
 
     const handleDeletePendingSeat = useCallback((e) => {
@@ -107,10 +110,16 @@ const CheckTab = (props) => {
                 setSelectReceiptTarget('true')
             }
             if(targetReceipt){
-                setAppendReceipt(targetReceipt)
+                const duplicateCheck = document.querySelector('[data-seatid=' + seperatedSeatData.seat + ']')
+                if(duplicateCheck === null){
+                    setAppendReceipt(targetReceipt)
+                }
+                if(duplicateCheck){
+                    setFireItAlert('CheckTab seat exists')
+                }
             }
         }
-    }, [selectReceiptTarget, seperateChecksList, targetReceiptNumber])
+    }, [selectReceiptTarget, seperateChecksList, targetReceiptNumber, seperatedSeatData.seat])
 
     // Put the selected seat on the selected check
     useEffect(() => {
@@ -118,7 +127,6 @@ const CheckTab = (props) => {
             if(appendReceipt && seperatedSeatData !== '' && seperatedSeatData.order !== undefined){
                 const targetReceipt = document.getElementById(appendReceipt.id)
                 const table = document.createElement('table')
-                table.classList.add('checkSeatInfo')
                 // Set up table head with seat
                 const tableHead = document.createElement('thead')
                 const tableHeadRow = document.createElement('tr')
@@ -159,6 +167,7 @@ const CheckTab = (props) => {
                 table.appendChild(tableBody)
                 table.classList.add('pendingSeperateSeat')
                 table.setAttribute('data-seat', seperatedSeatData.seatNumber)
+                table.setAttribute('data-seatid', 'seat' + seperatedSeatData.seatNumber)
                 table.setAttribute('data-seatcost', seperatedSeatData.seatTotalCost)
                 table.setAttribute('data-parentreceipt', appendReceipt.id)
                 table.addEventListener('click', handleDeletePendingSeat, true)
@@ -290,7 +299,7 @@ const CheckTab = (props) => {
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id={seat.seat}>
+                                            <tbody data-seatid={'seat' + seat.seat}>
                                                 {seat.order.map((order, i) => {
                                                     return(
                                                         <tr
