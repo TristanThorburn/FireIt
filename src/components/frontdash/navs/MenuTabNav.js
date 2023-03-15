@@ -32,16 +32,7 @@ const MenuTabNav = (props) => {
     }
     
     const handleDirectory = () => {
-        props.toDirectory(true)
-        props.toApps(false);
-        props.toMains(false);
-        props.toDesserts(false);
-        props.toNonAlch(false);
-        props.toBeer(false);
-        props.toCidSpr(false);
-        props.toMixed(false);
-        props.toLiquors(false);
-        props.toWines(false);
+        props.setMenuCategory('directory')
     }
     
     const handleHelp = () => {
