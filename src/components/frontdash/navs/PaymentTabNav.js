@@ -7,8 +7,23 @@ const PaymentTabNav = (props) => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
-    const handleTest = () => {
-        console.log('test')
+    
+    const handleMgrOveride = () => {
+        if(managerContext === false){
+            props.setManagerKeyPadActive(true)
+        }
+        
+        if(managerContext === true){
+            setManagerContext(false)
+        }
+    }
+
+    const handleChangeTable = () => {
+        props.setAlphaNumericPadOpen(true)
+    }
+
+    const handleHelp = () => {
+        props.setHelpModal(true)
     }
 
     const handleLogout = async () => { 
@@ -19,20 +34,6 @@ const PaymentTabNav = (props) => {
             } catch (error) {
                 setError(error.message)
             }
-        }
-    }
-    
-    const handleHelp = () => {
-        props.setHelpModal(true)
-    }
-
-    const handleMgrOveride = () => {
-        if(managerContext === false){
-            props.setManagerKeyPadActive(true)
-        }
-        
-        if(managerContext === true){
-            setManagerContext(false)
         }
     }
 
@@ -46,12 +47,12 @@ const PaymentTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button onClick={handleTest} className='testButton'>Test</button></li>
+                <li><button className='nonWorkingButton'>CASH</button></li>
+                <li><button className='nonWorkingButton'>DEBIT INTERAC</button></li>
+                <li><button className='nonWorkingButton'>AMEX</button></li>
+                <li><button className='nonWorkingButton'>MASTER CARD</button></li>
+                <li><button className='nonWorkingButton'>VISA</button></li>
+                <li><button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button></li>
                 <li className='infoButton'>
                     <button onClick={handleHelp}>🔥</button>
                     <p onClick={handleHelp}>INFO</p>
