@@ -2,7 +2,6 @@ import TableCheck from './check_components/TableCheck';
 import MenuTabNav from "./navs/MenuTabNav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useTable } from "../../contexts/TableContext";
 import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import AppsScreen from './menu_components/AppsScreen';
@@ -21,19 +20,7 @@ import AlphaNumericPad from '../keypads/AlphaNumericPad';
 
 const MenuTab = (props) => {
     const { employeeContext } = useAuth()
-    const { contextTable } = useTable();
-    const [ tableData, setTableData ] = useState({})
-    const [ serverData, setServerData ] = useState({})
-    const [ directory, setDirectory ] = useState(true);
-    const [ appsCategory, setAppsCategory ] = useState(false);
-    const [ mainsCategory, setMainsCategory ] = useState(false);
-    const [ dessertsCategory, setDessertsCategory ] = useState(false);
-    const [ nonAlchCategory, setNonAlchCategory ] = useState(false);
-    const [ beerCategory, setBeerCategory ] = useState(false);
-    const [ cidSprCategory, setCidSprCategory ] = useState(false);
-    const [ mixedCategory, setMixedCategory ] = useState(false);
-    const [ liquorsCategory, setLiquorsCategory ] = useState(false);
-    const [ winesCategory, setWinesCategory ] = useState(false);
+    const [ menuCategory, setMenuCategory ] = useState('directory')
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
@@ -45,52 +32,16 @@ const MenuTab = (props) => {
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false)
 
-    // Get data for current employee and table
-    useEffect(() => {
-        if(contextTable !== '' ){
-            const getTable = async () => {
-                const docRef = doc(db, 'tables', contextTable)
-                const tableDataRequest = await getDoc(docRef, { source: 'cache'})
-                const tableInfo = tableDataRequest.data();
-                    if(tableInfo){
-                        setTableData(tableInfo)
-                    } else {
-                        const serverDataRequest = await getDoc(docRef)
-                        const serverData = serverDataRequest.data()
-                        if(serverData){
-                            setTableData(serverData)
-                        } else {
-                            setFireItAlert('MenuTab data error')
-                        }
-                    }
-                }
-            const getServer = async () => {
-                const docRef = doc(db, 'employees', employeeContext.employeeNumber)
-                const serverDataRequest = await getDoc(docRef, { source: 'cache'})
-                const serverInfo = serverDataRequest.data();
-                    if(serverInfo){
-                        setServerData(serverInfo)
-                    } else {
-                        const serverDataRequest = await getDoc(docRef)
-                        const employeeData = serverDataRequest.data()
-                        if(serverData){
-                            setServerData(employeeData)
-                        } else {
-                            setFireItAlert('MenuTab data error')
-                        }
-                    }
-                }
-            getTable()
-            .then(getServer)
-        }
-    }, [contextTable, employeeContext, serverData]);
+    const handleTest = () => {
+        console.log(employeeContext)
+    }
 
     // Confirm if seat exists on check, if none is selected assume we are using seat 1
     useEffect(() => {
         const doesSeatExist = async () => {
             if(selectedSeat === ''){
                 const docRef = 
-                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.searchId}`, 'seat1')
+                    doc(db, 'checks', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, 'seat1')
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -100,7 +51,7 @@ const MenuTab = (props) => {
             }
             if(selectedSeat !== ''){
                 const docRef = 
-                    doc(db, 'checks', `${serverData.employeeNumber}`, `${tableData.searchId}`, `seat${selectedSeat}`)
+                    doc(db, 'checks', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, `seat${selectedSeat}`)
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -110,123 +61,42 @@ const MenuTab = (props) => {
             }
         }
         doesSeatExist()
-    }, [selectedSeat, serverData.employeeNumber, tableData.searchId])
+    }, [selectedSeat, employeeContext.employeeNumber, props.activeTableData.searchId])
 
     const handleGoApps = () => {
-        setDirectory(false);
-        setAppsCategory(true);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('apps')
     }
 
     const handleGoMain = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(true);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('mains')
     }
 
     const handleGoDesserts = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(true);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('desserts')
     }
 
     const handleGoNonAlch = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(true);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('non alch')
     }
 
     const handleGoBeer = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(true);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('beer')
     }
 
     const handleGoCidSpr = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(true);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('cider spritz')
     }
 
     const handleGoMixed = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(true);
-        setLiquorsCategory(false);
-        setWinesCategory(false);
+        setMenuCategory('mixed')
     }
 
     const handleGoLiquor = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(true);
-        setWinesCategory(false);
+        setMenuCategory('liquors')
     }
 
     const handleGoWine = () => {
-        setDirectory(false);
-        setAppsCategory(false);
-        setMainsCategory(false);
-        setDessertsCategory(false);
-        setNonAlchCategory(false);
-        setBeerCategory(false);
-        setCidSprCategory(false);
-        setMixedCategory(false);
-        setLiquorsCategory(false);
-        setWinesCategory(true);
+        setMenuCategory('wines')
     }
 
     return(
@@ -281,8 +151,7 @@ const MenuTab = (props) => {
                 selectedSeatExists={doesSeatExist}
                 selectedSeat={selectedSeat}
                 setSelectedSeat={setSelectedSeat}
-                serverData={serverData}
-                tableData={tableData}
+                tableData={props.activeTableData}
                 currentOrderData={currentOrderData}
                 setCurrentOrderData={setCurrentOrderData}
                 sendOrder={sendOrder}
@@ -296,7 +165,7 @@ const MenuTab = (props) => {
                 />
             
             <section className='menuDirectoryContainer'>
-                {directory
+                {menuCategory === 'directory'
                     ? <div className='menuDirectoriesScreen'>
                         <ul>
                             <li onClick={handleGoApps}><button>APPS</button></li>
@@ -307,20 +176,17 @@ const MenuTab = (props) => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCH</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li></li>
+                            <li><button onClick={handleTest} className='testButton'>TEST</button></li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>
                     : null
                 }
 
-                {appsCategory
+                {menuCategory === 'apps'
                     ? <AppsScreen
-                        appsActive={appsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setSelectedSeat={setSelectedSeat}
@@ -328,114 +194,82 @@ const MenuTab = (props) => {
                     : null
                 }
 
-                {mainsCategory
+                {menuCategory === 'mains'
                     ? <MainsScreen
-                        mainsActive={mainsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {dessertsCategory
+                {menuCategory === 'desserts'
                     ? <DessertsScreen
-                        dessertsActive={dessertsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {nonAlchCategory
+                {menuCategory === 'non alch'
                     ? <NonAlchScreen
-                        nonAlchActive={nonAlchCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {beerCategory
+                {menuCategory === 'beer'
                     ? <BeerScreen
-                        beerActive={beerCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {cidSprCategory
+                {menuCategory === 'cider spritz'
                     ? <CiderSeltzScreen
-                        cidSprActive={cidSprCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {mixedCategory
+                {menuCategory === 'mixed'
                     ? <MixedDrinksScreen
-                        mixedActive={mixedCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {liquorsCategory
+                {menuCategory === 'liquors'
                     ? <LiquorsScreen
-                        liquorsActive={liquorsCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
 
-                {winesCategory
+                {menuCategory === 'wines'
                     ? <WinesScreen
-                        winesActive={winesCategory}
                         selectedSeatExists={doesSeatExist}
                         selectedSeat={selectedSeat}
-                        serverData={serverData}
-                        tableData={tableData}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
-                        setSelectedSeat={setSelectedSeat}
                         />
                     : null
                 }
@@ -443,16 +277,7 @@ const MenuTab = (props) => {
             
             <MenuTabNav
                 setHelpModal={props.setHelpModal}
-                toDirectory={setDirectory}
-                toApps={setAppsCategory}
-                toMains={setMainsCategory}
-                toDesserts={setDessertsCategory}
-                toNonAlch={setNonAlchCategory}
-                toBeer={setBeerCategory}
-                toCidSpr={setCidSprCategory}
-                toMixed={setMixedCategory}
-                toLiquors={setLiquorsCategory}
-                toWines={setWinesCategory}
+                setMenuCategory={setMenuCategory}
                 setSelectedSeat={setSelectedSeat}
                 setSeatKeyPadActive={setSeatKeyPadActive}
                 setCurrentOrderData={setCurrentOrderData}

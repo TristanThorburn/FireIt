@@ -12,8 +12,6 @@ import AlphaNumericPad from "../keypads/AlphaNumericPad";
 const CheckTab = (props) => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
-    const [ tableData, setTableData ] = useState({});
-    const [ serverData, setServerData ] = useState({});
     const [ receiptData, setReceiptData ] = useState([]);
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
@@ -52,38 +50,6 @@ const CheckTab = (props) => {
     // Get data for current employee and table, and tables receipts
     useEffect(() => {
         if(contextTable !== ''){
-            const getTable = async () => {
-                const docRef = doc(db, 'tables', contextTable)
-                const tableDataRequest = await getDoc(docRef, {source: 'cache'})
-                const tableInfo = tableDataRequest.data();
-                    if(tableInfo){
-                        setTableData(tableInfo)
-                    } else {
-                        const serverDataRequest = await getDoc(docRef)
-                        const serverData = serverDataRequest.data()
-                        if(serverData){
-                            setTableData(serverData)
-                        } else {
-                            setFireItAlert('CheckTab data error')
-                        }
-                    } 
-            }
-            const getServer = async () => {
-                const docRef = doc(db, 'employees', employeeContext.employeeNumber)
-                const serverDataRequest = await getDoc(docRef)
-                const serverInfo = serverDataRequest.data();
-                    if(serverInfo){
-                        setServerData(serverInfo)
-                    } else {
-                        const serverDataRequest = await getDoc(docRef)
-                        const serverData = serverDataRequest.data()
-                        if(serverData){
-                            setServerData(serverData)
-                        } else {
-                            setFireItAlert('CheckTab data error')
-                        }
-                    }
-            }
             const getReceipts = async () => {
                 const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
@@ -96,8 +62,7 @@ const CheckTab = (props) => {
                 })
                 return unsubscribe
                 }
-            getTable()
-            .then(getServer()).then(getReceipts())
+            getReceipts()
         }
     }, [contextTable, employeeContext]);
 
@@ -302,8 +267,7 @@ const CheckTab = (props) => {
             }
 
             <TableCheck
-                    serverData={serverData}
-                    tableData={tableData}
+                    tableData={props.activeTableData}
                     checkTabActive={props.checkTabActive}
                     setSeperatedSeatData={setSeperatedSeatData}
                     setSelectReceiptTarget={setSelectReceiptTarget}
@@ -381,8 +345,8 @@ const CheckTab = (props) => {
                 receiptsNumber={receiptData.length}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                 setPrintReceipts={setPrintReceipts}
-                employeeNumber={serverData.employeeNumber}
-                tableId={tableData.searchId}
+                employeeNumber={employeeContext.employeeNumber}
+                tableId={props.activeTableData.searchId}
                 />
         </div>
     )

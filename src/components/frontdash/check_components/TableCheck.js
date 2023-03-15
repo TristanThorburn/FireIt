@@ -4,12 +4,12 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useState, useEffect, useCallback } from 'react';
 
 const TableCheck = (props) => {
-    const { managerContext } = useAuth();
+    const { managerContext, employeeContext } = useAuth();
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
     const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
-        collection(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`)
+        collection(db, 'checks', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`)
         
     const handlePendingOrderDelete = useCallback((e) => {
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
@@ -273,7 +273,7 @@ const TableCheck = (props) => {
         if(props.sendOrder === true && pendingOrder !== ''){
             pendingOrder.forEach(order => {
                 const checkRef = 
-                    doc(db, 'checks', `${props.serverData.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
+                    doc(db, 'checks', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
                 if(order.new === 'true'){
                     setDoc(checkRef, {
                         seat:true,
@@ -305,7 +305,7 @@ const TableCheck = (props) => {
         props.setMenuTabActive(false)
         props.setTableTabActive(true)
         }
-    }, [props.sendOrder, pendingOrder, props])
+    }, [props.sendOrder, pendingOrder, props, employeeContext.employeeNumber])
     
     const handleCheckItemClickCapture = (e) => {
         if(props.menuTabActive && managerContext === false){
@@ -354,7 +354,7 @@ const TableCheck = (props) => {
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>
-                    <h3>Server: {props.serverData.firstName}</h3>
+                    <h3>Server: {employeeContext.firstName}</h3>
                 </div>
                 : <div>
                     <h2>No Table Selected</h2>

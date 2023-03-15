@@ -57,13 +57,8 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'CheckTab data error'
-                        ? <div className='padError'>Sorry, no data was found, please try again.
-                        </div>
-                        : null
-                    }
-                    {props.fireItAlert === 'MenuTab data error'
-                        ? <div className='padError'>Sorry, no data was found, please try again.
+                    {props.fireItAlert === 'Table data error'
+                        ? <div className='padError'>Sorry, no data was found for selected table, please try again.
                         </div>
                         : null
                     }
@@ -87,11 +82,6 @@ const FireItAlert = (props) => {
                                     >Cancel
                                 </button>
                             </div>
-                        </div>
-                        : null
-                    }
-                    {props.fireItAlert === 'PaymentTab data error'
-                        ? <div className='padError'>Sorry, no data was found, please try again.
                         </div>
                         : null
                     }
