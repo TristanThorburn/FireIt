@@ -8,7 +8,7 @@ const AlphaNumericPad = (props) => {
     let padCombo = []
 
     const handleCloseModal = () => {
-        if(props.menuTabActive || props.checkTabActive){
+        if(props.menuTabActive || props.checkTabActive || props.paymentTabActive){
             props.setAlphaNumericPadOpen(false)
         }
     }

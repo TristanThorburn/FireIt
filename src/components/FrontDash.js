@@ -77,6 +77,7 @@ const FrontDash = () => {
             {paymentTabActive
                 ? <PaymentTab
                     setHelpModal={setHelpModal}
+                    paymentTabActive={paymentTabActive}
                     />
                 : null
             }

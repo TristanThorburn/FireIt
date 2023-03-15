@@ -18,6 +18,12 @@
     }
 }
 
+.summaryTab, .paymentTab{
+    h2{
+        margin:0;
+    }
+}
+
 .menuTab, .checkTab{
     display:flex;
 }

@@ -90,6 +90,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'PaymentTab data error'
+                        ? <div className='padError'>Sorry, no data was found, please try again.
+                        </div>
+                        : null
+                    }
                 </article>
             </div>
         </div>
