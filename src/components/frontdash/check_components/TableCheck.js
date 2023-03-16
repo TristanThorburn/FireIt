@@ -336,6 +336,8 @@ const TableCheck = (props) => {
 
     const handleSeperateSeatCapture = (e) => {
         if(props.checkTabActive){
+            props.setAppendReceipt('')
+            props.setSeperatedSeatData('')
             let seatOrders = []
             let costsArray = []
             props.setTargetReceiptNumber('')

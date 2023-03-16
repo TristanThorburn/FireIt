@@ -147,6 +147,7 @@ const FrontDash = () => {
                     setHelpModal={setHelpModal}
                     paymentTabActive={paymentTabActive}
                     activeTableData={activeTableData}
+                    serverTableList={serverTableList}
                     />
                 : null
             }
