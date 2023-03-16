@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
@@ -10,43 +10,42 @@ const CiderSeltzScreen = (props) => {
     const [ itemData, setItemData ] = useState('');
     const time = Date.now().toString()
 
+    // Populate screen with items data
     useEffect(() => {
         const fetchCider = async () => {
             const q = query(ciderCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
+            const querySnapShot = await getDocsFromCache(q)
+            if(querySnapShot){
                 const menuItemList = querySnapShot.docs.map(doc => ({
                     id:doc.id,
                     data:doc.data()
                 }))
                 setCiderData(menuItemList)
             } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setCiderData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const severData = await getDocs(q)
+                const menuItemList = severData.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setCiderData(menuItemList)
             }
         }
         const fetchSeltzer = async () => {
             const q = query(hardSeltzerCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
+            const querySnapShot = await getDocsFromCache(q)
+            if(querySnapShot){
                 const menuItemList = querySnapShot.docs.map(doc => ({
                     id:doc.id,
                     data:doc.data()
                 }))
                 setSeltzerData(menuItemList)
             } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setSeltzerData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const severData = await getDocs(q)
+                const menuItemList = severData.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setSeltzerData(menuItemList)
             }
         }
         fetchCider()
@@ -58,7 +57,7 @@ const CiderSeltzScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'cider'){
                 const docRef = doc(ciderCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                     if(itemDataRequest.data()){
                         setItemData(itemDataRequest.data())
                     } else {
@@ -67,7 +66,7 @@ const CiderSeltzScreen = (props) => {
             }
             if(selectedItem !== '' && collectionRef === 'seltzer'){
                 const docRef = doc(hardSeltzerCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                     if(itemDataRequest.data()){
                         setItemData(itemDataRequest.data())
                     } else {

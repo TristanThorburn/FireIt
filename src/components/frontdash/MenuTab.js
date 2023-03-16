@@ -32,10 +32,6 @@ const MenuTab = (props) => {
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false)
 
-    const handleTest = () => {
-        console.log(employeeContext)
-    }
-
     // Confirm if seat exists on check, if none is selected assume we are using seat 1
     useEffect(() => {
         const doesSeatExist = async () => {
@@ -131,6 +127,7 @@ const MenuTab = (props) => {
                 ? <AlphaNumericPad
                     menuTabActive={props.menuTabActive}
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                    serverTableList={props.serverTableList}
                     />
                 : null
             }
@@ -176,7 +173,7 @@ const MenuTab = (props) => {
                             <li onClick={handleGoLiquor}><button>LIQUOR</button></li>
                             <li onClick={handleGoNonAlch}><button>NON ALCH</button></li>
                             <li onClick={handleGoMixed}><button>MIXED DRINKS</button></li>
-                            <li><button onClick={handleTest} className='testButton'>TEST</button></li>
+                            <li></li>
                             <li onClick={handleGoWine}><button>WINES</button></li>
                         </ul>
                     </div>

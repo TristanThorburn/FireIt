@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
 
 const NonAlchScreen = (props) => {
     const [ coldDrinkData, setColdDrinkData ] = useState([]);
@@ -14,40 +14,38 @@ const NonAlchScreen = (props) => {
     useEffect(() => {
         const fetchCold = async () => {
             const q = query(coldDrinksCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
+            const querySnapShot = await getDocsFromCache(q)
+            if(querySnapShot){
                 const menuItemList = querySnapShot.docs.map(doc => ({
                     id:doc.id,
                     data:doc.data()
                 }))
                 setColdDrinkData(menuItemList)
             } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setColdDrinkData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const severData = await getDocs(q)
+                const menuItemList = severData.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setColdDrinkData(menuItemList)
             }
         }
         const fetchHot = async () => {
             const q = query(hotDrinksCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
+            const querySnapShot = await getDocsFromCache(q)
+            if(querySnapShot){
                 const menuItemList = querySnapShot.docs.map(doc => ({
                     id:doc.id,
                     data:doc.data()
                 }))
                 setHotDrinkData(menuItemList)
             } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setHotDrinkData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const severData = await getDocs(q)
+                const menuItemList = severData.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setColdDrinkData(menuItemList)
             }
         }
         fetchCold()
@@ -59,7 +57,7 @@ const NonAlchScreen = (props) => {
         const getItem =  async () => {
             if(selectedItem !== '' && collectionRef === 'cold'){
                 const docRef = doc(coldDrinksCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {
@@ -68,7 +66,7 @@ const NonAlchScreen = (props) => {
             }
             if(selectedItem !== '' && collectionRef === 'hot'){
                 const docRef = doc(hotDrinksCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {

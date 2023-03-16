@@ -6,7 +6,7 @@ import {
     vodkaCollectionRef,
     whiskeyCollectionRef,
 } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
 
 const LiquorsScreen = (props) => {
     const [ liquorData, setLiquorData ] = useState([]);
@@ -25,21 +25,20 @@ const LiquorsScreen = (props) => {
         if(collectionRef === 'gin'){
             const fetchGins = async () => {
                 const q = query(ginCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setLiquorData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setLiquorData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setLiquorData(menuItemList)
                 }
             }
             fetchGins()
@@ -47,21 +46,20 @@ const LiquorsScreen = (props) => {
         if(collectionRef === 'rum'){
             const fetchRums = async () => {
                 const q = query(rumCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setLiquorData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setLiquorData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setLiquorData(menuItemList)
                 }
             }
             fetchRums()
@@ -69,21 +67,20 @@ const LiquorsScreen = (props) => {
         if(collectionRef === 'tequila'){
             const fetchTequilas = async () => {
                 const q = query(tequilaCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setLiquorData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setLiquorData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setLiquorData(menuItemList)
                 }
             }
             fetchTequilas()
@@ -91,21 +88,20 @@ const LiquorsScreen = (props) => {
         if(collectionRef === 'vodka'){
             const fetchVodkas = async () => {
                 const q = query(vodkaCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setLiquorData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setLiquorData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setLiquorData(menuItemList)
                 }
             }
             fetchVodkas()
@@ -113,21 +109,20 @@ const LiquorsScreen = (props) => {
         if(collectionRef === 'whiskey'){
             const fetchWhiskeys = async () => {
                 const q = query(whiskeyCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setLiquorData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setLiquorData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setLiquorData(menuItemList)
                 }
             }
             fetchWhiskeys()
@@ -139,7 +134,7 @@ const LiquorsScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'gin'){
                 const docRef = doc(ginCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {
@@ -148,7 +143,7 @@ const LiquorsScreen = (props) => {
             }
             if(selectedItem !== '' && collectionRef === 'rum'){
                 const docRef = doc(rumCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {
@@ -157,7 +152,7 @@ const LiquorsScreen = (props) => {
             }
             if(selectedItem !== '' && collectionRef === 'tequila'){
                 const docRef = doc(tequilaCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {
@@ -166,7 +161,7 @@ const LiquorsScreen = (props) => {
             }
             if(selectedItem !== '' && collectionRef === 'vodka'){
                 const docRef = doc(vodkaCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {
@@ -175,7 +170,7 @@ const LiquorsScreen = (props) => {
             }
             if(selectedItem !== '' && collectionRef === 'whiskey'){
                 const docRef = doc(whiskeyCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {

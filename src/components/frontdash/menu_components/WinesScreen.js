@@ -4,7 +4,7 @@ import {
     whiteWineCollectionRef,
     bubblyCollectionRef
     } from '../../../library/firestoreCollections';
-    import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
+    import { getDocFromCache, query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const WinesScreen = (props) => {
     const [ wineData, setWineData ] = useState([]);
@@ -16,47 +16,46 @@ const WinesScreen = (props) => {
     const redButton = document.getElementById('red')
     const whiteButton = document.getElementById('white')
 
+    // Populate menu screen with data
     useEffect(() => {
         if(collectionRef === 'bubbly'){
             const fetchBubbly = async () => {
                 const q = query(bubblyCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setWineData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setWineData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setWineData(menuItemList)
+                    }
             }
             fetchBubbly()
         }
         if(collectionRef === 'red'){
             const fetchReds = async () => {
                 const q = query(redWineCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setWineData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setWineData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setWineData(menuItemList)
                 }
             }
             fetchReds()
@@ -64,21 +63,20 @@ const WinesScreen = (props) => {
         if(collectionRef === 'white'){
             const fetchWhites = async () => {
                 const q = query(whiteWineCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
+                const querySnapShot = await getDocsFromCache(q)
+                if(querySnapShot){
                     const menuItemList = querySnapShot.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setWineData(menuItemList)
                 } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setWineData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
+                    const severData = await getDocs(q)
+                    const menuItemList = severData.docs.map(doc => ({
+                        id:doc.id,
+                        data:doc.data()
+                    }))
+                    setWineData(menuItemList)
                 }
             }
             fetchWhites()
@@ -88,16 +86,40 @@ const WinesScreen = (props) => {
     // GetDoc for selected item
     useEffect(() => {
         if(selectedItem !== '' && collectionRef === 'red'){
-            const docRef = doc(redWineCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+            const getRedWine = async () => {
+                const docRef = doc(redWineCollectionRef, selectedItem)
+                const itemDataRequest = await getDocFromCache(docRef)
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
+            getRedWine()
         }
         if(selectedItem !== '' && collectionRef === 'white'){
-            const docRef = doc(whiteWineCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+            const getWhiteWine = async () => {
+                const docRef = doc(whiteWineCollectionRef, selectedItem)
+                const itemDataRequest = await getDocFromCache(docRef)
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
+            getWhiteWine()
         }
         if(selectedItem !== '' && collectionRef === 'bubbly'){
-            const docRef = doc(bubblyCollectionRef, selectedItem)
-            getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+            const getBubbly = async () => {
+                const docRef = doc(bubblyCollectionRef, selectedItem)
+                const itemDataRequest = await getDocFromCache(docRef)
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
+                        getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
+                    }
+            }
+            getBubbly()
         }
     }, [selectedItem, collectionRef])
 

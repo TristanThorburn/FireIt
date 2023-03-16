@@ -26,6 +26,24 @@
     }
 }
 
+.summaryTabDisplayContainer {
+    .activeCheck{
+        width:70%;
+        height:100%;
+    }
+    .seatsAndOrders{
+        display:flex;
+        flex-wrap: wrap;
+    }
+    table{
+        margin:1rem 2rem;
+        width:calc((100% / 3) - 4rem)
+    }
+    footer{
+        font-weight: bold;
+    }
+}
+
 .checkSeatInfo, .receiptSeatInfo, .pendingSeperateSeat{
     width:80%;
     margin:10px auto;

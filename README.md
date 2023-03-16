@@ -10,8 +10,15 @@ Primarily inspired by my 3 years working exclusively with Squirrel (https://www.
 
 Tristan Thorburn 2023
 
-
                                     CHANGELOG:
+                                    2023-03-15
+SummaryTab
+    -Quick reference list of all the tables currently in use by the active user.
+
+TableMap, MenuTab, CheckTab
+    -Servers can no longer access tables that already have orders on them from another server/user, when selected on the Table Map or CHNG TBL nav.
+
+**********************************************************************************************************
                                     2023-03-13
 App:
     -Laptop and Tablet styling added for prior compontents.

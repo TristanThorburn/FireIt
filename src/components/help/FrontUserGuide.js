@@ -20,9 +20,10 @@ const FrontUserGuide = (props) => {
                 {props.tableTabActive
                     ? <ul>
                         <li>This represents the layout of the restaurant, tables can be 'touched' to select the table and link to the menu for food and drink orders. Table designs, names and positions can be updated and saved by using the Admin tab to enter the back dash.</li>
+                        <li>Servers cannot access a table that already has orders on it from another server</li>
                         <li>Stretch Goals: 
                             <br />
-                            Color change tables to designate if the table already has ordered items from the server. Prohibit orders on tables in use by any server.
+                            Color change tables to designate if the table already has ordered items from the server.
                         </li>
                     </ul>
                     : null
@@ -86,13 +87,12 @@ const FrontUserGuide = (props) => {
 
                 {props.summaryTabActive
                     ? <ul>
-                        <li>Under Construction: 
-                            <br />
-                            .
+                        <li>
+                            Displays all tables currently in use by the server for easy reference
                         </li>
                         <li>Stretch Goals: 
                             <br />
-                            Display all tables currently in use by the server for easy reference, allow for the transfer of tables between servers. Allow for the transfer of items between seats. Select items to be repeated for another 'round'.
+                            Allow for the transfer of tables between servers. Allow for the transfer of items between seats. Select items to be repeated for another 'round'.
                         </li>
                     </ul>
                     : null
@@ -176,7 +176,7 @@ const FrontUserGuide = (props) => {
                         <li>
                             CHNG TBL
                             <br />
-                            - Change active table using the alphanumeric pad instead of TableMap. There is currently no logic to notify if searched table does not exist.
+                            - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
                         </li>
                         <li>
                             HIDE OLD
@@ -227,7 +227,7 @@ const FrontUserGuide = (props) => {
                         <li>
                             CHNG TBL
                             <br />
-                            - Change active table using the alphanumeric pad instead of TableMap. There is currently no logic to notify if searched table does not exist.
+                            - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
                         </li>
                         <li>
                             DEMO

@@ -27,6 +27,7 @@ const AddTableForm = (props) => {
                         tableStyle:design,
                         top:'625px',
                         left:'925px',
+                        serverOwner:'none',
                     })
                 props.setAddingTable(false)
                 }

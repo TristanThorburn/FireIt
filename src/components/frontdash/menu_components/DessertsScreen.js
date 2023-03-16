@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { dessertsCollectionRef } from '../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
 
 const DessertsScreen = (props) => {
     const [ dessertsData, setDessertsData ] = useState([]);
@@ -12,21 +12,20 @@ const DessertsScreen = (props) => {
     useEffect(() => {
         const getMenuCategory = async () => {
             const q = query(dessertsCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
+            const querySnapShot = await getDocsFromCache(q)
+            if(querySnapShot){
                 const menuItemList = querySnapShot.docs.map(doc => ({
                     id:doc.id,
                     data:doc.data()
                 }))
                 setDessertsData(menuItemList)
             } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setDessertsData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
+                const severData = await getDocs(q)
+                const menuItemList = severData.docs.map(doc => ({
+                    id:doc.id,
+                    data:doc.data()
+                }))
+                setDessertsData(menuItemList)
             }
         }
         getMenuCategory()
@@ -37,7 +36,7 @@ const DessertsScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== ''){
                 const docRef = doc(dessertsCollectionRef, selectedItem)
-                const itemDataRequest = await getDoc(docRef, { source: 'cache' })
+                const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
                     setItemData(itemDataRequest.data())
                 } else {

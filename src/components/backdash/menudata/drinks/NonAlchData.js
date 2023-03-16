@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const NonAlchData = (props) => {
     const [ nonAlchData, setNonAlchData ] = useState([]);
@@ -21,47 +21,30 @@ const NonAlchData = (props) => {
         props.setDocQuery(['drinks', 'non alcoholic', 'hot drinks'])
     }
 
+    // Initial data population
     useEffect(() => {
         const getMenuCategory = async () => {
             setSelectedItem('');
             setNewItem(false);
             if(drinkType === 'cold'){
                 const q = query(coldDrinksCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setNonAlchData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setNonAlchData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setNonAlchData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
             if(drinkType === 'hot'){
                 const q = query(hotDrinksCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setNonAlchData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setNonAlchData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setNonAlchData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
         }
         getMenuCategory()

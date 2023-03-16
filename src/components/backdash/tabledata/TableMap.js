@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTable } from './../../../contexts/TableContext';
+import { useAuth } from '../../../contexts/AuthContext';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, getDocs } from 'firebase/firestore';
@@ -8,15 +9,16 @@ import TableStyleUpdate from './TableStyleUpdate';
 import FireItAlert from '../../help/FireItAlert';
 
 const TableMap = (props) => {
-    const tableMap = document.querySelector('.tableMap');
-    const tables = document.querySelectorAll('.table');
-    const { setContextTable } = useTable()
+    const { setContextTable } = useTable();
+    const { employeeContext } = useAuth();
     const [ tablesData, setTablesData ] = useState([]);
     const [ enableDrag, setEnableDrag ] = useState(false);
     const [ addingTable, setAddingTable ] = useState(false);    
     const [ stylingTable, setStylingTable ] = useState(false);
     const [ selectedTable, setSelectedTable ] = useState('');
     const [ fireItAlert, setFireItAlert ] = useState('')
+    const tableMap = document.querySelector('.tableMap');
+    const tables = document.querySelectorAll('.table');
 
     // Populate screen from table Data
     useEffect(() => {
@@ -104,9 +106,16 @@ const TableMap = (props) => {
             tableMap.addEventListener('mousemove', mouseMove)
         }
         if(props.tableTabActive){
-            props.setTableTabActive(false);
-            props.setMenuTabActive(true);
-            setContextTable(e.currentTarget.id);
+            if(e.currentTarget.dataset.inuse === 'none' 
+                || e.currentTarget.dataset.inuse === employeeContext.employeeNumber){
+                props.setTableTabActive(false);
+                props.setMenuTabActive(true);
+                setContextTable(e.currentTarget.id);
+            }
+            if(e.currentTarget.dataset.inuse !== 'none' 
+            || e.currentTarget.dataset.inuse !== employeeContext.employeeNumber){
+                setFireItAlert('TableMap table in use')
+            }
         }
         setSelectedTable(e.target)
     }
@@ -183,6 +192,7 @@ const TableMap = (props) => {
                                 <li 
                                     key={table.id}
                                     id={table.id}
+                                    data-inuse={table.data.serverOwner}
                                     className={['table', table.data?.tableStyle].join(' ')}
                                     onClickCapture={handleTableClickCapture}
                                     style={{left:table?.data.left, top: table?.data.top}}

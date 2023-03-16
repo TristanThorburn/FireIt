@@ -1,21 +1,20 @@
 import { useState } from "react";
-import { useTable } from "../../contexts/TableContext";
-import { useAuth } from "../../contexts/AuthContext";
+// import { useTable } from "../../contexts/TableContext";
+// import { useAuth } from "../../contexts/AuthContext";
 import PaymentTabNav from './navs/PaymentTabNav';
 import ServerKeyPad from "../keypads/ServerKeyPad";
 import AlphaNumericPad from '../keypads/AlphaNumericPad';
 import FireItAlert from "../help/FireItAlert";
 
 const PaymentTab = (props) => {
-    const { contextTable } = useTable();
-    const { employeeContext } = useAuth();
+    // const { contextTable } = useTable();
+    // const { employeeContext } = useAuth();
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('')
 
     const handleTest = () => {
-        console.log(props.activeTableData)
-        console.log(employeeContext, contextTable)
+        console.log('hi')
     }
 
     return(

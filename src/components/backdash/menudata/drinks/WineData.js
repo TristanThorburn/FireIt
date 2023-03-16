@@ -5,7 +5,7 @@ import {
         whiteWineCollectionRef,
         bubblyCollectionRef,
         } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const WineData = (props) => {
     const [ wineData, setWineData ] = useState([]);
@@ -16,60 +16,33 @@ const WineData = (props) => {
         const getMenuCategory = async () => {
             if(props.activeTab === 'red wine'){
                 const q = query(redWineCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setWineData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setWineData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setWineData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
             if(props.activeTab === 'white wine'){
                 const q = query(whiteWineCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setWineData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setWineData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setWineData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
             if(props.activeTab === 'bubbly'){
                 const q = query(bubblyCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setWineData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setWineData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setWineData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
             else {
                 setSelectedItem('');

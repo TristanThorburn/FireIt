@@ -1,32 +1,24 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const CiderData = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
+    // Data population
     useEffect(() => {
         const getMenuCategory = async () => {
             const q = query(ciderCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setCiderData(menuItemList)
-            } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setCiderData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
-            }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setCiderData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         getMenuCategory()
     },[])

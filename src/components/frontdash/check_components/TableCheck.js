@@ -9,7 +9,7 @@ const TableCheck = (props) => {
     const [ pendingOrder, setPendingOrder ] = useState('')
     const [ checkTotal, setCheckTotal ] = useState()
     const checkCollectionRef = 
-        collection(db, 'checks', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`)
+        collection(db, 'orders', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`)
         
     const handlePendingOrderDelete = useCallback((e) => {
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
@@ -254,7 +254,7 @@ const TableCheck = (props) => {
         if(props.sendOrder === true && document.querySelectorAll('.pendingOrder') !== null){
             let ordersToSend = [];
             const pendingOrders = document.querySelectorAll('.pendingOrder')
-            pendingOrders.forEach((order, i) => {
+            pendingOrders.forEach(order => {
                 ordersToSend.push({
                     seat:order.dataset.seat, 
                     name:order.firstElementChild.innerText,
@@ -273,20 +273,29 @@ const TableCheck = (props) => {
         if(props.sendOrder === true && pendingOrder !== ''){
             pendingOrder.forEach(order => {
                 const checkRef = 
-                    doc(db, 'checks', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
+                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
                 if(order.new === 'true'){
-                    setDoc(checkRef, {
-                        seat:true,
-                        seatNumber:order.number,
-                        order:[{
-                            item:order.name, 
-                            cost:order.cost, 
-                            discount:'0',
-                            originalCost:order.cost,
-                            qsa:'false',
-                            time:order.time,
-                        }],
-                    })
+                    const createNewCheckData = async () => {
+                        setDoc(checkRef, {
+                            seat:true,
+                            seatNumber:order.number,
+                            order:[{
+                                item:order.name, 
+                                cost:order.cost, 
+                                discount:'0',
+                                originalCost:order.cost,
+                                qsa:'false',
+                                time:order.time,
+                            }],
+                        })
+                    }
+                    const setTableOwnership = async () => {
+                        const tableRef = doc(db, 'tables', `${props.tableData.searchId}`)
+                        updateDoc(tableRef, {
+                            serverOwner:employeeContext.employeeNumber
+                        })
+                    }
+                    createNewCheckData().then(setTableOwnership())
                 }
                 if(order.new === 'false'){
                     const orderToAdd = [{
@@ -354,7 +363,11 @@ const TableCheck = (props) => {
             {props.tableData.name !== undefined
                 ? <div>
                     <h2>{props.tableData.name}</h2>
-                    <h3>Server: {employeeContext.firstName}</h3>
+                    
+                    {props.summaryTabActive
+                        ? null
+                        : <h3>Server: {employeeContext.firstName}</h3>
+                    }
                 </div>
                 : <div>
                     <h2>No Table Selected</h2>

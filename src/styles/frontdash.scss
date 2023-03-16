@@ -18,13 +18,13 @@
     }
 }
 
-.summaryTab, .paymentTab{
+.paymentTab{
     h2{
         margin:0;
     }
 }
 
-.menuTab, .checkTab{
+.menuTab, .checkTab, .summaryTabDisplayContainer{
     display:flex;
 }
 
@@ -103,4 +103,10 @@
     @include flexCenterCenter;
     text-align: center;
     background-color: darkblue;
+}
+
+.summaryTabDisplayContainer{
+    margin:0 auto;
+    width:90%;
+    height:90%;
 }

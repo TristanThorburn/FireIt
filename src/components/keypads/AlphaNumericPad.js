@@ -1,10 +1,12 @@
-import { useState } from "react"
-import { useTable } from "../../contexts/TableContext"
+import { useState } from "react";
+import { useTable } from "../../contexts/TableContext";
+import { db } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const AlphaNumericPad = (props) => {
-    const { setContextTable } = useTable()
-    const [ error, setError ] = useState('')
-    const [ success, setSuccess ] = useState('')
+    const { setContextTable } = useTable();
+    const [ error, setError ] = useState('');
+    const [ success, setSuccess ] = useState('');
     let padCombo = []
 
     const handleCloseModal = () => {
@@ -30,12 +32,32 @@ const AlphaNumericPad = (props) => {
     }
 
     const handleSubmit = () => {
-        const padInput = new Array(padCombo.join().replace(/[, ]+/g,'').trim())
-        setSuccess(padInput)
-        setContextTable(padInput.toString())
-        setTimeout(() => {
-            setSuccess('')
-        }, 1000)
+        const padInput = new Array(padCombo.join().replace(/[, ]+/g,'').trim()).toString()
+        const approvedTable = props.serverTableList.filter(obj => obj.id === padInput)
+        if(approvedTable.length >= 1){
+            setSuccess(padInput)
+            setContextTable(padInput)
+            setTimeout(() => {
+                setSuccess('')
+            }, 1000)
+        } else {
+            const docRef = doc(db, 'tables', padInput)
+            const getTableInfo = async () => {
+                const docSnap = await getDoc(docRef)
+                if(docSnap.exists()){
+                    if(docSnap.data().serverOwner === 'none'){
+                        setSuccess(padInput)
+                        setContextTable(padInput)
+                        setTimeout(() => {
+                            setSuccess('')
+                        }, 1000)
+                    } else {
+                        setError('Another server is using that table')
+                    }
+                }
+            }
+            getTableInfo()
+        }
     }
 
     return(
