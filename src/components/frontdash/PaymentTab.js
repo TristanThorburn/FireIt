@@ -1,21 +1,16 @@
 import { useState } from "react";
-// import { useTable } from "../../contexts/TableContext";
-// import { useAuth } from "../../contexts/AuthContext";
 import PaymentTabNav from './navs/PaymentTabNav';
 import ServerKeyPad from "../keypads/ServerKeyPad";
 import AlphaNumericPad from '../keypads/AlphaNumericPad';
 import FireItAlert from "../help/FireItAlert";
+import SummaryTables from '../frontdash/summary_components/SummaryTables';
+import TableCheck from "./check_components/TableCheck";
+import SummaryReceipts from "./summary_components/SummaryReceipts";
 
 const PaymentTab = (props) => {
-    // const { contextTable } = useTable();
-    // const { employeeContext } = useAuth();
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('')
-
-    const handleTest = () => {
-        console.log('hi')
-    }
 
     return(
         <div className='paymentTab'>
@@ -42,9 +37,17 @@ const PaymentTab = (props) => {
                     />
                 : null
             }
-
-            <h2>Payment Tab Under Construction</h2>
-            <button onClick={handleTest} className='testButton'>TEST</button>
+            
+            <SummaryTables
+                serverTableList={props.serverTableList}
+                />
+            
+            <TableCheck
+                tableData={props.activeTableData}
+                />
+            
+            <SummaryReceipts
+                />
 
             <PaymentTabNav
                 setHelpModal={props.setHelpModal}

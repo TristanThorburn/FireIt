@@ -18,7 +18,7 @@ const CheckTab = (props) => {
     const [ seperatedSeatData, setSeperatedSeatData ] = useState({});
     const [ selectReceiptTarget, setSelectReceiptTarget ] = useState('false');
     const [ targetReceiptNumber, setTargetReceiptNumber ] = useState('');
-    const [ appendReceipt, setAppendReceipt ] = useState();
+    const [ appendReceipt, setAppendReceipt ] = useState('');
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ printReceipts, setPrintReceipts ] = useState(false);
     const [ confirmSeatRemove, setConfirmSeatRemove ] = useState(false);
@@ -90,7 +90,10 @@ const CheckTab = (props) => {
     // Put the selected seat on the selected check
     useEffect(() => {
         const appendSeatToReceipt = async () => {
-            if(appendReceipt && seperatedSeatData !== '' && seperatedSeatData.order !== undefined){
+            if(appendReceipt !== '' 
+                && seperatedSeatData !== '' 
+                && seperatedSeatData.order !== undefined
+                ){
                 const targetReceipt = document.getElementById(appendReceipt.id)
                 const table = document.createElement('table')
                 // Set up table head with seat
@@ -273,6 +276,7 @@ const CheckTab = (props) => {
                     setSeperatedSeatData={setSeperatedSeatData}
                     setSelectReceiptTarget={setSelectReceiptTarget}
                     setTargetReceiptNumber={setTargetReceiptNumber}
+                    setAppendReceipt={setAppendReceipt}
                     />
 
             <section className='checkTabDisplay'>

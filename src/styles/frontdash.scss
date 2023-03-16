@@ -18,19 +18,13 @@
     }
 }
 
-.paymentTab{
-    h2{
-        margin:0;
-    }
-}
-
-.menuTab, .checkTab, .summaryTabDisplayContainer{
+.menuTab, .checkTab, .summaryTabDisplayContainer, .paymentTab{
     display:flex;
 }
 
 .frontDashTopNav{
     height:7.5vh;
-    border-bottom:2px solid black;
+    border-bottom:4px solid black;
     display:flex;
     align-items: center;
 
