@@ -47,7 +47,7 @@ const CheckTab = (props) => {
         setFireItAlert('CheckTab delete sent seat')
     }
 
-    // Get data for current employee and table, and tables receipts
+    // Get data for current table receipts
     useEffect(() => {
         if(contextTable !== ''){
             const getReceipts = async () => {
@@ -253,6 +253,7 @@ const CheckTab = (props) => {
                 ? <AlphaNumericPad
                     checkTabActive={props.checkTabActive}
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                    serverTableList={props.serverTableList}
                     />
                 : null
             }

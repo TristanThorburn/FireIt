@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { dessertsCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const DessertsData = (props) => {
     const [ dessertsData, setDessertsData ] = useState([]);
@@ -9,26 +9,14 @@ const DessertsData = (props) => {
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
-        const getMenuCategory = async () => {
-            const q = query(dessertsCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setDessertsData(menuItemList)
-            } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setDessertsData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
-            }
-        }
-        getMenuCategory()
+        const q = query(dessertsCollectionRef, orderBy('name'));
+        const unsubscribe = onSnapshot(q, snapshot => {
+            setDessertsData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+        return unsubscribe
     },[])
 
     const handleNewItem = () => {

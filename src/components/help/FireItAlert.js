@@ -42,6 +42,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'TableMap table in use'
+                        ? <div className='padError'>This table is in use by another server.
+                        </div>
+                        : null
+                    }
                     {props.fireItAlert === 'CheckTab less than zero'
                         ? <div className='padError'>You cannot have less than zero checks.
                         </div>

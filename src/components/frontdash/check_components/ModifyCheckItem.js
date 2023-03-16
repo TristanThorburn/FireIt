@@ -15,7 +15,7 @@ const ModifyCheckItem = (props) => {
     const [ discountAmount, setDiscountAmount ] = useState('')
     const [ qsaItem, setQsaItem ] = useState(false);
     const [ deleteQsaItem, setDeleteQsaItem ] = useState(false);
-    const docRef = doc(db, 'checks', employeeContext.employeeNumber, contextTable, props.checkItemModData.seat)
+    const docRef = doc(db, 'orders', employeeContext.employeeNumber, contextTable, props.checkItemModData.seat)
 
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)

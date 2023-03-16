@@ -1,7 +1,7 @@
 import MenuItemForm from '../MenuItemForm';
 import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const AppsData = (props) => {
     const [ appsData, setAppsData ] = useState([]);
@@ -27,26 +27,14 @@ const AppsData = (props) => {
 
     // populate screen with data from firestore
     useEffect(() => {
-        const getMenuCategory = async () => {
-            const q = query(appCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-            if(!querySnapShot.empty){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setAppsData(menuItemList)
-            } else {
-                const unsubscribe = onSnapshot(q, snapshot => {
-                    setAppsData(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                })
-                return unsubscribe
-            }
-        }
-        getMenuCategory()
+        const q = query(appCollectionRef, orderBy('name'));
+        const unsubscribe = onSnapshot(q, snapshot => {
+            setAppsData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+        return unsubscribe
     },[])
 
     const handleNewItem = () => {

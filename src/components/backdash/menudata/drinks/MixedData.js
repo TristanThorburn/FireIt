@@ -4,7 +4,7 @@ import {
         cocktailCollectionRef,
         shotsCollectionRef,
         } from '../../../../library/firestoreCollections';
-import { onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const MixedData = (props) => {
     const [ mixedData, setMixedData ] = useState([]);
@@ -15,41 +15,23 @@ const MixedData = (props) => {
         const getMenuCategory = async () => {
             if(props.activeTab === 'cocktails'){
                 const q = query(cocktailCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setMixedData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setMixedData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setMixedData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
             if(props.activeTab === 'shots'){
                 const q = query(shotsCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setMixedData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setMixedData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setMixedData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
             }
             else {
                 setSelectedItem('');
