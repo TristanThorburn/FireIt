@@ -47,11 +47,11 @@ const PaymentTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>CASH</button></li>
-                <li><button className='nonWorkingButton'>DEBIT INTERAC</button></li>
-                <li><button className='nonWorkingButton'>AMEX</button></li>
-                <li><button className='nonWorkingButton'>MASTER CARD</button></li>
-                <li><button className='nonWorkingButton'>VISA</button></li>
+                <li><button className='nonWorkingButton'>DEMO</button></li>
+                <li><button className='nonWorkingButton'>DEMO</button></li>
+                <li><button className='nonWorkingButton'>DEMO</button></li>
+                <li><button className='nonWorkingButton'>DEMO</button></li>
+                <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button></li>
                 <li className='infoButton'>
                     <button onClick={handleHelp}>🔥</button>

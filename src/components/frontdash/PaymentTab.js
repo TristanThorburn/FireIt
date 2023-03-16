@@ -6,11 +6,14 @@ import FireItAlert from "../help/FireItAlert";
 import SummaryTables from '../frontdash/summary_components/SummaryTables';
 import TableCheck from "./check_components/TableCheck";
 import SummaryReceipts from "./summary_components/SummaryReceipts";
+import PaymentKeyPad from "../keypads/PaymentKeyPad";
 
 const PaymentTab = (props) => {
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('')
+    const [ paymentKeyPadActive, setPaymentKeyPadActive ] = useState(false)
+    const [ receiptToSettle, setReceiptToSettle ] = useState('')
 
     return(
         <div className='paymentTab'>
@@ -29,6 +32,14 @@ const PaymentTab = (props) => {
                     />
                 : null
             }
+
+            {paymentKeyPadActive
+                ? <PaymentKeyPad
+                    receiptToSettle={receiptToSettle}
+                    setPaymentKeyPadActive={setPaymentKeyPadActive}
+                    />
+                : null
+            }
             {/* KEEP LAST FOR PRIORITY */}
             {fireItAlert !== ''
                 ? <FireItAlert
@@ -37,7 +48,7 @@ const PaymentTab = (props) => {
                     />
                 : null
             }
-            
+
             <SummaryTables
                 serverTableList={props.serverTableList}
                 />
@@ -47,6 +58,8 @@ const PaymentTab = (props) => {
                 />
             
             <SummaryReceipts
+                setPaymentKeyPadActive={setPaymentKeyPadActive}
+                setReceiptToSettle={setReceiptToSettle}
                 />
 
             <PaymentTabNav

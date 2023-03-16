@@ -115,3 +115,49 @@ button.closePad:active{
 .alphaNumModal{
     flex-direction: column;
 }
+
+.paymentDetails{
+    @include flexColumnCenter;
+    height:700px;
+    width:600px;
+    background-color:$backgroundColor;
+    border:4px solid black;
+
+    h2{
+        margin:0;
+        text-align: center;
+    }
+    .keypad{
+        height:325px;
+        width:100%;
+        @include flexCenterCenter;
+        border:none;
+    }
+    .paymentInfoDisplay{
+        height:calc(325px * (2/3));
+        border:4px solid black;
+        background-color: white;
+        width:100%;
+    }
+    .paymentMethods{
+        height:calc(325px * (1/3));
+        @include cleanUl;
+        display: flex;
+        width:100%;
+        @include flexCenterCenter;
+    }
+    li{
+        margin:0 1rem;
+    }
+    table{
+        margin:0 auto;
+        width:66%;
+    }
+    button{
+        @include flexCenterCenter;
+    }
+    img{
+        height:50px;
+        width:50px;
+    }
+}
