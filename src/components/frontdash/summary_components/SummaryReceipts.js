@@ -4,10 +4,14 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { db } from "../../../firebase";
 import { collection, query, orderBy, getDocsFromCache, getDocsFromServer } from "firebase/firestore";
 
-const SummaryReceipts = () => {
+const SummaryReceipts = (props) => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ receiptData, setReceiptData ] = useState([])
+
+    const handleTest = () => {
+        console.log(props.receiptToSettle)
+    }
 
     // Get data for current table receipts
     useEffect(() => {
@@ -36,15 +40,38 @@ const SummaryReceipts = () => {
         }
     }, [contextTable, employeeContext]);
 
+    const handleSettleReceiptCapture = (e) => {
+        const targetReceipt = e.currentTarget
+        let seatsList = []
+        const seats = targetReceipt.querySelectorAll('[data-receiptseat]')
+        seats.forEach(seat => {
+            seatsList.push(seat.dataset.receiptseat)
+        })
+        props.setReceiptToSettle({
+            receiptCost:targetReceipt.dataset.receiptcost,
+            seatslist:seatsList,
+            receipt:targetReceipt.dataset.receiptnumber,
+        })
+        props.setPaymentKeyPadActive(true)
+    }
+
     return(
         <div className='summaryReceipts'>
             {receiptData.length <1
                 ? <h2>Use the Check Tab to organize receipts.</h2>
                 : <ul>
+                    <li>
+<button onClick={handleTest} className='testButton'>TEST</button></li>
                     {receiptData.map((receipt, i) => {
                         return(
-                            <button className='unSettledReceipt'>
-                                <table key={i}>
+                            <button 
+                                key={i}
+                                className='unSettledReceipt'
+                                data-receiptcost={receipt.data.receiptTotalCost}
+                                data-receiptnumber={receipt.data.receiptNumber}
+                                onClickCapture={handleSettleReceiptCapture}
+                                >
+                                <table>
                                     <thead>
                                         <tr>
                                             <th>Receipt: {receipt.data.receiptNumber}</th>
@@ -56,7 +83,10 @@ const SummaryReceipts = () => {
                                         </tr>
                                         {receipt.data.seatsList.map(seat => {
                                             return(
-                                                <tr key={seat.seat}>
+                                                <tr
+                                                    key={seat.seat}
+                                                    data-receiptseat={seat.seat}
+                                                    >
                                                     <td>Seat {seat.seat}</td>
                                                 </tr>
                                             )
