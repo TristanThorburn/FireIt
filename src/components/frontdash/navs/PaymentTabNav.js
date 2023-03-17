@@ -8,7 +8,7 @@ const PaymentTabNav = (props) => {
     const [ error, setError ] = useState('')
 
     const handleTest = () => {
-        console.log(props.fullPaymentData.receipt.receipt)
+        console.log('hi')
     }
     
     const handleMgrOveride = () => {
@@ -19,6 +19,10 @@ const PaymentTabNav = (props) => {
         if(managerContext === true){
             setManagerContext(false)
         }
+    }
+
+    const handleFinalizePayments = () => {
+        props.setFinalizePayments(true)
     }
 
     const handleHelp = () => {
@@ -46,7 +50,13 @@ const PaymentTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>DEMO</button></li>
+                <li>
+                    <button 
+                        onClick={handleFinalizePayments} 
+                        className='workingButton'
+                        >FINALIZE PAYMENTS
+                    </button>
+                </li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>

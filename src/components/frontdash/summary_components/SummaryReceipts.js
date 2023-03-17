@@ -2,12 +2,26 @@ import { useEffect, useState } from "react";
 import { useTable } from "../../../contexts/TableContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import { db } from "../../../firebase";
-import { collection, query, orderBy, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, updateDoc, doc, getDoc, setDoc } from "firebase/firestore";
 
 const SummaryReceipts = (props) => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ receiptData, setReceiptData ] = useState([])
+
+    const getCurrentDate = (separator='') => {
+
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        
+        return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date}`
+    }
+
+    const handleTest = () => {
+        console.log('hi')
+    }
 
     // Get data for current table receipts
     useEffect(() => {
@@ -50,7 +64,7 @@ const SummaryReceipts = (props) => {
     useEffect(() => {
         if(props.fullPaymentData !== ''){
             const receiptRef = 
-                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + props.fullPaymentData.receipt.receipt)
+                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + props.fullPaymentData.receiptNumber)
             updateDoc(receiptRef, {
                 status:'settledReceipt',
                 paymentData:props.fullPaymentData
@@ -58,6 +72,36 @@ const SummaryReceipts = (props) => {
             props.setFullPaymentData('')
         }
     }, [props.fullPaymentData, contextTable, employeeContext.employeeNumber, props])
+
+    // Store payment data from settle receipts when finalize payments selected.
+    useEffect(() => {
+        if(props.finalizePayments === true){
+            const paymentsToComplete = document.querySelectorAll('[data-status=settledReceipt]')
+            // For each settled payment, get data and set it to an object, use that object to store payment data based on day and time of settlement
+            paymentsToComplete.forEach(payment => {
+                let finalReceiptData = {}
+                const date = getCurrentDate()
+                const receiptRef = 
+                    doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + payment.dataset.receiptnumber)
+                const getReceiptAndStorePayment = async () => {
+                    const receiptSnap = await getDoc(receiptRef)
+                    finalReceiptData = receiptSnap.data()
+                                        
+                    const time = Date.now().toString()
+                    const paymentRef = 
+                        doc(db, 'payments', employeeContext.employeeNumber, date, time)
+                    await setDoc(paymentRef, {
+                        receipt:finalReceiptData.receiptNumber,
+                        payment:finalReceiptData.paymentData.payments,
+                        table:contextTable,
+                        server:employeeContext.firstName
+                    })
+                    props.setFinalizePayments(false) 
+                }
+                getReceiptAndStorePayment()
+            })
+        }
+    }, [props, props.finalizePayments, contextTable, employeeContext.employeeNumber, employeeContext.firstName])
 
     const handleSettleReceiptCapture = (e) => {
         const targetReceipt = e.currentTarget
@@ -89,6 +133,7 @@ const SummaryReceipts = (props) => {
                 : receiptData.length <1
                     ? <h2>Use the Check Tab to organize receipts.</h2>
                     : <ul>
+<li><button onClick={handleTest} className='testButton'>TEST</button></li>
                         {receiptData.map((receipt, i) => {
                             return(
                                 <button 

@@ -108,7 +108,7 @@ const PaymentKeyPad = (props) => {
     const handleSubmit = () => {
         props.setFullPaymentData({
             payments:payments,
-            receipt:props.receiptToSettle,
+            receiptNumber:props.receiptToSettle.receipt,
         })
         props.setPaymentKeyPadActive(false)
     }

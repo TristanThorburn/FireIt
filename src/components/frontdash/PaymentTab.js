@@ -15,6 +15,7 @@ const PaymentTab = (props) => {
     const [ paymentKeyPadActive, setPaymentKeyPadActive ] = useState(false)
     const [ receiptToSettle, setReceiptToSettle ] = useState('')
     const [ fullPaymentData, setFullPaymentData ] = useState('')
+    const [ finalizePayments, setFinalizePayments ] = useState(false)
 
     // TODO
     // Settle all receipts like print checks / send order logic
@@ -71,13 +72,15 @@ const PaymentTab = (props) => {
                 fullPaymentData={fullPaymentData}
                 setFullPaymentData={setFullPaymentData}
                 setFireItAlert={setFireItAlert}
+                setFinalizePayments={setFinalizePayments}
+                finalizePayments={finalizePayments}
                 />
 
             <PaymentTabNav
                 setHelpModal={props.setHelpModal}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
-                fullPaymentData={fullPaymentData}
+                setFinalizePayments={setFinalizePayments}
                 />
         </div>
     )
