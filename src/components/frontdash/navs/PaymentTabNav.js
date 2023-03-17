@@ -8,7 +8,7 @@ const PaymentTabNav = (props) => {
     const [ error, setError ] = useState('')
 
     const handleTest = () => {
-        console.log(props.fullPaymentData)
+        console.log(props.fullPaymentData.receipt.receipt)
     }
     
     const handleMgrOveride = () => {

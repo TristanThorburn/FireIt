@@ -39,7 +39,8 @@ const CheckTabNav = (props) => {
                     setDoc(receiptRef, {
                         receiptTotalCost:0,
                         receiptNumber:props.receiptsNumber + 1,
-                        seatsList: []
+                        seatsList: [],
+                        status:'unSettledReceipt'
                     })
                 }
             }
