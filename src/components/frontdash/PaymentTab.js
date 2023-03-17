@@ -14,6 +14,7 @@ const PaymentTab = (props) => {
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ paymentKeyPadActive, setPaymentKeyPadActive ] = useState(false)
     const [ receiptToSettle, setReceiptToSettle ] = useState('')
+    const [ fullPaymentData, setFullPaymentData ] = useState()
 
     return(
         <div className='paymentTab'>
@@ -37,6 +38,8 @@ const PaymentTab = (props) => {
                 ? <PaymentKeyPad
                     receiptToSettle={receiptToSettle}
                     setPaymentKeyPadActive={setPaymentKeyPadActive}
+                    setFireItAlert={setFireItAlert}
+                    setFullPaymentData={setFullPaymentData}
                     />
                 : null
             }
@@ -66,6 +69,7 @@ const PaymentTab = (props) => {
                 setHelpModal={props.setHelpModal}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                fullPaymentData={fullPaymentData}
                 />
         </div>
     )

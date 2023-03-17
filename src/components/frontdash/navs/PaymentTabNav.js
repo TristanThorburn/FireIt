@@ -7,6 +7,9 @@ const PaymentTabNav = (props) => {
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
+    const handleTest = () => {
+        console.log(props.fullPaymentData)
+    }
     
     const handleMgrOveride = () => {
         if(managerContext === false){
@@ -16,10 +19,6 @@ const PaymentTabNav = (props) => {
         if(managerContext === true){
             setManagerContext(false)
         }
-    }
-
-    const handleChangeTable = () => {
-        props.setAlphaNumericPadOpen(true)
     }
 
     const handleHelp = () => {
@@ -52,7 +51,7 @@ const PaymentTabNav = (props) => {
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
-                <li><button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button></li>
+                <li><button onClick={handleTest} className='testButton'>TEST</button></li>
                 <li className='infoButton'>
                     <button onClick={handleHelp}>🔥</button>
                     <p onClick={handleHelp}>INFO</p>

@@ -91,16 +91,19 @@
 
     h2{
         text-align: center;
+        color:$fireItColor;
+        margin:0.5rem auto;
     }
     ul{
         @include cleanUl;
         display:flex;
         flex-wrap:wrap;
+        @include flexCenterCenter;
     }
     button{
         height:250px;
         width:200px;
-        margin:2rem 1.33rem;
+        margin:1rem 0.5rem;
         border:2px solid black;
         border-radius:10px;
         background-color: lightgreen;
