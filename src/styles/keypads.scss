@@ -123,6 +123,9 @@ button.closePad:active{
     background-color:$backgroundColor;
     border:4px solid black;
 
+    .closePad{
+        height:40px;
+    }
     h2{
         margin:0;
         text-align: center;
@@ -139,12 +142,28 @@ button.closePad:active{
         background-color: white;
         width:100%;
     }
-    .paymentMethods{
-        height:calc(325px * (1/3));
-        @include cleanUl;
+    .paymentsStatus{
+        height:calc(325px * (1/12));
+        margin:0.5rem auto;
+        width:100%;
+    }
+    .padError, .padSuccess{
+        width:98%;
+        margin:0 auto;
+    }
+    .paymentMethods, .tipButtonsContainer{
+        height:calc(325px * (1/6));
         display: flex;
         width:100%;
+        margin:0.5rem auto;
         @include flexCenterCenter;
+    }
+    .paymentMethods{
+        @include cleanUl;
+        margin:0.5rem auto;
+    }
+    .tipButtonsContainer{
+        justify-content: space-evenly;
     }
     li{
         margin:0 1rem;
@@ -159,5 +178,60 @@ button.closePad:active{
     img{
         height:50px;
         width:50px;
+    }
+    .payment{
+        cursor: pointer;
+        margin-top:5px;
+    }
+}
+
+.paymentInfoDisplay{
+    position:relative;
+
+    ul{
+        @include cleanUl;
+        @include flexColumnCenter;
+        height:60%;
+        overflow-y: scroll;
+    }
+    li{
+        display:flex;
+        width:40%;
+    }
+    .paymentType{
+        text-transform: capitalize;
+    }
+    .paymentAmount{
+        text-align: right;
+    }
+    p{
+        margin:0;
+        width:50%;
+    }
+    .paymentsCalculations{
+        margin:0;
+        position:absolute;
+        transform:translateX(-50%);
+        bottom:0;
+        left:50%;
+        width:100%;
+        display:flex;
+        justify-content: space-evenly;
+    }
+    h3, h4{
+        margin:0;
+        width:50%;
+        text-align: center;
+    }
+}
+
+.tipButtonsContainer{
+    button{
+        height:50px;
+        width:150px;
+        background-color:$backDashBackgroundColor;
+        border-radius:10px;
+        border:4px solid black;
+        font-size: 1.75rem;
     }
 }
