@@ -13,38 +13,77 @@ const PaymentKeyPad = (props) => {
     const [ paymentsChange, setPaymentsChange ] = useState([])
     const [ remainingTotal, setRemainingTotal ] = useState(props.receiptToSettle.receiptCost)
     const [ enterTip, setEnterTip ] = useState(false);
-    const [ tipAmount, setTipAmount ] = useState(0)
+    const [ newPaymentAmount, setNewPaymentAmount ] = useState(0);
+    const [ newPaymentMethod, setNewPaymentMethod ] = useState('');
+    const [ newPayment, setNewPayment ] = useState('');
+    const [ submitPayments, setSubmitPayments ] = useState(false)
+    const [totalTipAmount, setTotalTipAmount ] = useState(0)
 
-    // Calculate remaing value of receipt
+    // Combine entered info to display on payment details
+    useEffect(() => {
+        if(newPayment !== ''){
+            let totalPayments = []
+            // push to payments array, checking if it has payments already
+            if(payments.length >= 1){
+                payments.forEach(payment => {
+                    totalPayments.push(payment)
+                })
+                totalPayments.push(newPayment)
+                setPayments(totalPayments)
+                setNewPaymentAmount(0)
+                setNewPaymentMethod('')
+                setEnterTip(false)
+                setSuccess('')
+                setNewPayment('')
+            }
+            if(payments.length === 0){
+                setPayments([newPayment])
+                setNewPaymentAmount(0)
+                setNewPaymentMethod('')
+                setEnterTip(false)
+                setSuccess('')
+                setNewPayment('')
+            }
+        }
+    }, [newPayment, payments])
+
+    // Calculate remaing value of receipt, and total value of entered tips
     useEffect(() => {
         let paymentArray = []
+        let tipsArray = []
         const paymentDashboard = document.querySelector('.paymentInfoDisplay')
         const receiptTotal = paymentDashboard.querySelector('[data-receipttotal]')
         const paymentValues = paymentDashboard.querySelectorAll('[data-paymentamount]')
+        const tipValues = paymentDashboard.querySelectorAll('[data-tipamount]')
         paymentValues.forEach(payment => {
             paymentArray.push(Number(payment.dataset.paymentamount))
         })
-        const sum = paymentArray.reduce((a, b) => a + b, 0)
-        const totalRemaining = Number(receiptTotal.dataset.receipttotal) - sum
+        tipValues.forEach(tip => {
+            tipsArray.push(Number(tip.dataset.tipamount))
+        })
+        const paymentSum = paymentArray.reduce((a, b) => a + b, 0)
+        const tipsSum = tipsArray.reduce((a, b) => a + b, 0)
+        const totalRemaining = Number(receiptTotal.dataset.receipttotal) - paymentSum
+        setTotalTipAmount(tipsSum)
         setRemainingTotal(totalRemaining)
     }, [payments, paymentsChange])
 
-    // Prevent < 0, allow submit when = 0
+    // Prevent < 0 receipt totals, allow submit when === 0
     useEffect(() => {
         if(remainingTotal > 0){
-            setEnterTip(false)
             setSuccess('')
             setError('')
         }
         if(remainingTotal === 0){
-            setEnterTip(true)
-            setSuccess('Enter your tip amount, and submit payments')
+            setSubmitPayments(true)
+            setSuccess('Submit payments?')
         }
         if(remainingTotal < 0){
             setError('Payments total more than receipt cost')
         }
     }, [remainingTotal])
 
+    // update display of payment details when one is removed
     useEffect(() => {
         if(paymentsChange.length > 0){
             setPayments(paymentsChange)
@@ -67,134 +106,58 @@ const PaymentKeyPad = (props) => {
     const handleSubmit = () => {
         props.setFullPaymentData({
             payments:payments,
-            tip:tipAmount,
             receipt:props.receiptToSettle,
         })
         props.setPaymentKeyPadActive(false)
     }
 
     const handleCash = () => {
-        let totalPayments = []
-        if(payments.length >= 1){
-            payments.forEach(payment => {
-                totalPayments.push(payment)
-            })
-            const newPayment = {
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'cash'
-            }
-            totalPayments.push(newPayment)
-            setPayments(totalPayments)
-            padCombo = []
-        }
-        if(payments.length === 0){
-            const newPayment = [{
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'cash'
-            }]
-            setPayments(newPayment)
-            padCombo = []
-        }
+        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentMethod('cash')
+        padCombo = []
+        setSuccess('Enter tip')
+        setEnterTip(true)
     }
 
     const handleInterac = () => {
-        let totalPayments = []
-        if(payments.length >= 1){
-            payments.forEach(payment => {
-                totalPayments.push(payment)
-            })
-            const newPayment = {
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'interac'
-            }
-            totalPayments.push(newPayment)
-            setPayments(totalPayments)
-            padCombo = []
-        }
-        if(payments.length === 0){
-            const newPayment = [{
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'interac'
-            }]
-            setPayments(newPayment)
-            padCombo = []
-        }
+        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentMethod('interac')
+        padCombo = []
+        setSuccess('Enter tip')
+        setEnterTip(true)
     }
 
     const handleAmex = () => {
-        let totalPayments = []
-        if(payments.length >= 1){
-            payments.forEach(payment => {
-                totalPayments.push(payment)
-            })
-            const newPayment = {
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'amex'
-            }
-            totalPayments.push(newPayment)
-            setPayments(totalPayments)
-            padCombo = []
-        }
-        if(payments.length === 0){
-            const newPayment = [{
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'amex'
-            }]
-            setPayments(newPayment)
-            padCombo = []
-        }
+        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentMethod('amex')
+        padCombo = []
+        setSuccess('Enter tip')
+        setEnterTip(true)
     }
 
     const handleVisa = () => {
-        let totalPayments = []
-        if(payments.length >= 1){
-            payments.forEach(payment => {
-                totalPayments.push(payment)
-            })
-            const newPayment = {
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'visa'
-            }
-            totalPayments.push(newPayment)
-            setPayments(totalPayments)
-            padCombo = []
-        }
-        if(payments.length === 0){
-            const newPayment = [{
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'visa'
-            }]
-            setPayments(newPayment)
-            padCombo = []
-        }
+        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentMethod('visa')
+        padCombo = []
+        setSuccess('Enter tip')
+        setEnterTip(true)
     }
 
     const handleMastercard = () => {
-        let totalPayments = []
-        if(payments.length >= 1){
-            payments.forEach(payment => {
-                totalPayments.push(payment)
-            })
-            const newPayment = {
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'mastercard'
-            }
-            totalPayments.push(newPayment)
-            setPayments(totalPayments)
-            padCombo = []
-        }
-        if(payments.length === 0){
-            const newPayment = [{
-                amount:Number(padCombo.join().replace(/,/g, '')),
-                method:'mastercard'
-            }]
-            setPayments(newPayment)
-            padCombo = []
-        }
+        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentMethod('mastercard')
+        padCombo = []
+        setSuccess('Enter tip')
+        setEnterTip(true)
     }
 
     const handleEnterTip = () => {
-        setTipAmount(Number(padCombo.join().replace(/,/g, '')))
+        const paymentInfo = {}
+        paymentInfo.amount = newPaymentAmount
+        paymentInfo.method = newPaymentMethod
+        paymentInfo.tip = Number(padCombo.join().replace(/,/g, ''))
+        setNewPayment(paymentInfo)
+        padCombo = []
     }
 
     const handleCancelPayment = (e) => {
@@ -202,18 +165,15 @@ const PaymentKeyPad = (props) => {
         let paymentsList = payments
         const filterAmount = Number(selectedPayment.dataset.paymentamount)
         const filterMethod = selectedPayment.dataset.paymentmethod
+        const filterTip = Number(selectedPayment.dataset.tipamount)
         const indexToRemove = payments.findIndex(
             obj => 
             obj.amount === filterAmount 
             &&
             obj.method === filterMethod
+            &&
+            obj.tip === filterTip
             )
-        // setPayments(filteredPayment)
-        // payments.splice(indexToRemove, 1)
-        // let myArray = payments.filter(index => {
-        //     return index !== indexToRemove
-        // })
-        // setPayments(myArray)
         paymentsList.splice(indexToRemove, 1)
         setPaymentsChange(paymentsList)
     }
@@ -239,9 +199,11 @@ const PaymentKeyPad = (props) => {
                                     className='payment'
                                     data-paymentmethod={payment.method}
                                     data-paymentamount={payment.amount}
+                                    data-tipamount={payment.tip}
                                     >
                                     <p className='paymentType'>{payment.method}</p>
                                     <p className='paymentAmount'>${payment.amount}</p>
+                                    <p className='tipAmount'>Tip: ${payment.tip}</p>
                                 </li>
                             )
                         })}
@@ -249,7 +211,7 @@ const PaymentKeyPad = (props) => {
 
                     <div className='paymentsCalculations'>
                         <h3>Remaining: ${remainingTotal}</h3>
-                        <h4>Tip: ${tipAmount}</h4>
+                        <h4>Tips: ${totalTipAmount}</h4>
                     </div>
                 </div>
                 
@@ -262,57 +224,58 @@ const PaymentKeyPad = (props) => {
                     }
                 </div>
 
-                {enterTip
+                {submitPayments
                     ? <div className='tipButtonsContainer'>
-                        <button 
-                            onClick={handleEnterTip}
-                            >💰
-                        </button>
                         <button 
                             onClick={handleSubmit}
                             >🔥
                         </button>
                     </div>
-                    : <ul className='paymentMethods'>
-                        <li>
-                            <button
-                                onClick={handleCash}
-                                >
-                                <img src={cash} alt="" />
+                    : enterTip
+                        ? <div className='tipButtonsContainer'>
+                            <button 
+                                onClick={handleEnterTip}
+                                >💰
                             </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={handleInterac}
-                                >
-                                <img src={interac} alt="" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={handleAmex}
-                                >
-                                <img src={amex} alt="" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={handleVisa}
-                                >
-                                <img src={visa} alt="" />
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={handleMastercard}
-                                >
-                                <img src={mastercard} alt="" />
-                            </button>
-                        </li>
-                    </ul>
+                        </div>
+                        : <ul className='paymentMethods'>
+                            <li>
+                                <button
+                                    onClick={handleCash}
+                                    >
+                                    <img src={cash} alt="" />
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={handleInterac}
+                                    >
+                                    <img src={interac} alt="" />
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={handleAmex}
+                                    >
+                                    <img src={amex} alt="" />
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={handleVisa}
+                                    >
+                                    <img src={visa} alt="" />
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={handleMastercard}
+                                    >
+                                    <img src={mastercard} alt="" />
+                                </button>
+                            </li>
+                        </ul>
                 }
-
-                
 
                 <div className='keypad'>
                     <table>

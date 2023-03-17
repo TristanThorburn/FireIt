@@ -202,11 +202,14 @@ button.closePad:active{
         text-transform: capitalize;
     }
     .paymentAmount{
+        text-align: center;
+    }
+    .tipAmount{
         text-align: right;
     }
     p{
         margin:0;
-        width:50%;
+        width:calc(100% / 3);
     }
     .paymentsCalculations{
         margin:0;
@@ -233,5 +236,8 @@ button.closePad:active{
         border-radius:10px;
         border:4px solid black;
         font-size: 1.75rem;
+    }
+    button:active{
+        background-color:darken($backDashBackgroundColor, 50%);
     }
 }
