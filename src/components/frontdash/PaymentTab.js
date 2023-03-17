@@ -14,7 +14,13 @@ const PaymentTab = (props) => {
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ paymentKeyPadActive, setPaymentKeyPadActive ] = useState(false)
     const [ receiptToSettle, setReceiptToSettle ] = useState('')
-    const [ fullPaymentData, setFullPaymentData ] = useState()
+    const [ fullPaymentData, setFullPaymentData ] = useState('')
+    const [ finalizePayments, setFinalizePayments ] = useState(false)
+
+    // TODO
+    // Settle all receipts like print checks / send order logic
+    // I want the color to change on completed receipts, fullPaymentData should maybe be an array
+    // update receipt data with paid = true and details
 
     return(
         <div className='paymentTab'>
@@ -63,13 +69,18 @@ const PaymentTab = (props) => {
             <SummaryReceipts
                 setPaymentKeyPadActive={setPaymentKeyPadActive}
                 setReceiptToSettle={setReceiptToSettle}
+                fullPaymentData={fullPaymentData}
+                setFullPaymentData={setFullPaymentData}
+                setFireItAlert={setFireItAlert}
+                setFinalizePayments={setFinalizePayments}
+                finalizePayments={finalizePayments}
                 />
 
             <PaymentTabNav
                 setHelpModal={props.setHelpModal}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
-                fullPaymentData={fullPaymentData}
+                setFinalizePayments={setFinalizePayments}
                 />
         </div>
     )

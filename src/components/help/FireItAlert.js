@@ -90,6 +90,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'PaymentTab undo settled payment'
+                        ? <div className='padError'>Would you like to undo this payment?
+                        </div>
+                        : null
+                    }
                 </article>
             </div>
         </div>

@@ -75,8 +75,10 @@ const PaymentKeyPad = (props) => {
             setError('')
         }
         if(remainingTotal === 0){
-            setSubmitPayments(true)
-            setSuccess('Submit payments?')
+            setTimeout(() => {
+                setSubmitPayments(true)
+                setSuccess('Submit payments?')
+            }, 500)
         }
         if(remainingTotal < 0){
             setError('Payments total more than receipt cost')
@@ -106,7 +108,7 @@ const PaymentKeyPad = (props) => {
     const handleSubmit = () => {
         props.setFullPaymentData({
             payments:payments,
-            receipt:props.receiptToSettle,
+            receiptNumber:props.receiptToSettle.receipt,
         })
         props.setPaymentKeyPadActive(false)
     }

@@ -106,11 +106,14 @@
         margin:1rem 0.5rem;
         border:2px solid black;
         border-radius:10px;
-        background-color: lightgreen;
+        background-color:white;
         @include flexCenterCenter;
     }
     .unSettledReceipt{
         background-color: lightpink;
+    }
+    .settledReceipt{
+        background-color: lightgreen;
     }
     table{
         width:100%;
