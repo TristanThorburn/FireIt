@@ -11,6 +11,12 @@ Primarily inspired by my 3 years working exclusively with Squirrel (https://www.
 Tristan Thorburn 2023
 
                                     CHANGELOG:
+                                    2023-03-20
+PaymentTab
+    -Apply payment methods to receipts that were organized in the check tab. 
+    -FINISH SETTLE to finalize these payments, remove seats and receipts that are completed. If no seats remain table will be released from server ownership.
+
+**********************************************************************************************************
                                     2023-03-15
 SummaryTab
     -Quick reference list of all the tables currently in use by the active user.

@@ -16,6 +16,9 @@ const BackDashHelp = (props) => {
         if(props.settingsHelp === true){
             props.setSettingsHelp(false)
         }
+        if(props.scheduleHelp === true){
+            props.setScheduleHelp(false)
+        }
     }
 
     return(
@@ -45,6 +48,10 @@ const BackDashHelp = (props) => {
                             }
                             {props.settingsHelp
                                 ? 'Settings'
+                                : null
+                            }
+                            {props.scheduleHelp
+                                ? 'Schedule'
                                 : null
                             }
                         </h3>
@@ -89,6 +96,12 @@ const BackDashHelp = (props) => {
                             </ul>
                             : null
                         }
+                        {props.scheduleHelp
+                            ? <ul>
+                                <li>This section will be used create an employee schedule.</li>
+                            </ul>
+                            : null
+                        }
                         {props.settingsHelp
                             ? <ul>
                                 <li>This section will be used to update misc data.</li>
@@ -117,6 +130,10 @@ const BackDashHelp = (props) => {
                             }
                             {props.settingsHelp
                                 ? 'Settings'
+                                : null
+                            }
+                            {props.scheduleHelp
+                                ? 'Schedule'
                                 : null
                             }
                         </h3>

@@ -50,8 +50,6 @@ const TableTabNav = (props) => {
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li className='infoButton'>
                     <button onClick={handleHelp}>🔥</button>

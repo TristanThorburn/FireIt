@@ -34,6 +34,7 @@ const FireItAlert = (props) => {
                     <p>FireIt Alert:</p>
                 </div>
                 <article>
+{/* CHECK MODIFY ERRORS*/}
                     {props.fireItAlert === 'TableCheck seat delete'
                         ? <div className='padError'>Items that create a new seat cannot be deleted until other items on the created seat are removed first.
                         </div>
@@ -44,11 +45,33 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+{/* EMPLOYEE DATA ERRORS*/}
                     {props.fireItAlert === 'EmployeeDataForm duplicate id'
                         ? <div className='padError'>You cannot create or update an employee using an Employee # or User ID that is already in use.
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'EmployeeDataForm delete demo'
+                        ? <div className='padError'>Cannot delete this demo user.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'EmployeeDataForm update demo'
+                        ? <div className='padError'>Cannot update this demo user.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'EmployeeDataForm delete authed'
+                        ? <div className='padError'>Deleting firebase authorized users can cause errors if other users still use this ID to log in. Contact creator to delete.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'EmployeeDataForm change auth user'
+                        ? <div className='padError'>Cannot change the User ID or User PW for firebase authorized users.
+                        </div>
+                        : null
+                    }
+{/* TABLE ERRORS */}
                     {props.fireItAlert === 'TableMap no table'
                         ? <div className='padError'>Please select the table you wish to edit.
                         </div>
@@ -59,6 +82,12 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'Table data error'
+                        ? <div className='padError'>Sorry, no data was found for selected table, please try again.
+                        </div>
+                        : null
+                    }
+{/* CHECK TAB ERRORS */}
                     {props.fireItAlert === 'CheckTab less than zero'
                         ? <div className='padError'>You cannot have less than zero checks.
                         </div>
@@ -71,11 +100,6 @@ const FireItAlert = (props) => {
                     }
                     {props.fireItAlert === 'CheckTab receipt undefined'
                         ? <div className='padError'>Receipt not found. Use ADD RECEIPT to make sure the number of split receipts matches your search.
-                        </div>
-                        : null
-                    }
-                    {props.fireItAlert === 'Table data error'
-                        ? <div className='padError'>Sorry, no data was found for selected table, please try again.
                         </div>
                         : null
                     }
@@ -102,6 +126,7 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+{/* PAYMENT ERRORS */}
                     {props.fireItAlert === 'PaymentTab undo settled payment'
                         ? <div className='padError'>
                             <p>Would you like to undo this payment?</p>
