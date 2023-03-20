@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTable } from "../../../contexts/TableContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import { db } from "../../../firebase";
-import { collection, query, orderBy, onSnapshot, updateDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, updateDoc, doc, getDoc, setDoc, deleteField, } from "firebase/firestore";
 
 const SummaryReceipts = (props) => {
     const { employeeContext } = useAuth();
@@ -20,7 +20,7 @@ const SummaryReceipts = (props) => {
     }
 
     const handleTest = () => {
-        console.log('hi')
+        console.log('receipt' + props.undoTargetReceipt)
     }
 
     // Get data for current table receipts
@@ -103,6 +103,23 @@ const SummaryReceipts = (props) => {
         }
     }, [props, props.finalizePayments, contextTable, employeeContext.employeeNumber, employeeContext.firstName])
 
+    // Undo settlement of receipt
+    useEffect(() => {
+        if(props.undoSettledPayment === true && props.undoTargetReceipt !== ''){
+            const receiptRef = 
+                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + props.undoTargetReceipt)
+            const undoSettledPayment = async () => {
+                await updateDoc(receiptRef, {
+                    paymentData: deleteField(),
+                    status:'unSettledReceipt'
+                })
+                props.setUndoTargetReceipt(false)
+                props.setUndoTargetReceipt('')
+            }
+            undoSettledPayment()
+        }
+    }, [props.undoSettledPayment, contextTable, employeeContext.employeeNumber, props.undoTargetReceipt.receipt, props])
+
     const handleSettleReceiptCapture = (e) => {
         const targetReceipt = e.currentTarget
         if(targetReceipt.dataset.status === 'unSettledReceipt'){
@@ -121,6 +138,7 @@ const SummaryReceipts = (props) => {
             props.setPaymentKeyPadActive(true)
         }
         if(targetReceipt.dataset.status === 'settledReceipt'){
+            props.setUndoTargetReceipt(targetReceipt.dataset.receiptnumber)
             props.setFireItAlert('PaymentTab undo settled payment')
         }
         

@@ -266,6 +266,7 @@ const CheckTab = (props) => {
                     fireItAlert={fireItAlert}
                     setFireItAlert={setFireItAlert}
                     setConfirmSeatRemove={setConfirmSeatRemove}
+                    checkTabActive={props.checkTabActive}
                     />
                 : null
             }

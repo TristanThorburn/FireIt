@@ -3,14 +3,26 @@ const FireItAlert = (props) => {
         props.setFireItAlert('')
     }
 
-    const handleConfirmSeatRemove = () => {
-        props.setConfirmSeatRemove(true)
-        props.setFireItAlert('')
+    const handleConfirmAlert = () => {
+        if(props.checkTabActive === true){
+            props.setConfirmSeatRemove(true)
+            props.setFireItAlert('')
+        }
+        if(props.paymentTabActive === true){
+            props.setUndoSettledPayment(true)
+            props.setFireItAlert('')
+        }
     }
 
-    const handleCancelSeatRemove = () => {
-        props.setConfirmSeatRemove(false)
-        props.setFireItAlert('')
+    const handleCancelAlert = () => {
+        if(props.checkTabActive === true){
+            props.setConfirmSeatRemove(false)
+            props.setFireItAlert('')
+        }
+        if(props.paymentTabActive === true){
+            props.setUndoSettledPayment(false)
+            props.setFireItAlert('')
+        }
     }
 
     return(
@@ -75,15 +87,15 @@ const FireItAlert = (props) => {
                     {props.fireItAlert === 'CheckTab delete sent seat'
                         ? <div className='padError'>
                             <p>Are you sure you want to delete this seat?</p>
-                            <div className='confirmSeatRemovalContainer'>
+                            <div className='fireItAlertConfirmContainer'>
                                 <button 
-                                    onClick={handleConfirmSeatRemove} 
-                                    className='removeSeat'
+                                    onClick={handleConfirmAlert} 
+                                    className='doAction'
                                     >Delete
                                 </button>
                                 <button 
-                                    onClick={handleCancelSeatRemove}
-                                    className='cancelRemoveSeat'
+                                    onClick={handleCancelAlert}
+                                    className='dontDoAction'
                                     >Cancel
                                 </button>
                             </div>
@@ -91,7 +103,20 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'PaymentTab undo settled payment'
-                        ? <div className='padError'>Would you like to undo this payment?
+                        ? <div className='padError'>
+                            <p>Would you like to undo this payment?</p>
+                            <div className='fireItAlertConfirmContainer'>
+                                <button 
+                                    onClick={handleConfirmAlert} 
+                                    className='doAction'
+                                    >Remove
+                                </button>
+                                <button 
+                                    onClick={handleCancelAlert}
+                                    className='dontDoAction'
+                                    >Cancel
+                                </button>
+                            </div>
                         </div>
                         : null
                     }

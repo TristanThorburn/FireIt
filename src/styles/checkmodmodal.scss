@@ -47,19 +47,19 @@
     }
 }
 
-.confirmSeatRemovalContainer{
+.fireItAlertConfirmContainer{
     display:flex;
     justify-content: space-evenly;
 
-    .removeSeat, .cancelRemoveSeat{
+    .doAction, .dontDoAction{
         border-radius:10px;
         width:125px;
     }
-    .removeSeat{
+    .doAction{
         border-color:green;
         background-color: green;
     }
-    .cancelRemoveSeat{
+    .dontDoAction{
         border-color:yellow;
         background-color:yellow
     }
