@@ -26,6 +26,7 @@ const EmployeeDataForm = (props) => {
     const [ empUserExists, setEmpUserExists ] = useState('');
     const [ userChecker, setUserChecker ] = useState('');
     const [ employeeChecker, setEmployeeChecker ] = useState('');
+    const [ firebaseAuthWarning, setFirebaseAuthWarning ] = useState(false)
 
     // Initial Employee List Display Effect
     useEffect(() => {
@@ -102,7 +103,11 @@ const EmployeeDataForm = (props) => {
         e.preventDefault()
         const docRef = doc(db, 'employees', props.id)
 
-        if(empNumberExists === false && empUserExists === false){
+        if(props.id === '1'){
+            props.setFireItAlert('EmployeeDataForm update demo')
+        }
+
+        if(empNumberExists === false && empUserExists === false && props.id !== '1'){
             if(props.id !== '' && employeeNumberRef.current.value !== ''){
             updateDoc(docRef, {
                 employeeNumber:employeeNumberRef.current.value
@@ -118,15 +123,21 @@ const EmployeeDataForm = (props) => {
                     lastName:lastNameRef.current.value
                 })
             }
-            if(props.id !== '' && userIDRef.current.value !== ''){
+            if(props.id !== '' && userIDRef.current.value !== '' && firebaseAuthWarning === false){
                 updateDoc(docRef, {
                     userID:userIDRef.current.value
                 })
             }
-            if(props.id !== '' && userPWRef.current.value !== ''){
+            if(props.id !== '' && userIDRef.current.value !== '' && firebaseAuthWarning === true){
+                props.setFireItAlert('EmployeeDataForm change auth user')
+            }
+            if(props.id !== '' && userPWRef.current.value !== '' && firebaseAuthWarning === false){
                 updateDoc(docRef, {
                     userPW:userPWRef.current.value
                 })
+            }
+            if(props.id !== '' && userPWRef.current.value !== '' && firebaseAuthWarning === true){
+                props.setFireItAlert('EmployeeDataForm change auth user')
             }
             if(props.id !== '' && SINRef.current.value !== ''){
                 updateDoc(docRef, {
@@ -194,8 +205,16 @@ const EmployeeDataForm = (props) => {
     const handleDelete = (e) => {
         e.preventDefault();
         const docRef = doc(db, 'employees', props.id)
+
+        if(props.id === '1'){
+            props.setFireItAlert('EmployeeDataForm delete demo')
+        }
+
+        if(props.id !== '1' && firebaseAuthWarning === true){
+            props.setFireItAlert('EmployeeDataForm delete authed')
+        }
         
-        if(props.id !== ''){
+        else if(props.id !== ''){
             deleteDoc(docRef)
             setEmployeeData('')
             props.setSelectedEmployee('')
@@ -437,6 +456,7 @@ const EmployeeDataForm = (props) => {
                 pw={employeeData?.userPW}
                 firebaseId={props.id}
                 firebaseAuth={employeeData?.firebaseAuth}
+                setFirebaseAuthWarning={setFirebaseAuthWarning}
                 />
         </section>
         

@@ -11,6 +11,7 @@ import EmployeeData from './backdash/EmployeeData';
 import TableMapData from './backdash/TableMapData';
 import PaymentData from './backdash/PaymentData';
 import SettingsData from './backdash/SettingsData';
+import ScheduleData from './backdash/ScheduleData';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path='/employee-data' element={<EmployeeData />} />
             <Route path='/tablemap-data' element={<TableMapData />} />
             <Route path='/payment-data' element={<PaymentData />} />
+            <Route path='/schedule' element={<ScheduleData />} />
             <Route path='/settings' element={<SettingsData />} />
           
           </Routes>

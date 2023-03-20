@@ -54,11 +54,9 @@ const PaymentTabNav = (props) => {
                     <button 
                         onClick={handleFinalizePayments} 
                         className='workingButton'
-                        >FINALIZE PAYMENTS
+                        >FINISH SETTLE
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>DEMO</button></li>
-                <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button onClick={handleTest} className='testButton'>TEST</button></li>

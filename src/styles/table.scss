@@ -235,11 +235,21 @@
     .tableMap{
         scale:(0.59);
     }
+    .tableDisplay{
+        .tableMap{
+            margin:-200px 0 0 -225px;
+        }
+    }
 }
 
 @media (min-width: 1124px) and (max-width: 1223px){
     .tableMap{
         scale:(0.65);
+    }
+    .tableDisplay{
+        .tableMap{
+            margin:-175px 0 0 -225px;
+        }
     }
 }
 
@@ -247,11 +257,21 @@
     .tableMap{
         scale:(0.7);
     }
+    .tableDisplay{
+        .tableMap{
+            margin:-150px 0 0 -200px;
+        }
+    }
 }
 
 @media (min-width: 1324px) and (max-width: 1423px){
     .tableMap{
         scale:(0.75);
+    }
+    .tableDisplay{
+        .tableMap{
+            margin:-125px 0 0 -175px;
+        }
     }
 }
 
@@ -259,10 +279,20 @@
     .tableMap{
         scale:(0.8);
     }
+    .tableDisplay{
+        .tableMap{
+            margin:-75px 0 0 -150px;
+        }
+    }
 }
 
 @media (min-width: 1524px) and (max-width: 1720px){
     .tableMap{
         scale:(0.9);
+    }
+    .tableDisplay{
+        .tableMap{
+            margin:0 0 0 -125px;
+        }
     }
 }

@@ -21,8 +21,10 @@ const EmployeeFirebase = (props) => {
                         let signInMethods = await fetchSignInMethodsForEmail(auth, email);
                             if (signInMethods.length > 0) {
                                 setUserExistsFireAuth(true)
+                                props.setFirebaseAuthWarning(true)
                             } else {
                                 setUserExistsFireAuth(false)
+                                props.setFirebaseAuthWarning(false)
                             }
                     } catch (error) {
                         setError(error.message)
@@ -30,7 +32,7 @@ const EmployeeFirebase = (props) => {
             }
             checkFirebaseAuthStatus()
         }
-    }, [email, props.user])
+    }, [email, props.user, props])
     
     const handleActivate = async () => {
         try{

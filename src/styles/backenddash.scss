@@ -1,11 +1,25 @@
 @import './variables.scss';
 
-.backendDash, .employeeData, .menuData, .paymentData, .settingsData, .tableData{
+.backendDash, .employeeData, .menuData, .paymentData, .settingsData, .tableData, .scheduleData{
     height:100vh;
     background-color: $backDashBackgroundColor;
 }
 
 .backendDash{
+    header{
+        display:flex;
+    }
+    .toServerView{
+        height:100px;
+        width:100px;
+        background-color:$fireItColor;
+        border:none;
+
+        img{
+            height:100%;
+            width:100%;
+        }
+    }
     .buttonContainer{
         height:75vh;
         @include flexCenterCenter;
