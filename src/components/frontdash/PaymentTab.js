@@ -19,11 +19,6 @@ const PaymentTab = (props) => {
     const [ undoSettledPayment, setUndoSettledPayment ] = useState(false);
     const [ undoTargetReceipt, setUndoTargetReceipt ] = useState('')
 
-    // TODO
-    // Settle all receipts like print checks / send order logic
-    // I want the color to change on completed receipts, fullPaymentData should maybe be an array
-    // update receipt data with paid = true and details
-
     return(
         <div className='paymentTab'>
             {managerKeyPadActive
