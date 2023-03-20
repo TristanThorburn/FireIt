@@ -73,13 +73,14 @@ const FrontUserGuide = (props) => {
 
                 {props.paymentTabActive
                     ? <ul>
-                        <li>Under Construction: 
-                            <br />
-                            .
+                        <li>Displays the receipts if they have been organized in the Check Tab.
                         </li>
+                        <li>Click on a receipt to input the payment(s) and tip(s) for each receipt, these can consist of multiple fraction payments towards the receipt.</li>
+                        <li>Once the receipt is settled it will change color to green, clicking the receipt again will allow you to undo the settlement and update.</li>
+                        <li>FINALIZE PAYMENTS to complete payment process and store payment data. This will clean up any of the receipts as well as the seats they contain from the check. If there are no seats left, server ownership of the table will be removed so that anyone else can use it.</li>
                         <li>Stretch Goals: 
                             <br />
-                            Settle payments by various methods, cash/visa/amex/mastercard, clearing the orders from the table and allowing it to be used again as a fresh table. Store payment data for reporting
+                            .
                         </li>
                     </ul>
                     : null
@@ -264,6 +265,11 @@ const FrontUserGuide = (props) => {
                             MGR OVER
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
+                        </li>
+                        <li>
+                            FINALZE PAYMENTS
+                            <br />
+                            Completes 'payments', cleaning up the orders and receipts of settled payments and storing to payment database. 
                         </li>
                         <li>
                             DEMO
