@@ -102,7 +102,7 @@ const TableCheck = (props) => {
                 seatToAppend.appendChild(orderInfo)
                 props.setCurrentOrderData('')
         }
-        // Seat  does NOT exists in firebase. Seat exsits on check in pending order. Is there item data?
+        // Seat does NOT exists in firebase. Seat exsits on check in pending order. Is there item data?
         if(props.doesSeatExist === false
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
