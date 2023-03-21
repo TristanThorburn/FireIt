@@ -74,5 +74,25 @@
             cursor:auto;
         }
     }
-    
+}
+
+.frontCodeInsights{
+    margin-top:1rem;
+    border:2px solid black;
+    overflow-y: scroll;
+    width:96%;
+    height:80%;
+
+    h2{
+        color:white;
+        text-align: center;
+    }
+    ul{
+        @include cleanUl;
+        width:96%;
+    }
+    li{
+        color:white;
+        margin:1.5rem auto;
+    };
 }

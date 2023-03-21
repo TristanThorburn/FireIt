@@ -58,6 +58,7 @@ const BackDashHelp = (props) => {
                                 : null
                             }
                         </h3>
+            {/* MENU / LOGIN */}
                         {props.menuEntryHelp
                             ? <ul>
                                 <li>Use the navigation bar to filter menu items between categories and sub categories</li>
@@ -73,6 +74,8 @@ const BackDashHelp = (props) => {
                                 <li>The ⛔ button will reset the punch in combo</li>
                                 <li>The confirm 🔥 will appear after reaching the 4 digit requirement.</li>
                                 <li>Click on the X on the top of they keypad to return to the previous step of log in.</li>
+                                <li>Once logged in the user is navigated to a 'Front' dashboard that represets the terminal view for the average server.</li>
+                                <li>Along the top navigator of 'tabs' the ADMIN tab nagivates to a 'Back' dashboard which represents more of the view a manager may use to set up various aspects of the front view.</li>
                             </ul>
                         }
                         {props.employeeDataHelp
@@ -145,6 +148,24 @@ const BackDashHelp = (props) => {
                                 : null
                             }
                         </h3>
+
+                {/* MENU / LOGIN */}
+                        {props.menuEntryHelp
+                            ? <ul>
+                                
+                            </ul>
+                            : <ul>
+                                <li>The login components were the first created for this project.</li>
+                                <li>Clicking the keys gets the target of the events text content and pushes it to an array.</li>
+                                <li>Both the login and password push additional content to allow for firebase authorization, such as adding @fireit.ca to create a fake email address.</li>
+                                <li>Each index of the array is joined and the commas are replaced.</li>
+                                <li>The clear button resets the array variable to be empty again.</li>
+                                <li>Submitting with the password logs in through firebase and navigates to the Front Dash, which is nested in a Private Route.</li>
+                                <li>The log in creates an authorization context as well as an employee context based off the data filled in using the Employee Data section.</li>
+                                <li>The user, password and admin key pads each exist as their own component. In the future I will combine them into the 'server key pad' component that other sections of the app use.</li>
+                                <li>Unlike the user and password keypads rather than firebase auth, the admin just checks that the array combo matches a specific string.</li>
+                            </ul>
+                        }
                     </div>
                 </div>
             </div>

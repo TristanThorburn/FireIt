@@ -20,7 +20,7 @@ const FrontUserGuide = (props) => {
                 {props.tableTabActive
                     ? <ul>
                         <li>This represents the layout of the restaurant, tables can be 'touched' to select the table and link to the menu for food and drink orders. Table designs, names and positions can be updated and saved by using the Admin tab to enter the back dash.</li>
-                        <li>Servers cannot access a table that already has orders on it from another server</li>
+                        <li>Servers cannot access a table that already has orders on it from another server.</li>
                         <li>Stretch Goals: 
                             <br />
                             Color change tables to designate if the table already has ordered items from the server.
