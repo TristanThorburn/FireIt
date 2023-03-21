@@ -1,10 +1,4 @@
 const FrontCodeDetails = (props) => {
-    // tableTabActive={props.tableTabActive}
-    // menuTabActive={props.menuTabActive}
-    // checkTabActive={props.checkTabActive}
-    // paymentTabActive={props.paymentTabActive}
-    // summaryTabActive={props.summaryTabActive}
-
     return(
         <div className='frontCodeInsights'>
             <h2>
@@ -12,7 +6,13 @@ const FrontCodeDetails = (props) => {
                     ? 'Table Tab Code Insights'
                     : props.menuTabActive
                         ? 'Menu Tab Code Insights'
-                        : 'Code Info under construction'
+                        : props.checkTabActive
+                            ? 'Check Tab Code Insights'
+                            : props.paymentTabActive
+                                ? 'Payment Tab Code Insights'
+                                : props.summaryTabActive
+                                    ? 'Summary Tab Code Insights'
+                                    : null
                 }
             </h2>
 
@@ -23,10 +23,10 @@ const FrontCodeDetails = (props) => {
                     <li>The pixel locations saved from the back dash adjustments are used to style the location on the map absolutely.</li>
                     <li>All tables have a generic table for common styling, and a second class is added from the database to determine additional looks such as the circle table. The default is square.</li>
                     <li>Each table also as a data component for server ownership, based on employee number. If the employee number from the context doesnt match that of the tables ownership it cannot be used by the current server.</li>
-                    <li>Attempting to access a table that doesnt belong to the current user toggles the custom Fire It Alert component to explain lack of ownership.</li>
-                    <li>Table ownership is given after the first order is made, and removed after all payments on the table are settled.</li>
-                    <li>Clicking on a table while Table Tab is active sets the context table to the one selected and navigates to the menu screen so that an order can be made.</li>
-                    <li>Prior to understanding event bubbling and capture, both the table and the text inside had seperate on click logic to set the context table. I later changed to on click capture on the table alone. Thanks Wes Bos!</li>
+                    <li>Attempting to access a table that doesnt belong to the current user causes an alert to explain lack of ownership.</li>
+                    <li>Table ownership is given after the first order is 'sent', and removed after all payments on the table are settled.</li>
+                    <li>Clicking on a table while Table Tab is active sets the context table to the event target and navigates to the menu screen so that an order can be made.</li>
+                    <li>Prior to understanding event bubbling and capture, both the table and the text inside had seperate on click logic to set the context table. I later changed this to on click capture on the table alone. Thanks Wes Bos!</li>
                 </ul>
                 : null
             }
@@ -53,6 +53,7 @@ const FrontCodeDetails = (props) => {
                         </li>
                     <li>The pending items also contain my first use of useCallback to have event listeners that check for clicks on the dynamically created pending items. Two different versions were required depending on if the pending order created a new pending seat, or was simply added to one from firebase.</li>
                     <li>I orginally wanted this all to happen through components but I had difficulty finding a way to 'append' it to the correct seat given the previous 5 possible variables of how I needed it to appear. To resolve this for now I used vanilla JS appending logic.</li>
+                    <li>A useEffect watches for these changes and queries all of the item costs to sum for the check's total cost display.</li>
                     <li><h3>Lower Nav Bar:</h3></li>
                     <li>MGR OVER allows for a key pad pin similar to the admin. A manager context is enabled allowing users to click on sent items and modify them. Clicking on items to modify them without this context triggers an alert.</li>
                     <li>Adding a promo to the item collects its' specific data and removes it from the array. A new version is added indicating the discounted % on the item name with a new price calculated based on the %. Undoing the promo reverses these steps using conditionals. Because the data for the item must be a match, adding a promo closes the modify modal as the state contains data for the old item and will no longer match the changes made by the promo and thus cannot be changed again. The work around forces a new click on the item to update the item data stored in state.</li>
@@ -61,6 +62,25 @@ const FrontCodeDetails = (props) => {
                     <li>SEAT #? Opens the server keypad component, where a state can be set/updated to determine a target seat for orders to be punched in. A useEffect keeps track of the existance of seats in the firestore database when they changed using this mechanic. To reduce reads in the future I'll change this to query data on the tables check.</li>
                     <li>CHNG TBL opens an alpha numeric keypad that allows 'punch' logic similar to the numeric keypad. The inputs are joined together, set to lower case and commas and spaces are removed. While the space button does exist on this pad, table ids created in the 'back' dash already removed spaces. On submit the input is filtered through the tables the server already owns for a match, if this fails it will check to see if the current owner of the table is 'none'. If both fail the user is alerted another sever has ownership of the table.</li>
                     <li>MAIN MENU reverts the string state for menu categories back to the main 'directory'</li>
+                </ul>
+                : null
+            }
+
+            {props.checkTabActive
+                ? <ul>
+                    <li>Much of this component contains smaller scale versions of logic in the Menu Tab.</li>
+                    <li>The seperation of checks currently has a max limit of ten, I'd like to make a way to change this number using the 'back' dash which is why it is currently given a limit. Realistically this should be infinite.</li>
+                    <li>When first started the receipts display was created with an array of dummy data, in order to map out receipt components based on the amount of receipts added by the user.</li>
+                    <li>Working on this component caused me to review event bubbling and capture as I wanted the user to be able to click anywhere on the seat and its children and have that counted as the seat to move. Once I found the existance of onClickCapture I was able to do this.</li>
+                    <li>This component currently uses similar logic to the Menu Tab appending to seperate the seats, keeping a copy of the base check intact for reference. This is carried forward to the Payments Tab, where seats are eventually deleted from the original check once they have a payment stored. I did not want there to be an overload of info to scroll through on possible larger receipt displays, so I opted to limit the information they display which can be compared to the original check.</li>
+                    <li>A useEffect checks that the receipt the user wants to add the seat to exists on the display.</li>
+                    <li>The server pad component checks the value entered on the keypad for chosen receipt is less than or equal to ten based on the current receipt limit.</li>
+                    <li>When moving seats to receipts, the system will also check that the seat does not already exist on a receipt to prevent duplication.</li>
+                    <li>PRINT ALL RECEIPT, collects all of the pending data and saves it to firestore.</li>
+                    <li>Removing seats from 'printed' receipts, or simply deleting a receipt by reducing the total number of splits does not require manager context as in theory these receipts would have been printed and thrown away for being incorrect.</li>
+                    <li>I wanted each seat to tally its' total similar to the check logic when a seat was appended to it. This proved difficult as each receipt was the same already rendered compontent, and I could not find a way to have only one of the mapped components change. I opted to display subtotals for each seat, and stop using the dummy array to map and display the receipts from a firestore snapshot instead.</li>
+                    <li>Due to this change, ADD RECEIPT and REMOVE RECEIPT where change from count++ or count-- to setDoc or deleteDoc.</li>
+                    <li>CHNG TBL is the same as in the Menu Tab</li>
                 </ul>
                 : null
             }
