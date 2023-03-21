@@ -54,8 +54,6 @@ const FrontUserGuide = (props) => {
 
                 {props.checkTabActive
                     ? <ul>
-                        <h3>Under Construction!
-                        </h3>
                         <li>Use ADD RECEIPT or REMOVE RECEIPT to populate up to 10 receipts for checks to be split on to.</li>
                         <li>REMOVE RECEIPT will delete all information on the receipt upon removal</li>
                         <li>Click on the seat you want to transfer and select the target receipt number, currently must be less than or equal to 10.</li>
