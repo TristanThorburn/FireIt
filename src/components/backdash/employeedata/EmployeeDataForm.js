@@ -214,7 +214,7 @@ const EmployeeDataForm = (props) => {
             props.setFireItAlert('EmployeeDataForm delete authed')
         }
         
-        else if(props.id !== ''){
+        else if(props.id !== '1' && props.id !== '' && firebaseAuthWarning === false){
             deleteDoc(docRef)
             setEmployeeData('')
             props.setSelectedEmployee('')
