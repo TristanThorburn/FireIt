@@ -5,15 +5,7 @@
     height:100vh;
     flex-direction: column;
     position:relative;
-}
-
-.loginPad{
-    @include flexCenterCenter;
-    flex-direction:column;
-    border: 4px solid black;
-    width:500px;
-    height:525px;
-
+    
     .infoButton{
         button{
             background-color: $backgroundColor;
@@ -24,6 +16,15 @@
             left:-5px;
         }
     }
+}
+
+.loginPad{
+    @include flexCenterCenter;
+    flex-direction:column;
+    border: 4px solid black;
+    width:500px;
+    height:525px;
+
 }
 
 .loginLogo{
