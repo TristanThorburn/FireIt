@@ -71,7 +71,7 @@ const BackDashHelp = (props) => {
                             </ul>
                             : <ul>
                                 <li>Click the 4 digit combo of a firebase authorized user set up in the Employee Data section, or use the demo user listed.</li>
-                                <li>The ⛔ button will reset the punch in combo</li>
+                                <li>The ⛔ button will reset the punch in combo.</li>
                                 <li>The confirm 🔥 will appear after reaching the 4 digit requirement.</li>
                                 <li>Click on the X on the top of they keypad to return to the previous step of log in.</li>
                                 <li>Once logged in the user is navigated to a 'Front' dashboard that represets the terminal view for the average server.</li>

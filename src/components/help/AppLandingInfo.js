@@ -18,7 +18,7 @@ const AppLandingInfo = (props) => {
             <div className='ulsContainer'>
                 <ul className='qAndA'>
                     <li>
-                        <p>Last update to this page: March 3, 2023.</p>
+                        <p>Last update to this page: March 22, 2023.</p>
                     </li>
                     <li>
                         <p>What is Fire It?</p>
@@ -41,7 +41,7 @@ const AppLandingInfo = (props) => {
                     </li>
                     <li>
                         <p>What is involved in Fire It?</p>
-                        <p>This is a React.JS project. Firebase handles user authorization from email/password, as well as data for employees, menu items, table map layout, checks etc. Any styling is written in SASS. I have not installed any packages aside from a brief stint of Font Awesome.</p>
+                        <p>This is a React.JS project. Firebase handles user authorization from email/password, as well as data for employees, menu items, table map layout, checks, payments etc in firestore. Any styling is written in SASS. I have not installed any packages aside from a brief stint of Font Awesome.</p>
                     </li>
                     <li>
                         <p>How do you use this app?</p>
@@ -49,7 +49,7 @@ const AppLandingInfo = (props) => {
                     </li>
                     <li>
                         <p>What is the MVP?</p>
-                        <p>User auth from Firebase. CRUD for employees, menu items, table map layout in the 'backend'. The ability to punch in items based on server & table & seat, as well as delete and promo. Styling is not a focus as I want to spend more time manipulating data than coloring buttons. Most of this is functional. Please be advised these apps are used by desktop terminals and tablets, at the moment it is styled for w:1920px, tablet is in the future, but mobile is not.</p>
+                        <p>User auth from Firebase. CRUD for employees, menu items, table map layout in the 'backend'. Replicate a table's life cycle from ordering to billing and payment. Styling is not a focus as I want to spend more time manipulating data than coloring buttons. Most of this is functional. Please be advised this style of point of sale was used by desktop terminals and tablets, at the moment it is styled for w:1920px, with some media queries for tablet, but mobile is not in its' current future.</p>
                     </li>
                     <li>
                         <p>Who is the creator?</p>

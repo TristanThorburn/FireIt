@@ -24,27 +24,6 @@ const SummaryReceipts = (props) => {
     // Get data for current table receipts
     useEffect(() => {
         if(contextTable !== ''){
-        //     const getTablesReceipts = async () => {
-        //     const receiptCollectionRef = 
-        //             collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
-        //     const q = query(receiptCollectionRef, orderBy('receiptNumber', 'asc'));
-        //     const querySnapShot = await getDocsFromCache(q)
-        //         if(querySnapShot){
-        //             const receiptsList = querySnapShot.docs.map(doc => ({
-        //                 id:doc.id,
-        //                 data:doc.data()
-        //             }))
-        //             setReceiptData(receiptsList)
-        //         } else {
-        //             const severData = await getDocsFromServer(q)
-        //             const receiptsList = severData.docs.map(doc => ({
-        //                 id:doc.id,
-        //                 data:doc.data()
-        //             }))
-        //             setReceiptData(receiptsList)
-        //         }
-        //     }
-        // getTablesReceipts()
         const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
         const q = query(receiptCollectionRef, orderBy('receiptNumber', 'asc'));
@@ -162,8 +141,8 @@ const SummaryReceipts = (props) => {
                         updateDoc(resetTable, {
                             serverOwner:'none'
                         })
+                        setContextTable('')
                     }
-                    setContextTable('')
                 }
                 resetTable()
             }

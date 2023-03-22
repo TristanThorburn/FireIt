@@ -10,9 +10,7 @@ const AlphaNumericPad = (props) => {
     let padCombo = []
 
     const handleCloseModal = () => {
-        if(props.menuTabActive || props.checkTabActive){
             props.setAlphaNumericPadOpen(false)
-        }
     }
 
     const handleClick = (e) => {
@@ -39,6 +37,10 @@ const AlphaNumericPad = (props) => {
             setContextTable(padInput)
             setTimeout(() => {
                 setSuccess('')
+                if(props.summaryTabActive === true){
+                    props.setSummaryTabActive(false)
+                    props.setMenuTabActive(true)
+                }
             }, 1000)
         } else {
             const docRef = doc(db, 'tables', padInput)
@@ -50,6 +52,10 @@ const AlphaNumericPad = (props) => {
                         setContextTable(padInput)
                         setTimeout(() => {
                             setSuccess('')
+                            if(props.summaryTabActive === true){
+                                props.setSummaryTabActive(false)
+                                props.setMenuTabActive(true)
+                            }
                         }, 1000)
                     } else {
                         setError('Another server is using that table')

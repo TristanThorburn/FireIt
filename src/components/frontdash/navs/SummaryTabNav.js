@@ -21,6 +21,10 @@ const SummaryTabNav = (props) => {
         }
     }
 
+    const handleNewTable = () => {
+        props.setAlphaNumericPadOpen(true)
+    }
+
     const handleHelp = () => {
         props.setHelpModal(true)
     }
@@ -46,7 +50,9 @@ const SummaryTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li>
+                    <button onClick={handleNewTable} className='workingButton'>START NEW TABLE</button>
+                </li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>

@@ -104,6 +104,8 @@ const FrontDash = () => {
                     serverTableList={serverTableList}
                     activeTableData={activeTableData}
                     summaryTabActive={summaryTabActive}
+                    setSummaryTabActive={setSummaryTabActive}
+                    setMenuTabActive={setMenuTabActive}
                     />
                 : null
             }
