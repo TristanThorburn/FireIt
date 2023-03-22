@@ -4,7 +4,7 @@ import {
     beerCanCollectionRef,
     beerDraftCollectionRef }
     from '../../../library/firestoreCollections';
-    import { query, orderBy, doc, getDoc, getDocs, getDocFromCache } from 'firebase/firestore';
+    import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const BeerScreen = (props) => {
     const [ beerData, setBeerData ] = useState([]);
@@ -19,67 +19,88 @@ const BeerScreen = (props) => {
     // Data population based on beer type
     useEffect(() => {
         if(collectionRef === 'bottle'){
-            const fetchBottles = async () => {
+            // const fetchBottles = async () => {
                 const q = query(beerBottleCollectionRef, orderBy('name'));
-                // const querySnapShot = await getDocsFromCache(q)
-                // if(querySnapShot){
-                //     const menuItemList = querySnapShot.docs.map(doc => ({
-                //         id:doc.id,
-                //         data:doc.data()
-                //     }))
-                //     setBeerData(menuItemList)
-                // } else {
-                    const severData = await getDocs(q)
-                    const menuItemList = severData.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setBeerData(menuItemList)
-                }
+            //     const querySnapShot = await getDocsFromCache(q)
+            //     if(querySnapShot){
+            //         const menuItemList = querySnapShot.docs.map(doc => ({
+            //             id:doc.id,
+            //             data:doc.data()
+            //         }))
+            //         setBeerData(menuItemList)
+            //     } else {
+            //         const severData = await getDocs(q)
+            //         const menuItemList = severData.docs.map(doc => ({
+            //             id:doc.id,
+            //             data:doc.data()
+            //         }))
+            //         setBeerData(menuItemList)
+            //     }
             // }
-            fetchBottles()
+            // fetchBottles()
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setBeerData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         if(collectionRef === 'can'){
-            const fetchCans = async () => {
+            // const fetchCans = async () => {
                 const q = query(beerCanCollectionRef, orderBy('name'));
-                // const querySnapShot = await getDocsFromCache(q)
-                // if(querySnapShot){
-                //     const menuItemList = querySnapShot.docs.map(doc => ({
-                //         id:doc.id,
-                //         data:doc.data()
-                //     }))
-                //     setBeerData(menuItemList)
-                // } else {
-                    const severData = await getDocs(q)
-                    const menuItemList = severData.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setBeerData(menuItemList)
-                // }
-            }
-            fetchCans()
+            //     const querySnapShot = await getDocsFromCache(q)
+            //     if(querySnapShot){
+            //         const menuItemList = querySnapShot.docs.map(doc => ({
+            //             id:doc.id,
+            //             data:doc.data()
+            //         }))
+            //         setBeerData(menuItemList)
+            //     } else {
+            //         const severData = await getDocs(q)
+            //         const menuItemList = severData.docs.map(doc => ({
+            //             id:doc.id,
+            //             data:doc.data()
+            //         }))
+            //         setBeerData(menuItemList)
+            //     }
+            // }
+            // fetchCans()
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setBeerData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         if(collectionRef === 'draft'){
-            const fetchDraft = async () => {
+            // const fetchDraft = async () => {
                 const q = query(beerDraftCollectionRef, orderBy('name'));
-                // const querySnapShot = await getDocsFromCache(q)
-                // if(querySnapShot){
-                //     const menuItemList = querySnapShot.docs.map(doc => ({
-                //         id:doc.id,
-                //         data:doc.data()
-                //     }))
-                //     setBeerData(menuItemList)
-                // } else {
-                    const severData = await getDocs(q)
-                    const menuItemList = severData.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setBeerData(menuItemList)
-                // }
-            }
-            fetchDraft()
+            //     const querySnapShot = await getDocsFromCache(q)
+            //     if(querySnapShot){
+            //         const menuItemList = querySnapShot.docs.map(doc => ({
+            //             id:doc.id,
+            //             data:doc.data()
+            //         }))
+            //         setBeerData(menuItemList)
+            //     } else {
+            //         const severData = await getDocs(q)
+            //         const menuItemList = severData.docs.map(doc => ({
+            //             id:doc.id,
+            //             data:doc.data()
+            //         }))
+            //         setBeerData(menuItemList)
+            //     }
+            // }
+            // fetchDraft()
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setBeerData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
     },[collectionRef])
 

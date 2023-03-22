@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const AppsScreen = (props) => {
     const [ appsData, setAppsData ] = useState([]);
@@ -10,25 +10,33 @@ const AppsScreen = (props) => {
 
     // Initial Data Population
     useEffect(() => {
-        const getMenuCategory = async () => {
+        // const getMenuCategory = async () => {
             const q = query(appCollectionRef, orderBy('name'));
-            // const querySnapShot = await getDocsFromCache(q)
-            // if(querySnapShot){
-            //     const menuItemList = querySnapShot.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setAppsData(menuItemList)
-            // } else {
-                const severData = await getDocs(q)
-                const menuItemList = severData.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setAppsData(menuItemList)
-            }
+        //     const querySnapShot = await getDocsFromCache(q)
+        //     if(querySnapShot){
+        //         const menuItemList = querySnapShot.docs.map(doc => ({
+        //             id:doc.id,
+        //             data:doc.data()
+        //         }))
+        //         setAppsData(menuItemList)
+        //     } else {
+        //         const severData = await getDocs(q)
+        //         const menuItemList = severData.docs.map(doc => ({
+        //             id:doc.id,
+        //             data:doc.data()
+        //         }))
+        //         setAppsData(menuItemList)
+        //     }
         // }
-        getMenuCategory()
+        // getMenuCategory()
+        const unsubscribe = onSnapshot(q, snapshot => {
+            setAppsData(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+        return unsubscribe
+
     },[])
 
     // GetDoc for selected item
