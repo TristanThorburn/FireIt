@@ -4,7 +4,7 @@ import {
     whiteWineCollectionRef,
     bubblyCollectionRef
     } from '../../../library/firestoreCollections';
-    import { getDocFromCache, query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
+    import { getDocFromCache, query, orderBy, doc, getDoc, getDocs } from 'firebase/firestore';
 
 const WinesScreen = (props) => {
     const [ wineData, setWineData ] = useState([]);
@@ -21,63 +21,63 @@ const WinesScreen = (props) => {
         if(collectionRef === 'bubbly'){
             const fetchBubbly = async () => {
                 const q = query(bubblyCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocsFromCache(q)
-                if(querySnapShot){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setWineData(menuItemList)
-                } else {
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setWineData(menuItemList)
+                // } else {
                     const severData = await getDocs(q)
                     const menuItemList = severData.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setWineData(menuItemList)
-                    }
+                    // }
             }
             fetchBubbly()
         }
         if(collectionRef === 'red'){
             const fetchReds = async () => {
                 const q = query(redWineCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocsFromCache(q)
-                if(querySnapShot){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setWineData(menuItemList)
-                } else {
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setWineData(menuItemList)
+                // } else {
                     const severData = await getDocs(q)
                     const menuItemList = severData.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setWineData(menuItemList)
-                }
+                // }
             }
             fetchReds()
         }
         if(collectionRef === 'white'){
             const fetchWhites = async () => {
                 const q = query(whiteWineCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocsFromCache(q)
-                if(querySnapShot){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setWineData(menuItemList)
-                } else {
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setWineData(menuItemList)
+                // } else {
                     const severData = await getDocs(q)
                     const menuItemList = severData.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setWineData(menuItemList)
-                }
+                // }
             }
             fetchWhites()
         }

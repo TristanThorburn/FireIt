@@ -4,7 +4,7 @@ import {
     beerCanCollectionRef,
     beerDraftCollectionRef }
     from '../../../library/firestoreCollections';
-    import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+    import { query, orderBy, doc, getDoc, getDocs, getDocFromCache } from 'firebase/firestore';
 
 const BeerScreen = (props) => {
     const [ beerData, setBeerData ] = useState([]);
@@ -21,14 +21,14 @@ const BeerScreen = (props) => {
         if(collectionRef === 'bottle'){
             const fetchBottles = async () => {
                 const q = query(beerBottleCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocsFromCache(q)
-                if(querySnapShot){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setBeerData(menuItemList)
-                } else {
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setBeerData(menuItemList)
+                // } else {
                     const severData = await getDocs(q)
                     const menuItemList = severData.docs.map(doc => ({
                         id:doc.id,
@@ -36,48 +36,48 @@ const BeerScreen = (props) => {
                     }))
                     setBeerData(menuItemList)
                 }
-            }
+            // }
             fetchBottles()
         }
         if(collectionRef === 'can'){
             const fetchCans = async () => {
                 const q = query(beerCanCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocsFromCache(q)
-                if(querySnapShot){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setBeerData(menuItemList)
-                } else {
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setBeerData(menuItemList)
+                // } else {
                     const severData = await getDocs(q)
                     const menuItemList = severData.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setBeerData(menuItemList)
-                }
+                // }
             }
             fetchCans()
         }
         if(collectionRef === 'draft'){
             const fetchDraft = async () => {
                 const q = query(beerDraftCollectionRef, orderBy('name'));
-                const querySnapShot = await getDocsFromCache(q)
-                if(querySnapShot){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setBeerData(menuItemList)
-                } else {
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setBeerData(menuItemList)
+                // } else {
                     const severData = await getDocs(q)
                     const menuItemList = severData.docs.map(doc => ({
                         id:doc.id,
                         data:doc.data()
                     }))
                     setBeerData(menuItemList)
-                }
+                // }
             }
             fetchDraft()
         }

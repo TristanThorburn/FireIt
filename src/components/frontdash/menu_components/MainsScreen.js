@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { mainsCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const MainsScreen = (props) => {
     const [ mainsData, setMainsData ] = useState([]);
@@ -36,12 +36,12 @@ const MainsScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== ''){
                 const docRef = doc(mainsCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
         }
         getItem()

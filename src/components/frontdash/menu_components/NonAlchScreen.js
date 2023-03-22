@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const NonAlchScreen = (props) => {
     const [ coldDrinkData, setColdDrinkData ] = useState([]);
@@ -57,21 +57,21 @@ const NonAlchScreen = (props) => {
         const getItem =  async () => {
             if(selectedItem !== '' && collectionRef === 'cold'){
                 const docRef = doc(coldDrinksCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
             if(selectedItem !== '' && collectionRef === 'hot'){
                 const docRef = doc(hotDrinksCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
         }
         getItem()

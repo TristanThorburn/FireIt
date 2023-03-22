@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { dessertsCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const DessertsScreen = (props) => {
     const [ dessertsData, setDessertsData ] = useState([]);
@@ -36,12 +36,12 @@ const DessertsScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== ''){
                 const docRef = doc(dessertsCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
         }
         getItem()

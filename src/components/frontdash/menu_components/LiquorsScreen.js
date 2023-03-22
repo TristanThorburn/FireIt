@@ -6,7 +6,7 @@ import {
     vodkaCollectionRef,
     whiskeyCollectionRef,
 } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const LiquorsScreen = (props) => {
     const [ liquorData, setLiquorData ] = useState([]);
@@ -134,48 +134,48 @@ const LiquorsScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'gin'){
                 const docRef = doc(ginCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
             if(selectedItem !== '' && collectionRef === 'rum'){
                 const docRef = doc(rumCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
             if(selectedItem !== '' && collectionRef === 'tequila'){
                 const docRef = doc(tequilaCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
             if(selectedItem !== '' && collectionRef === 'vodka'){
                 const docRef = doc(vodkaCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
             if(selectedItem !== '' && collectionRef === 'whiskey'){
                 const docRef = doc(whiskeyCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
         }
         getItem()
