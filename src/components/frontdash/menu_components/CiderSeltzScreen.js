@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
@@ -14,39 +14,53 @@ const CiderSeltzScreen = (props) => {
     useEffect(() => {
         const fetchCider = async () => {
             const q = query(ciderCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocsFromCache(q)
-            if(querySnapShot){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setCiderData(menuItemList)
-            } else {
-                const severData = await getDocs(q)
-                const menuItemList = severData.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setCiderData(menuItemList)
-            }
+            // const querySnapShot = await getDocsFromCache(q)
+            // if(querySnapShot){
+            //     const menuItemList = querySnapShot.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setCiderData(menuItemList)
+            // } else {
+            //     const severData = await getDocs(q)
+            //     const menuItemList = severData.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setCiderData(menuItemList)
+            // }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setCiderData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         const fetchSeltzer = async () => {
             const q = query(hardSeltzerCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocsFromCache(q)
-            if(querySnapShot){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setSeltzerData(menuItemList)
-            } else {
-                const severData = await getDocs(q)
-                const menuItemList = severData.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setSeltzerData(menuItemList)
-            }
+            // const querySnapShot = await getDocsFromCache(q)
+            // if(querySnapShot){
+            //     const menuItemList = querySnapShot.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setSeltzerData(menuItemList)
+            // } else {
+            //     const severData = await getDocs(q)
+            //     const menuItemList = severData.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setSeltzerData(menuItemList)
+            // }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setSeltzerData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         fetchCider()
         fetchSeltzer()
@@ -57,21 +71,21 @@ const CiderSeltzScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'cider'){
                 const docRef = doc(ciderCollectionRef, selectedItem)
-                // const itemDataRequest = await getDocFromCache(docRef)
-                //     if(itemDataRequest.data()){
-                //         setItemData(itemDataRequest.data())
-                //     } else {
+                const itemDataRequest = await getDocFromCache(docRef)
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
                         getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                    // }
+                    }
             }
             if(selectedItem !== '' && collectionRef === 'seltzer'){
                 const docRef = doc(hardSeltzerCollectionRef, selectedItem)
-                // const itemDataRequest = await getDocFromCache(docRef)
-                //     if(itemDataRequest.data()){
-                //         setItemData(itemDataRequest.data())
-                //     } else {
+                const itemDataRequest = await getDocFromCache(docRef)
+                    if(itemDataRequest.data()){
+                        setItemData(itemDataRequest.data())
+                    } else {
                         getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                    // }
+                    }
             }
         }
         getItem()

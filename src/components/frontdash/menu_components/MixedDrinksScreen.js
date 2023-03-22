@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cocktailCollectionRef, shotsCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const MixedDrinksScreen = (props) => {
     const [ cocktailData, setCocktailData ] = useState([]);
@@ -14,39 +14,53 @@ const MixedDrinksScreen = (props) => {
     useEffect(() => {
         const fetchCocktails = async () => {
             const q = query(cocktailCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocsFromCache(q)
-            if(querySnapShot){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setCocktailData(menuItemList)
-            } else {
-                const severData = await getDocs(q)
-                const menuItemList = severData.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setCocktailData(menuItemList)
-            }
+            // const querySnapShot = await getDocsFromCache(q)
+            // if(querySnapShot){
+            //     const menuItemList = querySnapShot.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setCocktailData(menuItemList)
+            // } else {
+            //     const severData = await getDocs(q)
+            //     const menuItemList = severData.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setCocktailData(menuItemList)
+            // }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setCocktailData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         const fetchShots = async () => {
             const q = query(shotsCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocsFromCache(q)
-            if(querySnapShot){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setShotData(menuItemList)
-            } else {
-                const severData = await getDocs(q)
-                const menuItemList = severData.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setShotData(menuItemList)
-            }
+            // const querySnapShot = await getDocsFromCache(q)
+            // if(querySnapShot){
+            //     const menuItemList = querySnapShot.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setShotData(menuItemList)
+            // } else {
+            //     const severData = await getDocs(q)
+            //     const menuItemList = severData.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setShotData(menuItemList)
+            // }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setShotData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         fetchCocktails()
         fetchShots()
@@ -57,21 +71,21 @@ const MixedDrinksScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'cocktail'){
                 const docRef = doc(cocktailCollectionRef, selectedItem)
-                // const itemDataRequest = await getDocFromCache(docRef)
-                // if(itemDataRequest.data()){
-                //     setItemData(itemDataRequest.data())
-                // } else {
+                const itemDataRequest = await getDocFromCache(docRef)
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                // }
+                }
             }
             if(selectedItem !== '' && collectionRef === 'shot'){
                 const docRef = doc(shotsCollectionRef, selectedItem)
-                // const itemDataRequest = await getDocFromCache(docRef)
-                // if(itemDataRequest.data()){
-                //     setItemData(itemDataRequest.data())
-                // } else {
+                const itemDataRequest = await getDocFromCache(docRef)
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                // }
+                }
             }
         }
         getItem()

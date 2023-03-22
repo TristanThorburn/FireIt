@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { mainsCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const MainsScreen = (props) => {
     const [ mainsData, setMainsData ] = useState([]);
@@ -12,21 +12,28 @@ const MainsScreen = (props) => {
     useEffect(() => {
         const getMenuCategory = async () => {
             const q = query(mainsCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocsFromCache(q)
-            if(querySnapShot){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setMainsData(menuItemList)
-            } else {
-                const severData = await getDocs(q)
-                const menuItemList = severData.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setMainsData(menuItemList)
-            }
+            // const querySnapShot = await getDocsFromCache(q)
+            // if(querySnapShot){
+            //     const menuItemList = querySnapShot.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setMainsData(menuItemList)
+            // } else {
+            //     const severData = await getDocs(q)
+            //     const menuItemList = severData.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setMainsData(menuItemList)
+            // }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setMainsData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         getMenuCategory()
     },[])
@@ -36,12 +43,12 @@ const MainsScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== ''){
                 const docRef = doc(mainsCollectionRef, selectedItem)
-                // const itemDataRequest = await getDocFromCache(docRef)
-                // if(itemDataRequest.data()){
-                //     setItemData(itemDataRequest.data())
-                // } else {
+                const itemDataRequest = await getDocFromCache(docRef)
+                if(itemDataRequest.data()){
+                    setItemData(itemDataRequest.data())
+                } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                // }
+                }
             }
         }
         getItem()
