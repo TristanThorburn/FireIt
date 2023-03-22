@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
     const [ ciderData, setCiderData ] = useState([]);
@@ -57,21 +57,21 @@ const CiderSeltzScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'cider'){
                 const docRef = doc(ciderCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                    if(itemDataRequest.data()){
-                        setItemData(itemDataRequest.data())
-                    } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                //     if(itemDataRequest.data()){
+                //         setItemData(itemDataRequest.data())
+                //     } else {
                         getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                    }
+                    // }
             }
             if(selectedItem !== '' && collectionRef === 'seltzer'){
                 const docRef = doc(hardSeltzerCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                    if(itemDataRequest.data()){
-                        setItemData(itemDataRequest.data())
-                    } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                //     if(itemDataRequest.data()){
+                //         setItemData(itemDataRequest.data())
+                //     } else {
                         getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                    }
+                    // }
             }
         }
         getItem()

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { appCollectionRef } from '../../../library/firestoreCollections';
-import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache, getDocFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocFromCache } from 'firebase/firestore';
 
 const AppsScreen = (props) => {
     const [ appsData, setAppsData ] = useState([]);
@@ -12,14 +12,14 @@ const AppsScreen = (props) => {
     useEffect(() => {
         const getMenuCategory = async () => {
             const q = query(appCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocsFromCache(q)
-            if(querySnapShot){
-                const menuItemList = querySnapShot.docs.map(doc => ({
-                    id:doc.id,
-                    data:doc.data()
-                }))
-                setAppsData(menuItemList)
-            } else {
+            // const querySnapShot = await getDocsFromCache(q)
+            // if(querySnapShot){
+            //     const menuItemList = querySnapShot.docs.map(doc => ({
+            //         id:doc.id,
+            //         data:doc.data()
+            //     }))
+            //     setAppsData(menuItemList)
+            // } else {
                 const severData = await getDocs(q)
                 const menuItemList = severData.docs.map(doc => ({
                     id:doc.id,
@@ -27,7 +27,7 @@ const AppsScreen = (props) => {
                 }))
                 setAppsData(menuItemList)
             }
-        }
+        // }
         getMenuCategory()
     },[])
 

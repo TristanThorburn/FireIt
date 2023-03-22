@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cocktailCollectionRef, shotsCollectionRef } from '../../../library/firestoreCollections';
-import { getDocFromCache, query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
+import { query, orderBy, doc, getDoc, getDocs, getDocsFromCache } from 'firebase/firestore';
 
 const MixedDrinksScreen = (props) => {
     const [ cocktailData, setCocktailData ] = useState([]);
@@ -57,21 +57,21 @@ const MixedDrinksScreen = (props) => {
         const getItem = async () => {
             if(selectedItem !== '' && collectionRef === 'cocktail'){
                 const docRef = doc(cocktailCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
             if(selectedItem !== '' && collectionRef === 'shot'){
                 const docRef = doc(shotsCollectionRef, selectedItem)
-                const itemDataRequest = await getDocFromCache(docRef)
-                if(itemDataRequest.data()){
-                    setItemData(itemDataRequest.data())
-                } else {
+                // const itemDataRequest = await getDocFromCache(docRef)
+                // if(itemDataRequest.data()){
+                //     setItemData(itemDataRequest.data())
+                // } else {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
-                }
+                // }
             }
         }
         getItem()
