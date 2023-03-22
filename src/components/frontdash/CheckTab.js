@@ -254,7 +254,6 @@ const CheckTab = (props) => {
 
             {alphaNumericPadOpen
                 ? <AlphaNumericPad
-                    checkTabActive={props.checkTabActive}
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                     serverTableList={props.serverTableList}
                     />

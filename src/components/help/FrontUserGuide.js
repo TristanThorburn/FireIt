@@ -31,7 +31,7 @@ const FrontUserGuide = (props) => {
 
                 {props.menuTabActive
                     ? <ul>
-                        <li>This is the main area where orders are punched in to simulate sending to the bar. Users can select the seat they wish to punch the items in on for future check organization, otherwise seat 1 will be assumed by default.</li>
+                        <li>This is the main area where orders are punched in to simulate sending to the kitchen or bar. Users can select the seat they wish to punch the items in on for future check organization, otherwise seat 1 will be assumed by default.</li>
                         <li>Pending orders will appear on the check in blue, this also simulates the functionality of unsent orders, thus servers could delete without the help of a manager, as nothing has been 'sent' so there is no potential product loss.</li>
                         <li>~Pending orders will currently be lost when switching tabs.~</li>
                         <li>Click on the item name to delete PENDING orders, pending orders which create a new seat can only be deleted if no other items are on the seat.</li>
@@ -60,7 +60,7 @@ const FrontUserGuide = (props) => {
                         <li>A seat from the origin check can only be on one receipt, and cannot be repeated.</li>
                         <li>Click on any pending seperate seat on the receipt to remove it.</li>
                         <li>PRINT ALL RECEIPT to save the pending seats to each receipt, aka printing the checks out to give to guests.</li>
-                        <li>Clicking on the seat on a printed receipt will prompt for confirmation before deleting.</li>
+                        <li>Clicking on the seat on a printed receipt will prompt for confirmation before deleting. No manager authorization is required for this as the incorrect receipt has been 'printed' and would be thrown in the garbage after re-separating.</li>
                         <li>Stretch Goals: 
                             <br />
                             Organize seats into different billing methods, for example split checks 50/50.
@@ -75,10 +75,11 @@ const FrontUserGuide = (props) => {
                         </li>
                         <li>Click on a receipt to input the payment(s) and tip(s) for each receipt, these can consist of multiple fraction payments towards the receipt.</li>
                         <li>Once the receipt is settled it will change color to green, clicking the receipt again will allow you to undo the settlement and update.</li>
-                        <li>FINSIH SETTLE to complete payment process and store payment data. This will clean up any of the receipts as well as the seats they contain from the check. If there are no seats left, server ownership of the table will be removed so that anyone else can use it.</li>
+                        <li>FINISH SETTLE to complete payment process and store payment data. This will clean up any of the receipts as well as the seats they contain from the check. If there are no seats left, server ownership of the table will be removed so that anyone else can use it.</li>
+                        <li>~Partially settling checks and then attemping to order more and re-separate on this check currently causes errors due the the sequence of receipts being out of order~</li>
                         <li>Stretch Goals: 
                             <br />
-                            .
+                            Display exactly what payments have been applied to the receipt, so the user can more easily confirm if they need to remove the pending payment.
                         </li>
                     </ul>
                     : null
@@ -87,7 +88,7 @@ const FrontUserGuide = (props) => {
                 {props.summaryTabActive
                     ? <ul>
                         <li>
-                            Displays all tables currently in use by the server for easy reference
+                            Displays all tables currently in use by the server for easy reference. Servers can select tables to order on similar to the table map by using START NEW TABLE instead.
                         </li>
                         <li>Stretch Goals: 
                             <br />
@@ -144,7 +145,7 @@ const FrontUserGuide = (props) => {
                         <li>
                             LOGOUT
                             <br />
-                            - Logout user/sever and return to the landing page 
+                            - Logout user/sever and return to the landing page.
                         </li>
                     </ul>
                     :null
@@ -211,7 +212,7 @@ const FrontUserGuide = (props) => {
                         <li>
                             PRINT ALL RECEIPT
                             <br />
-                            - Confirm the seat seperations and 'print' the checks, this stores the data on. 
+                            - Confirm the seat seperations and 'print' the checks, this stores the data to firebase. 
                         </li>
                         <li>
                             ADD RECEIPT
@@ -304,6 +305,11 @@ const FrontUserGuide = (props) => {
                             MGR OVER
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
+                        </li>
+                        <li>
+                            START NEW TABLE
+                            <br />
+                            - Opens the alphanumeric pad for a server to enter the name of the table they would like to start ordering on, it currently does not notify if the table does not exist on the map. 
                         </li>
                         <li>
                             DEMO

@@ -125,7 +125,6 @@ const MenuTab = (props) => {
 
             {alphaNumericPadOpen
                 ? <AlphaNumericPad
-                    menuTabActive={props.menuTabActive}
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                     serverTableList={props.serverTableList}
                     />
