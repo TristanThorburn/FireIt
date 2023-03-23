@@ -40,8 +40,6 @@ const FrontUserGuide = (props) => {
                         <li>New items can be added to the menu categories using the Admin tab and the back dash.</li>
                         <li>Stretch Goals:
                             <br />
-                            Add quick navigation between menu subcategories.
-                            <br />
                             Store Pending orders to database.
                             <br />
                             Add pop-ups to items to choose addons/sides, such as fries or salad to add to burgers. Pop-ups to based on data from menu items in the back dash.

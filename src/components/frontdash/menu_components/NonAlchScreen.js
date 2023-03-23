@@ -3,68 +3,73 @@ import { coldDrinksCollectionRef, hotDrinksCollectionRef } from '../../../librar
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const NonAlchScreen = (props) => {
-    const [ coldDrinkData, setColdDrinkData ] = useState([]);
-    const [ hotDrinkData, setHotDrinkData ] = useState([]);
-    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ drinkData, setDrinkData ] = useState([]);
+    const [ collectionRef, setCollectionRef ] = useState('cold');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
     const time = Date.now().toString()
+    const coldButton = document.getElementById('coldDrinks')
+    const hotButton = document.getElementById('hotDrinks')
 
     // Initial data population
     useEffect(() => {
-        const fetchCold = async () => {
-            const q = query(coldDrinksCollectionRef, orderBy('name'));
-            // const querySnapShot = await getDocsFromCache(q)
-            // if(querySnapShot){
-            //     const menuItemList = querySnapShot.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setColdDrinkData(menuItemList)
-            // } else {
-            //     const severData = await getDocs(q)
-            //     const menuItemList = severData.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setColdDrinkData(menuItemList)
-            // }
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setColdDrinkData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'cold'){
+            const fetchCold = async () => {
+                const q = query(coldDrinksCollectionRef, orderBy('name'));
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // } else {
+                //     const severData = await getDocs(q)
+                //     const menuItemList = severData.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setDrinkData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchCold()
         }
-        const fetchHot = async () => {
-            const q = query(hotDrinksCollectionRef, orderBy('name'));
-            // const querySnapShot = await getDocsFromCache(q)
-            // if(querySnapShot){
-            //     const menuItemList = querySnapShot.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setHotDrinkData(menuItemList)
-            // } else {
-            //     const severData = await getDocs(q)
-            //     const menuItemList = severData.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setHotDrinkData(menuItemList)
-            // }
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setHotDrinkData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'hot'){
+            const fetchHot = async () => {
+                const q = query(hotDrinksCollectionRef, orderBy('name'));
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // } else {
+                //     const severData = await getDocs(q)
+                //     const menuItemList = severData.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setDrinkData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchHot()
         }
-        fetchCold()
-        fetchHot()
-    },[])
+    },[collectionRef])
 
     // GetDoc for selected item
     useEffect(() => {
@@ -109,49 +114,96 @@ const NonAlchScreen = (props) => {
         }
     }, [itemData, props, selectedItem, time])
 
-    const handleColdClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleColdCategory = () => {
         setCollectionRef('cold')
+        coldButton.classList.add('activeSub')
+        hotButton.classList.remove('activeSub')
     }
 
-    const handleHotClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleHotCategory = () => {
         setCollectionRef('hot')
+        coldButton.classList.remove('activeSub')
+        hotButton.classList.add('activeSub')
     }
- 
+
+    const handleClick =(e) => {
+        setSelectedItem(e.target.id)
+    }
+
+    const handleGoApps = () => {
+        props.setMenuCategory('apps')
+    }
+
+    const handleGoMain = () => {
+        props.setMenuCategory('mains')
+    }
+
+    const handleGoDesserts = () => {
+        props.setMenuCategory('desserts')
+    }
+
+    const handleGoBeer = () => {
+        props.setMenuCategory('beer')
+    }
+
+    const handleGoCidSpr = () => {
+        props.setMenuCategory('cider spritz')
+    }
+
+    const handleGoMixed = () => {
+        props.setMenuCategory('mixed')
+    }
+
+    const handleGoLiquor = () => {
+        props.setMenuCategory('liquors')
+    }
+
+    const handleGoWine = () => {
+        props.setMenuCategory('wines')
+    }
+
     return(
         <div className='menuSubcategoryContainer'>
-            <div className='menuSubcategoryScreen'>
-                <h3>Cold Drinks List</h3>
-                <ul>
-                    {coldDrinkData.map(coldDrink => 
-                        <li 
-                            key={coldDrink.id}
-                            >
-                            <button
-                                id={coldDrink.id}
-                                onClick={handleColdClick}
-                                >{coldDrink.data.screenName}
-                            </button>
-                        </li>)}
-                </ul>
+            <div className='alcoholSubcategoryNav'>
+                <button 
+                    onClick={handleColdCategory} 
+                    id='coldDrinks' 
+                    className='activeSub'
+                    >Cold Drinks
+                </button>
+                <button 
+                    onClick={handleHotCategory} 
+                    id='hotDrinks'
+                    >Hot Drinks
+                </button>
             </div>
 
             <div className='menuSubcategoryScreen'>
-                <h3>Hot Drinks List</h3>
                 <ul>
-                    {hotDrinkData.map(hotDrink => 
+                    {drinkData.map(drink => 
                         <li 
-                            key={hotDrink.id}
+                            key={drink.id}
                             >
                             <button
-                                id={hotDrink.id}
-                                onClick={handleHotClick}
-                                >{hotDrink.data.screenName}
+                                id={drink.id}
+                                onClick={handleClick}
+                                >{drink.data.screenName}
                             </button>
                         </li>)}
                 </ul>
             </div>
+            <footer className='menuCategoryNav'>
+                <ul>
+                    <li><button onClick={handleGoApps}>apps</button></li>
+                    <li><button onClick={handleGoMain}>mains</button></li>
+                    <li><button onClick={handleGoDesserts}>desserts</button></li>
+                    <li><button onClick={handleGoBeer}>beer</button></li>
+                    <li><button onClick={handleGoCidSpr}>cider/seltz</button></li>
+                    <li><button onClick={handleGoLiquor}>liquor</button></li>
+                    <li><button onClick={handleGoMixed}>mixed drinks</button></li>
+                    <li><button onClick={handleGoWine}>wine</button></li>
+                </ul>
+            </footer>
         </div>
     )
 }
