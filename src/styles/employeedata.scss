@@ -3,12 +3,13 @@
 .employeeData{
     header{
         @include backDashHeader;
+
+        h2{
+            font-size: clamp(2.5rem, 1.5rem + 1.5625vw, 3.375rem);
+        }
     }
     .infoButton{
         right:-25%;
-    }
-    h2{
-        font-size: clamp(2.5rem, 1.5rem + 1.5625vw, 3.375rem);
     }
     h3{
         text-align: center;
@@ -73,6 +74,7 @@
 
 .employeeButtonContainer{
     width:100%;
+    @include flexCenterCenter;
 }
 
 div.employeeSubmit{

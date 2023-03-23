@@ -71,6 +71,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'EmployeeDataForm missing name number'
+                        ? <div className='padError'>Adding a new employee requires a numerical employee number and a first name.
+                        </div>
+                        : null
+                    }
 {/* TABLE ERRORS */}
                     {props.fireItAlert === 'TableMap no table'
                         ? <div className='padError'>Please select the table you wish to edit.
