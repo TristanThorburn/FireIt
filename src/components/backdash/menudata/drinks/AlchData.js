@@ -7,228 +7,115 @@ import CiderData from './CiderData';
 import HardSeltzerData from './HardSeltzerData';
 
 const AlchData = (props) => {
-    const [ beerTab, setBeerTab ] = useState(false);
-    const [ wineTab, setWineTab ] = useState(false);
-    const [ mixedTab, setMixedTab ] = useState(false);
-    const [ liquorTab, setLiquorTab ] = useState(false);    
-    const [ ciderTab, setCiderTab ] = useState(false);    
-    const [ hardSeltzerTab, setHardSeltzerTab ] = useState(false);
-    const [ beerBottleTab, setBeerBottleTab ] = useState(false);
-    const [ beerCanTab, setBeerCanTab ] = useState(false);
-    const [ beerDraftTab, setBeerDraftTab ] = useState(false);
-    const [ redWineTab, setRedWineTab ] = useState(false);
-    const [ whiteWineTab, setWhiteWineTab ] = useState(false);
-    const [ bubblyTab, setBubblyTab ] = useState(false);
-    const [ cocktailsTab, setCocktailsTab ] = useState(false);
-    const [ shotsTab, setShotsTab ] = useState(false);
-    const [ ginTab, setGinTab, ] = useState(false);
-    const [ rumTab, setRumTab ] = useState(false);
-    const [ tequilaTab, setTequilaTab ] = useState(false);
-    const [ vodkaTab, setVodkaTab ] = useState(false);
-    const [ whiskeyTab, setWhiskeyTab ] = useState(false);
+    const [ alcoholTab, setAlcoholTab ] = useState('')
+    const [ drinkType, setDrinkType ] = useState('')
 
     const handleBack = () => {
-        setBeerTab(false);
-        setWineTab(false);
-        setMixedTab(false);
-        setLiquorTab(false);
-        setCiderTab(false);
-        setHardSeltzerTab(false);
-        setBeerBottleTab(false);
-        setBeerCanTab(false);
-        setBeerDraftTab(false);
-        setRedWineTab(false);
-        setWhiteWineTab(false);
-        setBubblyTab(false);
-        setCocktailsTab(false);
-        setShotsTab(false);
-        setGinTab(false);
-        setRumTab(false);
-        setTequilaTab(false);
-        setVodkaTab(false);
-        setWhiskeyTab(false);
+        setAlcoholTab('')
+        setDrinkType('')
     }
     // MAIN CATEGORIES-----------------------------------------------
     const handleBeer = () => {        
-        setBeerTab(true);
-        setWineTab(false);
-        setMixedTab(false);
-        setLiquorTab(false);
-        setCiderTab(false);
-        setHardSeltzerTab(false);
+        setAlcoholTab('beer')
     }
 
     const handleWine = () => {
-        setBeerTab(false);
-        setWineTab(true);
-        setMixedTab(false);
-        setLiquorTab(false);
-        setCiderTab(false);
-        setHardSeltzerTab(false);
+        setAlcoholTab('wine')
     }
 
     const handleMixed = () => {
-        setBeerTab(false);
-        setWineTab(false);
-        setMixedTab(true);
-        setLiquorTab(false);
-        setCiderTab(false);
-        setHardSeltzerTab(false);
+        setAlcoholTab('mixed')
     }
 
     const handleLiquor = () => {
-        setBeerTab(false);
-        setWineTab(false);
-        setMixedTab(false);
-        setLiquorTab(true);
-        setCiderTab(false);
-        setHardSeltzerTab(false);
+        setAlcoholTab('liquor')
     }
 
-    // SUB TABS--------------------------------------------------------
     const handleCider = () => {
-        setBeerTab(false);
-        setWineTab(false);
-        setMixedTab(false);
-        setLiquorTab(false);
-        setCiderTab(true);
-        setHardSeltzerTab(false);
-        props.setActiveDataDoc('cider');
+        setAlcoholTab('cider')
+        setDrinkType('cider');
         props.setDocQuery(['drinks', 'alcoholic', 'cider'])
     }
 
     const handleHardSeltzer = () => {
-        setBeerTab(false);
-        setWineTab(false);
-        setMixedTab(false);
-        setLiquorTab(false);
-        setCiderTab(false);
-        setHardSeltzerTab(true);
-        props.setActiveDataDoc('hard seltzer');
+        setAlcoholTab('seltzer')
+        setDrinkType('hard seltzer');
         props.setDocQuery(['drinks', 'alcoholic', 'hard seltzer'])
     }
 
     // BEERS
     const handleBeerBottle = () => {
-        setBeerBottleTab(true);
-        setBeerCanTab(false);
-        setBeerDraftTab(false);
-        props.setActiveDataDoc('beer bottle');
+        setDrinkType('beer bottle');
         props.setDocQuery(['drinks', 'alcoholic', 'beer', 'type', 'bottle'])
     }
 
     const handleBeerCan = () => {
-        setBeerBottleTab(false);
-        setBeerCanTab(true);
-        setBeerDraftTab(false);
-        props.setActiveDataDoc('beer can');
+        setDrinkType('beer can');
         props.setDocQuery(['drinks', 'alcoholic', 'beer', 'type', 'can'])
     }
 
     const handleBeerDraft = () => {
-        setBeerBottleTab(false);
-        setBeerCanTab(false);
-        setBeerDraftTab(true);
-        props.setActiveDataDoc('beer draft');
+        setDrinkType('beer draft');
         props.setDocQuery(['drinks', 'alcoholic', 'beer', 'type', 'draft'])
     }
 
     // WINES
     const handleRedWine = () => {
-        setWhiteWineTab(false);
-        setBubblyTab(false);
-        setRedWineTab(true);
-        props.setActiveDataDoc('red wine');
+        setDrinkType('red wine');
         props.setDocQuery(['drinks', 'alcoholic', 'wine', 'type', 'red wine'])
     }
 
     const handleWhiteWine = () => {
-        setRedWineTab(false);
-        setBubblyTab(false);
-        setWhiteWineTab(true);
-        props.setActiveDataDoc('white wine');
+        setDrinkType('white wine');
         props.setDocQuery(['drinks', 'alcoholic', 'wine', 'type', 'white wine'])
     }
 
     const handleBubbly = () => {
-        setRedWineTab(false);
-        setWhiteWineTab(false);
-        setBubblyTab(true);
-        props.setActiveDataDoc('bubbly');
+        setDrinkType('bubbly');
         props.setDocQuery(['drinks', 'alcoholic', 'wine', 'type', 'bubbly'])
     }
 
     // MIXED
     const handleCocktails = () => {
-        setShotsTab(false);
-        setCocktailsTab(true);
-        props.setActiveDataDoc('cocktails');
+        setDrinkType('cocktails');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'cocktails'])
     }
 
     const handleShots = () => {
-        setCocktailsTab(false);
-        setShotsTab(true);
-        props.setActiveDataDoc('shots');
+        setDrinkType('shots');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'shots'])
     }
 
     // LIQUOR
     const handleGin = () => {        
-        setGinTab(true);
-        setRumTab(false);
-        setTequilaTab(false);
-        setVodkaTab(false);
-        setWhiskeyTab(false);
-        props.setActiveDataDoc('gin');
+        setDrinkType('gin');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'gin'])
     }
 
     const handleRum = () => {
-        setGinTab(false);
-        setRumTab(true);
-        setTequilaTab(false);
-        setVodkaTab(false);
-        setWhiskeyTab(false);
-        props.setActiveDataDoc('rum');
+        setDrinkType('rum');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'rum'])
     }
 
     const handleTequila = () => {
-        setGinTab(false);
-        setRumTab(false);
-        setTequilaTab(true);
-        setVodkaTab(false);
-        setWhiskeyTab(false);
-        props.setActiveDataDoc('tequila');
+        setDrinkType('tequila');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'tequila'])
     }
 
     const handleVodka = () => {
-        setGinTab(false);
-        setRumTab(false);
-        setTequilaTab(false);
-        setVodkaTab(true);
-        setWhiskeyTab(false);
-        props.setActiveDataDoc('vodka');
+        setDrinkType('vodka');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'vodka'])
     }
 
     const handleWhiskey = () => {
-        setGinTab(false);
-        setRumTab(false);
-        setTequilaTab(false);
-        setVodkaTab(false);
-        setWhiskeyTab(true);
-        props.setActiveDataDoc('whiskey');
+        setDrinkType('whiskey');
         props.setDocQuery(['drinks', 'alcoholic', 'spirits', 'type', 'liquor', 'type', 'whiskey'])
     }
 
     return(
         <div>
-            {beerTab || wineTab || mixedTab || liquorTab || ciderTab || hardSeltzerTab
-                ? null
-                :<div className='alcoholNavButtons'>
+            {alcoholTab === ''
+                ?<div className='alcoholNavButtons'>
                     <button onClick={handleBeer}>Beer</button>
                     <button onClick={handleWine}>Wine</button>
                     <button onClick={handleMixed}>Mixed Drinks</button>
@@ -236,9 +123,10 @@ const AlchData = (props) => {
                     <button onClick={handleCider}>Cider</button>
                     <button onClick={handleHardSeltzer}>Hard Seltzer, etc.</button>
                 </div>
+                : null
             }
             
-            {beerTab
+            {alcoholTab === 'beer'
                 ? <div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleBeerBottle}>Bottle</button>
@@ -247,7 +135,7 @@ const AlchData = (props) => {
                     </div>
                 : null
             }
-            {wineTab
+            {alcoholTab === 'wine'
                 ?<div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleRedWine}>Red Wine</button>
@@ -256,7 +144,7 @@ const AlchData = (props) => {
                 </div>
                 : null
             }
-            {mixedTab
+            {alcoholTab === 'mixed'
                 ?<div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleCocktails}>Cocktails</button>
@@ -264,7 +152,7 @@ const AlchData = (props) => {
                 </div>
                 : null
             }
-            {liquorTab
+            {alcoholTab === 'liquor'
                 ?<div className='alcoholNavButtons'>
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleGin}>Gin</button>
@@ -276,59 +164,68 @@ const AlchData = (props) => {
                 : null
             }
 
-            {ciderTab
+            {alcoholTab === 'cider'
                 ? <>
                     <div className='alcoholNavButtons'>
                         <button onClick={handleBack}>Back</button>
                     </div>
                     <CiderData
-                        activeTab={props.activeTab}
+                        activeTab={drinkType}
                         docQuery={props.docQuery} 
                         />
                 </>
                 : null
             }
 
-            {hardSeltzerTab
+            {alcoholTab === 'seltzer'
                 ? <>
                     <div className='alcoholNavButtons'>
                         <button onClick={handleBack}>Back</button>
                     </div>
                     <HardSeltzerData
-                        activeTab={props.activeTab}
+                        activeTab={drinkType}
                         docQuery={props.docQuery} 
                         />
                 </>
                 : null
             }
 
-            {beerBottleTab || beerCanTab || beerDraftTab
+            {drinkType === 'beer bottle'
+                || drinkType === 'beer can'
+                || drinkType === 'beer draft'
                 ? <BeerData
-                    activeTab={props.activeTab}
+                    activeTab={drinkType}
                     docQuery={props.docQuery} 
                     />
                 : null
             }
 
-            {redWineTab || whiteWineTab || bubblyTab
+            {drinkType === 'bubbly'
+                || drinkType === 'red wine'
+                || drinkType === 'white wine'
                 ? <WineData
-                    activeTab={props.activeTab}
+                    activeTab={drinkType}
                     docQuery={props.docQuery}
                     />
                 : null
             }
 
-            {cocktailsTab || shotsTab
+            {drinkType === 'cocktails'
+                || drinkType === 'shots'
                 ? <MixedData
-                    activeTab={props.activeTab}
+                    activeTab={drinkType}
                     docQuery={props.docQuery}
                     />
                 : null
             }
 
-            {ginTab || rumTab || tequilaTab || vodkaTab || whiskeyTab
+            {drinkType === 'gin'
+                || drinkType === 'rum'
+                || drinkType === 'tequila'
+                || drinkType === 'vodka'
+                || drinkType === 'whiskey'
                 ? <LiquorsData
-                    activeTab={props.activeTab}
+                    activeTab={drinkType}
                     docQuery={props.docQuery}
                     />
                 : null

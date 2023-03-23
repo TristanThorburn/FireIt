@@ -20,118 +20,48 @@ import MenuModsData from './menudata/MenuModsData';
 import BackDashHelp from '../help/BackDashHelp';
 
 const MenuData = () => {
-    const [ appTab, setAppsTab ] = useState(false);
-    const [ mainsTab, setMainsTab ] = useState(false);
-    const [ dessertsTab, setDessertsTab ] = useState(false);
-    const [ foodAddonsTab, setFoodAddonsTab ] = useState(false);
-    const [ nonAlchTab, setNonAlchTab ] = useState(false);    
-    const [ alchTab, setAlchTab ] = useState(false);    
-    const [ drinkAddonsTab, setDrinkAddonsTab ] = useState(false);
-    const [ menuModsTab, setMenuModsTab ] = useState(false);
-    const [ activeDataDoc, setActiveDataDoc ] = useState('');
+    const [ activeTab, setActiveTab ] = useState('');
     const [ docQuery, setDocQuery ] = useState('')
     const [ menuEntryHelp, setMenuEntryHelp ] = useState(false)
 
-    // ACTIVE DATA DOC / ACTIVE TAB PROP === which collection ref to look for useeffect display
+    // ACTIVE TAB === which collection ref to look for useeffect display
     // DOC QUERY === data address for selecting specific docs / used in update functions
 
     const handleApps = () => {
-        setAppsTab(true);
-        setMainsTab(false);
-        setDessertsTab(false);
-        setFoodAddonsTab(false);
-        setNonAlchTab(false);
-        setAlchTab(false);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(false);
-        setActiveDataDoc('apps');
+        setActiveTab('apps');
         setDocQuery(['food', 'menu', 'apps'])
     }
 
     const handleMains = () => {
-        setAppsTab(false);
-        setMainsTab(true);
-        setDessertsTab(false);
-        setFoodAddonsTab(false);
-        setNonAlchTab(false);
-        setAlchTab(false);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(false);
-        setActiveDataDoc('mains');
+        setActiveTab('mains');
         setDocQuery(['food', 'menu', 'mains'])
     }
 
     const handleDesserts = () => {
-        setAppsTab(false);
-        setMainsTab(false);
-        setDessertsTab(true);
-        setFoodAddonsTab(false);
-        setNonAlchTab(false);
-        setAlchTab(false);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(false);
-        setActiveDataDoc('desserts');
+        setActiveTab('desserts');
         setDocQuery(['food', 'menu', 'desserts'])
     }
 
     const handleFoodAdds = () => {
-        setAppsTab(false);
-        setMainsTab(false);
-        setDessertsTab(false);
-        setFoodAddonsTab(true);
-        setNonAlchTab(false);
-        setAlchTab(false);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(false);
-        setActiveDataDoc('food addons');
+        setActiveTab('food addons');
         setDocQuery(['food', 'addons', 'food addons'])
     }
 
     const handleNonAlch = () => {
-        setAppsTab(false);
-        setMainsTab(false);
-        setDessertsTab(false);
-        setFoodAddonsTab(false);
-        setNonAlchTab(true);
-        setAlchTab(false);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(false);
+        setActiveTab('non alcoholic')
     }
 
     const handleAlch = () => {
-        setAppsTab(false);
-        setMainsTab(false);
-        setDessertsTab(false);
-        setFoodAddonsTab(false);
-        setNonAlchTab(false);
-        setAlchTab(true);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(false);
+        setActiveTab('alcoholic')
     }
 
     const handleBarAdds = () => {
-        setAppsTab(false);
-        setMainsTab(false);
-        setDessertsTab(false);
-        setFoodAddonsTab(false);
-        setNonAlchTab(false);
-        setAlchTab(false);
-        setDrinkAddonsTab(true);
-        setMenuModsTab(false);
-        setActiveDataDoc('drink addons');
+        setActiveTab('drink addons');
         setDocQuery(['drinks', 'addons', 'drink addons'])
     }
 
     const handleMenuMods = () => {
-        setAppsTab(false);
-        setMainsTab(false);
-        setDessertsTab(false);
-        setFoodAddonsTab(false);
-        setNonAlchTab(false);
-        setAlchTab(false);
-        setDrinkAddonsTab(false);
-        setMenuModsTab(true);
-        setActiveDataDoc('menu mods');
+        setActiveTab('menu mods');
         setDocQuery(['menu mods'])
     }
 
@@ -171,53 +101,49 @@ const MenuData = () => {
                 </ul>
             </div>
 
-            {appTab
-                ? <AppsData activeTab={activeDataDoc} docQuery={docQuery} />
+            {activeTab === 'apps'
+                ? <AppsData activeTab={activeTab} docQuery={docQuery} />
                 : null
             }
 
-            {mainsTab
-                ? <MainsData activeTab={activeDataDoc} docQuery={docQuery} />
+            {activeTab === 'mains'
+                ? <MainsData activeTab={activeTab} docQuery={docQuery} />
                 : null
             }
 
-            {dessertsTab
-                ? <DessertsData activeTab={activeDataDoc} docQuery={docQuery} />
+            {activeTab === 'desserts'
+                ? <DessertsData activeTab={activeTab} docQuery={docQuery} />
                 : null
             }
 
-            {foodAddonsTab
-                ? <FoodAddonsData activeTab={activeDataDoc} docQuery={docQuery} />
+            {activeTab === 'food addons'
+                ? <FoodAddonsData activeTab={activeTab} docQuery={docQuery} />
                 : null
             }
 
-            {nonAlchTab
+            {activeTab === 'non alcoholic'
                 ? <NonAlchData 
-                    activeTab={activeDataDoc} 
                     docQuery={docQuery} 
-                    setActiveDataDoc={setActiveDataDoc}
                     setDocQuery={setDocQuery} 
                     />
                 : null
             }
 
-            {alchTab
+            {activeTab === 'alcoholic'
                 ? <AlchData 
-                    activeTab={activeDataDoc} 
                     docQuery={docQuery} 
-                    setActiveDataDoc={setActiveDataDoc}
                     setDocQuery={setDocQuery} 
                     />
                 : null
             }
 
-            {drinkAddonsTab
-                ? <DrinkAddonsData activeTab={activeDataDoc} docQuery={docQuery} />
+            {activeTab === 'drink addons'
+                ? <DrinkAddonsData activeTab={activeTab} docQuery={docQuery} />
                 : null
             }
 
-            {menuModsTab
-                ? <MenuModsData activeTab={activeDataDoc} docQuery={docQuery} />
+            {activeTab === 'menu mods'
+                ? <MenuModsData activeTab={activeTab} docQuery={docQuery} />
                 : null
             }
 

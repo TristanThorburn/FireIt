@@ -50,6 +50,10 @@
     }
     .taxGroup, .printerRoute{
         margin:2rem auto;
+        
+        label{
+            font-weight: bold;
+        }
     }
     .updateButtons{
     display:flex;

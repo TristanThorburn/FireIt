@@ -134,6 +134,7 @@ const MenuItemForm = (props) => {
             getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
         }
     },[props.id, props.docQuery, props.activeTab])
+
 // RESET FORMS
     useEffect(() => {
         // Array.from(document.querySelectorAll('input')).forEach(
@@ -144,6 +145,7 @@ const MenuItemForm = (props) => {
         //     input => (input.checked = false))
         document.getElementById('menuItemForm').reset();
     }, [props.id, props.newItem])
+    
 // ADD CLONED ITEM TO FIRESTORE
     useEffect(() => {
         if(cloneItem.name !== undefined && cloneItem.name !== ''){
@@ -199,12 +201,6 @@ const MenuItemForm = (props) => {
             setPopUpsAction('')
             setTaxGroup('')
             setPrinterRoute('')
-            // Array.from(document.querySelectorAll('input')).forEach(
-            //     input => (input.value = ''))
-            // Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
-            //         input => (input.checked = false))
-            // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
-            //     input => (input.checked = false))
             document.getElementById('menuItemForm').reset();
         }
     }
@@ -270,12 +266,6 @@ const MenuItemForm = (props) => {
         props.setSelectedItem('');
         setPopUps({popUpsList:[]});
         setPopUpsAction('')
-        // Array.from(document.querySelectorAll('input')).forEach(
-        //     input => (input.value = ''))
-        // Array.from(document.querySelectorAll('input[type=checkbox]')).forEach(
-        //         input => (input.checked = false))
-        // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
-        //     input => (input.checked = false))
         document.getElementById('menuItemForm').reset(); 
     }
 
@@ -445,7 +435,7 @@ const MenuItemForm = (props) => {
                         <div className='taxGroup'>
                             <label 
                                 htmlFor='taxGroup'
-                                >Tax Group:&nbsp;{itemData?.taxGroup}
+                                >Current Group:&nbsp;{itemData?.taxGroup}
                             </label>
                             <br />
                             <select
@@ -465,7 +455,7 @@ const MenuItemForm = (props) => {
                         <div className='printerRoute'>
                             <label 
                                 htmlFor='printerRoute'
-                                >Printer Route:&nbsp;{itemData?.printerRoute}
+                                >Current Route:&nbsp;{itemData?.printerRoute}
                             </label>
                             <br />
                             <select

@@ -2,7 +2,7 @@ const FrontUserGuide = (props) => {
     return(
         <div className='frontUserGuideContainer'>
             <div>
-                <h3>How to use the {
+                <h2>How to use the {
                     props.tableTabActive
                         ? 'TableMap Tab'
                         : props.menuTabActive
@@ -15,7 +15,7 @@ const FrontUserGuide = (props) => {
                                         ? 'Summary Tab'
                                         : null
                     }
-                </h3>
+                </h2>
 
                 {props.tableTabActive
                     ? <ul>
@@ -98,7 +98,7 @@ const FrontUserGuide = (props) => {
             </div>
 
             <div>
-                <h3>How to use the {
+                <h2>How to use the {
                     props.tableTabActive
                         ? 'TableMap Bottom Nav Bar'
                         : props.menuTabActive
@@ -111,7 +111,7 @@ const FrontUserGuide = (props) => {
                                         ? 'Summary Bottom Nav Bar'
                                         : null
                     }
-                </h3>
+                </h2>
 
                 {props.tableTabActive
                     ? <ul>
