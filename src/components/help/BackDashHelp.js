@@ -19,7 +19,7 @@ const BackDashHelp = (props) => {
         if(props.scheduleHelp === true){
             props.setScheduleHelp(false)
         }
-        else {
+        if (props.loginHelp === true) {
             props.setLoginHelp(false)
         }
     }

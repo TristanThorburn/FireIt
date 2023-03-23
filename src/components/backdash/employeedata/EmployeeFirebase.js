@@ -65,7 +65,9 @@ const EmployeeFirebase = (props) => {
 
             {error === 'Firebase: Error (auth/missing-identifier).'
                 ? null
-                : <div className='padError'>{error}</div>
+                : error === 'Firebase: Error (auth/invalid-email).'
+                    ? null
+                    : <div className='padError'>{error}</div>
             }
         </div>
     )

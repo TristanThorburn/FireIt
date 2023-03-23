@@ -63,6 +63,7 @@ const Login = () => {
 
             {loginHelp
                 ? <BackDashHelp
+                    loginHelp={loginHelp}
                     setLoginHelp={setLoginHelp}
                     />
                 : null
