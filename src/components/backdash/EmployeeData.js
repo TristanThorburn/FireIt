@@ -10,18 +10,28 @@ const EmployeeData = () => {
     const [ employeeData, setEmployeeData ] = useState([]);
     const [ newEmployee, setNewEmployee ] = useState(false);
     const [ selectedEmployee, setSelectedEmployee ] = useState('');
-    const [ employeeDataHelp, setEmployeeDataHelp ] = useState(false)
-    const [ fireItAlert, setFireItAlert ] = useState('')
+    const [ employeeDataHelp, setEmployeeDataHelp ] = useState(false);
+    const [ fireItAlert, setFireItAlert ] = useState('');
+    const [ employeeNumbers, setEmployeeNumbers ] = useState([]);
+    const [ employeeUserIds, setEmployeeUserIds ] = useState([]);
 
     // initial data population on screen
     useEffect(() => {
+        let employeeNumbers = []
+        let employeeUsers = []
         const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'))
         const unsubscribe = onSnapshot(q, snapshot => {
             setEmployeeData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
             })))
+            snapshot.forEach(doc => {
+                employeeNumbers.push(doc.data().employeeNumber)               
+                employeeUsers.push(doc.data().userID)
+            })
         })
+        setEmployeeNumbers(employeeNumbers)
+        setEmployeeUserIds(employeeUsers)
         return unsubscribe
     },[])
 
@@ -101,6 +111,8 @@ const EmployeeData = () => {
                     setSelectedEmployee={setSelectedEmployee}
                     id={selectedEmployee}
                     setFireItAlert={setFireItAlert}
+                    employeeNumbers={employeeNumbers}
+                    employeeUserIds={employeeUserIds}
                     />
                 : <h3>Select an employee, or create new</h3>
             }
