@@ -46,6 +46,12 @@
         height: clamp(10rem, -2.8571rem + 20.0893vw, 21.25rem);
         width: clamp(10rem, -2.8571rem + 20.0893vw, 21.25rem);
     }
+    .useableBackdash{
+        color:darkgreen;
+    }
+    .unUseableBackdash{
+        color:darkred;
+    }
 }
 
 .backDashHeader{

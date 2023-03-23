@@ -3,68 +3,73 @@ import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/f
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
-    const [ ciderData, setCiderData ] = useState([]);
-    const [ seltzerData, setSeltzerData ] = useState([]);
-    const [ collectionRef, setCollectionRef ] = useState('');
+    const [ drinkData, setDrinkData ] = useState([]);
+    const [ collectionRef, setCollectionRef ] = useState('cider');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
     const time = Date.now().toString()
+    const ciderButton = document.getElementById('ciders')
+    const seltzerButton = document.getElementById('seltzers')
 
     // Populate screen with items data
     useEffect(() => {
-        const fetchCider = async () => {
-            const q = query(ciderCollectionRef, orderBy('name'));
-            // const querySnapShot = await getDocsFromCache(q)
-            // if(querySnapShot){
-            //     const menuItemList = querySnapShot.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setCiderData(menuItemList)
-            // } else {
-            //     const severData = await getDocs(q)
-            //     const menuItemList = severData.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setCiderData(menuItemList)
-            // }
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setCiderData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'cider'){
+            const fetchCider = async () => {
+                const q = query(ciderCollectionRef, orderBy('name'));
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // } else {
+                //     const severData = await getDocs(q)
+                //     const menuItemList = severData.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setDrinkData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchCider()
         }
-        const fetchSeltzer = async () => {
-            const q = query(hardSeltzerCollectionRef, orderBy('name'));
-            // const querySnapShot = await getDocsFromCache(q)
-            // if(querySnapShot){
-            //     const menuItemList = querySnapShot.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setSeltzerData(menuItemList)
-            // } else {
-            //     const severData = await getDocs(q)
-            //     const menuItemList = severData.docs.map(doc => ({
-            //         id:doc.id,
-            //         data:doc.data()
-            //     }))
-            //     setSeltzerData(menuItemList)
-            // }
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setSeltzerData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(collectionRef === 'seltzer'){
+            const fetchSeltzer = async () => {
+                const q = query(hardSeltzerCollectionRef, orderBy('name'));
+                // const querySnapShot = await getDocsFromCache(q)
+                // if(querySnapShot){
+                //     const menuItemList = querySnapShot.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // } else {
+                //     const severData = await getDocs(q)
+                //     const menuItemList = severData.docs.map(doc => ({
+                //         id:doc.id,
+                //         data:doc.data()
+                //     }))
+                //     setDrinkData(menuItemList)
+                // }
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setDrinkData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            fetchSeltzer()
         }
-        fetchCider()
-        fetchSeltzer()
-    },[])
+    },[collectionRef])
 
     // GetDoc for selected item
     useEffect(() => {
@@ -109,49 +114,96 @@ const CiderSeltzScreen = (props) => {
         }
     }, [itemData, props, selectedItem, time])
 
-    const handleCiderClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleCiderCategory = () => {
         setCollectionRef('cider')
+        ciderButton.classList.add('activeSub')
+        seltzerButton.classList.remove('activeSub')
     }
 
-    const handleSeltzerClick =(e) => {
-        setSelectedItem(e.target.id)
+    const handleSeltzerCategory = () => {
         setCollectionRef('seltzer')
+        ciderButton.classList.remove('activeSub')
+        seltzerButton.classList.add('activeSub')
+    }
+
+    const handleClick =(e) => {
+        setSelectedItem(e.target.id)
+    }
+    
+    const handleGoApps = () => {
+        props.setMenuCategory('apps')
+    }
+
+    const handleGoMain = () => {
+        props.setMenuCategory('mains')
+    }
+
+    const handleGoDesserts = () => {
+        props.setMenuCategory('desserts')
+    }
+
+    const handleGoNonAlch = () => {
+        props.setMenuCategory('non alch')
+    }
+
+    const handleGoBeer = () => {
+        props.setMenuCategory('beer')
+    }
+
+    const handleGoMixed = () => {
+        props.setMenuCategory('mixed')
+    }
+
+    const handleGoLiquor = () => {
+        props.setMenuCategory('liquors')
+    }
+
+    const handleGoWine = () => {
+        props.setMenuCategory('wines')
     }
  
     return(
         <div className='menuSubcategoryContainer'>
-            <div className='menuSubcategoryScreen'>
-                <h3>Ciders List</h3>
-                <ul>
-                    {ciderData.map(cider => 
-                        <li 
-                            key={cider.id}
-                            >
-                            <button
-                                id={cider.id}
-                                onClick={handleCiderClick}
-                                >{cider.data.screenName}
-                            </button>
-                        </li>)}
-                </ul>
+            <div className='alcoholSubcategoryNav'>
+                <button 
+                    onClick={handleCiderCategory} 
+                    id='ciders' 
+                    className='activeSub'
+                    >Ciders
+                </button>
+                <button 
+                    onClick={handleSeltzerCategory} 
+                    id='seltzers'
+                    >Hard Seltzers
+                </button>
             </div>
 
             <div className='menuSubcategoryScreen'>
-                <h3>Hard Seltzers List</h3>
                 <ul>
-                    {seltzerData.map(seltzer => 
+                    {drinkData.map(drink => 
                         <li 
-                            key={seltzer.id}
+                            key={drink.id}
                             >
                             <button
-                                id={seltzer.id}
-                                onClick={handleSeltzerClick}
-                                >{seltzer.data.screenName}
+                                id={drink.id}
+                                onClick={handleClick}
+                                >{drink.data.screenName}
                             </button>
                         </li>)}
                 </ul>
             </div>
+            <footer className='menuCategoryNav'>
+                <ul>
+                    <li><button onClick={handleGoApps}>apps</button></li>
+                    <li><button onClick={handleGoMain}>mains</button></li>
+                    <li><button onClick={handleGoDesserts}>desserts</button></li>
+                    <li><button onClick={handleGoNonAlch}>non alch</button></li>
+                    <li><button onClick={handleGoBeer}>beer</button></li>
+                    <li><button onClick={handleGoLiquor}>liquor</button></li>
+                    <li><button onClick={handleGoMixed}>mixed drinks</button></li>
+                    <li><button onClick={handleGoWine}>wine</button></li>
+                </ul>
+            </footer>
         </div>
     )
 }

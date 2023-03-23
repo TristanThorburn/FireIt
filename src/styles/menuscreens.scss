@@ -38,6 +38,7 @@
 }
 
 .menuSubcategoryContainer{
+    position: relative;
     height:100%;
     width:100%;
 }
@@ -45,6 +46,7 @@
 .menuSubcategoryScreen{
     margin:0 auto;
     width:90%;
+    height:calc(100% - 60px);
 
     h3{
         font-size:2rem;
@@ -90,6 +92,30 @@
     }
     .activeSub{
         background-color: green;
+    }
+}
+
+.menuCategoryNav{
+    position: absolute;
+    transform: translateX(-50%);
+    bottom: 0;
+    left:50%;
+    width:90%;
+
+    ul{
+        @include cleanUl;
+        display:flex;
+        justify-content: space-evenly;
+    }
+    button{
+        width:150px;
+        height:50px;
+        text-transform: uppercase;
+        border-radius: 10px;
+        background-color: $backDashBackgroundColor;
+    }
+    button:active{
+        background-color: darken($backDashBackgroundColor, 25%);
     }
 }
 

@@ -180,6 +180,38 @@ const BeerScreen = (props) => {
     const handleClick =(e) => {
         setSelectedItem(e.target.id)
     }
+    
+    const handleGoApps = () => {
+        props.setMenuCategory('apps')
+    }
+
+    const handleGoMain = () => {
+        props.setMenuCategory('mains')
+    }
+
+    const handleGoDesserts = () => {
+        props.setMenuCategory('desserts')
+    }
+
+    const handleGoNonAlch = () => {
+        props.setMenuCategory('non alch')
+    }
+
+    const handleGoCidSpr = () => {
+        props.setMenuCategory('cider spritz')
+    }
+
+    const handleGoMixed = () => {
+        props.setMenuCategory('mixed')
+    }
+
+    const handleGoLiquor = () => {
+        props.setMenuCategory('liquors')
+    }
+
+    const handleGoWine = () => {
+        props.setMenuCategory('wines')
+    }
   
     return(
         <div className='menuSubcategoryContainer'>
@@ -203,6 +235,18 @@ const BeerScreen = (props) => {
                         </li>)}
                 </ul>
             </div>
+            <footer className='menuCategoryNav'>
+                <ul>
+                    <li><button onClick={handleGoApps}>apps</button></li>
+                    <li><button onClick={handleGoMain}>mains</button></li>
+                    <li><button onClick={handleGoDesserts}>desserts</button></li>
+                    <li><button onClick={handleGoNonAlch}>non alch</button></li>
+                    <li><button onClick={handleGoCidSpr}>cider/seltz</button></li>
+                    <li><button onClick={handleGoLiquor}>liquor</button></li>
+                    <li><button onClick={handleGoMixed}>mixed drinks</button></li>
+                    <li><button onClick={handleGoWine}>wine</button></li>
+                </ul>
+            </footer>
         </div>
     )
 }

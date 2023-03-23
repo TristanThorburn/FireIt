@@ -186,6 +186,7 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setSelectedSeat={setSelectedSeat}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -196,6 +197,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -206,6 +208,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -216,6 +219,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -226,6 +230,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -236,6 +241,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -246,6 +252,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -256,6 +263,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }
@@ -266,6 +274,7 @@ const MenuTab = (props) => {
                         selectedSeat={selectedSeat}
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
+                        setMenuCategory={setMenuCategory}
                         />
                     : null
                 }

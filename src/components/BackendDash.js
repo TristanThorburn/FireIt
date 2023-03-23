@@ -18,12 +18,30 @@ const BackendDash = () => {
             </header>
             <div className='buttonContainer'>
                 <ul>
-                <li><Link to='/menu-data'><img src={menu} alt="" /></Link>Menu Entry Setup</li>
-                <li><Link to='/employee-data'><img src={employee} alt="" /></Link>Employee Setup</li>
-                <li><Link to='/tablemap-data'><img src={table} alt="" /></Link>Table Map Settings</li>
-                <li><Link to='/payment-data'><img src={payments} alt="" /></Link>Payment Data</li>
-                <li><Link to='/schedule'><img src={schedule} alt="" /></Link>Schedule</li>
-                <li><Link to='/settings'><img src={settings} alt="" /></Link>Settings</li>
+                <li className='useableBackdash'>
+                    <Link to='/menu-data'><img src={menu} alt="" /></Link>
+                    Menu Entry Setup
+                </li>
+                <li className='useableBackdash'>
+                    <Link to='/employee-data'><img src={employee} alt="" /></Link>
+                    Employee Setup
+                </li>
+                <li className='useableBackdash'>
+                    <Link to='/tablemap-data'><img src={table} alt="" /></Link>
+                    Table Map Settings
+                </li>
+                <li className='unUseableBackdash'>
+                    <Link to='/payment-data'><img src={payments} alt="" /></Link>
+                    Payment Data
+                </li>
+                <li className='unUseableBackdash'>
+                    <Link to='/schedule'><img src={schedule} alt="" /></Link>
+                    Schedule
+                </li>
+                <li className='unUseableBackdash'>
+                    <Link to='/settings'><img src={settings} alt="" /></Link>
+                    Settings
+                </li>
                 </ul>
             </div>
         </div>
