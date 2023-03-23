@@ -7,17 +7,15 @@ const NonAlchData = (props) => {
     const [ nonAlchData, setNonAlchData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
-    const [ drinkType, setDrinkType ] = useState('');
+    const [ drinkType, setDrinkType ] = useState('cold drinks');
 
     const handleColdDrink = () => {
-        setDrinkType('cold')
-        props.setActiveDataDoc('cold drinks');
+        setDrinkType('cold drinks')
         props.setDocQuery(['drinks', 'non alcoholic', 'cold drinks'])
     }
 
     const handleHotDrink = () => {
-        setDrinkType('hot')
-        props.setActiveDataDoc('hot drinks');
+        setDrinkType('hot drinks')
         props.setDocQuery(['drinks', 'non alcoholic', 'hot drinks'])
     }
 
@@ -26,7 +24,7 @@ const NonAlchData = (props) => {
         const getMenuCategory = async () => {
             setSelectedItem('');
             setNewItem(false);
-            if(drinkType === 'cold'){
+            if(drinkType === 'cold drinks'){
                 const q = query(coldDrinksCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setNonAlchData(snapshot.docs.map(doc => ({
@@ -36,7 +34,7 @@ const NonAlchData = (props) => {
                 })
                 return unsubscribe
             }
-            if(drinkType === 'hot'){
+            if(drinkType === 'hot drinks'){
                 const q = query(hotDrinksCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setNonAlchData(snapshot.docs.map(doc => ({
@@ -62,7 +60,7 @@ const NonAlchData = (props) => {
                 <button onClick={handleHotDrink}>Hot Drinks</button>
             </div>
 
-            {drinkType === 'cold'
+            {drinkType === 'cold drinks'
                     ?<div className='backDataList'>
                         <h3>Cold Drinks List</h3>
                         <button onClick={handleNewItem} className='newItemButton'>New Item</button>
@@ -79,7 +77,7 @@ const NonAlchData = (props) => {
                             </li>)}
                         </ul>
                     </div>
-                    :drinkType === 'hot'
+                    :drinkType === 'hot drinks'
                         ?<div className='backDataList'>
                             <h3>Hot Drinks List</h3>
                             <button onClick={handleNewItem} className='newItemButton'>New Item</button><ul>
@@ -103,7 +101,7 @@ const NonAlchData = (props) => {
                 newItem={newItem}
                 id={selectedItem}
                 setSelectedItem={setSelectedItem}
-                activeTab={props.activeTab}
+                activeTab={drinkType}
                 docQuery={props.docQuery} />
         </div>
     )

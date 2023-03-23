@@ -29,10 +29,10 @@ const BackDashHelp = (props) => {
             <div className='backDashHelpContainer'>
 
                 <button onClick={handleCloseModal} className='closePad'>Exit Help</button>
-
+{/* USER GUIDE */}
                 <div className='backUserGuideContainer'>
                     <div>
-                        <h3>How to use &nbsp;
+                        <h2>How to use &nbsp;
                             {props.loginHelp
                                 ? 'Fire It Login'
                                 : null
@@ -61,7 +61,7 @@ const BackDashHelp = (props) => {
                                 ? 'Schedule'
                                 : null
                             }
-                        </h3>
+                        </h2>
                         {props.loginHelp
                             ? <ul>
                                 <li>Click the 4 digit combo of a firebase authorized user set up in the Employee Data section, or use the demo user listed.</li>
@@ -127,9 +127,9 @@ const BackDashHelp = (props) => {
                             : null
                         }
                     </div>
-
-                    <div>
-                        <h3>Code insights for &nbsp;
+{/* CODE INSIGHTS */}
+                    <div className='backCodeInsights'>
+                        <h2>Code insights for &nbsp;
                             {props.menuEntryHelp
                                 ? 'Menu Entry Setup'
                                 : 'Fire It Login'
@@ -154,14 +154,10 @@ const BackDashHelp = (props) => {
                                 ? 'Schedule'
                                 : null
                             }
-                        </h3>
+                        </h2>
 
-                {/* MENU / LOGIN */}
-                        {props.menuEntryHelp
-                            ? <ul>
-                                
-                            </ul>
-                            : <ul>
+                        {props.loginHelp
+                            ?  <ul>
                                 <li>The login components were the first created for this project.</li>
                                 <li>Clicking the keys gets the target of the events text content and pushes it to an array.</li>
                                 <li>Both the login and password push additional content to allow for firebase authorization, such as adding @fireit.ca to create a fake email address.</li>
@@ -172,6 +168,24 @@ const BackDashHelp = (props) => {
                                 <li>The user, password and admin key pads each exist as their own component. In the future I will combine them into the 'server key pad' component that other sections of the app use.</li>
                                 <li>Unlike the user and password keypads rather than firebase auth, the admin just checks that the array combo matches a specific string.</li>
                             </ul>
+                            : null
+                        }
+                        {props.menuEntryHelp
+                            ? <ul>
+                                <li><h3>Data Display:</h3></li>
+                                <li>The Menu Entry Setup navigation bars change string states to determine what to display, the states are also prop drilled through the components to the form, where they are used to determine the collection reference to search in firestore, first to populate the items list then specify which document to search for when an item is clicked.</li>
+                                <li>In the begining this was done with true/false states, but as I started to add more data categories I eventually changed them to strings as the list of states was not very DRY. </li>
+                                <li>When an item is selected from the list its' data is used to populate placeholders for any values that exist.</li>
+                                <li>I did want these place holders to be able to have the selections or radio buttons pre chosen from the data like the placeholders, but it was causing issues with updates to the item, and is something I plan to review later. For now I opted to give them labels to display the current data.</li>
+                                <li>I originally found a solution to reset the forum inputs by query selecting them all and then setting them to default states, such as checked = false, I later learned to just query the form itself and .reset()</li>
+                                <li><h3>Item Manipulation:</h3></li>
+                                <li>Clicking any item gets the e.target.id which is generated from firestores auto id, rather than being setDoc like in other areas of this app, menu items are created with addDoc.</li>
+                                <li>Adding items collects values selected by the user, or useRefs for text. A name must exist to create an item, and for now if no screen name is given the document will upload with the screen name the same as the item name.</li>
+                                <li>The update doc checks for any changes on the individual form values so that only the updated one is changed in firestore.</li>
+                                <li>Cloning items was used in the Squirrel UI so I opted to recreate it as well as adding many new items myself was going to be tedious. Selecting to clone the item copies all the information for the item and creates a new one with -CLONE added to the name, the user can then update. This would simplify adding for example several burgers which would be fundamentally the same but have a different name.</li>
+                                <li>As stated in the user guide, several of these data points for items would be for use beyond the project's MVP.</li>
+                            </ul>
+                            : null
                         }
                     </div>
                 </div>

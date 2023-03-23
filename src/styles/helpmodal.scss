@@ -29,8 +29,9 @@
     display:flex;
     justify-content: space-evenly;
 
-    h3{
+    h2{
         text-align: center;
+        margin-top:0;
     }
     div{
         margin:1rem auto;
@@ -49,7 +50,7 @@
 }
 
 .frontUserGuideContainer{
-    h3, li{
+    h2, li{
         color:white;
     }
 }
@@ -59,9 +60,6 @@
 }
 
 .backUserGuideContainer{
-    h3{
-        color:black;
-    }
     div{
         height:92.5%;
 
@@ -95,4 +93,14 @@
         color:white;
         margin:1.5rem auto;
     };
+    h3{
+        text-decoration: underline;
+    }
+}
+
+.backCodeInsights{
+    h3{
+        text-align: left;
+        text-decoration: underline;
+    }
 }

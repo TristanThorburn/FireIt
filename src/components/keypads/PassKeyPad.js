@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const PassPad = (props) => {
     let pinCombo = [];
     const [ loading, setLoading ] = useState(false)
-    const [ error, setError ] = useState();
+    const [ error, setError ] = useState('');
+    const [ success, setSuccess ] =useState('')
     const { login, setLoggedIn } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(loading){
+            setSuccess('Loading')
+        }
+        if(!loading){
+            setSuccess('')
+        }
+    }, [loading])
 
     const handleClick = (e) => {
         if (pinCombo.length <3){
@@ -80,7 +90,12 @@ const PassPad = (props) => {
                 </tbody>
             </table>
             
-            <div className='padError'>{error}</div>
+            {success
+                ? <div className='padSuccess'>{success}</div>
+                : error
+                    ? <div className='padError'>{error}</div>
+                    : null
+            }
         </div>
     )
 
