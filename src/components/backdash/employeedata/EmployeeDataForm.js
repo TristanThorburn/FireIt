@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { db } from '../../../firebase';
-import { doc, getDoc, deleteDoc, setDoc, updateDoc, getDocs } from 'firebase/firestore';
-import { employeeCollectionRef } from '../../../library/firestoreCollections';
+import { doc, getDoc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import EmployeeFirebase from './EmployeeFirebase';
 
 const EmployeeDataForm = (props) => {
@@ -28,7 +27,7 @@ const EmployeeDataForm = (props) => {
     const [ employeeChecker, setEmployeeChecker ] = useState('');
     const [ firebaseAuthWarning, setFirebaseAuthWarning ] = useState(false)
 
-    // Initial Employee List Display Effect
+    // Get data for selected employee.
     useEffect(() => {
         if(props.id === ''){
             setEmployeeData({})
@@ -47,33 +46,18 @@ const EmployeeDataForm = (props) => {
     // Check that the user isnt trying to modify 1 instance employee number and user ID, do not check userID if it is left blank.
     useEffect(() => {
         if(employeeNumberRef.current.value !== '' && userIDRef.current.value !== ''){
-            getDocs(employeeCollectionRef).then(snap => {
-                let employeeNumbers = []
-                let employeeUsers = []
-                snap.forEach(doc => {
-                    employeeNumbers.push(doc.data().employeeNumber)               
-                    employeeUsers.push(doc.data().userID)
-                })            
             // check if employee # or user ID is in the list
-            const doesNumberExist = employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
-            const doesUserExist = employeeUsers.indexOf(userIDRef.current.value) > -1
+            const doesNumberExist = props.employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
+            const doesUserExist = props.employeeUserIds.indexOf(userIDRef.current.value) > -1
             setEmpNumberExists(doesNumberExist)
             setEmpUserExists(doesUserExist)
-            })
-        }
+            }
         if(employeeNumberRef.current.value !== '' && userIDRef.current.value === ''){
-            getDocs(employeeCollectionRef).then(snap => {
-                let employeeNumbers = []
-                snap.forEach(doc => {
-                    employeeNumbers.push(doc.data().employeeNumber)
-                })            
-            // check if employee # or user ID is in the list
-            const doesNumberExist = employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
+            const doesNumberExist = props.employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
             setEmpNumberExists(doesNumberExist)
             setEmpUserExists(false)
-            })
         }
-    },[userChecker, employeeChecker])
+    },[userChecker, employeeChecker, props.employeeNumbers, props.employeeUserIds])
 
     // Clear employee data when new employee is selected
     useEffect(() => {
@@ -92,7 +76,7 @@ const EmployeeDataForm = (props) => {
         if( empNumberExists === true || empUserExists === true){
             props.setFireItAlert('EmployeeDataForm duplicate id')
         }
-        
+
         if(props.newEmployee === true 
             && firstNameRef.current.value !== ''
             && employeeNumberRef.current.value !== ''

@@ -194,7 +194,8 @@ const BackDashHelp = (props) => {
                         {props.employeeDataHelp
                             ? <ul>
                                 <li>As it was made after the Menu Entry Setup section, much of the Employee Data form's logic is replicated from there.</li>
-                                <li>Employees are added with setDocs to allow for the document id to match the employee number. </li>
+                                <li>Employees are added with setDocs to allow for the document id to match the employee number.</li>
+                                <li>A useEffect watches if changes in employee number or userID match one that is already in use to prevent duplicates.</li>
                             </ul>
                             : null
                         }
