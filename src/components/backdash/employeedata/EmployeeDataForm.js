@@ -41,38 +41,65 @@ const EmployeeDataForm = (props) => {
 
     // Clear form info on submit
     useEffect(() => {
-        Array.from(document.querySelectorAll('input')).forEach(
-            input => (input.value = ''))
-        Array.from(document.querySelectorAll('textarea')).forEach(
-                input => (input.value = ''))
+        document.getElementById('employeeForm').reset(); 
     },[props.id, props.newEmployee])
     
-    // Check that the user isnt trying to modify 1 instance employee number and user ID
-    useEffect(()=> {
-        getDocs(employeeCollectionRef).then(snap => {
-            let employeeNumbers = []
-            let employeeUsers = []
-            snap.forEach(doc => {
-                employeeNumbers.push(doc.data().employeeNumber)               
-                employeeUsers.push(doc.data().userID)
-            })            
+    // Check that the user isnt trying to modify 1 instance employee number and user ID, do not check userID if it is left blank.
+    useEffect(() => {
+        if(employeeNumberRef.current.value !== '' && userIDRef.current.value !== ''){
+            getDocs(employeeCollectionRef).then(snap => {
+                let employeeNumbers = []
+                let employeeUsers = []
+                snap.forEach(doc => {
+                    employeeNumbers.push(doc.data().employeeNumber)               
+                    employeeUsers.push(doc.data().userID)
+                })            
             // check if employee # or user ID is in the list
             const doesNumberExist = employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
             const doesUserExist = employeeUsers.indexOf(userIDRef.current.value) > -1
             setEmpNumberExists(doesNumberExist)
             setEmpUserExists(doesUserExist)
-        })
+            })
+        }
+        if(employeeNumberRef.current.value !== '' && userIDRef.current.value === ''){
+            getDocs(employeeCollectionRef).then(snap => {
+                let employeeNumbers = []
+                snap.forEach(doc => {
+                    employeeNumbers.push(doc.data().employeeNumber)
+                })            
+            // check if employee # or user ID is in the list
+            const doesNumberExist = employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
+            setEmpNumberExists(doesNumberExist)
+            setEmpUserExists(false)
+            })
+        }
     },[userChecker, employeeChecker])
+
+    // Clear employee data when new employee is selected
+    useEffect(() => {
+        if(props.newEmployee === true){
+            setEmployeeData('')
+        }
+    }, [props.newEmployee])
 
     const handleAddEmployee = (e) => {
         e.preventDefault()
 
+        if( firstNameRef.current.value === '' || employeeNumberRef.current.value === ''){
+            props.setFireItAlert('EmployeeDataForm missing name number')
+        }
+
+        if( empNumberExists === true || empUserExists === true){
+            props.setFireItAlert('EmployeeDataForm duplicate id')
+        }
+        
         if(props.newEmployee === true 
             && firstNameRef.current.value !== ''
+            && employeeNumberRef.current.value !== ''
             && empNumberExists === false
             && empUserExists === false){
             const newEmployeeRef = doc(
-                db, 'employees', `${employeeNumberRef.current.value.toLowerCase()}`)
+                db, 'employees', `${employeeNumberRef.current.value}`)
             setDoc(newEmployeeRef, {
                 employeeNumber:employeeNumberRef.current.value,
                 firstName:firstNameRef.current.value,
@@ -93,9 +120,6 @@ const EmployeeDataForm = (props) => {
             });
             props.setNewEmployee(false);
             document.getElementById('employeeForm').reset(); 
-        }
-        if( empNumberExists === true || empUserExists === true){
-            props.setFireItAlert('EmployeeDataForm duplicate id')
         }
     }
 
@@ -457,6 +481,7 @@ const EmployeeDataForm = (props) => {
                 firebaseId={props.id}
                 firebaseAuth={employeeData?.firebaseAuth}
                 setFirebaseAuthWarning={setFirebaseAuthWarning}
+                newEmployee={props.newEmployee}
                 />
         </section>
         

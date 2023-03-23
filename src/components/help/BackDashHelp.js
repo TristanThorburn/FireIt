@@ -130,9 +130,13 @@ const BackDashHelp = (props) => {
 {/* CODE INSIGHTS */}
                     <div className='backCodeInsights'>
                         <h2>Code insights for &nbsp;
+                            {props.loginHelp
+                                ? 'Fire It Login'
+                                : null
+                            }
                             {props.menuEntryHelp
                                 ? 'Menu Entry Setup'
-                                : 'Fire It Login'
+                                : null
                             }
                             {props.employeeDataHelp
                                 ? 'Employee Data'
@@ -184,6 +188,13 @@ const BackDashHelp = (props) => {
                                 <li>The update doc checks for any changes on the individual form values so that only the updated one is changed in firestore.</li>
                                 <li>Cloning items was used in the Squirrel UI so I opted to recreate it as well as adding many new items myself was going to be tedious. Selecting to clone the item copies all the information for the item and creates a new one with -CLONE added to the name, the user can then update. This would simplify adding for example several burgers which would be fundamentally the same but have a different name.</li>
                                 <li>As stated in the user guide, several of these data points for items would be for use beyond the project's MVP.</li>
+                            </ul>
+                            : null
+                        }
+                        {props.employeeDataHelp
+                            ? <ul>
+                                <li>As it was made after the Menu Entry Setup section, much of the Employee Data form's logic is replicated from there.</li>
+                                <li>Employees are added with setDocs to allow for the document id to match the employee number. </li>
                             </ul>
                             : null
                         }
