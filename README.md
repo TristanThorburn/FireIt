@@ -1,6 +1,6 @@
 Fire It:
 
-Netlify Hosting             https://peppy-khapse-d2cdad.netlify.app/
+Netlify Hosting             https://fire-it.netlify.app/
 
 Created to explore the logic of some of the Point of Sale systems I used while working in a prior carrer, and also to demonstrate how working with them lead me to pursue an industry change. For more information see info and help buttons in the app.
 
