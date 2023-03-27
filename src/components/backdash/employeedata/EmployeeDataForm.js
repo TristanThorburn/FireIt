@@ -460,13 +460,9 @@ const EmployeeDataForm = (props) => {
             </form>
             
             <EmployeeFirebase 
-                user={employeeData?.email}
+                email={employeeData?.email}
                 pw={employeeData?.userPW}
-                firebaseId={props.id}
-                firebaseAuth={employeeData?.firebaseAuth}
                 setFirebaseAuthWarning={setFirebaseAuthWarning}
-                newEmployee={props.newEmployee}
-                userHasId={employeeData?.userID}
                 />
         </section>
         
