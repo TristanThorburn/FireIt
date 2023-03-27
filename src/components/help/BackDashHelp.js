@@ -195,7 +195,17 @@ const BackDashHelp = (props) => {
                             ? <ul>
                                 <li>As it was made after the Menu Entry Setup section, much of the Employee Data form's logic is replicated from there.</li>
                                 <li>Employees are added with setDocs to allow for the document id to match the employee number.</li>
-                                <li>A useEffect watches if changes in employee number or userID match one that is already in use to prevent duplicates.</li>
+                                <li>A useEffect watches if changes in employee number or userID match one that is already in use to prevent duplicates. I later updated this to also allow for blank userIDs.</li>
+                                <li>I opted to update the form to block deletions on users who have been activated through Firebase for now. The previously activated combo would still be capable of logging in to the app, which would crash due to no longer finding matching employee data credentials.</li>
+                                <li>From my understanding Firebase admin sdk would be required to delete authorized users through the app and not the firebase console, so that may be a stretch goal, otherwise not finding matching employee data for the employeeContext could cause an alert and log out.</li>
+                                <li>Employee Firebase activation starts with a useEffect watching the email for the selected employee and running fetchSignInMethodsForEmail comparing the length for greater than zero.This sets the state to prevent activated employees from being deleted. The activation component required props to be destructured to limit the conditions array.</li>
+                                <li>Because creating Firebase users also logs you in, to prevent errors or user confusion they are logged out upon 'activation'. This has a side benefit of bringing the user directly to the log in to use the created employee.</li>
+                            </ul>
+                            : null
+                        }
+                        {props.tableSetupHelp
+                            ? <ul>
+                                <li>Coming Soon</li>
                             </ul>
                             : null
                         }
