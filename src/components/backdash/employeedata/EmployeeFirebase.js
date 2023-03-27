@@ -9,25 +9,25 @@ const EmployeeFirebase = (props) => {
     const [ loading, setLoading ] = useState(false);
     const [ userExistsFireAuth, setUserExistsFireAuth ] = useState('')
     const navigate = useNavigate()
-    const email = props.user
-    const password = props.pw + 'fireit'
+    const { email, pw, setFirebaseAuthWarning } = props
+    const password = pw + 'fireit'
 
     // Check firebase auth to confirm if email exists in the system already
     useEffect(() => {
-        if(props.user !== ''
-            && props.user !== 'tristanthorburn@gmail.com'
-            && props.user !== '@fireit.ca'
-            && props.userHasId !== ''){
+        if(email !== ''
+            && email !== undefined
+            && email !== 'tristanthorburn@gmail.com'
+            && email !== '@fireit.ca'){
             const checkFirebaseAuthStatus = async () => {
                 const auth = getAuth();
                     try{
                         let signInMethods = await fetchSignInMethodsForEmail(auth, email);
                             if (signInMethods.length > 0) {
                                 setUserExistsFireAuth(true)
-                                props.setFirebaseAuthWarning(true)
+                                setFirebaseAuthWarning(true)
                             } else {
                                 setUserExistsFireAuth(false)
-                                props.setFirebaseAuthWarning(false)
+                                setFirebaseAuthWarning(false)
                             }
                     } catch (error) {
                         setError(error.message)
@@ -35,7 +35,7 @@ const EmployeeFirebase = (props) => {
             }
             checkFirebaseAuthStatus()
         }
-    }, [email, props.user, props])
+    }, [email, setFirebaseAuthWarning])
     
     const handleActivate = async () => {
         try{
@@ -52,9 +52,9 @@ const EmployeeFirebase = (props) => {
 
     return(
         <div className='employeeActivateFirebase'>
-            {props.userHasId === '' || props.pw === ''
+            {email === undefined || pw === undefined
                 ? <h3>Users require an ID & Password to activate</h3>
-                : userExistsFireAuth
+                : userExistsFireAuth || email === 'tristanthorburn@gmail.com'
                     ? <h3>Server UserID and UserPW are Active</h3>
                     : <>
                         <h3>Server UserID and UserPW are Disabled</h3>

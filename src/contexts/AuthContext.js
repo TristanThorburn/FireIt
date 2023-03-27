@@ -12,7 +12,7 @@ export const useAuth =() => {
 
 const AuthProvider = ({children}) => {
     const auth = getAuth(app);
-    const [ currentUser, setCurrentUser ] = useState('');
+    const [ currentUser, setCurrentUser ] = useState();
     const [ employeeContext, setEmployeeContext ] = useState([]);
     const [ managerContext, setManagerContext ] = useState(false)
     const [ fireitID, setFireitID ] = useState('');
@@ -23,14 +23,18 @@ const AuthProvider = ({children}) => {
     }
 
     const login = async (email, password) => {
-        setPersistence(auth, browserSessionPersistence)
-        .then(async () => {
             return await signInWithEmailAndPassword(auth, email, password);
-        })
-        .catch((error) => {
-            console.log(error.code, error.message)
-        })
     }
+
+    // Set user database persistence
+    useEffect(() => {
+        if(currentUser){
+            setPersistence(auth, browserSessionPersistence)
+            .catch(error => {
+                console.log(error.code, error.message)
+            })
+        }
+    }, [auth, currentUser])
 
     const logout = async (email, password) => {
         signOut(auth);
