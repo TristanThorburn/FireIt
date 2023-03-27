@@ -30,7 +30,7 @@ const EmployeeDataForm = (props) => {
     // Get data for selected employee.
     useEffect(() => {
         if(props.id === ''){
-            setEmployeeData({})
+            setEmployeeData('')
         }
         if(props.id !== ''){
             const docRef = doc(db, 'employees', props.id)
@@ -466,6 +466,7 @@ const EmployeeDataForm = (props) => {
                 firebaseAuth={employeeData?.firebaseAuth}
                 setFirebaseAuthWarning={setFirebaseAuthWarning}
                 newEmployee={props.newEmployee}
+                userHasId={employeeData?.userID}
                 />
         </section>
         

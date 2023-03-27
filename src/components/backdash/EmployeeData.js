@@ -7,7 +7,7 @@ import BackDashHelp from '../help/BackDashHelp';
 import FireItAlert from '../help/FireItAlert';
 
 const EmployeeData = () => {
-    const [ employeeData, setEmployeeData ] = useState([]);
+    const [ employeeDisplayData, setEmployeeDisplayData ] = useState([]);
     const [ newEmployee, setNewEmployee ] = useState(false);
     const [ selectedEmployee, setSelectedEmployee ] = useState('');
     const [ employeeDataHelp, setEmployeeDataHelp ] = useState(false);
@@ -21,7 +21,7 @@ const EmployeeData = () => {
         let employeeUsers = []
         const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'))
         const unsubscribe = onSnapshot(q, snapshot => {
-            setEmployeeData(snapshot.docs.map(doc => ({
+            setEmployeeDisplayData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
             })))
@@ -88,7 +88,7 @@ const EmployeeData = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {employeeData.map(employee => 
+                        {employeeDisplayData.map(employee => 
                         <tr
                             key={employee.id}
                             onClick={() => {

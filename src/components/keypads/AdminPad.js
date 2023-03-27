@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AdminPad = (props) => {
     let pinCombo = [];
     const [ error, setError ] = useState();
     const [ adminAuth, setAdminAuth ] = useState()
     const navigate = useNavigate();
-    // const { logout } = useAuth();
+    const { logout } = useAuth();
 
     const handleClick = (e) => {
         if (pinCombo.length <3){
@@ -31,7 +31,7 @@ const AdminPad = (props) => {
         if(adminAuth === '8829') {
             document.body.classList.remove('adminOpen')
             try{
-                // await logout()
+                await logout()
                 navigate('/backend-dash')
             } catch {
                 setError('failed log in')
