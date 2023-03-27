@@ -39,7 +39,7 @@
         margin:0 auto;
         color:$fireItColor;
         background-color: black;
-        border-radius: 10px;
+        border-radius: 20px;
         position:absolute;
         top:55%;
         cursor: pointer;
@@ -124,6 +124,12 @@
             margin:100px auto;
         }
     }
+}
+
+.landingLowerNav{
+    width:100%;
+    display:flex;
+    justify-content: space-evenly;
 }
 
 @media (min-width:1000px) and (max-width:1423px){

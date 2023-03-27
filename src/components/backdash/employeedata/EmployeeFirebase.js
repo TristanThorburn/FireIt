@@ -14,7 +14,10 @@ const EmployeeFirebase = (props) => {
 
     // Check firebase auth to confirm if email exists in the system already
     useEffect(() => {
-        if(props.user !== ''){
+        if(props.user !== ''
+            && props.user !== 'tristanthorburn@gmail.com'
+            && props.user !== '@fireit.ca'
+            && props.userHasId !== ''){
             const checkFirebaseAuthStatus = async () => {
                 const auth = getAuth();
                     try{
@@ -49,18 +52,20 @@ const EmployeeFirebase = (props) => {
 
     return(
         <div className='employeeActivateFirebase'>
-            {userExistsFireAuth
-                ? <h3>Server UserID and UserPW are Active</h3>
-                : <>
-                    <h3>Server UserID and UserPW are Disabled</h3>
-                    <button
-                        className='newItemButton'
-                        onClick={handleActivate}
-                        disabled={loading}
-                        >Activate Employee?
-                    </button>
-                    <p>Logs out user upon submit</p>
-                </>
+            {props.userHasId === '' || props.pw === ''
+                ? <h3>Users require an ID & Password to activate</h3>
+                : userExistsFireAuth
+                    ? <h3>Server UserID and UserPW are Active</h3>
+                    : <>
+                        <h3>Server UserID and UserPW are Disabled</h3>
+                        <button
+                            className='newItemButton'
+                            onClick={handleActivate}
+                            disabled={loading}
+                            >Activate Employee?
+                        </button>
+                        <p>Returns to landing screen on submit</p>
+                    </>
             }
 
             {error === 'Firebase: Error (auth/missing-identifier).'

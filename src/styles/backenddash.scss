@@ -9,17 +9,6 @@
     header{
         display:flex;
     }
-    .toServerView{
-        height:100px;
-        width:100px;
-        background-color:$fireItColor;
-        border:none;
-
-        img{
-            height:100%;
-            width:100%;
-        }
-    }
     .buttonContainer{
         height:75vh;
         @include flexCenterCenter;
@@ -52,6 +41,17 @@
     .unUseableBackdash{
         color:darkred;
     }
+    .exitAdmin{
+        button{
+            border:none;
+            background-color:$backDashBackgroundColor;
+            margin-left:20px;
+        }
+        p{
+            left:12px;
+            top:27px;
+        }
+    }
 }
 
 .backDashHeader{
@@ -74,7 +74,7 @@
             font-size:3rem;
         }
         p{
-            top:15%;
+            top:23%;
             left:-12%;
         }
     }

@@ -3,6 +3,7 @@ import AppLandingInfo from './help/AppLandingInfo';
 import UserPad from './keypads/UserKeyPad';
 import PassPad from './keypads/PassKeyPad';
 import BackDashHelp from './help/BackDashHelp';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [ loginToApp, setLoginToApp ] = useState(false);
@@ -10,6 +11,7 @@ const Login = () => {
     const [ email, setEmail ] = useState();
     const [ password, setPassword ] = useState();
     const [ loginHelp, setLoginHelp ] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = () => {
         setLoginToApp(true)
@@ -21,6 +23,10 @@ const Login = () => {
 
     const handleLoginHelp = () => {
         setLoginHelp(true)
+    }
+
+    const handleAdminSkip = () => {
+        navigate('/backend-dash')
     }
 
     return(
@@ -46,9 +52,15 @@ const Login = () => {
                                 <button onClick={handleLogin}>🔥</button>
                                 <h1 onClick={handleLogin}>FIRE IT</h1>
                             </div>
-                            <div className='infoButton'>
-                                <button onClick={handleAppInfo}>🔥</button>
-                                <p onClick={handleAppInfo}>INFO</p>
+                            <div className='landingLowerNav'>
+                                <div className='infoButton'>
+                                    <button onClick={handleAppInfo}>🔥</button>
+                                    <p onClick={handleAppInfo}>INFO</p>
+                                </div>
+                                <div className='infoButton'>
+                                    <button onClick={handleAdminSkip}>🔥</button>
+                                    <p onClick={handleAdminSkip}>ADMIN</p>
+                                </div>
                             </div>
                         </div>
             }

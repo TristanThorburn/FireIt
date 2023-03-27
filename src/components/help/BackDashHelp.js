@@ -170,7 +170,7 @@ const BackDashHelp = (props) => {
                                 <li>Submitting with the password logs in through firebase and navigates to the Front Dash, which is nested in a Private Route.</li>
                                 <li>The log in creates an authorization context as well as an employee context based off the data filled in using the Employee Data section.</li>
                                 <li>The user, password and admin key pads each exist as their own component. In the future I will combine them into the 'server key pad' component that other sections of the app use.</li>
-                                <li>Unlike the user and password keypads rather than firebase auth, the admin just checks that the array combo matches a specific string.</li>
+                                <li>Unlike the user and password keypads rather than firebase auth, the admin just checks that the array combo matches a specific string when used inside the Fire It app as a logged in user.</li>
                             </ul>
                             : null
                         }

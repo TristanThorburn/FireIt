@@ -17,33 +17,24 @@ const AuthProvider = ({children}) => {
     const [ managerContext, setManagerContext ] = useState(false)
     const [ fireitID, setFireitID ] = useState('');
     const [ loading, setLoading ] = useState(true)
-    const [ loggedIn, setLoggedIn ] = useState(false);
 
     const signUp = async (email, password) => {
         return await createUserWithEmailAndPassword(auth, email, password)
     }
 
     const login = async (email, password) => {
-        return await signInWithEmailAndPassword(auth, email, password);
+        setPersistence(auth, browserSessionPersistence)
+        .then(async () => {
+            return await signInWithEmailAndPassword(auth, email, password);
+        })
+        .catch((error) => {
+            console.log(error.code, error.message)
+        })
     }
 
     const logout = async (email, password) => {
         signOut(auth);
     }
-
-    // Session persitence off, log out user on tab close
-    useEffect(() => {
-        if(loggedIn && currentUser !== null){
-            setPersistence(auth, browserSessionPersistence)
-            .then((email, password) => {
-                return signInWithEmailAndPassword(auth, currentUser.email, password)
-            })
-            .catch((error) => {
-                console.log(error.code, error.message)
-            });
-        }
-        
-    },[auth, currentUser, loggedIn])
 
     // Get user info from firebase auth on sign in/out etc
     useEffect ( () => {
@@ -88,7 +79,6 @@ const AuthProvider = ({children}) => {
         logout,
         signUp,
         employeeContext,
-        setLoggedIn,
         setManagerContext,
         managerContext
     }

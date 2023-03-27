@@ -8,7 +8,7 @@ const TableTabNav = (props) => {
     const [ error, setError ] = useState('')
 
     const handleTest = () => {
-        console.log(employeeContext)
+        console.log(employeeContext.userPW + 'fireit')
     }
     
     const handleMgrOveride = () => {

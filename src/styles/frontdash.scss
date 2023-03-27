@@ -84,9 +84,7 @@
     .infoButton{
         p{
             top:30%;
-            left:0%;
-            // 100px-150px
-            width: clamp(5rem, 2.1429rem + 4.4643vw, 7.5rem);
+            left:14%;
             // 20px-25px
             font-size: clamp(1rem, 0.3125rem + 0.7813vw, 1.25rem)
         }

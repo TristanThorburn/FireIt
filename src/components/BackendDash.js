@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import back from '../assets/back.png'
+import { useNavigate } from 'react-router-dom';
 import menu from '../assets/menu.png'
 import employee from '../assets/employee.png'
 import table from '../assets/table.png'
@@ -8,13 +8,20 @@ import settings from '../assets/settings.png'
 import schedule from '../assets/schedule.png'
 
 const BackendDash = () => {
+    const navigate = useNavigate();
+
+    const handleLeaveAdmin = () => {
+        navigate('/login')
+    }
+
     return(
         <div className='backendDash'>
             <header>
-                <button className='toServerView'>
-                    <Link to='/'><img src={back} alt="" /></Link>To Server View
-                </button>
-                <h2>Backend Dashboard</h2>
+                <div className='infoButton exitAdmin'>
+                    <button onClick={handleLeaveAdmin}>🔥</button>
+                    <p onClick={handleLeaveAdmin}>TO FIRE IT</p>
+                </div>
+                <h2>Admin / Manager View</h2>
             </header>
             <div className='buttonContainer'>
                 <ul>
