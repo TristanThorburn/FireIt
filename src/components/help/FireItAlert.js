@@ -87,8 +87,8 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'Table data error'
-                        ? <div className='padError'>Sorry, no data was found for selected table, please try again.
+                    {props.fireItAlert === 'TableMap delete table in use'
+                        ? <div className='padError'>This table is currently in use by a server and cannot be deleted.
                         </div>
                         : null
                     }
