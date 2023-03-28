@@ -1,16 +1,26 @@
 import { useAuth } from '../../../contexts/AuthContext';
-import { getAuth, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { getAuth, fetchSignInMethodsForEmail, deleteUser } from 'firebase/auth';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const EmployeeFirebase = (props) => {
-    const { signUp, logout } = useAuth();
+    const { signUp, logout, login } = useAuth();
     const [ error, setError ] = useState('')
+    const [ success, setSuccess ] = useState('')
     const [ loading, setLoading ] = useState(false);
     const [ userExistsFireAuth, setUserExistsFireAuth ] = useState('')
-    const navigate = useNavigate()
+    const [ deleteFireAuth, setDeleteFireAuth ] = useState(false)
     const { email, pw, setFirebaseAuthWarning } = props
     const password = pw + 'fireit'
+
+    // Notify user of loading
+    useEffect(() => {
+        if(loading){
+            setSuccess('Loading')
+        }
+        if(!loading){
+            setSuccess('')
+        }
+    }, [loading])
 
     // Check firebase auth to confirm if email exists in the system already
     useEffect(() => {
@@ -18,8 +28,8 @@ const EmployeeFirebase = (props) => {
             && email !== undefined
             && email !== 'tristanthorburn@gmail.com'
             && email !== '@fireit.ca'){
+            const auth = getAuth();
             const checkFirebaseAuthStatus = async () => {
-                const auth = getAuth();
                     try{
                         let signInMethods = await fetchSignInMethodsForEmail(auth, email);
                             if (signInMethods.length > 0) {
@@ -36,6 +46,20 @@ const EmployeeFirebase = (props) => {
             checkFirebaseAuthStatus()
         }
     }, [email, setFirebaseAuthWarning])
+
+    // Delete user from firebase authentication after temporary log in
+    useEffect(() => {
+        const auth = getAuth();
+        const user = auth.currentUser
+        if(user && deleteFireAuth){
+            deleteUser(user)
+            setUserExistsFireAuth(false)
+            setFirebaseAuthWarning(false)
+            setDeleteFireAuth(false)
+            setLoading(false)
+            setError('')
+        }
+    }, [deleteFireAuth, setFirebaseAuthWarning])
     
     const handleActivate = async () => {
         try{
@@ -47,30 +71,47 @@ const EmployeeFirebase = (props) => {
         }
         setLoading(false)
         await logout()
-        navigate('/login')
+    }
+
+    const handleDeactivate = async () => {
+        try{
+            setError('')
+            setLoading(true)
+            await login(email, password)
+            .then(setDeleteFireAuth(true))
+        } catch (error) {
+            setError(error.message)
+        }
     }
 
     return(
         <div className='employeeActivateFirebase'>
-            {email === undefined || pw === undefined
-                ? <h3>Users require an ID & Password to activate</h3>
-                : userExistsFireAuth || email === 'tristanthorburn@gmail.com'
-                    ? <h3>Server UserID and UserPW are Active</h3>
-                    : <>
-                        <h3>Server UserID and UserPW are Disabled</h3>
-                        <button
-                            className='newItemButton'
-                            onClick={handleActivate}
-                            disabled={loading}
-                            >Activate Employee?
-                        </button>
-                        <p>Returns to landing screen on submit</p>
-                    </>
+            {email === 'tristanthorburn@gmail.com'
+                    ? <h3>This Demo User is Always Active</h3>
+                    : userExistsFireAuth
+                        ? <>
+                            <h3>Server Firebase Login Active</h3>
+                            <button
+                                className='newItemButton deleteItemButton'
+                                onClick={handleDeactivate}
+                                disabled={loading}
+                                >Deactivate?
+                            </button>
+                        </>
+                        : <>
+                            <h3>Server Firebase Login Disabled</h3>
+                            <button
+                                className='newItemButton'
+                                onClick={handleActivate}
+                                disabled={loading}
+                                >Activate?
+                            </button>
+                        </>
             }
 
-            {error === 'Firebase: Error (auth/missing-identifier).'
-                ? null
-                : error === 'Firebase: Error (auth/invalid-email).'
+            {success
+                ? <div className='padSuccess'>{success}</div>
+                : error
                     ? null
                     : <div className='padError'>{error}</div>
             }

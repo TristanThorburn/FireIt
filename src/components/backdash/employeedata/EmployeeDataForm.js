@@ -21,11 +21,9 @@ const EmployeeDataForm = (props) => {
     const firstDayRef = useRef('');
     const lastDayRef = useRef('');
     const notesRef = useRef('');
-    const [ empNumberExists, setEmpNumberExists ] = useState('');
-    const [ empUserExists, setEmpUserExists ] = useState('');
-    const [ userChecker, setUserChecker ] = useState('');
-    const [ employeeChecker, setEmployeeChecker ] = useState('');
-    const [ firebaseAuthWarning, setFirebaseAuthWarning ] = useState(false)
+    const [ addEmployee, setAddEmployee ] = useState(false);
+    const [ updateEmployee, setUpdateEmployee ] = useState(false);
+    const [ firebaseAuthWarning, setFirebaseAuthWarning ] = useState(false);
 
     // Get data for selected employee.
     useEffect(() => {
@@ -43,45 +41,9 @@ const EmployeeDataForm = (props) => {
         document.getElementById('employeeForm').reset(); 
     },[props.id, props.newEmployee])
     
-    // Check that the user isnt trying to modify 1 instance employee number and user ID, do not check userID if it is left blank.
-    useEffect(() => {
-        if(employeeNumberRef.current.value !== '' && userIDRef.current.value !== ''){
-            // check if employee # or user ID is in the list
-            const doesNumberExist = props.employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
-            const doesUserExist = props.employeeUserIds.indexOf(userIDRef.current.value) > -1
-            setEmpNumberExists(doesNumberExist)
-            setEmpUserExists(doesUserExist)
-            }
-        if(employeeNumberRef.current.value !== '' && userIDRef.current.value === ''){
-            const doesNumberExist = props.employeeNumbers.indexOf(employeeNumberRef.current.value) > -1
-            setEmpNumberExists(doesNumberExist)
-            setEmpUserExists(false)
-        }
-    },[userChecker, employeeChecker, props.employeeNumbers, props.employeeUserIds])
-
-    // Clear employee data when new employee is selected
-    useEffect(() => {
-        if(props.newEmployee === true){
-            setEmployeeData('')
-        }
-    }, [props.newEmployee])
-
-    const handleAddEmployee = (e) => {
-        e.preventDefault()
-
-        if( firstNameRef.current.value === '' || employeeNumberRef.current.value === ''){
-            props.setFireItAlert('EmployeeDataForm missing name number')
-        }
-
-        if( empNumberExists === true || empUserExists === true){
-            props.setFireItAlert('EmployeeDataForm duplicate id')
-        }
-
-        if(props.newEmployee === true 
-            && firstNameRef.current.value !== ''
-            && employeeNumberRef.current.value !== ''
-            && empNumberExists === false
-            && empUserExists === false){
+    // ADD employee to database if checks for non duplicate # and ID have passed
+    useEffect(() => {        
+        if(addEmployee){
             const newEmployeeRef = doc(
                 db, 'employees', `${employeeNumberRef.current.value}`)
             setDoc(newEmployeeRef, {
@@ -103,110 +65,176 @@ const EmployeeDataForm = (props) => {
                 notes:notesRef.current.value,
             });
             props.setNewEmployee(false);
+            setAddEmployee(false)
             document.getElementById('employeeForm').reset(); 
         }
-    }
+    },[addEmployee, props])
 
-    const handleUpdateEmployee = (e) => {
-        e.preventDefault()
-        const docRef = doc(db, 'employees', props.id)
+    // UPDATE employee if checks for non duplicate # and ID have passed
+    useEffect(() => {
+        if(updateEmployee){
+            const docRef = doc(db, 'employees', props.id)
 
-        if(props.id === '1'){
-            props.setFireItAlert('EmployeeDataForm update demo')
-        }
-
-        if(empNumberExists === false && empUserExists === false && props.id !== '1'){
-            if(props.id !== '' && employeeNumberRef.current.value !== ''){
-            updateDoc(docRef, {
-                employeeNumber:employeeNumberRef.current.value
-            })
+            if(employeeNumberRef.current.value !== ''){
+                updateDoc(docRef, {
+                    employeeNumber:employeeNumberRef.current.value
+                })
             }
-            if(props.id !== '' && firstNameRef.current.value !== ''){
+            if(firstNameRef.current.value !== ''){
                 updateDoc(docRef, {
                     firstName:firstNameRef.current.value
                 })
             }
-            if(props.id !== '' && lastNameRef.current.value !== ''){
+            if(lastNameRef.current.value !== ''){
                 updateDoc(docRef, {
                     lastName:lastNameRef.current.value
                 })
             }
-            if(props.id !== '' && userIDRef.current.value !== '' && firebaseAuthWarning === false){
+            if(userIDRef.current.value !== '' && firebaseAuthWarning === false){
                 updateDoc(docRef, {
-                    userID:userIDRef.current.value
+                    userID:userIDRef.current.value,
+                    email:userIDRef.current.value + '@fireit.ca'
                 })
             }
-            if(props.id !== '' && userIDRef.current.value !== '' && firebaseAuthWarning === true){
+            if(userIDRef.current.value !== '' && firebaseAuthWarning === true){
                 props.setFireItAlert('EmployeeDataForm change auth user')
             }
-            if(props.id !== '' && userPWRef.current.value !== '' && firebaseAuthWarning === false){
+            if(userPWRef.current.value !== '' && firebaseAuthWarning === false){
                 updateDoc(docRef, {
                     userPW:userPWRef.current.value
                 })
             }
-            if(props.id !== '' && userPWRef.current.value !== '' && firebaseAuthWarning === true){
+            if(userPWRef.current.value !== '' && firebaseAuthWarning === true){
                 props.setFireItAlert('EmployeeDataForm change auth user')
             }
-            if(props.id !== '' && SINRef.current.value !== ''){
+            if(SINRef.current.value !== ''){
                 updateDoc(docRef, {
                     sin:SINRef.current.value
                 })
             }
-            if(props.id !== '' && dobRef.current.value !== ''){
+            if(dobRef.current.value !== ''){
                 updateDoc(docRef, {
                     dob:dobRef.current.value
                 })
             }
-            if(props.id !== '' && streetRef.current.value !== ''){
+            if(streetRef.current.value !== ''){
                 updateDoc(docRef, {
                     street:streetRef.current.value
                 })
             }
-            if(props.id !== '' && cityRef.current.value !== ''){
+            if(cityRef.current.value !== ''){
                 updateDoc(docRef, {
                     city:cityRef.current.value
                 })
             }
-            if(props.id !== '' && provinceRef.current.value !== ''){
+            if(provinceRef.current.value !== ''){
                 updateDoc(docRef, {
                     province:provinceRef.current.value
                 })
             }
-            if(props.id !== '' && postalCodeRef.current.value !== ''){
+            if(postalCodeRef.current.value !== ''){
                 updateDoc(docRef, {
                     postalCode:postalCodeRef.current.value
                 })
             }
-            if(props.id !== '' && phoneRef.current.value !== ''){
+            if(phoneRef.current.value !== ''){
                 updateDoc(docRef, {
                     phone:phoneRef.current.value
                 })
             }
-            // if(props.id !== '' && emailRef.current.value !== ''){
+            // if(emailRef.current.value !== ''){
             //     updateDoc(docRef, {
             //         email:emailRef.current.value
             //     })
             // }
-            if(props.id !== '' && firstDayRef.current.value !== ''){
+            if(firstDayRef.current.value !== ''){
                 updateDoc(docRef, {
                     firstDay:firstDayRef.current.value
                 })
             }
-            if(props.id !== '' && lastDayRef.current.value !== ''){
+            if(lastDayRef.current.value !== ''){
                 updateDoc(docRef, {
                     lastDay:lastDayRef.current.value
                 })
             }
-            if(props.id !== '' && notesRef.current.value !== ''){
+            if(notesRef.current.value !== ''){
                 updateDoc(docRef, {
                     notes:notesRef.current.value
                 })
             }
             props.setSelectedEmployee('');
+            setUpdateEmployee(false)
             document.getElementById('employeeForm').reset(); 
         }
-        if( empNumberExists === true || empUserExists === true){
-            props.setFireItAlert('EmployeeDataForm duplicate id')
+    }, [updateEmployee, props, firebaseAuthWarning])
+
+    // Clear employee data when new employee is selected
+    useEffect(() => {
+        if(props.newEmployee === true){
+            setEmployeeData('')
+        }
+    }, [props.newEmployee])
+
+    const handleAddEmployee = (e) => {
+        e.preventDefault()
+
+        if( firstNameRef.current.value === '' || employeeNumberRef.current.value === ''){
+            props.setFireItAlert('EmployeeDataForm missing name number')
+        } else {
+            let numberList = []
+            let idList = []
+            const employeeContainer = document.querySelector('.employeeDataContainer')
+            const employeeNumbers = employeeContainer.querySelectorAll('[data-empnumber]')
+            const employeeIds = employeeContainer.querySelectorAll('[data-empuser]')
+            employeeNumbers.forEach(number => {
+                numberList.push(number.dataset.empnumber)
+            })
+            employeeIds.forEach(id => {
+                if(id.dataset.empuser !== ''){
+                    idList.push(id.dataset.empuser)
+                }
+            })
+            const numberTest = numberList.filter(number => number === employeeNumberRef.current.value)
+            const idTest = idList.filter(id => id === userIDRef.current.value)
+            // setTryAddEmployee(true)
+            if( numberTest.length === 0 && idTest.length === 0){
+                setAddEmployee(true)
+            } else {
+                props.setFireItAlert('EmployeeDataForm duplicate id')
+            }
+        }
+    }
+
+    const handleUpdateEmployee = (e) => {
+        e.preventDefault()
+
+        if(props.id === '1'){
+            props.setFireItAlert('EmployeeDataForm update demo')
+        }
+
+        if(props.id !== '1'){
+            let numberList = []
+            let idList = []
+            const employeeContainer = document.querySelector('.employeeDataContainer')
+            const employeeNumbers = employeeContainer.querySelectorAll('[data-empnumber]')
+            const employeeIds = employeeContainer.querySelectorAll('[data-empuser]')
+            employeeNumbers.forEach(number => {
+                if(number.dataset.empumber !== ''){
+                    numberList.push(number.dataset.empnumber)
+                }
+            })
+            employeeIds.forEach(id => {
+                if(id.dataset.empuser !== ''){
+                    idList.push(id.dataset.empuser)
+                }
+            })
+            const numberTest = numberList.filter(number => number === employeeNumberRef.current.value)
+            const idTest = idList.filter(id => id === userIDRef.current.value)
+            if( numberTest.length === 0 && idTest.length === 0){
+                setUpdateEmployee(true)
+            } else {
+                props.setFireItAlert('EmployeeDataForm duplicate id')
+            }
         }
     }
 
@@ -229,16 +257,6 @@ const EmployeeDataForm = (props) => {
         }
     }
 
-    const handleEmployeeCheck = (e) => {
-        e.preventDefault()
-        setEmployeeChecker(employeeNumberRef.current.value)
-    }
-
-    const handleUserCheck = (e) => {
-        e.preventDefault()
-        setUserChecker(userIDRef.current.value)
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault()
     }
@@ -255,7 +273,6 @@ const EmployeeDataForm = (props) => {
                         type='number'
                         ref={employeeNumberRef}
                         placeholder={employeeData?.employeeNumber}
-                        onChange={handleEmployeeCheck}
                         />
                 </div>
             {/* First Name */}
@@ -282,7 +299,7 @@ const EmployeeDataForm = (props) => {
                 </div>
             {/* User ID */}
                 <div>
-                    <label htmlFor='userID'>User ID</label>
+                    <label htmlFor='userID'>User ID (4 Digit)</label>
                     <input
                         id='userID'
                         name='userID'
@@ -290,12 +307,11 @@ const EmployeeDataForm = (props) => {
                         maxLength='4'
                         ref={userIDRef}
                         placeholder={employeeData?.userID}
-                        onChange={handleUserCheck}
                         />
                 </div>
             {/* User PW */}
                 <div>
-                    <label htmlFor='userPW'>User PW</label>
+                    <label htmlFor='userPW'>User Password (4 Digit )</label>
                     <input
                         id='userPW'
                         name='userPW'
@@ -458,12 +474,17 @@ const EmployeeDataForm = (props) => {
                     }
                 </div>
             </form>
-            
-            <EmployeeFirebase 
-                email={employeeData?.email}
-                pw={employeeData?.userPW}
-                setFirebaseAuthWarning={setFirebaseAuthWarning}
-                />
+
+            {employeeData?.userID === undefined || employeeData?.userPW === undefined
+                ? <h3>Add / Update employee with 4 digit User ID & PW to begin activation.</h3>
+                : employeeData?.userID.length === 4 && employeeData?.userPW.length === 4
+                    ? <EmployeeFirebase 
+                        email={employeeData?.email}
+                        pw={employeeData?.userPW}
+                        setFirebaseAuthWarning={setFirebaseAuthWarning}
+                        />
+                    : <h3>Add / Update employee with 4 digit User ID & PW to begin activation.</h3>
+            }
         </section>
         
     )
