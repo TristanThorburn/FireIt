@@ -17,6 +17,7 @@ const TableMap = (props) => {
     const [ stylingTable, setStylingTable ] = useState(false);
     const [ selectedTable, setSelectedTable ] = useState('');
     const [ fireItAlert, setFireItAlert ] = useState('')
+    const [ showTableOwner, setShowTableOwner ] = useState('')
     const tableMap = document.querySelector('.tableMap');
     const tables = document.querySelectorAll('.table');
 
@@ -66,6 +67,7 @@ const TableMap = (props) => {
                     setSelectedTable('')
                 }
                 if(doc.data().serverOwner !== 'none'){
+                    setShowTableOwner(doc.data().serverOwner)
                     setFireItAlert('TableMap delete table in use')
                 }
             })
@@ -116,6 +118,7 @@ const TableMap = (props) => {
             }
             if(e.currentTarget.dataset.inuse !== 'none' 
             || e.currentTarget.dataset.inuse !== employeeContext.employeeNumber){
+                setShowTableOwner(e.currentTarget.dataset.inuse)
                 setFireItAlert('TableMap table in use')
             }
         }
@@ -175,6 +178,8 @@ const TableMap = (props) => {
                 ? <FireItAlert
                     fireItAlert={fireItAlert}
                     setFireItAlert={setFireItAlert}
+                    showTableOwner={showTableOwner}
+                    setShowTableOwner={setShowTableOwner}
                     />
                 : null
             }
