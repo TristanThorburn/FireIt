@@ -3,7 +3,7 @@ import { useTable } from './../../../contexts/TableContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
-import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, getDocs } from 'firebase/firestore';
+import { onSnapshot, query, orderBy, updateDoc, doc, deleteDoc, getDoc } from 'firebase/firestore';
 import AddTableForm from './AddTableForm';
 import TableStyleUpdate from './TableStyleUpdate';
 import FireItAlert from '../../help/FireItAlert';
@@ -24,22 +24,13 @@ const TableMap = (props) => {
     useEffect(() => {
         const getTables = async () => {
             const q = query(tableMapCollectionRef, orderBy('name'));
-            const querySnapShot = await getDocs(q, { source: 'cache' })
-                if(!querySnapShot.empty){
-                    const menuItemList = querySnapShot.docs.map(doc => ({
-                        id:doc.id,
-                        data:doc.data()
-                    }))
-                    setTablesData(menuItemList)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setTablesData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        })))
-                    })
-                    return unsubscribe
-                }
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setTablesData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
         }
         getTables()
     },[])
@@ -54,22 +45,33 @@ const TableMap = (props) => {
     }
 
     const handleAddTable = () => {
-            setAddingTable(!addingTable)
+        setAddingTable(!addingTable)
     }
 
     const handleUpdateStyle = () => {
-        if(selectedTable !== ''){
+        if(selectedTable.id){
             setStylingTable(!stylingTable)
         } else {
             setFireItAlert('TableMap no table')
         }
     }
 
-    const handleDelete = (e) => {
-        const docRef = doc(db, 'tables', `${selectedTable.id}`)
-        if(props.id !== ''){
-            deleteDoc(docRef)
-            setSelectedTable('')
+    const handleDelete = async (e) => {
+        if(selectedTable.id){
+            const docRef = doc(db, 'tables', selectedTable.id)
+            await getDoc(docRef)
+            .then(doc => {
+                if(doc.data().serverOwner === 'none'){
+                    deleteDoc(docRef)
+                    setSelectedTable('')
+                }
+                if(doc.data().serverOwner !== 'none'){
+                    setFireItAlert('TableMap delete table in use')
+                }
+            })
+        }
+        else {
+            setFireItAlert('TableMap no table')
         }
     }
 
