@@ -9,7 +9,7 @@ const EmployeeFirebase = (props) => {
     const [ loading, setLoading ] = useState(false);
     const [ userExistsFireAuth, setUserExistsFireAuth ] = useState('')
     const [ deleteFireAuth, setDeleteFireAuth ] = useState(false)
-    const { email, pw, setFirebaseAuthWarning } = props
+    const { fireitEmail, pw, setFirebaseAuthWarning } = props
     const password = pw + 'fireit'
 
     // Notify user of loading
@@ -24,14 +24,14 @@ const EmployeeFirebase = (props) => {
 
     // Check firebase auth to confirm if email exists in the system already
     useEffect(() => {
-        if(email !== ''
-            && email !== undefined
-            && email !== 'tristanthorburn@gmail.com'
-            && email !== '@fireit.ca'){
+        if(fireitEmail !== ''
+            && fireitEmail !== undefined
+            && fireitEmail !== '5555@fireit.ca'
+            && fireitEmail !== '@fireit.ca'){
             const auth = getAuth();
             const checkFirebaseAuthStatus = async () => {
                     try{
-                        let signInMethods = await fetchSignInMethodsForEmail(auth, email);
+                        let signInMethods = await fetchSignInMethodsForEmail(auth, fireitEmail);
                             if (signInMethods.length > 0) {
                                 setUserExistsFireAuth(true)
                                 setFirebaseAuthWarning(true)
@@ -45,19 +45,22 @@ const EmployeeFirebase = (props) => {
             }
             checkFirebaseAuthStatus()
         }
-    }, [email, setFirebaseAuthWarning])
+    }, [fireitEmail, setFirebaseAuthWarning, loading])
 
     // Delete user from firebase authentication after temporary log in
     useEffect(() => {
         const auth = getAuth();
         const user = auth.currentUser
         if(user && deleteFireAuth){
-            deleteUser(user)
-            setUserExistsFireAuth(false)
-            setFirebaseAuthWarning(false)
-            setDeleteFireAuth(false)
-            setLoading(false)
-            setError('')
+            const deleteAuth = async () => {
+                await deleteUser(user)
+                setUserExistsFireAuth(false)
+                setFirebaseAuthWarning(false)
+                setDeleteFireAuth(false)
+                setLoading(false)
+                setError('')
+            }
+            deleteAuth()
         }
     }, [deleteFireAuth, setFirebaseAuthWarning])
     
@@ -65,7 +68,7 @@ const EmployeeFirebase = (props) => {
         try{
             setError('')
             setLoading(true)
-            await signUp (email, password)
+            await signUp (fireitEmail, password)
         } catch (error) {
             setError(error.message)
         }
@@ -77,8 +80,8 @@ const EmployeeFirebase = (props) => {
         try{
             setError('')
             setLoading(true)
-            await login(email, password)
-            .then(setDeleteFireAuth(true))
+            await login(fireitEmail, password)
+            setDeleteFireAuth(true)
         } catch (error) {
             setError(error.message)
         }
@@ -86,7 +89,7 @@ const EmployeeFirebase = (props) => {
 
     return(
         <div className='employeeActivateFirebase'>
-            {email === 'tristanthorburn@gmail.com'
+            {fireitEmail === '5555@fireit.ca'
                     ? <h3>This Demo User is Always Active</h3>
                     : userExistsFireAuth
                         ? <>

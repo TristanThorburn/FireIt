@@ -35,7 +35,7 @@ const EmployeeData = () => {
     }
  
     return(
-        <section className='employeeData'>
+        <main className='employeeData'>
             <header>
                 <Link to='/backend-dash'>
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
@@ -68,7 +68,7 @@ const EmployeeData = () => {
                 : null
             }
             
-            <div className='employeeDataContainer'>
+            <section className='employeeDataContainer'>
                 <table>
                     <thead>
                         <tr>
@@ -94,7 +94,7 @@ const EmployeeData = () => {
                         </tr>)}
                     </tbody>
                 </table>
-            </div>
+            </section>
 
             {newEmployee || selectedEmployee
                 ? <EmployeeDataForm
@@ -106,7 +106,7 @@ const EmployeeData = () => {
                     />
                 : <h3>Select an employee, or create new</h3>
             }
-        </section>
+        </main>
     )
 }
 
