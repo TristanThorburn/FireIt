@@ -17,7 +17,7 @@ const EmployeeDataForm = (props) => {
     const provinceRef = useRef('');
     const postalCodeRef = useRef('');
     const phoneRef = useRef('');
-    // const emailRef = useRef('')
+    const emailRef = useRef('')
     const firstDayRef = useRef('');
     const lastDayRef = useRef('');
     const notesRef = useRef('');
@@ -59,7 +59,8 @@ const EmployeeDataForm = (props) => {
                 province:provinceRef.current.value,
                 postalCode:postalCodeRef.current.value,
                 phone:phoneRef.current.value,
-                email:userIDRef.current.value + '@fireit.ca',
+                email:emailRef.current.value,
+                fireitEmail:userIDRef.current.value + '@fireit.ca',
                 firstDay:firstDayRef.current.value,
                 lastDay:lastDayRef.current.value,
                 notes:notesRef.current.value,
@@ -93,7 +94,7 @@ const EmployeeDataForm = (props) => {
             if(userIDRef.current.value !== '' && firebaseAuthWarning === false){
                 updateDoc(docRef, {
                     userID:userIDRef.current.value,
-                    email:userIDRef.current.value + '@fireit.ca'
+                    fireitEmail:userIDRef.current.value + '@fireit.ca'
                 })
             }
             if(userIDRef.current.value !== '' && firebaseAuthWarning === true){
@@ -142,11 +143,11 @@ const EmployeeDataForm = (props) => {
                     phone:phoneRef.current.value
                 })
             }
-            // if(emailRef.current.value !== ''){
-            //     updateDoc(docRef, {
-            //         email:emailRef.current.value
-            //     })
-            // }
+            if(emailRef.current.value !== ''){
+                updateDoc(docRef, {
+                    email:emailRef.current.value
+                })
+            }
             if(firstDayRef.current.value !== ''){
                 updateDoc(docRef, {
                     firstDay:firstDayRef.current.value
@@ -162,7 +163,9 @@ const EmployeeDataForm = (props) => {
                     notes:notesRef.current.value
                 })
             }
-            props.setSelectedEmployee('');
+            if(firebaseAuthWarning === false){
+                props.setSelectedEmployee('');
+            }
             setUpdateEmployee(false)
             document.getElementById('employeeForm').reset(); 
         }
@@ -178,7 +181,7 @@ const EmployeeDataForm = (props) => {
     const handleAddEmployee = (e) => {
         e.preventDefault()
 
-        if( firstNameRef.current.value === '' || employeeNumberRef.current.value === ''){
+        if(firstNameRef.current.value === '' || employeeNumberRef.current.value === ''){
             props.setFireItAlert('EmployeeDataForm missing name number')
         } else {
             let numberList = []
@@ -262,216 +265,240 @@ const EmployeeDataForm = (props) => {
     }
 
     return(
-        <section>
+        <section className='employeeDetails'>
             <form className='employeeForm' id='employeeForm' onSubmit={handleSubmit}>
-            {/* Employee # */}
-                <div>
-                    <label htmlFor='employeeNumber'>Employee #</label>
-                    <input
-                        id='employeeNumber'
-                        name='employeeNumber'
-                        type='number'
-                        ref={employeeNumberRef}
-                        placeholder={employeeData?.employeeNumber}
-                        />
-                </div>
-            {/* First Name */}
-                <div>
-                    <label htmlFor='firstName'>First Name</label>
-                    <input  
-                        id='firstName'
-                        name='firstName'
-                        type='text'
-                        ref={firstNameRef}
-                        placeholder={employeeData?.firstName}
-                        />
-                </div>
-            {/* Last Name */}
-                <div>
-                    <label htmlFor='lastName'>Last Name</label>
-                    <input
-                        id='lastName'
-                        name='lastName'
-                        type='text'
-                        ref={lastNameRef}
-                        placeholder={employeeData?.lastName}
-                        />
-                </div>
-            {/* User ID */}
-                <div>
-                    <label htmlFor='userID'>User ID (4 Digit)</label>
-                    <input
-                        id='userID'
-                        name='userID'
-                        type='text'
-                        maxLength='4'
-                        ref={userIDRef}
-                        placeholder={employeeData?.userID}
-                        />
-                </div>
-            {/* User PW */}
-                <div>
-                    <label htmlFor='userPW'>User Password (4 Digit )</label>
-                    <input
-                        id='userPW'
-                        name='userPW'
-                        type='text'
-                        maxLength='4'
-                        ref={userPWRef}
-                        placeholder={employeeData?.userPW}
-                        />
-                </div>
-            {/* SIN */}
-                <div>
-                    <label htmlFor='SIN'>SIN</label>
-                    <input
-                        id='SIN'
-                        name='SIN'
-                        type='text'
-                        ref={SINRef}
-                        placeholder={employeeData?.sin}
-                        />
-                </div>
-            {/* DOB */}
-                <div className='employeeFormCalendar'>
+                <div className='formSubContainer'>
+                    <div className='employeeNumbers'>
+                    {/* Employee # */}
+                        <div>
+                            <label htmlFor='employeeNumber'>Employee #</label>
+                            <input
+                                id='employeeNumber'
+                                name='employeeNumber'
+                                type='number'
+                                ref={employeeNumberRef}
+                                placeholder={employeeData?.employeeNumber}
+                                />
+                        </div>
+                    {/* User ID */}
+                        <div>
+                            <label htmlFor='userID'>User ID</label>
+                            <input
+                                id='userID'
+                                name='userID'
+                                type='text'
+                                maxLength='4'
+                                ref={userIDRef}
+                                placeholder={employeeData?.userID}
+                                />
+                        </div>
+                    {/* User PW */}
+                        <div>
+                            <label htmlFor='userPW'>Password</label>
+                            <input
+                                id='userPW'
+                                name='userPW'
+                                type='text'
+                                maxLength='4'
+                                ref={userPWRef}
+                                placeholder={employeeData?.userPW}
+                                />
+                        </div>
+                    </div>
+                {/* First Name */}
                     <div>
-                        <label htmlFor='dob'>Date of Birth</label>
-                        <input
-                            id='dob'
-                            name='dob'
-                            type='date'
-                            ref={dobRef}
+                        <label htmlFor='firstName'>First Name</label>
+                        <input  
+                            id='firstName'
+                            name='firstName'
+                            type='text'
+                            ref={firstNameRef}
+                            placeholder={employeeData?.firstName}
                             />
                     </div>
-                    <p>Saved: {employeeData?.dob}</p>
-                </div>
-            {/* Street */}
-                <div>
-                    <label htmlFor='street'>Street</label>
-                    <input
-                        id='street'
-                        name='street'
-                        type='text'
-                        ref={streetRef}
-                        placeholder={employeeData?.street}
-                        />
-                </div>
-            {/* City */}
-                <div>
-                    <label htmlFor='city'>City</label>
-                    <input
-                        id='city'
-                        name='city'
-                        type='text'
-                        ref={cityRef}
-                        placeholder={employeeData?.city}
-                        />
-                </div>
-            {/* Province */}
-                <div>
-                    <label htmlFor='province'>Province</label>
-                    <input
-                        id='province'
-                        name='province'
-                        type='text'
-                        ref={provinceRef}
-                        placeholder={employeeData?.province}
-                        />
-                </div>
-            {/* Postal Code */}
-                <div>
-                    <label htmlFor='postalCode'>Postal Code</label>
-                    <input
-                        id='postalCode'
-                        name='postalCode'
-                        type='text'
-                        ref={postalCodeRef}
-                        placeholder={employeeData?.postalCode}
-                        />
-                </div>
-            {/* Phone Number */}
-                <div>
-                    <label htmlFor='phone'>Phone</label>
-                    <input
-                        id='phone'
-                        name='phone'
-                        type='text'
-                        ref={phoneRef}
-                        placeholder={employeeData?.phone}
-                        />
-                </div>
-            {/* Email */}
-                <div>
-                    <label htmlFor='email'>Email</label>
-                    <input
-                        id='email'
-                        name='email'
-                        type='text'
-                        // ref={emailRef}
-                        disabled
-                        placeholder={employeeData?.email}
-                        />
-                </div>
-            {/* First Day */}
-                <div className='employeeFormCalendar'>
+                {/* Last Name */}
                     <div>
-                        <label htmlFor='firstDay'>Start Date</label>
+                        <label htmlFor='lastName'>Last Name</label>
                         <input
-                            id='firstDay'
-                            name='firstDay'
-                            type='date'
-                            ref={firstDayRef}
+                            id='lastName'
+                            name='lastName'
+                            type='text'
+                            ref={lastNameRef}
+                            placeholder={employeeData?.lastName}
                             />
                     </div>
-                    <p>Saved: {employeeData?.firstDay}</p>
-                </div>
-            {/* Last Day */}
-                <div className='employeeFormCalendar'>
-                    <div>
-                        <label htmlFor='lastDay'>End Date</label>
-                        <input
-                            id='lastDay'
-                            name='lastDay'
-                            type='date'
-                            ref={lastDayRef}
-                            />
-                    </div>
-                    <p>Saved: {employeeData?.lastDay}</p>
-                    
-                </div>
-            {/* Notes */}
-                <div>
-                    <label htmlFor='notes'>Notes</label>
-                    <textarea
-                        id='notes'
-                        name='notes'
-                        ref={notesRef}
-                        placeholder={employeeData?.notes}
-                        >
-                    </textarea>
                 </div>
 
-                <div className='employeeButtonContainer'>
-                    {!props.newEmployee && props.id !== ''
-                        ? <div className='employeeSubmit'>
-                            <button
-                                className='newItemButton'
-                                onClick={handleUpdateEmployee}
-                                >Update Employee
-                            </button>
-                            <button
-                                className='newItemButton deleteItemButton'
-                                onClick={handleDelete}
-                                >Delete Employee
-                            </button>
+                <div className='formSubContainer'>
+                {/* Street */}
+                    <div>
+                        <label htmlFor='street'>Street</label>
+                        <input
+                            id='street'
+                            name='street'
+                            type='text'
+                            ref={streetRef}
+                            placeholder={employeeData?.street}
+                            />
+                    </div>
+                {/* City */}
+                    <div>
+                        <label htmlFor='city'>City</label>
+                        <input
+                            id='city'
+                            name='city'
+                            type='text'
+                            ref={cityRef}
+                            placeholder={employeeData?.city}
+                            />
+                    </div>
+                {/* Province */}
+                    <div>
+                        <label htmlFor='province'>Province</label>
+                        <input
+                            id='province'
+                            name='province'
+                            type='text'
+                            ref={provinceRef}
+                            placeholder={employeeData?.province}
+                            />
+                    </div>
+                {/* Postal Code */}
+                    <div>
+                        <label htmlFor='postalCode'>Postal Code</label>
+                        <input
+                            id='postalCode'
+                            name='postalCode'
+                            type='text'
+                            ref={postalCodeRef}
+                            placeholder={employeeData?.postalCode}
+                            />
+                    </div>
+                </div>
+
+                <div className='formSubContainer'>
+                {/* Phone Number */}
+                    <div>
+                        <label htmlFor='phone'>Phone</label>
+                        <input
+                            id='phone'
+                            name='phone'
+                            type='text'
+                            ref={phoneRef}
+                            placeholder={employeeData?.phone}
+                            />
+                    </div>
+                {/* Email */}
+                    <div>
+                        <label htmlFor='email'>Email</label>
+                        <input
+                            id='email'
+                            name='email'
+                            type='text'
+                            ref={emailRef}
+                            placeholder={employeeData?.email}
+                            />
+                    </div>
+                {/* SIN */}
+                    <div className='formShortInput'>
+                        <label htmlFor='SIN'>SIN</label>
+                        <input
+                            id='SIN'
+                            name='SIN'
+                            type='text'
+                            ref={SINRef}
+                            placeholder={employeeData?.sin}
+                            />
+                    </div>
+                </div>
+
+                <div className='formSubContainer'>
+                {/* DOB */}
+                    <div className='dateAndPlaceholder'>
+                        <div>
+                            <label htmlFor='dob'>Date of Birth</label>
+                            <input
+                                id='dob'
+                                name='dob'
+                                type='date'
+                                ref={dobRef}
+                                />
                         </div>
-                        : props.newEmployee 
-                            ? <button
-                                onClick={handleAddEmployee}
-                                className='newItemButton'
-                                >Add Emmployee</button>
-                            : null
-                    }
+                        
+                        <div >
+                            <p>On File:</p>
+                            <p className='calendarPlaceholder'>{employeeData?.dob}</p>
+                        </div>
+                    </div>
+                {/* First Day */}
+                    <div className='dateAndPlaceholder'>
+                        <div>
+                            <label htmlFor='firstDay'>Start Date</label>
+                            <input
+                                id='firstDay'
+                                name='firstDay'
+                                type='date'
+                                ref={firstDayRef}
+                                />
+                        </div>
+
+                        <div>
+                            <p>On File:</p>
+                            <p className='calendarPlaceholder'>{employeeData?.firstDay}</p>
+                        </div>
+                    </div>
+                {/* Last Day */}
+                    <div className='dateAndPlaceholder'>
+                        <div>
+                            <label htmlFor='lastDay'>End Date</label>
+                            <input
+                                id='lastDay'
+                                name='lastDay'
+                                type='date'
+                                ref={lastDayRef}
+                                />
+                        </div>
+                    <div>
+                        <p>On File:</p>
+                        <p className='calendarPlaceholder'>{employeeData?.lastDay}</p>
+                    </div>
+                    </div>
+                </div>
+
+                <div className='notesAndButtons'>
+                {/* Notes */}
+                    <div className='formNotes'>
+                        <textarea
+                            id='notes'
+                            name='notes'
+                            ref={notesRef}
+                            placeholder={employeeData?.notes ? employeeData?.notes : 'Notes'}
+                            >
+                        </textarea>
+                    </div>
+                {/* Buttons */}
+                    <div className='employeeButtonContainer'>
+                        {!props.newEmployee && props.id !== ''
+                            ? <div className='employeeSubmit'>
+                                <button
+                                    className='newItemButton'
+                                    onClick={handleUpdateEmployee}
+                                    >Update Employee
+                                </button>
+                                <button
+                                    className='newItemButton deleteItemButton'
+                                    onClick={handleDelete}
+                                    >Delete Employee
+                                </button>
+                            </div>
+                            : props.newEmployee 
+                                ? <button
+                                    onClick={handleAddEmployee}
+                                    className='newItemButton'
+                                    >Add Employee</button>
+                                : null
+                        }
+                    </div>
                 </div>
             </form>
 
@@ -479,7 +506,7 @@ const EmployeeDataForm = (props) => {
                 ? <h3>Add / Update employee with 4 digit User ID & PW to begin activation.</h3>
                 : employeeData?.userID.length === 4 && employeeData?.userPW.length === 4
                     ? <EmployeeFirebase 
-                        email={employeeData?.email}
+                        fireitEmail={employeeData?.fireitEmail}
                         pw={employeeData?.userPW}
                         setFirebaseAuthWarning={setFirebaseAuthWarning}
                         />
