@@ -199,8 +199,14 @@ const TableMap = (props) => {
                                 <li 
                                     key={table.id}
                                     id={table.id}
-                                    data-inuse={table.data.serverOwner}
-                                    className={['table', table.data?.tableStyle].join(' ')}
+                                    data-inuse={table.data?.serverOwner}
+                                    className={[
+                                        'table', 
+                                        table.data?.tableStyle, 
+                                        table.data?.serverOwner !== 'none' 
+                                            ? 'tableInUse'
+                                            : null,
+                                        ].join(' ')}
                                     onClickCapture={handleTableClickCapture}
                                     style={{left:table?.data.left, top: table?.data.top}}
                                     >

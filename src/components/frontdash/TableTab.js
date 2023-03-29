@@ -24,6 +24,7 @@ const TableTab = (props) => {
             <TableTabNav 
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setHelpModal={props.setHelpModal}
+                setMessageOfTheDay={props.setMessageOfTheDay}
                 />
         </div>
     )

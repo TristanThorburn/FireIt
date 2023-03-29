@@ -21,9 +21,10 @@ const FrontUserGuide = (props) => {
                     ? <ul>
                         <li>This represents the layout of the restaurant, tables can be 'touched' to select the table and link to the menu for food and drink orders. Table designs, names and positions can be updated and saved by using the Admin tab to enter the back dash.</li>
                         <li>Servers cannot access a table that already has orders on it from another server.</li>
+                        <li>Tables that are in use will be red, while free tables will be green.</li>
                         <li>Stretch Goals: 
                             <br />
-                            Color change tables to designate if the table already has ordered items from the server.
+                            .
                         </li>
                     </ul>
                     : null
@@ -129,6 +130,11 @@ const FrontUserGuide = (props) => {
                             TEST
                             <br />
                             - Test buttons exist for coding console.log and has no user functionality. 
+                        </li>
+                        <li>
+                            WELCOME
+                            <br />
+                            - Thank you message! 
                         </li>
                         <li>
                             INFO

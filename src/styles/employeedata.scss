@@ -6,11 +6,12 @@
         height:7.5%;
 
         h2{
-            font-size: clamp(2.5rem, 1.5rem + 1.5625vw, 3.375rem);
+            font-size: clamp(1.25rem, 0.2459rem + 2.2951vw, 3rem);
         }
     }
     .infoButton{
-        right:-25%;
+        right:-35%;
+        top:-10%;
     }
     h3{
         text-align: center;
@@ -53,7 +54,6 @@
     width:96%;
     height:80%;
     margin:0 auto;
-    border: 1px solid purple;
     overflow-y: scroll;
 
     input{
@@ -72,10 +72,15 @@
         width:300px;
         display:flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: space-around;
     }
     .employeeNumbers{
         display:flex;
+
+        div{
+           width:32%;
+           margin: 0 auto;
+        }
     }
     .dateAndPlaceholder{
        @include flexCenterCenter;
@@ -134,7 +139,7 @@ div.employeeSubmit{
     }
 }
 
-@media (min-width:1000px) and (max-width:1419px){
+@media (min-width:700px) and (max-width:1419px){
     .employeeData{
         header{
             width:100%;
@@ -143,10 +148,21 @@ div.employeeSubmit{
             margin:0rem 2.5rem;
         }
         .infoButton{
-            right:-59%;
-            top:105%;
+            right:-90%;
+            top:155%;
         }
     }
+    .employeeForm{
+        .formSubContainer{
+            width:45%;
+        }
+        .employeeNumbers{
+            margin-top:-0.5rem;
+        }
+    }
+    .employeeForm::-webkit-scrollbar-track {
+        background: black;
+      }
 }
 
 @media (min-width:1420px) and (max-width:1820px){
@@ -158,7 +174,7 @@ div.employeeSubmit{
             margin:0rem 2.5rem;
         }
         .infoButton{
-            right:-85%;
+            right:-115%;
             top:105%;
         }
     }
