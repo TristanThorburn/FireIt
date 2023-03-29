@@ -21,10 +21,10 @@ const MessageOfTheDay = (props) => {
         <div className='popUpModal'>
             <div className='messageOfTheDay'>
                 <button onClick={handleCloseModal} className='closePad'>X</button>
-                <div className='infoButton'>
-                    <button>🔥</button>
+                <button className='infoButton'>
+                    🔥
                     <p>Welcome:</p>
-                </div>
+                </button>
                 {firstLogin === 'true'
                     ? <div className='welcomeMessage'>
                         <h2>{employeeName}!</h2>

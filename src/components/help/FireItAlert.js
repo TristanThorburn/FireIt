@@ -32,10 +32,10 @@ const FireItAlert = (props) => {
         <div className='popUpModal'>
             <div className='fireItAlert'>
                 <button onClick={handleCloseModal} className='closePad'>X</button>
-                <div className='infoButton'>
-                    <button>🔥</button>
+                <button className='infoButton'>
+                    🔥
                     <p>FireIt Alert:</p>
-                </div>
+                </button>
                 <article>
 {/* CHECK MODIFY ERRORS*/}
                     {props.fireItAlert === 'TableCheck seat delete'

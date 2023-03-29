@@ -66,6 +66,7 @@ const AuthProvider = ({children}) => {
             const q = query(employeeCollectionRef, where('userID', '==', `${fireitID}`));
             
             const loggedInUserCheck = async () => {
+                setEmployeeContext([])
                 const result = await getDocs(q)
                 let user = []
                 result.forEach((doc) => {

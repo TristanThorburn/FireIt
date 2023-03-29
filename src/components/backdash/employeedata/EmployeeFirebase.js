@@ -89,34 +89,32 @@ const EmployeeFirebase = (props) => {
 
     return(
         <div className='employeeActivateFirebase'>
-            {fireitEmail === '5555@fireit.ca'
-                    ? <h3>This Demo User is Always Active</h3>
-                    : userExistsFireAuth
-                        ? <>
-                            <h3>Server Firebase Login Active</h3>
-                            <button
-                                className='newItemButton deleteItemButton'
-                                onClick={handleDeactivate}
-                                disabled={loading}
-                                >Deactivate?
-                            </button>
-                        </>
-                        : <>
-                            <h3>Server Firebase Login Disabled</h3>
-                            <button
-                                className='newItemButton'
-                                onClick={handleActivate}
-                                disabled={loading}
-                                >Activate?
-                            </button>
-                        </>
-            }
-
             {success
                 ? <div className='padSuccess'>{success}</div>
                 : error
-                    ? null
-                    : <div className='padError'>{error}</div>
+                    ? <div className='padError'>{error}</div>
+                    : fireitEmail === '5555@fireit.ca'
+                        ? <h3>This Demo Employee's Login to Fire It is Always Active</h3>
+                        : userExistsFireAuth
+                            ? <>
+                                <h3>Employee Login to Fire It Active</h3>
+                                <button
+                                    className='newItemButton deleteItemButton'
+                                    onClick={handleDeactivate}
+                                    disabled={loading}
+                                    >Deactivate?
+                                </button>
+                            </>
+                            : <>
+                                <h3>Employee Login to Fire It Disabled</h3>
+                                <button
+                                    className='newItemButton'
+                                    onClick={handleActivate}
+                                    disabled={loading}
+                                    >Activate?
+                                </button>
+                            </>
+                
             }
         </div>
     )

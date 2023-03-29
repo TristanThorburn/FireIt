@@ -1,7 +1,7 @@
 const FrontUserGuide = (props) => {
     return(
         <div className='frontUserGuideContainer'>
-            <div>
+            <div className='guideContainer'>
                 <h2>How to use the {
                     props.tableTabActive
                         ? 'TableMap Tab'
@@ -183,9 +183,9 @@ const FrontUserGuide = (props) => {
                             - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
                         </li>
                         <li>
-                            HIDE OLD
+                            DEMO
                             <br />
-                            - Under construction. Hide non pending orders. 
+                            - Under construction. 
                         </li>
                         <li>
                             INFO
@@ -234,9 +234,14 @@ const FrontUserGuide = (props) => {
                             - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
                         </li>
                         <li>
-                            DEMO
+                            ALL ON ONE
                             <br />
-                            - Button under construction. 
+                            - Button under construction. Set up check info on one receipt.
+                        </li>
+                        <li>
+                            % Split
+                            <br />
+                            - Button under construction. Fraction split, 'divide the check 50/50'.
                         </li>
                         <li>
                             TEST
