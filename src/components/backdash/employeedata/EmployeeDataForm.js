@@ -64,6 +64,7 @@ const EmployeeDataForm = (props) => {
                 firstDay:firstDayRef.current.value,
                 lastDay:lastDayRef.current.value,
                 notes:notesRef.current.value,
+                firstLogin:'true',
             });
             props.setNewEmployee(false);
             setAddEmployee(false)

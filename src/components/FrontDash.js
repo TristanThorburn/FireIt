@@ -14,6 +14,7 @@ import MenuTab from './frontdash/MenuTab';
 import CheckTab from './frontdash/CheckTab';
 import PaymentTab from './frontdash/PaymentTab';
 import FireItAlert from './help/FireItAlert';
+import MessageOfTheDay from './help/MessageOfTheDay';
  
 const FrontDash = () => {
     const { employeeContext } = useAuth();
@@ -26,7 +27,8 @@ const FrontDash = () => {
     const [ helpModal, setHelpModal ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('');
     const [ activeTableData, setActiveTableData ] = useState({});
-    const [ serverTableList, setServerTableList ] = useState([])
+    const [ serverTableList, setServerTableList ] = useState([]);
+    const [ messageOfTheDay, setMessageOfTheDay ] = useState(false)
 
     // Populate data of selected table for use in MenuTab, CheckTab, PaymentTab
     useEffect(() => {
@@ -51,12 +53,15 @@ const FrontDash = () => {
         }
     }, [contextTable, employeeContext]);
 
-    // Get a list of the active servers tables
+    // Get a list of the active servers tables and check if employee first login
     useEffect(() => {
         const q = 
             query(tableMapCollectionRef, 
                 where('serverOwner', '==', `${employeeContext.employeeNumber}`))
             const getTableList = async () => {
+                if(employeeContext.firstLogin === 'true'){
+                    setMessageOfTheDay(true)
+                }
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setServerTableList(snapshot.docs.map(doc => ({
                         id: doc.data().searchId,
@@ -66,7 +71,7 @@ const FrontDash = () => {
                 return unsubscribe
         }
         getTableList()
-    }, [employeeContext.employeeNumber])
+    }, [employeeContext.employeeNumber, employeeContext.firstLogin])
 
     return(
         <div className='frontDash'>
@@ -77,6 +82,16 @@ const FrontDash = () => {
                 paymentTab={setPaymentTabActive}
                 summaryTab={setSummaryTabActive}
                 />
+
+            {messageOfTheDay
+                ? <MessageOfTheDay 
+                    firstLogin={employeeContext.firstLogin}
+                    employeeNumber={employeeContext.employeeNumber}
+                    employeeName={employeeContext.firstName}
+                    setMessageOfTheDay={setMessageOfTheDay}
+                    />
+                : null
+            }
             
             {helpModal
                 ? <FrontDashHelp
@@ -116,6 +131,7 @@ const FrontDash = () => {
                     tableTabActive={tableTabActive}
                     setTableTabActive={setTableTabActive}
                     setMenuTabActive={setMenuTabActive}
+                    setMessageOfTheDay={setMessageOfTheDay}
                     />
                 : null
             }

@@ -29,6 +29,11 @@
     font-size: 1.3rem;
 }
 
+.tableInUse{
+    background-color:$fireItColor;
+    color:black;
+}
+
 .diamondTable{
     rotate:(45deg);
     width:100px;

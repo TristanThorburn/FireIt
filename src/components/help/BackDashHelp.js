@@ -102,7 +102,7 @@ const BackDashHelp = (props) => {
                                 <li>To begin select 'Update Map.'</li>
                                 <li>Add a new table, or select the table on the map you wish to modify.</li>
                                 <li>You cannot create a new table if it already exists on the map.</li>
-                                <li>Tables cannot be deleted if an employee has orders on it.</li>
+                                <li>Tables cannot be deleted if an employee has orders on it. Tables with server orders on them will appear red.</li>
                                 <li>Enable reposition to drag the tables to a new location, when you are finished, save the table positions so the updates will appear on the Table Tab screen</li>
                                 <li>Selected tables can also have their style changed between the 4 current styles.</li>
                                 <li>Stretch goals include improvements to the table repositioning smoothness as well as including more styles.</li>

@@ -8,7 +8,7 @@ const TableTabNav = (props) => {
     const [ error, setError ] = useState('')
 
     const handleTest = () => {
-        console.log(employeeContext.userPW + 'fireit')
+        console.log(employeeContext)
     }
     
     const handleMgrOveride = () => {
@@ -19,6 +19,10 @@ const TableTabNav = (props) => {
         if(managerContext === true){
             setManagerContext(false)
         }
+    }
+
+    const handleWelcome = () => {
+        props.setMessageOfTheDay(true)
     }
     
     const handleHelp = () => {
@@ -48,9 +52,13 @@ const TableTabNav = (props) => {
                     </button>
                 </li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
+                <li>
+                    <button 
+                        onClick={handleWelcome}
+                        className='workingButton'
+                        >Welcome</button>
+                </li>
                 <li className='infoButton'>
                     <button onClick={handleHelp}>🔥</button>
                     <p onClick={handleHelp}>INFO</p>
