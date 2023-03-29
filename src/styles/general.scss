@@ -55,3 +55,12 @@ button.infoButton{
     @include popUpModal;
     @include flexCenterCenter;
 }
+
+.errorPage{
+    @include flexCenterCenter;
+    flex-direction: column;
+
+    h2{
+        color:white;
+    }
+}
