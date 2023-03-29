@@ -11,7 +11,10 @@ const AppLandingInfo = (props) => {
     return(
         <div className='appLandingInfo'>
             <div className='appLandingInfoNav'>
-                <button onClick={handleExitInfoPage}>Back to Login</button>
+                <button onClick={handleExitInfoPage} className='infoButton'>
+                    🔥
+                    <p onClick={handleExitInfoPage}>EXIT</p>
+                </button>
                 <h2>ABOUT FIRE IT:</h2>
             </div>
             

@@ -11,12 +11,13 @@ const PaymentData = () => {
 
     return(
         <section className='paymentData'>
-            <header className='backDashHeader'>
+            <header className='backTitleAndInfo'>
                 <h2>Payment Data</h2>
-                <div className='infoButton'>
-                    <button onClick={handlePaymentDataHelp}>🔥</button>
-                    <p onClick={handlePaymentDataHelp}>INFO</p>
-                </div>
+                    <button onClickCapture={handlePaymentDataHelp} className='infoButton'>
+                        🔥
+                        <p>INFO</p>
+                    </button>
+                    
             </header>
 
             {paymentDataHelp
@@ -28,7 +29,9 @@ const PaymentData = () => {
             }
 
             <p>Under Construction</p>
-            <Link to='/backend-dash'>Return to Backend Dashboard</Link>
+            <Link to='/backend-dash'>
+                <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
+            </Link>
         </section>
     )
 }

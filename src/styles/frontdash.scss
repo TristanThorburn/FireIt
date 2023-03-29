@@ -81,10 +81,9 @@
     button{
         width:100%;
     }
-    .infoButton{
+    button.infoButton{
         p{
-            top:30%;
-            left:14%;
+            left:7%;
             // 20px-25px
             font-size: clamp(1rem, 0.3125rem + 0.7813vw, 1.25rem)
         }

@@ -60,9 +60,11 @@ const PaymentTabNav = (props) => {
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li><button onClick={handleTest} className='testButton'>TEST</button></li>
-                <li className='infoButton'>
-                    <button onClick={handleHelp}>🔥</button>
-                    <p onClick={handleHelp}>INFO</p>
+                <li>
+                    <button onClickCapture={handleHelp} className='infoButton'>
+                        🔥
+                        <p>INFO</p>
+                    </button>
                 </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>

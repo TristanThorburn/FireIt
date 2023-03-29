@@ -26,21 +26,13 @@ const TableMapData = () => {
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
                 </Link>
 
-                <div className='backDashHeader'>
+                <div className='backTitleAndInfo'>
                     <h2>Table Setup</h2>
-                    <div className='infoButton'>
-                        <button onClick={handleTableSetupHelp}>🔥</button>
-                        <p onClick={handleTableSetupHelp}>INFO</p>
-                    </div>
+                    <button onClickCapture={handleTableSetupHelp} className='infoButton'>
+                        🔥
+                        <p>INFO</p>
+                    </button>
                 </div>
-
-                {tableSetupHelp
-                    ? <BackDashHelp
-                        tableSetupHelp={tableSetupHelp}
-                        setTableSetupHelp={setTableSetupHelp}
-                        />
-                    : null
-                }
 
                 {mapUpdateable
                     ? <button
@@ -56,6 +48,14 @@ const TableMapData = () => {
                 }
             </header>
             
+            {tableSetupHelp
+                    ? <BackDashHelp
+                        tableSetupHelp={tableSetupHelp}
+                        setTableSetupHelp={setTableSetupHelp}
+                        />
+                    : null
+                }
+
             <TableMap updateable={mapUpdateable} setMapUpdateable={setMapUpdateable}/>
         </div>
     )

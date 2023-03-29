@@ -17,10 +17,10 @@ const BackendDash = () => {
     return(
         <div className='backendDash'>
             <header>
-                <div className='infoButton exitAdmin'>
-                    <button onClick={handleLeaveAdmin}>🔥</button>
-                    <p onClick={handleLeaveAdmin}>TO FIRE IT</p>
-                </div>
+                <button className='infoButton exitAdmin' onClickCapture={handleLeaveAdmin}>
+                    🔥
+                    <p>TO FIRE IT</p>
+                </button>
                 <h2>Admin / Manager View</h2>
             </header>
             <div className='buttonContainer'>

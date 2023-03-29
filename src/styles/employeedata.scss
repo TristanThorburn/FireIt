@@ -4,17 +4,15 @@
     header{
         @include backDashHeader;
         height:7.5%;
-
-        h2{
-            font-size: clamp(1.25rem, 0.2459rem + 2.2951vw, 3rem);
-        }
-    }
-    .infoButton{
-        right:-35%;
-        top:-10%;
     }
     h3{
         text-align: center;
+    }
+    button.infoButton{
+        p{
+            top:20px;
+            left:-15px;
+        }
     }
 }
 
@@ -22,7 +20,7 @@
     margin:0 auto;
     border:2px solid black;
     background-color: white;
-    width:50%;
+    width:60%;
     height:32.5%;
     overflow-y: scroll;
 
@@ -39,6 +37,7 @@
     td{
         border-bottom: 2px solid rgba(0, 0, 0, 0.25);
         width:calc(100% / 3);
+        font-size: 1.25rem;
     }
 }
 
@@ -144,13 +143,6 @@ div.employeeSubmit{
         header{
             width:100%;
         }
-        h2{
-            margin:0rem 2.5rem;
-        }
-        .infoButton{
-            right:-90%;
-            top:155%;
-        }
     }
     .employeeForm{
         .formSubContainer{
@@ -158,24 +150,6 @@ div.employeeSubmit{
         }
         .employeeNumbers{
             margin-top:-0.5rem;
-        }
-    }
-    .employeeForm::-webkit-scrollbar-track {
-        background: black;
-      }
-}
-
-@media (min-width:1420px) and (max-width:1820px){
-    .employeeData{
-        header{
-            width:100%;
-        }
-        h2{
-            margin:0rem 2.5rem;
-        }
-        .infoButton{
-            right:-115%;
-            top:105%;
         }
     }
 }
