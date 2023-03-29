@@ -59,7 +59,7 @@ const Login = () => {
                                 </button>
                                 <button onClickCapture={handleAdminSkip} className='infoButton'>
                                     🔥
-                                    <p>ADMIN</p>
+                                    <p className='adminSkip'>SKIP TO ADMIN</p>
                                 </button>
                             </div>
                         </div>
