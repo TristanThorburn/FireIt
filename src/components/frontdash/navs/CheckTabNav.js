@@ -119,11 +119,14 @@ const CheckTabNav = (props) => {
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
                 </li>
-                <li><button className='nonWorkingButton'>Demo</button></li>
+                <li><button className='nonWorkingButton'>ALL ON ONE</button></li>
+                <li><button className='nonWorkingButton'>% SPLIT</button></li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
-                <li className='infoButton'>
-                    <button onClick={handleHelp}>🔥</button>
-                    <p onClick={handleHelp}>INFO</p>
+                <li>
+                    <button onClickCapture={handleHelp} className='infoButton'>
+                        🔥
+                        <p>INFO</p>
+                    </button>
                 </li>
                 <li className='navCurrentUser'>{error
                         ? <p>{error}</p>

@@ -35,6 +35,13 @@ const TableMap = (props) => {
         }
         getTables()
     },[])
+
+    // Turn off enable drag when map is not updateable
+    useEffect(() => {
+        if(props.updateable){
+            setEnableDrag(false)
+        }
+    }, [props.updateable])
     
     const handleAllowDragging = () => {
         if(enableDrag === false){
@@ -127,6 +134,50 @@ const TableMap = (props) => {
 
     return(
         <section className='tableDisplay'>
+            {fireItAlert !==''
+                ? <FireItAlert
+                    fireItAlert={fireItAlert}
+                    setFireItAlert={setFireItAlert}
+                    showTableOwner={showTableOwner}
+                    setShowTableOwner={setShowTableOwner}
+                    />
+                : null
+            }
+
+            {addingTable
+                ? <AddTableForm
+                    setAddingTable={setAddingTable}
+                    />
+                : stylingTable
+                    ? <TableStyleUpdate
+                        setStylingTable={setStylingTable}
+                        activeTable={selectedTable?.innerText}
+                        tableId={selectedTable.id}
+                        />
+                    :<ul className='tableMap'>
+                            {tablesData.map(table => 
+                                <li 
+                                    key={table.id}
+                                    id={table.id}
+                                    data-inuse={table.data?.serverOwner}
+                                    className={[
+                                        'table', 
+                                        table.data?.tableStyle, 
+                                        table.data?.serverOwner !== 'none' 
+                                            ? 'tableInUse'
+                                            : null,
+                                        ].join(' ')}
+                                    onClickCapture={handleTableClickCapture}
+                                    style={{left:table?.data.left, top: table?.data.top}}
+                                    >
+                                        <p>
+                                            {table.data.name}
+                                        </p>
+                                </li>)}
+                        </ul>
+            }    
+
+            
             {props.updateable === true
                 ?<div className='updateMapNav'>
                     <ul>
@@ -172,50 +223,7 @@ const TableMap = (props) => {
                     }  
                 </div>
                 :null
-            }
-
-            {fireItAlert !==''
-                ? <FireItAlert
-                    fireItAlert={fireItAlert}
-                    setFireItAlert={setFireItAlert}
-                    showTableOwner={showTableOwner}
-                    setShowTableOwner={setShowTableOwner}
-                    />
-                : null
-            }
-
-            {addingTable
-                ? <AddTableForm
-                    setAddingTable={setAddingTable}
-                    />
-                : stylingTable
-                    ? <TableStyleUpdate
-                        setStylingTable={setStylingTable}
-                        activeTable={selectedTable?.innerText}
-                        tableId={selectedTable.id}
-                        />
-                    :<ul className='tableMap'>
-                            {tablesData.map(table => 
-                                <li 
-                                    key={table.id}
-                                    id={table.id}
-                                    data-inuse={table.data?.serverOwner}
-                                    className={[
-                                        'table', 
-                                        table.data?.tableStyle, 
-                                        table.data?.serverOwner !== 'none' 
-                                            ? 'tableInUse'
-                                            : null,
-                                        ].join(' ')}
-                                    onClickCapture={handleTableClickCapture}
-                                    style={{left:table?.data.left, top: table?.data.top}}
-                                    >
-                                        <p>
-                                            {table.data.name}
-                                        </p>
-                                </li>)}
-                        </ul>
-            }            
+            }        
         </section>
     )
 }

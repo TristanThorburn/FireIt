@@ -105,7 +105,9 @@ const BackDashHelp = (props) => {
                                 <li>Tables cannot be deleted if an employee has orders on it. Tables with server orders on them will appear red.</li>
                                 <li>Enable reposition to drag the tables to a new location, when you are finished, save the table positions so the updates will appear on the Table Tab screen</li>
                                 <li>Selected tables can also have their style changed between the 4 current styles.</li>
-                                <li>Stretch goals include improvements to the table repositioning smoothness as well as including more styles.</li>
+                                <li>Stretch goals:
+                                    <br />
+                                    improvements to the table repositioning smoothness as well as including more styles. SMALLER SCREENS CAUSE ISSUES REPOSITIONING.</li>
                             </ul>
                             : null
                         }

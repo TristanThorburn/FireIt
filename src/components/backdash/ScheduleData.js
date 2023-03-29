@@ -11,12 +11,12 @@ const ScheduleData = () => {
 
     return(
         <section className='scheduleData'>
-            <header className='backDashHeader'>
+            <header className='backTitleAndInfo'>
                 <h2>Scheduler</h2>
-                <div className='infoButton'>
-                    <button onClick={handleScheduleHelp}>🔥</button>
-                    <p onClick={handleScheduleHelp}>INFO</p>
-                </div>
+                <button onClickCapture={handleScheduleHelp} className='infoButton'>
+                    🔥
+                    <p>INFO</p>
+                </button>
             </header>
 
             {scheduleHelp
@@ -28,7 +28,9 @@ const ScheduleData = () => {
             }
 
             <p>Under Construction</p>
-            <Link to='/backend-dash'>Return to Backend Dashboard</Link>
+            <Link to='/backend-dash'>
+                <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
+            </Link>
         </section>
     )
 }

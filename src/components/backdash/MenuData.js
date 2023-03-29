@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import back from '../../assets/back.png';
 import alcohol from '../../assets/alcohol.png';
 import apps from '../../assets/apps.png';
 import nonalch from '../../assets/nonalch.png';
@@ -71,12 +70,17 @@ const MenuData = () => {
 
     return(
         <section className='menuData'>
-            <header className='backDashHeader'>
+            <header>
+                <Link to='/backend-dash'>
+                        <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
+                </Link>
+
                 <h2>Menu Entry Setup</h2>
-                <div className='infoButton'>
-                    <button onClick={handleMenuEntryHelp}>🔥</button>
-                    <p onClick={handleMenuEntryHelp}>INFO</p>
-                </div>
+
+                <button className='infoButton' onClickCapture={handleMenuEntryHelp}>
+                    🔥
+                    <p>INFO</p>
+                </button>
             </header>
 
             {menuEntryHelp
@@ -89,7 +93,6 @@ const MenuData = () => {
 
             <div className='buttonContainer'>
                 <ul>
-                    <li><Link to='/backend-dash'><img src={back} alt='' /></Link>Backend Dashboard</li>
                     <li onClick={handleApps}><img src={apps} alt='' />Apps</li>
                     <li onClick={handleMains}><img src={mains} alt='' />Mains</li>                     
                     <li onClick={handleDesserts}><img src={desserts} alt='' />Desserts</li>

@@ -53,23 +53,23 @@ const Login = () => {
                                 <h1 onClick={handleLogin}>FIRE IT</h1>
                             </div>
                             <div className='landingLowerNav'>
-                                <div className='infoButton'>
-                                    <button onClick={handleAppInfo}>🔥</button>
-                                    <p onClick={handleAppInfo}>INFO</p>
-                                </div>
-                                <div className='infoButton'>
-                                    <button onClick={handleAdminSkip}>🔥</button>
-                                    <p onClick={handleAdminSkip}>ADMIN</p>
-                                </div>
+                                <button onClickCapture={handleAppInfo} className='infoButton'>
+                                    🔥
+                                    <p>INFO</p>
+                                </button>
+                                <button onClickCapture={handleAdminSkip} className='infoButton'>
+                                    🔥
+                                    <p>ADMIN</p>
+                                </button>
                             </div>
                         </div>
             }
 
             {loginToApp
-                ? <div className='infoButton loginHelp'>
-                    <button onClick={handleLoginHelp}>🔥</button>
-                    <p onClick={handleLoginHelp}>INFO</p>
-                </div>
+                ? <button onClickCapture={handleLoginHelp} className='infoButton loginHelp'>
+                    🔥
+                    <p>INFO</p>
+                </button>
                 : null
             }
 

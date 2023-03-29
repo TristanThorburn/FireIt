@@ -5,6 +5,19 @@
     background-color: $backDashBackgroundColor;
 }
 
+.employeeData, .paymentData, .settingsData, .tableData, .scheduleData{
+    .backTitleAndInfo{
+        button.infoButton{
+            transform: translateX(50%);
+        }
+    }
+}
+
+.scheduleData, .settingsData, .paymentData{
+    @include flexCenterCenter;
+    flex-direction: column;
+}
+
 .backendDash{
     header{
         display:flex;
@@ -24,6 +37,7 @@
         flex-wrap: wrap;
         justify-content: space-evenly;
         width:80%;
+        margin-top:5rem;
     }
     li{
         width:33%;
@@ -40,43 +54,22 @@
     }
     .unUseableBackdash{
         color:darkred;
+        opacity: 50%;
     }
     .exitAdmin{
-        button{
-            border:none;
-            background-color:$backDashBackgroundColor;
-            margin-left:20px;
-        }
-        p{
-            left:12px;
-            top:27px;
-        }
+        transform: translateX(3rem);
     }
 }
 
-.backDashHeader{
+.backTitleAndInfo{
     display:flex;
+    align-items: center;
     justify-content: center;
-    position: relative;
-
+    width:60%;
+    
     h2{
-        font-size:3rem;
-        margin:0;
-    }
-    .infoButton{
-        position:absolute;
-        top:-5%;
-        right:30%;
-
-        button{
-            background-color:$backDashBackgroundColor;
-            border:none;
-            font-size:3rem;
-        }
-        p{
-            top:23%;
-            left:-12%;
-        }
+        // 32-48px;
+        font-size: clamp(2rem, 1.4262rem + 1.3115vw, 3rem);
     }
 }
 
@@ -113,6 +106,12 @@
     background-color:green;
     color:white;
     font-size:1.25rem;
+}
+
+@media (min-width:700px) and (max-width:1420px){
+    .newItemButton{
+        width:150px;
+    }
 }
 
 .deleteItemButton{

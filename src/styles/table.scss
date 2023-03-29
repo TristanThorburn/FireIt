@@ -7,8 +7,8 @@
     display:flex;
 
     .tableMap{
-        height:100%;
-        width:100%;
+        width:1920px;
+        height:1000px;
         position:relative;
         margin:0;
         padding:0;
@@ -80,10 +80,9 @@
        @include backDashHeader;
        height:7.5vh;
     }
-    .backDashHeader{
-        margin:0 2rem;
-        .infoButton{
-            right:-37%;
+    button.infoButton{
+        p{
+            top:20px;
         }
     }
 }
@@ -198,8 +197,20 @@
 }
 
 
-@media (min-width:1000px) and (max-width:1423px){
+@media (min-width:700px) and (max-width:1419px){
     .updateMapNav{
+        height:25%;
+
+        button.enableDrag{
+            width:200px;
+        }
+        li{
+            width:33%;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            margin:1rem auto;
+        }
         p{
             margin:0;
         }
@@ -207,18 +218,11 @@
     .tableData{
         header{
             width:100%;
-        }
-        .backDashHeader{
-            margin:0 5rem;
-
-            .infoButton{
-                right:-28%
-            }
         }
     }
 }
 
-@media (min-width:1424px) and (max-width:1619px){
+@media (min-width:1420px) and (max-width:1619px){
     .updateMapNav{
         p{
             margin:0;
@@ -227,71 +231,77 @@
     .tableData{
         header{
             width:100%;
-        }
-        .backDashHeader{
-            margin:0 8rem;
         }
     }
 }
 
 
 // Table map scale meqia queries
-@media (min-width: 1000px) and (max-width: 1123px){
+@media (min-width:700px) and (max-width:999px){
+    .tableDisplay{
+        .tableMap{
+            scale:(0.4);
+            margin:-200px 0 0 -300px;
+        }
+    }
+}
+
+@media (min-width: 1000px) and (max-width: 1119px){
     .tableMap{
         scale:(0.59);
     }
     .tableDisplay{
         .tableMap{
-            margin:-200px 0 0 -225px;
+            margin:-150px 0 0 -275px;
         }
     }
 }
 
-@media (min-width: 1124px) and (max-width: 1223px){
+@media (min-width: 1120px) and (max-width: 1219px){
     .tableMap{
         scale:(0.65);
     }
     .tableDisplay{
         .tableMap{
-            margin:-175px 0 0 -225px;
+            margin:-125px 0 0 -225px;
         }
     }
 }
 
-@media (min-width: 1224px) and (max-width: 1323px){
+@media (min-width: 1220px) and (max-width: 1319px){
     .tableMap{
         scale:(0.7);
     }
     .tableDisplay{
         .tableMap{
-            margin:-150px 0 0 -200px;
+            margin:-100px 0 0 -200px;
         }
     }
 }
 
-@media (min-width: 1324px) and (max-width: 1423px){
+@media (min-width: 1320px) and (max-width: 1419px){
     .tableMap{
         scale:(0.75);
     }
     .tableDisplay{
         .tableMap{
-            margin:-125px 0 0 -175px;
+            margin:-75px 0 0 -175px;
         }
     }
 }
 
-@media (min-width: 1424px) and (max-width: 1523px){
+@media (min-width: 1420px) and (max-width: 1519px){
     .tableMap{
         scale:(0.8);
     }
     .tableDisplay{
         .tableMap{
-            margin:-75px 0 0 -150px;
+            margin:-25px 0 0 -150px;
         }
     }
 }
 
-@media (min-width: 1524px) and (max-width: 1720px){
+@media (min-width: 1520px) and (max-width: 1719px){
     .tableMap{
         scale:(0.9);
     }

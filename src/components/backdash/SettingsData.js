@@ -11,12 +11,12 @@ const SettingsData = () => {
 
     return(
         <section className='settingsData'>
-            <header className='backDashHeader'>
+            <header className='backTitleAndInfo'>
                 <h2>Settings Data</h2>
-                <div className='infoButton'>
-                    <button onClick={handleSettingsHelp}>🔥</button>
-                    <p onClick={handleSettingsHelp}>INFO</p>
-                </div>
+                <button onClickCapture={handleSettingsHelp} className='infoButton'>
+                    🔥
+                    <p>INFO</p>
+                </button>
             </header>
 
             {settingsHelp
@@ -28,7 +28,9 @@ const SettingsData = () => {
             }
 
             <p>Under Construction</p>
-            <Link to='/backend-dash'>Return to Backend Dashboard</Link>
+            <Link to='/backend-dash'>
+                <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
+            </Link>
         </section>
     )
 }
