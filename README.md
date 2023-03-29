@@ -12,4 +12,4 @@ This app is designed to mimic desktop touch screen terminals used in restaurants
 
 Primarily inspired by my 4 years working exclusively with Squirrel (https://www.squirrelsystems.com/)
 
-                                    Tristan Thorburn 2023
+                                        Tristan Thorburn 2023
