@@ -59,8 +59,10 @@ const TableMap = (props) => {
     const handleUpdateStyle = () => {
         if(selectedTable.id){
             setStylingTable(!stylingTable)
-        } else {
+        }
+        if(!selectedTable.id){
             setFireItAlert('TableMap no table')
+            console.log(selectedTable.id)
         }
     }
 
@@ -129,7 +131,7 @@ const TableMap = (props) => {
                 setFireItAlert('TableMap table in use')
             }
         }
-        setSelectedTable(e.target)
+        setSelectedTable(e.currentTarget)
     }
 
     return(
