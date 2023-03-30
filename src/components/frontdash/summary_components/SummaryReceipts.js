@@ -219,10 +219,12 @@ const SummaryReceipts = (props) => {
                                                 </th>
                                             </tr>
                                             <tr>
-                                                {receipt.data.status === 'settledReceipt'
-                                                    ? 'Payments Saved'
-                                                    : null
-                                                }
+                                                <td>
+                                                    {receipt.data.status === 'settledReceipt'
+                                                        ? 'Payments Saved'
+                                                        : null
+                                                    }
+                                                </td>
                                             </tr>
                                         </thead>
                                     </table>
