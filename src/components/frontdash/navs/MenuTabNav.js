@@ -55,8 +55,8 @@ const MenuTabNav = (props) => {
             <ul>
                 <li><button onClick={handleMgrOveride} className='workingButton'>
                     {managerContext
-                        ? 'CANCEL MGR'
-                        : 'MGR OVER'
+                        ? 'CANCEL MANAGER AUTH'
+                        : 'GET MANAGER AUTH'
                     }
                     </button>
                 </li>

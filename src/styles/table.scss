@@ -82,7 +82,8 @@
     }
     button.infoButton{
         p{
-            top:20px;
+            top:30%;
+            left:-20%;
         }
     }
 }
@@ -241,72 +242,60 @@
     .tableDisplay{
         .tableMap{
             scale:(0.4);
-            margin:-200px 0 0 -300px;
+            margin:-175px 0 0 -225px;
         }
     }
 }
 
 @media (min-width: 1000px) and (max-width: 1119px){
-    .tableMap{
-        scale:(0.59);
-    }
     .tableDisplay{
         .tableMap{
-            margin:-150px 0 0 -275px;
+            scale:(0.59);
+            margin:-150px 0 0 -225px;
         }
     }
 }
 
 @media (min-width: 1120px) and (max-width: 1219px){
-    .tableMap{
-        scale:(0.65);
-    }
     .tableDisplay{
         .tableMap{
-            margin:-125px 0 0 -225px;
+            scale:(0.65);
+            margin:-125px 0 0 -200px;
         }
     }
 }
 
 @media (min-width: 1220px) and (max-width: 1319px){
-    .tableMap{
-        scale:(0.7);
-    }
     .tableDisplay{
         .tableMap{
-            margin:-100px 0 0 -200px;
+            scale:(0.7);
+            margin:-100px 0 0 -175px;
         }
     }
 }
 
 @media (min-width: 1320px) and (max-width: 1419px){
-    .tableMap{
-        scale:(0.75);
-    }
     .tableDisplay{
         .tableMap{
-            margin:-75px 0 0 -175px;
+            scale:(0.75);
+            margin:-75px 0 0 -150px;
         }
     }
 }
 
 @media (min-width: 1420px) and (max-width: 1519px){
-    .tableMap{
-        scale:(0.8);
-    }
     .tableDisplay{
         .tableMap{
+            scale:(0.8);
             margin:-25px 0 0 -150px;
         }
     }
 }
 
 @media (min-width: 1520px) and (max-width: 1719px){
-    .tableMap{
-        scale:(0.9);
-    }
     .tableDisplay{
         .tableMap{
+            scale:(0.9);
             margin:0 0 0 -125px;
         }
     }

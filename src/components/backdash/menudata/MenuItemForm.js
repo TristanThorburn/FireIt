@@ -160,8 +160,11 @@ const MenuItemForm = (props) => {
                 printerRoute:cloneItem.printerRoute,
                 popUps:cloneItem.popUps,
             })
+            props.setSelectedItem('');
+            setCloneItem('')
+            document.getElementById('menuItemForm').reset(); 
         }
-    }, [collectionRef, cloneItem])
+    }, [collectionRef, cloneItem, props])
 
     const handleAddItem = (e) => {
         e.preventDefault()
@@ -196,13 +199,13 @@ const MenuItemForm = (props) => {
                 printerRoute:printerRoute,
                 popUps:popUps.popUpsList,
             });
-            props.setNewItem(false);
-            setPopUps({popUpsList:[]})
-            setPopUpsAction('')
-            setTaxGroup('')
-            setPrinterRoute('')
-            document.getElementById('menuItemForm').reset();
         }
+        props.setNewItem(false);
+        setPopUps({popUpsList:[]})
+        setPopUpsAction('')
+        setTaxGroup('')
+        setPrinterRoute('')
+        document.getElementById('menuItemForm').reset();
     }
 
     const handleUpdateItem = (e) => {
@@ -289,14 +292,14 @@ const MenuItemForm = (props) => {
                 if(itemToClone.exists()){
                     setCloneItem({
                         name : cloneData.name + '-CLONE', 
-                            itemStock : cloneData.itemStock,
-                            screenName : cloneData.screenName,
-                            chitName : cloneData.chitName,
-                            price : cloneData.price,
-                            type : cloneData.type,
-                            taxGroup : cloneData.taxGroup,
-                            printerRoute : cloneData.printerRoute,
-                            popUps : cloneData.popUps,
+                        itemStock : cloneData.itemStock,
+                        screenName : '',
+                        chitName : '',
+                        price : cloneData.price,
+                        type : cloneData.type,
+                        taxGroup : cloneData.taxGroup,
+                        printerRoute : cloneData.printerRoute,
+                        popUps : cloneData.popUps,
                     })
                 }
             } catch (error) {
@@ -435,7 +438,11 @@ const MenuItemForm = (props) => {
                         <div className='taxGroup'>
                             <label 
                                 htmlFor='taxGroup'
-                                >Current Group:&nbsp;{itemData?.taxGroup}
+                                >
+                                {itemData.taxGroup 
+                                    ? `Current Tax: ${itemData?.taxGroup}`
+                                    : 'Tax Group?'
+                                }
                             </label>
                             <br />
                             <select
@@ -443,6 +450,7 @@ const MenuItemForm = (props) => {
                                 name='taxGroup'
                                 value={taxGroup}
                                 onChange={handleTaxGroup}
+                                defaultValue=''
                                 >
                                 {taxOptions.map(option => (
                                     <option key={option.value} value={option.value}>
@@ -455,7 +463,11 @@ const MenuItemForm = (props) => {
                         <div className='printerRoute'>
                             <label 
                                 htmlFor='printerRoute'
-                                >Current Route:&nbsp;{itemData?.printerRoute}
+                                >
+                                {itemData.printerRoute 
+                                    ? `Current Printer Route: ${itemData?.printerRoute}`
+                                    : 'Printer Route?'
+                                }
                             </label>
                             <br />
                             <select
@@ -463,6 +475,7 @@ const MenuItemForm = (props) => {
                                 name='printerRoute'
                                 value={printerRoute}
                                 onChange={handlePrinterRoute}
+                                defaultValue=''
                                 >
                                 {printOptions.map(option => (
                                     <option key={option.value} value={option.value}>

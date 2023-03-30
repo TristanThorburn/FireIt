@@ -46,8 +46,8 @@ const TableTabNav = (props) => {
             <ul>
             <li><button onClick={handleMgrOveride} className='workingButton'>
                     {managerContext
-                        ? 'CANCEL MGR'
-                        : 'MGR OVER'
+                        ? 'CANCEL MANAGER AUTH'
+                        : 'GET MANAGER AUTH'
                     }
                     </button>
                 </li>
@@ -57,7 +57,7 @@ const TableTabNav = (props) => {
                     <button 
                         onClick={handleWelcome}
                         className='workingButton'
-                        >Welcome</button>
+                        >WELCOME</button>
                 </li>
                 <li>
                     <button onClickCapture={handleHelp} className='infoButton'>

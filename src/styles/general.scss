@@ -37,17 +37,11 @@ button.infoButton{
         background:black;
         border-radius:10px;
         font-size:1rem;
-        top:26px;
-        left:-17px;
+        top:30%;
+        left:-20%;
         width:120px;
         text-align: center;
         font-weight: bold;
-    }
-}
-
-@media (min-width:700px) and (max-width:1420px){
-    button.infoButton{
-        scale:(0.8)
     }
 }
 
