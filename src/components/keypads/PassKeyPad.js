@@ -32,7 +32,7 @@ const PassPad = (props) => {
 
     const handleClear = () => {
         pinCombo = [];
-        setError('Combo Cleared')
+        setError('Clearing Combo')
         setTimeout(() => {
             setError('')
         }, 1000)

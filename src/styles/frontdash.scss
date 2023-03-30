@@ -18,6 +18,16 @@
     }
 }
 
+@media (min-width:700px) and (max-width:1200px){
+    .summaryTab, .tableTab, .menuTab, .checkTab, .paymentTab{
+        button.infoButton{
+            p{
+                width:75px;
+            }
+        }
+    }
+}
+
 .menuTab, .checkTab, .summaryTabDisplayContainer, .paymentTab{
     display:flex;
 }
@@ -39,6 +49,9 @@
         color:white;
         // 20-40px
         font-size: clamp(1.25rem, 0.5328rem + 1.6393vw, 2.5rem);
+    }
+    .activeTopNav{
+        text-decoration: underline;
     }
 }
 

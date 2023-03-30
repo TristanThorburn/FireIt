@@ -60,7 +60,7 @@ const MenuTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button onClick={handleSendOrder} className='workingButton'>SEND ORDER</button></li>
+                <li><button onClick={handleSendOrder} className='workingButton'>"SEND" ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>

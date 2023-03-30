@@ -23,7 +23,7 @@ const AlphaNumericPad = (props) => {
 
     const handleClear = () => {
         padCombo = [];
-        setError('Combo Cleared')
+        setError('Clearing Input')
         setTimeout(() => {
             setError('')
         }, 1000)

@@ -54,7 +54,7 @@ const PaymentTabNav = (props) => {
                     <button 
                         onClick={handleFinalizePayments} 
                         className='workingButton'
-                        >FINISH SETTLE
+                        >Submit settled payments
                     </button>
                 </li>
                 <li><button className='nonWorkingButton'>DEMO</button></li>

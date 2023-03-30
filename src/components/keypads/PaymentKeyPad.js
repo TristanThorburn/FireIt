@@ -75,10 +75,8 @@ const PaymentKeyPad = (props) => {
             setError('')
         }
         if(remainingTotal === 0){
-            setTimeout(() => {
-                setSubmitPayments(true)
-                setSuccess('Submit payments?')
-            }, 250)
+            setSubmitPayments(true)
+            setSuccess('Save payment(s) to Receipt?')
         }
         if(remainingTotal < 0){
             setError('Payments total more than receipt cost')
@@ -103,6 +101,10 @@ const PaymentKeyPad = (props) => {
 
     const handleClear = () => {
         padCombo = [];
+        setError('Clearing Price Input')
+        setTimeout(() => {
+            setError('')
+        }, 1000)
     }
 
     const handleSubmit = () => {
@@ -218,10 +220,10 @@ const PaymentKeyPad = (props) => {
                 </div>
                 
                 <div className='paymentsStatus'>
-                    {success
-                        ? <div className='padSuccess'>{success}</div>
-                        : error
-                            ? <div className='padError'>{error}</div>
+                    {error
+                        ? <div className='padError'>{error}</div>
+                        : success
+                            ? <div className='padSuccess'>{success}</div>
                             : null
                     }
                 </div>

@@ -117,7 +117,7 @@ const FrontUserGuide = (props) => {
                 {props.tableTabActive
                     ? <ul>
                         <li>
-                            MGR OVER
+                            GET MANAGER AUTH
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
@@ -158,12 +158,12 @@ const FrontUserGuide = (props) => {
                 {props.menuTabActive
                     ? <ul>
                         <li>
-                            MGR OVER
+                            GET MANAGER AUTH
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            SEND ORDER
+                            "SEND" ORDER
                             <br />
                             - Store the pending orders to firebase, simulating sending orders to the kitchen or bar 
                         </li>
@@ -209,12 +209,12 @@ const FrontUserGuide = (props) => {
                 {props.checkTabActive
                     ? <ul>
                         <li>
-                            MGR OVER
+                            GET MANAGER AUTH
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            PRINT ALL RECEIPT
+                            "PRINT" ALL RECEIPT
                             <br />
                             - Confirm the seat seperations and 'print' the checks, this stores the data to firebase. 
                         </li>
@@ -270,12 +270,12 @@ const FrontUserGuide = (props) => {
                 {props.paymentTabActive
                     ? <ul>
                         <li>
-                            MGR OVER
+                            GET MANAGER AUTH
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>
                         <li>
-                            FINISH SETTLE
+                            SUBMIT SETTLED PAYMENTS
                             <br />
                             Completes 'payments', cleaning up the orders and receipts of settled payments and storing to payment database. 
                         </li>
@@ -311,7 +311,7 @@ const FrontUserGuide = (props) => {
                 {props.summaryTabActive
                     ? <ul>
                         <li>
-                            MGR OVER
+                            GET MANAGER AUTH
                             <br />
                             - Opens the Keypad, enter the manager combo for additional functionality, becomes CANCEL MGR to remove access level. Demo Code available on Key Pad. Currently allows edits of items on checks in the Menu Tab. In the inspiration GUI managers had to remember to cancel their access level when finished. 
                         </li>

@@ -1,17 +1,9 @@
-import { useState } from 'react';
-import AdminPad from '../../keypads/AdminPad';
+import { useEffect } from "react";
 
 const FrontDashNavTabs = (props) => {
-    const [ adminPad, setAdminPad ] = useState(false)
-
-        const toggleAdmin = () => {
-        setAdminPad(!adminPad);
-    }
-
-    if(adminPad){
-        document.body.classList.add('adminOpen')
-    } else {
-        document.body.classList.remove('adminOpen')
+    
+    const toggleAdmin = () => {
+        props.setAdminPad(true);
     }
 
     const handleTable = () => {
@@ -54,20 +46,62 @@ const FrontDashNavTabs = (props) => {
         props.summaryTab(true);
     }
 
+    // Highlight Tab
+    useEffect(() => {
+        const topNav = document.querySelector('.frontDashTopNav')
+        const summary = topNav.querySelector('#summaryTab')
+        const table = topNav.querySelector('#tableTab')
+        const menu = topNav.querySelector('#menuTab')
+        const check = topNav.querySelector('#checkTab')
+        const payment = topNav.querySelector('#paymentTab')
+        
+        if(props.summaryTabActive){
+            summary.classList.add('activeTopNav')
+            table.classList.remove('activeTopNav')
+            menu.classList.remove('activeTopNav')
+            check.classList.remove('activeTopNav')
+            payment.classList.remove('activeTopNav')
+        }
+        if(props.tableTabActive){
+            summary.classList.remove('activeTopNav')
+            table.classList.add('activeTopNav')
+            menu.classList.remove('activeTopNav')
+            check.classList.remove('activeTopNav')
+            payment.classList.remove('activeTopNav')
+        }
+        if(props.menuTabActive){
+            summary.classList.remove('activeTopNav')
+            table.classList.remove('activeTopNav')
+            menu.classList.add('activeTopNav')
+            check.classList.remove('activeTopNav')
+            payment.classList.remove('activeTopNav')
+        }
+        if(props.checkTabActive){
+            summary.classList.remove('activeTopNav')
+            table.classList.remove('activeTopNav')
+            menu.classList.remove('activeTopNav')
+            check.classList.add('activeTopNav')
+            payment.classList.remove('activeTopNav')
+        }
+        if(props.paymentTabActive){
+            summary.classList.remove('activeTopNav')
+            table.classList.remove('activeTopNav')
+            menu.classList.remove('activeTopNav')
+            check.classList.remove('activeTopNav')
+            payment.classList.add('activeTopNav')
+        }
+    },[props.summaryTabActive, props.tableTabActive, props.menuTabActive, props.checkTabActive, props.paymentTabActive])
+
     return(
         <div className='frontDashTopNav'>
             <ul>
-                <li onClick={handleSummary}>Summary</li>
-                <li onClick={handleTable}>TableMap</li>
-                <li onClick={handleMenu}>Menu</li>
-                <li onClick={handleCheck}>Check</li>
-                <li onClick={handlePayment}>Payment</li>
+                <li onClick={handleSummary} id='summaryTab'>Summary</li>
+                <li onClick={handleTable} id='tableTab'>TableMap</li>
+                <li onClick={handleMenu} id='menuTab'>Menu</li>
+                <li onClick={handleCheck} id='checkTab'>Check</li>
+                <li onClick={handlePayment} id='paymentTab'>Payment</li>
                 <li onClick={toggleAdmin}>Admin</li>
             </ul>
-            {adminPad
-            ? <AdminPad closeAdmin={setAdminPad}/> 
-            : null
-            }
         </div>
     )
 }
