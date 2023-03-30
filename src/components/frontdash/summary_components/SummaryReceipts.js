@@ -11,6 +11,7 @@ const SummaryReceipts = (props) => {
     const [ startCleanUp, setStartCleanUp] = useState(false);
     const [ cleanUpSeatList, setCleanUpSeatList ] = useState([]);
     const [ cleanUpReceiptList, setCleanUpReceiptList ] = useState([])
+    const { setLoading } = props
 
     const getCurrentDate = (separator='') => {
         let newDate = new Date()
@@ -70,6 +71,7 @@ const SummaryReceipts = (props) => {
     // Store payment data from settle receipts when finalize payments selected.
     useEffect(() => {
         if(props.finalizePayments === true){
+            setLoading(true)
             const paymentsToComplete = document.querySelectorAll('[data-status=settledReceipt]')
             let seatsToCleanUp = [];
             let receiptsToCleanUp = [];
@@ -104,7 +106,7 @@ const SummaryReceipts = (props) => {
             setCleanUpSeatList(seatsToCleanUp)
             setCleanUpReceiptList(receiptsToCleanUp)
         }
-    }, [props, props.finalizePayments, contextTable, employeeContext.employeeNumber, employeeContext.firstName,])
+    }, [props, props.finalizePayments, contextTable, employeeContext.employeeNumber, employeeContext.firstName, setLoading])
 
     // Clean up settled seats from order and remove settled receipts
     useEffect(() => {
@@ -128,7 +130,6 @@ const SummaryReceipts = (props) => {
                     }
                     cleaning()
                 })
-                setStartCleanUp(false)
                 setCleanUpReceiptList('')
                 setCleanUpSeatList('')
                 const resetTable = async () => {
@@ -145,10 +146,12 @@ const SummaryReceipts = (props) => {
                     }
                 }
                 resetTable()
+                setStartCleanUp(false)
             }
             cleanUp()
+            setLoading(false)
         }
-    }, [cleanUpReceiptList, cleanUpSeatList, contextTable, employeeContext.employeeNumber, startCleanUp, setContextTable])
+    }, [cleanUpReceiptList, cleanUpSeatList, contextTable, employeeContext.employeeNumber, startCleanUp, setContextTable, setLoading])
 
     const handleSettleReceiptCapture = (e) => {
         const targetReceipt = e.currentTarget
@@ -197,34 +200,46 @@ const SummaryReceipts = (props) => {
                                                 <th>Receipt: {receipt.data.receiptNumber}</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Seats List:</td>
-                                            </tr>
-                                            {receipt.data.seatsList.map(seat => {
-                                                return(
-                                                    <tr
-                                                        key={seat.seat}
-                                                        data-receiptseat={seat.seat}
-                                                        >
-                                                        <td>Seat {seat.seat}</td>
-                                                    </tr>
-                                                )
-                                            })}
-                                        </tbody>
+                                        {receipt.data.status === 'settledReceipt'
+                                            ? <tbody>
+                                                <tr>
+                                                    <td>Payment(s):</td>
+                                                </tr>
+                                                {receipt.data.paymentData.payments.map((payment, i) => {
+                                                    return(
+                                                        <tr
+                                                            key={i}
+                                                            className='receiptSavedPayments'
+                                                            >
+                                                            <td>{payment.method}</td>
+                                                            <td>${payment.amount}</td>
+                                                            <td>Tip:</td>
+                                                            <td>${payment.tip}</td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                            : <tbody>
+                                                <tr>
+                                                    <td>Seats List:</td>
+                                                </tr>
+                                                {receipt.data.seatsList.map(seat => {
+                                                    return(
+                                                        <tr
+                                                            key={seat.seat}
+                                                            data-receiptseat={seat.seat}
+                                                            >
+                                                            <td>Seat {seat.seat}</td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                        }
                                         <thead>
                                             <tr>
                                                 <th>
                                                     Total: ${receipt.data.receiptTotalCost}
                                                 </th>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {receipt.data.status === 'settledReceipt'
-                                                        ? 'Payments Saved'
-                                                        : null
-                                                    }
-                                                </td>
                                             </tr>
                                         </thead>
                                     </table>

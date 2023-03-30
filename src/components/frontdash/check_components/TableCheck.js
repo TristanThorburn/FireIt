@@ -1,10 +1,12 @@
 import { db } from '../../../firebase';
 import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion, getDocs } from 'firebase/firestore';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTable } from '../../../contexts/TableContext';
 import { useState, useEffect, useCallback } from 'react';
 
 const TableCheck = (props) => {
     const { managerContext, employeeContext } = useAuth();
+    const { contextTable } = useTable();
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
     const [ checkTotal, setCheckTotal ] = useState()
@@ -362,7 +364,7 @@ const TableCheck = (props) => {
 
     return(
         <div className='activeCheck'>
-            {props.tableData.name !== undefined
+            {contextTable !== ''
                 ? <div>
                     <h2>{props.tableData.name}</h2>
                     
