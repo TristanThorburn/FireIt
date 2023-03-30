@@ -15,7 +15,7 @@ const EmployeeData = () => {
 
     // initial data population on screen
     useEffect(() => {
-        const q = query(employeeCollectionRef, orderBy('employeeNumber', 'asc'))
+        const q = query(employeeCollectionRef, orderBy('orderBy', 'asc'))
         const unsubscribe = onSnapshot(q, snapshot => {
             setEmployeeDisplayData(snapshot.docs.map(doc => ({
                 id: doc.id,
