@@ -45,9 +45,9 @@ const ServerKeyPad = (props) => {
     const handleClear = () => {
         if(props.seatKeyPadActive){
             props.setSelectedSeat('')
-            setError('Seat Number Cleared')
+            setError('Clearing Seat Number')
         } else {
-            setError('Combo Cleared')
+            setError('Clearing Combo')
         }
         setTimeout(() => {
             setError('')
@@ -55,9 +55,9 @@ const ServerKeyPad = (props) => {
 
         if(props.managerKeyPadActive){
             numberCombo = [];
-            setError('Manager Pin Cleared')
+            setError('Clearing Manager PIN')
         } else {
-            setError('Combo Cleared')
+            setError('Clearing Combo')
         }
         setTimeout(() => {
             setError('')
@@ -65,9 +65,9 @@ const ServerKeyPad = (props) => {
 
         if(props.selectReceiptTarget){
             props.setTargetReceiptNumber('')
-            setError('Receipt Number Cleared')
+            setError('Clearing Receipt Number')
         } else {
-            setError('Combo Cleared')
+            setError('Clearing Combo')
         }
         setTimeout(() => {
             setError('')

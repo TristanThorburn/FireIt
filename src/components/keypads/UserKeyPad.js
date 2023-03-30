@@ -24,7 +24,7 @@ const UserPad = (props) => {
 
     const handleClear = () => {
         userCombo = [];
-        setError('Combo Cleared')
+        setError('Clearing Combo')
         setSubmitable(false);
         setTimeout(() => {
             setError('')

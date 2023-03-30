@@ -142,7 +142,7 @@ const FireItAlert = (props) => {
 {/* PAYMENT ERRORS */}
                     {props.fireItAlert === 'PaymentTab undo settled payment'
                         ? <div className='padError'>
-                            <p>Would you like to undo this payment?</p>
+                            <p>Remove receipts' saved payment info?</p>
                             <div className='fireItAlertConfirmContainer'>
                                 <button 
                                     onClick={handleConfirmAlert} 

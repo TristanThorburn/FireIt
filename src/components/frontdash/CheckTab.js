@@ -280,6 +280,7 @@ const CheckTab = (props) => {
                     />
 
             <section className='checkTabDisplay'>
+                <h2>ADD RECEIPTs, Click on Origin Checks' Seats to Transfer to Receipts, then Print.</h2>
                 <div className='seperatedChecksContainer'>
                     {receiptData?.map((receipt, i) => {
                         return(

@@ -218,6 +218,12 @@ const SummaryReceipts = (props) => {
                                                     Total: ${receipt.data.receiptTotalCost}
                                                 </th>
                                             </tr>
+                                            <tr>
+                                                {receipt.data.status === 'settledReceipt'
+                                                    ? 'Payments Saved'
+                                                    : null
+                                                }
+                                            </tr>
                                         </thead>
                                     </table>
                                 </button>

@@ -21,7 +21,7 @@ const AdminPad = (props) => {
 
     const handleClear = () => {
         pinCombo = [];
-        setError('Combo Cleared')
+        setError('Clearing Combo')
         setTimeout(() => {
             setError('')
         }, 1000)
@@ -43,7 +43,7 @@ const AdminPad = (props) => {
     }
 
     const closeAdmin = () => {
-        props.closeAdmin(!closeAdmin)
+        props.setAdminPad(false)
     }
 
     return(

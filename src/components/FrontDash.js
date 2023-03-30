@@ -15,6 +15,7 @@ import CheckTab from './frontdash/CheckTab';
 import PaymentTab from './frontdash/PaymentTab';
 import FireItAlert from './help/FireItAlert';
 import MessageOfTheDay from './help/MessageOfTheDay';
+import AdminPad from './keypads/AdminPad';
  
 const FrontDash = () => {
     const { employeeContext } = useAuth();
@@ -24,6 +25,7 @@ const FrontDash = () => {
     const[ menuTabActive, setMenuTabActive ] = useState(false);
     const[ checkTabActive, setCheckTabActive ] = useState(false);
     const[ paymentTabActive, setPaymentTabActive ] = useState(false);
+    const [ adminPad, setAdminPad ] = useState(false)
     const [ helpModal, setHelpModal ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('');
     const [ activeTableData, setActiveTableData ] = useState({});
@@ -76,11 +78,17 @@ const FrontDash = () => {
     return(
         <div className='frontDash'>
             <FrontDashNavTabs 
+                tableTabActive={tableTabActive}
                 tableTab={setTableTabActive} 
+                menuTabActive={menuTabActive}
                 menuTab={setMenuTabActive} 
-                checkTab={setCheckTabActive} 
+                checkTabActive={checkTabActive}
+                checkTab={setCheckTabActive}
+                paymentTabActive={paymentTabActive}
                 paymentTab={setPaymentTabActive}
+                summaryTabActive={summaryTabActive}
                 summaryTab={setSummaryTabActive}
+                setAdminPad={setAdminPad}
                 />
 
             {messageOfTheDay
@@ -112,6 +120,14 @@ const FrontDash = () => {
                     />
                 : null
             }
+
+            {adminPad
+                ? <AdminPad 
+                    setAdminPad={setAdminPad}
+                    />
+                : null
+            }
+            
             
             {summaryTabActive
                 ? <SummaryTab

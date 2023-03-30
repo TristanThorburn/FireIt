@@ -101,7 +101,7 @@ const CheckTabNav = (props) => {
                     onClick={handlePrintReceipts} 
                     id='printReceipts' 
                     className='workingButton'
-                    >PRINT ALL RECEIPT</button></li>
+                    >"PRINT" ALL RECEIPTS</button></li>
                 <li>
                     <button
                         onClick={handleAddSeparate}
