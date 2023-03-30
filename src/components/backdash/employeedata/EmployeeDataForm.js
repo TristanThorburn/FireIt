@@ -65,6 +65,7 @@ const EmployeeDataForm = (props) => {
                 lastDay:lastDayRef.current.value,
                 notes:notesRef.current.value,
                 firstLogin:'true',
+                orderBy:Number(employeeNumberRef.current.value)
             });
             props.setNewEmployee(false);
             setAddEmployee(false)
@@ -265,6 +266,15 @@ const EmployeeDataForm = (props) => {
         e.preventDefault()
     }
 
+    const handleUserCredCheck = (e) => {
+        const regex = /[a-zA-Z]/
+        const string = e.currentTarget.value
+        const filteredArray = Array.from(string).filter(char => regex.test(char))
+        if(filteredArray.length > 0){
+            props.setFireItAlert('EmployeeDataForm user credentials require numbers')
+        }
+    } 
+
     return(
         <section className='employeeDetails'>
             <form className='employeeForm' id='employeeForm' onSubmit={handleSubmit}>
@@ -291,6 +301,7 @@ const EmployeeDataForm = (props) => {
                                 maxLength='4'
                                 ref={userIDRef}
                                 placeholder={employeeData?.userID}
+                                onChange={handleUserCredCheck}
                                 />
                         </div>
                     {/* User PW */}
@@ -303,6 +314,7 @@ const EmployeeDataForm = (props) => {
                                 maxLength='4'
                                 ref={userPWRef}
                                 placeholder={employeeData?.userPW}
+                                onChange={handleUserCredCheck}
                                 />
                         </div>
                     </div>
@@ -511,7 +523,7 @@ const EmployeeDataForm = (props) => {
                         pw={employeeData?.userPW}
                         setFirebaseAuthWarning={setFirebaseAuthWarning}
                         />
-                    : <h3>Add / Update employee with 4 digit User ID & PW to begin activation.</h3>
+                    : <h3>Add / Update employee with 4 digit numberical User ID & PW to begin activation.</h3>
             }
         </section>
         

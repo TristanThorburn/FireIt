@@ -79,6 +79,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'EmployeeDataForm user credentials require numbers'
+                        ? <div className='padError'>Employee User ID and Password must be numerical in order to log in.
+                        </div>
+                        : null
+                    }
 {/* TABLE ERRORS */}
                     {props.fireItAlert === 'TableMap no table'
                         ? <div className='padError'>Please select the table you wish to edit.
