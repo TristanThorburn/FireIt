@@ -74,7 +74,7 @@ const MixedDrinksScreen = (props) => {
     // GetDoc for selected item
     useEffect(() => {
         const getItem = async () => {
-            if(selectedItem !== '' && collectionRef === 'cocktail'){
+            if(selectedItem !== '' && collectionRef === 'cocktails'){
                 const docRef = doc(cocktailCollectionRef, selectedItem)
                 const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
@@ -83,7 +83,7 @@ const MixedDrinksScreen = (props) => {
                     getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
                 }
             }
-            if(selectedItem !== '' && collectionRef === 'shot'){
+            if(selectedItem !== '' && collectionRef === 'shots'){
                 const docRef = doc(shotsCollectionRef, selectedItem)
                 const itemDataRequest = await getDocFromCache(docRef)
                 if(itemDataRequest.data()){
