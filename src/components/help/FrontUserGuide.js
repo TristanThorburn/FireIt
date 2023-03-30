@@ -73,12 +73,12 @@ const FrontUserGuide = (props) => {
                         <li>Displays the receipts if they have been organized in the Check Tab.
                         </li>
                         <li>Click on a receipt to input the payment(s) and tip(s) for each receipt, these can consist of multiple fraction payments towards the receipt.</li>
-                        <li>Once the receipt is settled it will change color to green, clicking the receipt again will allow you to undo the settlement and update.</li>
-                        <li>FINISH SETTLE to complete payment process and store payment data. This will clean up any of the receipts as well as the seats they contain from the check. If there are no seats left, server ownership of the table will be removed so that anyone else can use it.</li>
+                        <li>Once the receipt is saved it will change color to green while also showing payments currently saved waiting to be submitted. Clicking the receipt again will allow you to undo the settlement and update.</li>
+                        <li>SUBMIT SETTLED PAYMENTS to complete payment process and store payment data. This will clean up any of the receipts as well as the seats they contain from the check. If there are no seats left, server ownership of the table will be removed so that anyone else can use it.</li>
                         <li>~Partially settling checks and then attemping to order more and re-separate on this check currently causes errors due the the sequence of receipts being out of order~</li>
                         <li>Stretch Goals: 
                             <br />
-                            Display exactly what payments have been applied to the receipt, so the user can more easily confirm if they need to remove the pending payment.
+                            .
                         </li>
                     </ul>
                     : null

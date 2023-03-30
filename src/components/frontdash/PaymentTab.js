@@ -7,6 +7,7 @@ import SummaryTables from '../frontdash/summary_components/SummaryTables';
 import TableCheck from "./check_components/TableCheck";
 import SummaryReceipts from "./summary_components/SummaryReceipts";
 import PaymentKeyPad from "../keypads/PaymentKeyPad";
+import FireItLoading from '../help/FireItLoading';
 
 const PaymentTab = (props) => {
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
@@ -18,6 +19,7 @@ const PaymentTab = (props) => {
     const [ finalizePayments, setFinalizePayments ] = useState(false);
     const [ undoSettledPayment, setUndoSettledPayment ] = useState(false);
     const [ undoTargetReceipt, setUndoTargetReceipt ] = useState('')
+    const [ loading, setLoading ] = useState(false);
 
     return(
         <div className='paymentTab'>
@@ -44,6 +46,11 @@ const PaymentTab = (props) => {
                     setFireItAlert={setFireItAlert}
                     setFullPaymentData={setFullPaymentData}
                     />
+                : null
+            }
+
+            {loading
+                ? <FireItLoading />
                 : null
             }
             {/* KEEP LAST FOR PRIORITY */}
@@ -77,6 +84,7 @@ const PaymentTab = (props) => {
                 undoSettledPayment={undoSettledPayment}
                 undoTargetReceipt={undoTargetReceipt}
                 setUndoTargetReceipt={setUndoTargetReceipt}
+                setLoading={setLoading}
                 />
 
             <PaymentTabNav
