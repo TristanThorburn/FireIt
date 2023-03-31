@@ -77,6 +77,7 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.classList.add('pendingDeleteReminder')
                 nameContainer.addEventListener('click', handlePendingOrderDelete)
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingOrderDelete)
@@ -104,6 +105,7 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.classList.add('pendingDeleteReminder')
                 nameContainer.addEventListener('click', handlePendingOrderDelete)
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingOrderDelete)
@@ -132,6 +134,7 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.classList.add('pendingDeleteReminder')
                 nameContainer.addEventListener('click', handlePendingOrderDelete)
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingOrderDelete)
@@ -173,6 +176,7 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.classList.add('pendingDeleteReminder')
                 nameContainer.addEventListener('click', handlePendingSeatDelete)
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingSeatDelete)
@@ -218,6 +222,7 @@ const TableCheck = (props) => {
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
+                nameContainer.classList.add('pendingDeleteReminder')
                 nameContainer.addEventListener('click', handlePendingSeatDelete)
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingSeatDelete)
@@ -398,16 +403,19 @@ const TableCheck = (props) => {
                                             data-originalcost={order.originalCost}
                                             data-qsa={order.qsa}
                                             data-time={order.time}>
-                                                {props.menuTabActive 
-                                                    ? <td>🔄</td>
-                                                    : null
+                                                {props.menuTabActive
+                                                    ? <td className='itemModifyReminder'>
+                                                        {order.item}
+                                                    </td>
+                                                    : <td>
+                                                        {order.item}
+                                                    </td>
                                                 }
-                                                <td>
-                                                    {order.item}</td>
                                                 <td
                                                     data-cost={order.cost}
                                                     className='checkItemCost'
-                                                    >{order.cost}</td>
+                                                    >{order.cost}
+                                                </td>
                                         </tr>    
                                     )
                                 })

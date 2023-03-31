@@ -70,6 +70,14 @@
     cursor: pointer;
 }
 
+.pendingDeleteReminder::before{
+    content:'❌'
+}
+
+.itemModifyReminder::before{
+    content:'🔄'
+}
+
 .checkTabDisplay{
     width:80%;
     height:90%;
