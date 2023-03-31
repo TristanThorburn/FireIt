@@ -304,7 +304,7 @@ const CheckTab = (props) => {
                                                 <tr>
                                                     <th
                                                         colSpan={2}
-                                                        >Seat: {seat.seat}
+                                                        >❌ Seat: {seat.seat}
                                                     </th>
                                                 </tr>
                                             </thead>

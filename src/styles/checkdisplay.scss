@@ -15,6 +15,9 @@
         display:flex;
         justify-content: space-between;
     }
+    .seatItemList{
+        cursor: pointer;
+    }
 }
 
 .activeCheck{

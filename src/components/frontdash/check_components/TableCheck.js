@@ -398,7 +398,9 @@ const TableCheck = (props) => {
                                             data-originalcost={order.originalCost}
                                             data-qsa={order.qsa}
                                             data-time={order.time}>
-                                                <td>{order.item}</td>
+                                                <td>
+                                                    {props.menuTabActive ? '🔄' : null}
+                                                    {order.item}</td>
                                                 <td
                                                     data-cost={order.cost}
                                                     className='checkItemCost'
