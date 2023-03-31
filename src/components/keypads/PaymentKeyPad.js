@@ -205,6 +205,7 @@ const PaymentKeyPad = (props) => {
                                     data-paymentamount={payment.amount}
                                     data-tipamount={payment.tip}
                                     >
+                                    <p className='deletePayment'>❌</p>
                                     <p className='paymentType'>{payment.method}</p>
                                     <p className='paymentAmount'>${payment.amount}</p>
                                     <p className='tipAmount'>Tip: ${payment.tip}</p>

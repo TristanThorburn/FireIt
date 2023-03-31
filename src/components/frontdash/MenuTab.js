@@ -37,7 +37,7 @@ const MenuTab = (props) => {
         const doesSeatExist = async () => {
             if(selectedSeat === ''){
                 const docRef = 
-                    doc(db, 'checks', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, 'seat1')
+                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, 'seat1')
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -47,7 +47,7 @@ const MenuTab = (props) => {
             }
             if(selectedSeat !== ''){
                 const docRef = 
-                    doc(db, 'checks', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, `seat${selectedSeat}`)
+                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, `seat${selectedSeat}`)
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)

@@ -147,9 +147,9 @@ const SummaryReceipts = (props) => {
                 }
                 resetTable()
                 setStartCleanUp(false)
+                setLoading(false)
             }
             cleanUp()
-            setLoading(false)
         }
     }, [cleanUpReceiptList, cleanUpSeatList, contextTable, employeeContext.employeeNumber, startCleanUp, setContextTable, setLoading])
 
