@@ -73,7 +73,7 @@ const TableCheck = (props) => {
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
                 const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
-                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
+                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -100,7 +100,7 @@ const TableCheck = (props) => {
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
                 const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
-                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
+                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -128,7 +128,7 @@ const TableCheck = (props) => {
             && props.selectedSeat === ''
             && props.currentOrderData !== ''){
                 const seatToAppend = document.getElementById('seat1')
-                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
+                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -169,7 +169,7 @@ const TableCheck = (props) => {
                 const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
                 newTableHeadRow.appendChild(newTableHeader)
-                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
+                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -214,7 +214,7 @@ const TableCheck = (props) => {
                 const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
                 newTableHeadRow.appendChild(newTableHeader)
-                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
+                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -398,8 +398,11 @@ const TableCheck = (props) => {
                                             data-originalcost={order.originalCost}
                                             data-qsa={order.qsa}
                                             data-time={order.time}>
+                                                {props.menuTabActive 
+                                                    ? <td>🔄</td>
+                                                    : null
+                                                }
                                                 <td>
-                                                    {props.menuTabActive ? '🔄' : null}
                                                     {order.item}</td>
                                                 <td
                                                     data-cost={order.cost}

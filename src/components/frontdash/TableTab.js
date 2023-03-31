@@ -20,7 +20,9 @@ const TableTab = (props) => {
                  tableTabActive={props.tableTabActive}
                  setTableTabActive={props.setTableTabActive}
                  setMenuTabActive={props.setMenuTabActive}
+                 frontTableMapData={props.frontTableMapData}
                  />
+
             <TableTabNav 
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setHelpModal={props.setHelpModal}
