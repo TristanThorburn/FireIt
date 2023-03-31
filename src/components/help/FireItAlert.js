@@ -44,7 +44,7 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'TableCheck edit sent'
-                        ? <div className='padError'>Manager authorization is required to edit items that have been sent to the kitchen or bar.
+                        ? <div className='padError'>Manager authorization is required to edit items that have been 'sent' to the kitchen or bar. Click GET MANAGER AUTH, bottom left.
                         </div>
                         : null
                     }
