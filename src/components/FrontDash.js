@@ -16,10 +16,12 @@ import PaymentTab from './frontdash/PaymentTab';
 import FireItAlert from './help/FireItAlert';
 import MessageOfTheDay from './help/MessageOfTheDay';
 import AdminPad from './keypads/AdminPad';
+import FireItLoading from './help/FireItLoading';
  
 const FrontDash = () => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
+    const [ loading, setLoading ] = useState(false);
     const[ summaryTabActive, setSummaryTabActive ] = useState(false);
     const[ tableTabActive, setTableTabActive ] = useState(true);
     const[ menuTabActive, setMenuTabActive ] = useState(false);
@@ -90,6 +92,11 @@ const FrontDash = () => {
                 summaryTab={setSummaryTabActive}
                 setAdminPad={setAdminPad}
                 />
+            
+            {loading
+                ? <FireItLoading />
+                : null
+            }
 
             {messageOfTheDay
                 ? <MessageOfTheDay 
@@ -182,6 +189,7 @@ const FrontDash = () => {
                     paymentTabActive={paymentTabActive}
                     activeTableData={activeTableData}
                     serverTableList={serverTableList}
+                    setLoading={setLoading}
                     />
                 : null
             }

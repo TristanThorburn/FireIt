@@ -101,7 +101,7 @@ const CheckTab = (props) => {
                 const tableHeadRow = document.createElement('tr')
                 const tableHeadRowTh = document.createElement('th')
                 tableHeadRowTh.setAttribute('colspan', '2')
-                const seatNumber = document.createTextNode(`Seat: ${seperatedSeatData.seatNumber}`)
+                const seatNumber = document.createTextNode(`❌ Seat: ${seperatedSeatData.seatNumber}`)
                 tableHeadRowTh.appendChild(seatNumber)
                 tableHeadRow.appendChild(tableHeadRowTh)
                 tableHead.appendChild(tableHeadRow)

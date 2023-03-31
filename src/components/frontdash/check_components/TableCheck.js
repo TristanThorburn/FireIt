@@ -1,5 +1,5 @@
 import { db } from '../../../firebase';
-import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion, getDocs } from 'firebase/firestore';
+import { orderBy, onSnapshot, query, collection, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTable } from '../../../contexts/TableContext';
 import { useState, useEffect, useCallback } from 'react';
@@ -53,23 +53,14 @@ const TableCheck = (props) => {
         const getCheckData = async () => {
             if(props.tableData.searchId !== undefined){
                 const q = query(checkCollectionRef, orderBy('seatNumber'));
-                const querySnapshot = await getDocs(q, { source: 'cache'})
-                if(!querySnapshot.empty){
-                    const checkData = querySnapshot.docs.map(doc => ({
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setCheckData(snapshot.docs.map(doc => ({
                         id: doc.id,
-                        data:doc.data(),
-                    }))
-                    setCheckData(checkData)
-                } else {
-                    const unsubscribe = onSnapshot(q, snapshot => {
-                        setCheckData(snapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data(),
-                            seatNumber:doc.id.replace(/seat/g, ''),
-                        })))
-                    })
-                    return unsubscribe
-                }
+                        data: doc.data(),
+                        seatNumber:doc.id.replace(/seat/g, ''),
+                    })))
+                })
+                return unsubscribe
             }
         }
         getCheckData()
@@ -82,7 +73,7 @@ const TableCheck = (props) => {
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
                 const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
-                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -109,7 +100,7 @@ const TableCheck = (props) => {
             && document.getElementById(`seat${props.selectedSeat}`) !== null
             && props.currentOrderData !== ''){
                 const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
-                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -137,7 +128,7 @@ const TableCheck = (props) => {
             && props.selectedSeat === ''
             && props.currentOrderData !== ''){
                 const seatToAppend = document.getElementById('seat1')
-                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -178,7 +169,7 @@ const TableCheck = (props) => {
                 const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
                 newTableHeadRow.appendChild(newTableHeader)
-                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
@@ -223,7 +214,7 @@ const TableCheck = (props) => {
                 const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
                 newTableHeadRow.appendChild(newTableHeader)
-                const orderName = document.createTextNode(props.currentOrderData.name)
+                const orderName = document.createTextNode(`❌ ${props.currentOrderData.name}`)
                 const orderCost = document.createTextNode(props.currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
