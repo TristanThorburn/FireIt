@@ -147,7 +147,9 @@ const SummaryReceipts = (props) => {
                 }
                 resetTable()
                 setStartCleanUp(false)
-                setLoading(false)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1500)
             }
             cleanUp()
         }

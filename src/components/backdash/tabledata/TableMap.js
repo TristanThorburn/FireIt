@@ -11,6 +11,7 @@ import FireItAlert from '../../help/FireItAlert';
 const TableMap = (props) => {
     const { setContextTable } = useTable();
     const { employeeContext } = useAuth();
+    const { frontTableMapData, tableTabActive } = props
     const [ tablesData, setTablesData ] = useState([]);
     const [ enableDrag, setEnableDrag ] = useState(false);
     const [ addingTable, setAddingTable ] = useState(false);    
@@ -23,18 +24,23 @@ const TableMap = (props) => {
 
     // Populate screen from table Data
     useEffect(() => {
-        const getTables = async () => {
-            const q = query(tableMapCollectionRef, orderBy('name'));
-            const unsubscribe = onSnapshot(q, snapshot => {
-                setTablesData(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                })))
-            })
-            return unsubscribe
+        if(tableTabActive === true){
+            setTablesData(frontTableMapData)
         }
-        getTables()
-    },[])
+        if(tableTabActive === undefined){
+            const getTables = async () => {
+                const q = query(tableMapCollectionRef, orderBy('name'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setTablesData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data()
+                    })))
+                })
+                return unsubscribe
+            }
+            getTables()
+        }
+    },[tableTabActive, frontTableMapData])
 
     // Turn off enable drag when map is not updateable
     useEffect(() => {
@@ -157,25 +163,28 @@ const TableMap = (props) => {
                         tableId={selectedTable.id}
                         />
                     :<ul className='tableMap'>
-                            {tablesData.map(table => 
-                                <li 
-                                    key={table.id}
-                                    id={table.id}
-                                    data-inuse={table.data?.serverOwner}
-                                    className={[
-                                        'table', 
-                                        table.data?.tableStyle, 
-                                        table.data?.serverOwner !== 'none' 
-                                            ? 'tableInUse'
-                                            : null,
-                                        ].join(' ')}
-                                    onClickCapture={handleTableClickCapture}
-                                    style={{left:table?.data.left, top: table?.data.top}}
-                                    >
-                                        <p>
-                                            {table.data.name}
-                                        </p>
-                                </li>)}
+                            {tablesData.map(table => {
+                                return(
+                                    <li 
+                                        key={table.id}
+                                        id={table.id}
+                                        data-inuse={table.data?.serverOwner}
+                                        className={[
+                                            'table', 
+                                            table.data?.tableStyle, 
+                                            table.data?.serverOwner !== 'none' 
+                                                ? 'tableInUse'
+                                                : null,
+                                            ].join(' ')}
+                                        onClickCapture={handleTableClickCapture}
+                                        style={{left:table?.data.left, top: table?.data.top}}
+                                        >
+                                            <p>
+                                                {table.data.name}
+                                            </p>
+                                    </li>
+                                )}                                
+                            )}
                         </ul>
             }    
 

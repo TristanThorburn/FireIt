@@ -3,7 +3,7 @@ import { useTable } from '../contexts/TableContext';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../firebase';
 import { 
-    doc, getDoc, getDocFromCache, where, query, onSnapshot
+    doc, getDoc, getDocFromCache, where, query, onSnapshot, orderBy
     } from 'firebase/firestore';
 import { tableMapCollectionRef } from '../library/firestoreCollections';
 import FrontDashNavTabs from './frontdash/navs/FrontDashTabsNav';
@@ -32,7 +32,23 @@ const FrontDash = () => {
     const [ fireItAlert, setFireItAlert ] = useState('');
     const [ activeTableData, setActiveTableData ] = useState({});
     const [ serverTableList, setServerTableList ] = useState([]);
-    const [ messageOfTheDay, setMessageOfTheDay ] = useState(false)
+    const [ messageOfTheDay, setMessageOfTheDay ] = useState(false);
+    const [ frontTableMapData, setFrontTableMapData ] = useState([])
+
+    // Populate screen from table Data
+    useEffect(() => {
+        const getTables = async () => {
+            const q = query(tableMapCollectionRef, orderBy('name'));
+            const unsubscribe = onSnapshot(q, snapshot => {
+                setFrontTableMapData(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                })))
+            })
+            return unsubscribe
+        }
+        getTables()
+    },[])
 
     // Populate data of selected table for use in MenuTab, CheckTab, PaymentTab
     useEffect(() => {
@@ -75,7 +91,7 @@ const FrontDash = () => {
                 return unsubscribe
         }
         getTableList()
-    }, [employeeContext.employeeNumber, employeeContext.firstLogin])
+    }, [employeeContext.employeeNumber, employeeContext.firstLogin, loading])
 
     return(
         <div className='frontDash'>
@@ -155,6 +171,7 @@ const FrontDash = () => {
                     setTableTabActive={setTableTabActive}
                     setMenuTabActive={setMenuTabActive}
                     setMessageOfTheDay={setMessageOfTheDay}
+                    frontTableMapData={frontTableMapData}
                     />
                 : null
             }
