@@ -10,13 +10,14 @@ import {
 import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const LiquorsData = (props) => {
+    const { activeTab } = props
     const [ liquorData, setLiquorData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
         const getMenuCategory = async () => {
-            if(props.activeTab === 'gin'){
+            if(activeTab === 'gin'){
                 const q = query(ginCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setLiquorData(snapshot.docs.map(doc => ({
@@ -26,7 +27,7 @@ const LiquorsData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'rum'){
+            if(activeTab === 'rum'){
                 const q = query(rumCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setLiquorData(snapshot.docs.map(doc => ({
@@ -36,7 +37,7 @@ const LiquorsData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'tequila'){
+            if(activeTab === 'tequila'){
                 const q = query(tequilaCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setLiquorData(snapshot.docs.map(doc => ({
@@ -46,7 +47,7 @@ const LiquorsData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'vodka'){
+            if(activeTab === 'vodka'){
                 const q = query(vodkaCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setLiquorData(snapshot.docs.map(doc => ({
@@ -56,7 +57,7 @@ const LiquorsData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'whiskey'){
+            if(activeTab === 'whiskey'){
                 const q = query(whiskeyCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setLiquorData(snapshot.docs.map(doc => ({
@@ -72,7 +73,7 @@ const LiquorsData = (props) => {
             }
         }
         getMenuCategory()
-    },[props.activeTab])
+    },[activeTab])
 
     const handleNewItem = () => {
         setSelectedItem('')

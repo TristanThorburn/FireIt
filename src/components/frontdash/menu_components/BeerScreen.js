@@ -7,11 +7,11 @@ import {
     import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const BeerScreen = (props) => {
+    const { selectedSeat, setCurrentOrderData } = props
     const [ beerData, setBeerData ] = useState([]);
     const [ collectionRef, setCollectionRef ] = useState('bottle');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
-    const time = Date.now().toString();
     const bottleButton = document.getElementById('bottle')
     const canButton = document.getElementById('can')
     const draftButton = document.getElementById('draft')
@@ -141,20 +141,21 @@ const BeerScreen = (props) => {
     // add selected item to display as pending order on check
     useEffect(() => {
         if(selectedItem !== ''){
-            if(itemData.name && props.selectedSeat === ''){
+            const time = Date.now().toString()
+            if(itemData.name && selectedSeat === ''){
                 const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
-                props.setCurrentOrderData(orderToAdd)
+                setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
-            if(itemData.name && props.selectedSeat !== ''){
-                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price, time:time}
-                props.setCurrentOrderData(orderToAdd)
+            if(itemData.name && selectedSeat !== ''){
+                const orderToAdd = {seat:selectedSeat, name:itemData.screenName, cost:itemData.price, time:time}
+                setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
         }
-    }, [itemData, props, selectedItem, time])
+    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat])
 
     const handleBottlesCategory = () => {
         setCollectionRef('bottle')

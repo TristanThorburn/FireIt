@@ -158,6 +158,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'PaymentTab no settled receipts'
+                        ? <div className='padError'>There are no payments saved to any receipts, click on one to begin.
+                        </div>
+                        : null
+                    }
                 </article>
             </div>
         </div>

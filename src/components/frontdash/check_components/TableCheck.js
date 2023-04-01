@@ -5,13 +5,14 @@ import { useTable } from '../../../contexts/TableContext';
 import { useState, useEffect, useCallback } from 'react';
 
 const TableCheck = (props) => {
+    const { 
+        setFireItAlert, currentOrderData, setCurrentOrderData, selectedSeat, setSelectedSeat, doesSeatExist, sendOrder, setSendOrder, setMenuTabActive, setTableTabActive, tableData
+    } = props
     const { managerContext, employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
-    const [ checkTotal, setCheckTotal ] = useState()
-    const checkCollectionRef = 
-        collection(db, 'orders', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`)
+    const [ checkTotal, setCheckTotal ] = useState();
         
     const handlePendingOrderDelete = useCallback((e) => {
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
@@ -31,9 +32,9 @@ const TableCheck = (props) => {
             e.target.removeEventListener('click', handlePendingOrderDelete)
         }
         if(secondChild.childNodes.length > 1){
-            props.setFireItAlert('TableCheck seat delete')
+            setFireItAlert('TableCheck seat delete')
         }
-    },[handlePendingOrderDelete, props])
+    },[handlePendingOrderDelete, setFireItAlert])
 
     // Add up costs of items for check total
     useEffect(() => {
@@ -51,7 +52,9 @@ const TableCheck = (props) => {
     // Get Data for the check from current server and table
     useEffect(() => {
         const getCheckData = async () => {
-            if(props.tableData.searchId !== undefined){
+            if(tableData.searchId !== undefined){
+                const checkCollectionRef = 
+                    collection(db, 'orders', `${employeeContext.employeeNumber}`, `${tableData.searchId}`)
                 const q = query(checkCollectionRef, orderBy('seatNumber'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setCheckData(snapshot.docs.map(doc => ({
@@ -64,17 +67,17 @@ const TableCheck = (props) => {
             }
         }
         getCheckData()
-    },[checkCollectionRef, props.tableData.searchId])
+    },[tableData.searchId, employeeContext.employeeNumber])
 
     // append pending order to the current check, check for seats and compare to selected to determine how to append
     useEffect(() => {
         // Seat exists in firebase. User selected seat exists on check. Is there item data?
-        if(props.doesSeatExist === true
-            && document.getElementById(`seat${props.selectedSeat}`) !== null
-            && props.currentOrderData !== ''){
-                const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
-                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
-                const orderCost = document.createTextNode(props.currentOrderData.cost)
+        if(doesSeatExist === true
+            && document.getElementById(`seat${selectedSeat}`) !== null
+            && currentOrderData !== ''){
+                const seatToAppend = document.getElementById(`seat${currentOrderData.seat}`)
+                const orderName = document.createTextNode(`${currentOrderData.name}`)
+                const orderCost = document.createTextNode(currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 nameContainer.classList.add('pendingDeleteReminder')
@@ -82,27 +85,27 @@ const TableCheck = (props) => {
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingOrderDelete)
                 costContainer.classList.add('checkItemCost')
-                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
+                costContainer.setAttribute('data-cost', currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
-                orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
+                orderInfo.setAttribute('data-seat', `seat${currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', 'false')
-                orderInfo.setAttribute('data-number', props.currentOrderData.seat)
-                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
-                orderInfo.setAttribute('data-time', props.currentOrderData.time)
+                orderInfo.setAttribute('data-number', currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', currentOrderData.cost)
+                orderInfo.setAttribute('data-time', currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
                 orderInfo.appendChild(costContainer)
                 seatToAppend.appendChild(orderInfo)
-                props.setCurrentOrderData('')
+                setCurrentOrderData('')
         }
         // Seat does NOT exists in firebase. Seat exsits on check in pending order. Is there item data?
-        if(props.doesSeatExist === false
-            && document.getElementById(`seat${props.selectedSeat}`) !== null
-            && props.currentOrderData !== ''){
-                const seatToAppend = document.getElementById(`seat${props.currentOrderData.seat}`)
-                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
-                const orderCost = document.createTextNode(props.currentOrderData.cost)
+        if(doesSeatExist === false
+            && document.getElementById(`seat${selectedSeat}`) !== null
+            && currentOrderData !== ''){
+                const seatToAppend = document.getElementById(`seat${currentOrderData.seat}`)
+                const orderName = document.createTextNode(`${currentOrderData.name}`)
+                const orderCost = document.createTextNode(currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 nameContainer.classList.add('pendingDeleteReminder')
@@ -110,28 +113,28 @@ const TableCheck = (props) => {
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingOrderDelete)
                 costContainer.classList.add('checkItemCost')
-                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
+                costContainer.setAttribute('data-cost', currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
-                orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
+                orderInfo.setAttribute('data-seat', `seat${currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', 'false')
-                orderInfo.setAttribute('data-number', props.currentOrderData.seat)
-                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
-                orderInfo.setAttribute('data-time', props.currentOrderData.time)
+                orderInfo.setAttribute('data-number', currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', currentOrderData.cost)
+                orderInfo.setAttribute('data-time', currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
                 orderInfo.appendChild(costContainer)
                 seatToAppend.appendChild(orderInfo)
-                props.setCurrentOrderData('')
+                setCurrentOrderData('')
         }
         // AUTO SEAT 1: Seat does exist in firebase. User has not selected a seat leaving it '' so use seat 1, is there item data?
-        if(props.doesSeatExist === true
-            && document.getElementById(`seat${props.selectedSeat}`) === null
-            && props.selectedSeat === ''
-            && props.currentOrderData !== ''){
+        if(doesSeatExist === true
+            && document.getElementById(`seat${selectedSeat}`) === null
+            && selectedSeat === ''
+            && currentOrderData !== ''){
                 const seatToAppend = document.getElementById('seat1')
-                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
-                const orderCost = document.createTextNode(props.currentOrderData.cost)
+                const orderName = document.createTextNode(`${currentOrderData.name}`)
+                const orderCost = document.createTextNode(currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 nameContainer.classList.add('pendingDeleteReminder')
@@ -139,26 +142,26 @@ const TableCheck = (props) => {
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingOrderDelete)
                 costContainer.classList.add('checkItemCost')
-                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
+                costContainer.setAttribute('data-cost', currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
-                orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
+                orderInfo.setAttribute('data-seat', `seat${currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', 'false')
-                orderInfo.setAttribute('data-number', props.currentOrderData.seat)
-                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
-                orderInfo.setAttribute('data-time', props.currentOrderData.time)
+                orderInfo.setAttribute('data-number', currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', currentOrderData.cost)
+                orderInfo.setAttribute('data-time', currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
                 orderInfo.appendChild(costContainer)
                 seatToAppend.appendChild(orderInfo)
-                props.setSelectedSeat('1')
-                props.setCurrentOrderData('')
+                setSelectedSeat('1')
+                setCurrentOrderData('')
         }
         // FRESH CHECK: Seat does NOT exist in firebase, seat does not exist on check, create new seat if there is item data, ALSO if selected seat is '' setSelectedSeat to 1
-        if(props.doesSeatExist === false 
-            && document.getElementById(`seat${props.selectedSeat}`) === null
-            && props.selectedSeat === ''
-            && props.currentOrderData !== ''){
+        if(doesSeatExist === false 
+            && document.getElementById(`seat${selectedSeat}`) === null
+            && selectedSeat === ''
+            && currentOrderData !== ''){
                 const seatsAndOrders = document.querySelector('.seatsAndOrders')
                 const newTable = document.createElement('table')
                 newTable.classList.add('checkSeatInfo')
@@ -166,14 +169,14 @@ const TableCheck = (props) => {
                 const newTableHead = document.createElement('thead')
                 const newTableHeadRow = document.createElement('tr')
                 const newTableBody = document.createElement('tbody')
-                newTableBody.setAttribute('id', `seat${props.currentOrderData.seat}` )
+                newTableBody.setAttribute('id', `seat${currentOrderData.seat}` )
                 const newTableHeader = document.createElement('th')
                 newTableHeader.setAttribute('colspan', '2')
-                const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
+                const seatNumber = document.createTextNode(`Seat: ${currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
                 newTableHeadRow.appendChild(newTableHeader)
-                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
-                const orderCost = document.createTextNode(props.currentOrderData.cost)
+                const orderName = document.createTextNode(`${currentOrderData.name}`)
+                const orderCost = document.createTextNode(currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 nameContainer.classList.add('pendingDeleteReminder')
@@ -181,13 +184,13 @@ const TableCheck = (props) => {
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingSeatDelete)
                 costContainer.classList.add('checkItemCost')
-                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
+                costContainer.setAttribute('data-cost', currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
-                orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
+                orderInfo.setAttribute('data-seat', `seat${currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', 'true')
-                orderInfo.setAttribute('data-number', props.currentOrderData.seat)
-                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
-                orderInfo.setAttribute('data-time', props.currentOrderData.time)
+                orderInfo.setAttribute('data-number', currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', currentOrderData.cost)
+                orderInfo.setAttribute('data-time', currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -197,14 +200,14 @@ const TableCheck = (props) => {
                 newTable.appendChild(newTableHead)
                 newTable.appendChild(newTableBody)
                 seatsAndOrders.appendChild(newTable)
-                props.setSelectedSeat('1')
-                props.setCurrentOrderData('')
+                setSelectedSeat('1')
+                setCurrentOrderData('')
         }
         // FRESH SEAT: Seat does not exist in firebase, seat does not exist on check, create new seat table if there is item data.
-        if(props.doesSeatExist === false 
-            && document.getElementById(`seat${props.selectedSeat}`) === null
-            && props.selectedSeat !== ''
-            && props.currentOrderData !== ''){
+        if(doesSeatExist === false 
+            && document.getElementById(`seat${selectedSeat}`) === null
+            && selectedSeat !== ''
+            && currentOrderData !== ''){
                 const seatsAndOrders = document.querySelector('.seatsAndOrders')
                 const newTable = document.createElement('table')
                 newTable.classList.add('checkSeatInfo')
@@ -212,14 +215,14 @@ const TableCheck = (props) => {
                 const newTableHead = document.createElement('thead')
                 const newTableHeadRow = document.createElement('tr')
                 const newTableBody = document.createElement('tbody')
-                newTableBody.setAttribute('id', `seat${props.currentOrderData.seat}` )
+                newTableBody.setAttribute('id', `seat${currentOrderData.seat}` )
                 const newTableHeader = document.createElement('th')
                 newTableHeader.setAttribute('colspan', '2')
-                const seatNumber = document.createTextNode(`Seat: ${props.currentOrderData.seat}`)
+                const seatNumber = document.createTextNode(`Seat: ${currentOrderData.seat}`)
                 newTableHeader.appendChild(seatNumber)
                 newTableHeadRow.appendChild(newTableHeader)
-                const orderName = document.createTextNode(`${props.currentOrderData.name}`)
-                const orderCost = document.createTextNode(props.currentOrderData.cost)
+                const orderName = document.createTextNode(`${currentOrderData.name}`)
+                const orderCost = document.createTextNode(currentOrderData.cost)
                 const orderInfo = document.createElement('tr')
                 const nameContainer = document.createElement('td')
                 nameContainer.classList.add('pendingDeleteReminder')
@@ -227,13 +230,13 @@ const TableCheck = (props) => {
                 const costContainer = document.createElement('td')
                 costContainer.addEventListener('click', handlePendingSeatDelete)
                 costContainer.classList.add('checkItemCost')
-                costContainer.setAttribute('data-cost', props.currentOrderData.cost)
+                costContainer.setAttribute('data-cost', currentOrderData.cost)
                 orderInfo.classList.add('pendingOrder')
-                orderInfo.setAttribute('data-seat', `seat${props.currentOrderData.seat}`)
+                orderInfo.setAttribute('data-seat', `seat${currentOrderData.seat}`)
                 orderInfo.setAttribute('data-new', 'true')
-                orderInfo.setAttribute('data-number', props.currentOrderData.seat)
-                orderInfo.setAttribute('data-cost', props.currentOrderData.cost)
-                orderInfo.setAttribute('data-time', props.currentOrderData.time)
+                orderInfo.setAttribute('data-number', currentOrderData.seat)
+                orderInfo.setAttribute('data-cost', currentOrderData.cost)
+                orderInfo.setAttribute('data-time', currentOrderData.time)
                 nameContainer.appendChild(orderName)
                 costContainer.appendChild(orderCost)
                 orderInfo.appendChild(nameContainer)
@@ -243,13 +246,13 @@ const TableCheck = (props) => {
                 newTable.appendChild(newTableHead)
                 newTable.appendChild(newTableBody)
                 seatsAndOrders.appendChild(newTable)
-                props.setCurrentOrderData('')
+                setCurrentOrderData('')
         }
-    }, [props.currentOrderData, props.doesSeatExist, props.selectedSeat, props, handlePendingOrderDelete, handlePendingSeatDelete])
+    }, [currentOrderData, doesSeatExist, selectedSeat, handlePendingOrderDelete, handlePendingSeatDelete, setCurrentOrderData, setSelectedSeat])
 
     // Make array of pending orders to send to firebase
     useEffect(() => {
-        if(props.sendOrder === true && document.querySelectorAll('.pendingOrder') !== null){
+        if(sendOrder === true && document.querySelectorAll('.pendingOrder') !== null){
             let ordersToSend = [];
             const pendingOrders = document.querySelectorAll('.pendingOrder')
             pendingOrders.forEach(order => {
@@ -264,14 +267,14 @@ const TableCheck = (props) => {
             })
             setPendingOrder(ordersToSend)
         }
-    }, [props.sendOrder])
+    }, [sendOrder])
 
     // Add item to firebase, check for duplicates and allow.
     useEffect(() => {
-        if(props.sendOrder === true && pendingOrder !== ''){
+        if(sendOrder === true && pendingOrder !== ''){
             pendingOrder.forEach(order => {
                 const checkRef = 
-                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${props.tableData.searchId}`, `${order.seat}`)
+                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${tableData.searchId}`, `${order.seat}`)
                 if(order.new === 'true'){
                     const createNewCheckData = async () => {
                         setDoc(checkRef, {
@@ -288,7 +291,7 @@ const TableCheck = (props) => {
                         })
                     }
                     const setTableOwnership = async () => {
-                        const tableRef = doc(db, 'tables', `${props.tableData.searchId}`)
+                        const tableRef = doc(db, 'tables', `${tableData.searchId}`)
                         updateDoc(tableRef, {
                             serverOwner:employeeContext.employeeNumber
                         })
@@ -308,11 +311,11 @@ const TableCheck = (props) => {
                     order:arrayUnion(...orderToAdd)})
                 }
             })
-        props.setSendOrder(false)
-        props.setMenuTabActive(false)
-        props.setTableTabActive(true)
+        setSendOrder(false)
+        setMenuTabActive(false)
+        setTableTabActive(true)
         }
-    }, [props.sendOrder, pendingOrder, props, employeeContext.employeeNumber])
+    }, [sendOrder, pendingOrder, employeeContext.employeeNumber, setMenuTabActive, setTableTabActive, setSendOrder, tableData.searchId])
     
     const handleCheckItemClickCapture = (e) => {
         if(props.menuTabActive && managerContext === false){
@@ -383,10 +386,17 @@ const TableCheck = (props) => {
                         >
                         <thead>
                             <tr>
-                                <th
-                                    colSpan={2}
-                                    >Seat: {seat.data?.seatNumber}
-                                </th>
+                                {props.checkTabActive
+                                    ? <th
+                                        className='seatTransferReminder'
+                                        colSpan={2}
+                                        >Seat: {seat.data?.seatNumber}
+                                    </th>
+                                    : <th
+                                        colSpan={2}
+                                        >Seat: {seat.data?.seatNumber}
+                                    </th>
+                                }
                             </tr>
                         </thead>
                         <tbody id={seat?.id}>

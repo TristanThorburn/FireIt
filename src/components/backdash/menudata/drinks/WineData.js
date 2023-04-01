@@ -8,13 +8,14 @@ import {
 import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const WineData = (props) => {
+    const { activeTab } = props
     const [ wineData, setWineData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
         const getMenuCategory = async () => {
-            if(props.activeTab === 'red wine'){
+            if(activeTab === 'red wine'){
                 const q = query(redWineCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setWineData(snapshot.docs.map(doc => ({
@@ -24,7 +25,7 @@ const WineData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'white wine'){
+            if(activeTab === 'white wine'){
                 const q = query(whiteWineCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setWineData(snapshot.docs.map(doc => ({
@@ -34,7 +35,7 @@ const WineData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'bubbly'){
+            if(activeTab === 'bubbly'){
                 const q = query(bubblyCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setWineData(snapshot.docs.map(doc => ({
@@ -50,7 +51,7 @@ const WineData = (props) => {
             }
         }
         getMenuCategory()
-    },[props.activeTab])
+    },[activeTab])
 
     const handleNewItem = () => {
         setSelectedItem('')

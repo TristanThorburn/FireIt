@@ -22,7 +22,13 @@ const PaymentTabNav = (props) => {
     }
 
     const handleFinalizePayments = () => {
-        props.setFinalizePayments(true)
+        const settledReceipts = document.querySelectorAll('[data-status=settledReceipt]')
+        if(settledReceipts.length > 0){
+            props.setFinalizePayments(true)
+        }
+        else {
+            props.setFireItAlert('PaymentTab no settled receipts')
+        }
     }
 
     const handleHelp = () => {

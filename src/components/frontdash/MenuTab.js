@@ -19,6 +19,7 @@ import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from '../keypads/AlphaNumericPad';
 
 const MenuTab = (props) => {
+    const { activeTableData } = props
     const { employeeContext } = useAuth()
     const [ menuCategory, setMenuCategory ] = useState('directory')
     const [ selectedSeat, setSelectedSeat ] = useState('');
@@ -37,7 +38,7 @@ const MenuTab = (props) => {
         const doesSeatExist = async () => {
             if(selectedSeat === ''){
                 const docRef = 
-                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, 'seat1')
+                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${activeTableData.searchId}`, 'seat1')
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -47,7 +48,7 @@ const MenuTab = (props) => {
             }
             if(selectedSeat !== ''){
                 const docRef = 
-                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${props.activeTableData.searchId}`, `seat${selectedSeat}`)
+                    doc(db, 'orders', `${employeeContext.employeeNumber}`, `${activeTableData.searchId}`, `seat${selectedSeat}`)
                 const docSnap = await getDoc(docRef)
                 if(docSnap.exists()){
                     setDoesSeatExist(true)
@@ -57,7 +58,7 @@ const MenuTab = (props) => {
             }
         }
         doesSeatExist()
-    }, [selectedSeat, employeeContext.employeeNumber, props.activeTableData.searchId])
+    }, [selectedSeat, employeeContext.employeeNumber, activeTableData.searchId])
 
     const handleGoApps = () => {
         setMenuCategory('apps')

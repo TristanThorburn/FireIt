@@ -4,6 +4,7 @@ import { tableMapCollectionRef } from '../../../library/firestoreCollections';
 import { db } from '../../../firebase';
 
 const AddTableForm = (props) => {
+    const { setAddingTable } = props
     const [ design, setDesign ] = useState('')
     const tableNameRef = useRef('')
     const [ existingTable, setExistingTable ] = useState('')
@@ -29,7 +30,7 @@ const AddTableForm = (props) => {
                         left:'925px',
                         serverOwner:'none',
                     })
-                props.setAddingTable(false)
+                setAddingTable(false)
                 }
             }
         if(tableNameRef.current.value !== '' && existingTable === true){
@@ -38,7 +39,7 @@ const AddTableForm = (props) => {
                 setError('')
             }, 2000)
         }
-    }, [existingTable, props, design])
+    }, [existingTable, setAddingTable, design])
 
     const handleAddTable = (e) => {
         e.preventDefault()

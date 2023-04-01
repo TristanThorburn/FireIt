@@ -85,6 +85,7 @@ const PaymentTab = (props) => {
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                 setFinalizePayments={setFinalizePayments}
+                setFireItAlert={setFireItAlert}
                 />
         </div>
     )

@@ -9,6 +9,7 @@ import TableStyleUpdate from './TableStyleUpdate';
 import FireItAlert from '../../help/FireItAlert';
 
 const TableMap = (props) => {
+    const { updateable } = props
     const { setContextTable } = useTable();
     const { employeeContext } = useAuth();
     const { frontTableMapData, tableTabActive } = props
@@ -44,10 +45,10 @@ const TableMap = (props) => {
 
     // Turn off enable drag when map is not updateable
     useEffect(() => {
-        if(props.updateable){
+        if(updateable){
             setEnableDrag(false)
         }
-    }, [props.updateable])
+    }, [updateable])
     
     const handleAllowDragging = () => {
         if(enableDrag === false){
