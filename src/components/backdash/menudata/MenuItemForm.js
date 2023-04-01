@@ -29,6 +29,7 @@ import { useRef, useEffect, useState } from 'react';
 import PopUpData from './PopUpData';
 
 const MenuItemForm = (props) => {
+    const { activeTab, id, docQuery, newItem, setNewItem, setSelectedItem } = props
     const [ collectionRef, setCollectionRef ] = useState('');
     const [ itemData, setItemData ] = useState('');
     const [ itemType, setItemType ] = useState('');
@@ -56,84 +57,84 @@ const MenuItemForm = (props) => {
 
 // DETERMINE WHICH COLLECTION REF TO USE FOR DATA && What item data to display when  item selected
     useEffect(() => {
-        if(props.id === ''){
+        if(id === ''){
             setItemData({})
 
-            if(props.activeTab === 'apps'){
+            if(activeTab === 'apps'){
                 setCollectionRef(appCollectionRef)
             }
-            if(props.activeTab === 'mains'){
+            if(activeTab === 'mains'){
                 setCollectionRef(mainsCollectionRef)
             }
-            if(props.activeTab === 'desserts'){
+            if(activeTab === 'desserts'){
                 setCollectionRef(dessertsCollectionRef)
             }
-            if(props.activeTab === 'cold drinks'){
+            if(activeTab === 'cold drinks'){
                 setCollectionRef(coldDrinksCollectionRef)
             }
-            if(props.activeTab === 'hot drinks'){
+            if(activeTab === 'hot drinks'){
                 setCollectionRef(hotDrinksCollectionRef)
             }
-            if(props.activeTab === 'food addons'){
+            if(activeTab === 'food addons'){
                 setCollectionRef(foodAddsCollectionRef)
             }
-            if(props.activeTab === 'drink addons'){
+            if(activeTab === 'drink addons'){
                 setCollectionRef(drinkAddsCollectionRef)
             }
-            if(props.activeTab === 'beer bottle'){
+            if(activeTab === 'beer bottle'){
                 setCollectionRef(beerBottleCollectionRef)
             }
-            if(props.activeTab === 'beer can'){
+            if(activeTab === 'beer can'){
                 setCollectionRef(beerCanCollectionRef)
             }
-            if(props.activeTab === 'beer draft'){
+            if(activeTab === 'beer draft'){
                 setCollectionRef(beerDraftCollectionRef)
             }
-            if(props.activeTab === 'red wine'){
+            if(activeTab === 'red wine'){
                 setCollectionRef(redWineCollectionRef)
             }
-            if(props.activeTab === 'white wine'){
+            if(activeTab === 'white wine'){
                 setCollectionRef(whiteWineCollectionRef)
             }
-            if(props.activeTab === 'bubbly'){
+            if(activeTab === 'bubbly'){
                 setCollectionRef(bubblyCollectionRef)
             }
-            if(props.activeTab === 'cocktails'){
+            if(activeTab === 'cocktails'){
                 setCollectionRef(cocktailCollectionRef)
             }
-            if(props.activeTab === 'shots'){
+            if(activeTab === 'shots'){
                 setCollectionRef(shotsCollectionRef)
             }
-            if(props.activeTab === 'gin'){
+            if(activeTab === 'gin'){
                 setCollectionRef(ginCollectionRef)
             }
-            if(props.activeTab === 'rum'){
+            if(activeTab === 'rum'){
                 setCollectionRef(rumCollectionRef)
             }
-            if(props.activeTab === 'tequila'){
+            if(activeTab === 'tequila'){
                 setCollectionRef(tequilaCollectionRef)
             }
-            if(props.activeTab === 'vodka'){
+            if(activeTab === 'vodka'){
                 setCollectionRef(vodkaCollectionRef)
             }
-            if(props.activeTab === 'whiskey'){
+            if(activeTab === 'whiskey'){
                 setCollectionRef(whiskeyCollectionRef)
             }
-            if(props.activeTab === 'cider'){
+            if(activeTab === 'cider'){
                 setCollectionRef(ciderCollectionRef)
             }
-            if(props.activeTab === 'hard seltzer'){
+            if(activeTab === 'hard seltzer'){
                 setCollectionRef(hardSeltzerCollectionRef)
             }
-            if(props.activeTab === 'menu mods'){
+            if(activeTab === 'menu mods'){
                 setCollectionRef(menuModsCollectionRef)
             }
         }
-        if(props.id !== ''){
-            const docRef = doc(db, ...props.docQuery, props.id)
+        if(id !== ''){
+            const docRef = doc(db, ...docQuery, id)
             getDoc(docRef).then((doc) => setItemData(doc.data())).catch(error => console.log(error))
         }
-    },[props.id, props.docQuery, props.activeTab])
+    },[id, docQuery, activeTab])
 
 // RESET FORMS
     useEffect(() => {
@@ -144,7 +145,7 @@ const MenuItemForm = (props) => {
         // Array.from(document.querySelectorAll('input[type=radio]')).forEach(
         //     input => (input.checked = false))
         document.getElementById('menuItemForm').reset();
-    }, [props.id, props.newItem])
+    }, [id, newItem])
     
 // ADD CLONED ITEM TO FIRESTORE
     useEffect(() => {
@@ -160,16 +161,16 @@ const MenuItemForm = (props) => {
                 printerRoute:cloneItem.printerRoute,
                 popUps:cloneItem.popUps,
             })
-            props.setSelectedItem('');
+            setSelectedItem('');
             setCloneItem('')
             document.getElementById('menuItemForm').reset(); 
         }
-    }, [collectionRef, cloneItem, props])
+    }, [collectionRef, cloneItem, setSelectedItem])
 
     const handleAddItem = (e) => {
         e.preventDefault()
         // Ensure there is a screen Name
-        if(props.newItem === true 
+        if(newItem === true 
             && nameRef.current.value !== '' 
             && onScreenNameRef.current.value === ''){
             addDoc(collectionRef, {
@@ -185,7 +186,7 @@ const MenuItemForm = (props) => {
             });
         }
         // Original add item code
-        if(props.newItem === true 
+        if(newItem === true 
             && nameRef.current.value !== ''
             && onScreenNameRef.current.value !== ''){
             addDoc(collectionRef, {
@@ -200,7 +201,7 @@ const MenuItemForm = (props) => {
                 popUps:popUps.popUpsList,
             });
         }
-        props.setNewItem(false);
+        setNewItem(false);
         setPopUps({popUpsList:[]})
         setPopUpsAction('')
         setTaxGroup('')
@@ -210,63 +211,63 @@ const MenuItemForm = (props) => {
 
     const handleUpdateItem = (e) => {
         e.preventDefault()
-        const docRef = doc(db, ...props.docQuery, props.id)
+        const docRef = doc(db, ...docQuery, id)
 
-        if(props.id !== '' && nameRef.current.value !== ''){
+        if(id !== '' && nameRef.current.value !== ''){
             updateDoc(docRef, {
                 name:nameRef.current.value
             })
         }
-        if(props.id !== '' && itemStockRef.current.value !== ''){
+        if(id !== '' && itemStockRef.current.value !== ''){
             updateDoc(docRef, {
                 itemStock:itemStockRef.current.value
             })
         }
-        if(props.id !== '' && onScreenNameRef.current.value !== ''){
+        if(id !== '' && onScreenNameRef.current.value !== ''){
             updateDoc(docRef, {
                 screenName:onScreenNameRef.current.value
             })
         }
-        if(props.id !== '' && chitNameRef.current.value !==''){
+        if(id !== '' && chitNameRef.current.value !==''){
             updateDoc(docRef, {
                 chitName:chitNameRef.current.value
             })
         }
-        if(props.id !== '' && itemPriceRef.current.value !== ''){
+        if(id !== '' && itemPriceRef.current.value !== ''){
             updateDoc(docRef, {
                 price:itemPriceRef.current.value
             })
         }
-        if(props.id !== '' && itemType !== ''){
+        if(id !== '' && itemType !== ''){
             updateDoc(docRef, {
                 type:itemType
             })
         }
-        if(props.id !== '' && taxGroup !== ''){
+        if(id !== '' && taxGroup !== ''){
             updateDoc(docRef, {
                 taxGroup:taxGroup
             })
             setTaxGroup('');
         }
-        if(props.id !== '' && printerRoute !== ''){
+        if(id !== '' && printerRoute !== ''){
             updateDoc(docRef, {
                 printerRoute:printerRoute
             })
             setPrinterRoute('');
         }
-        if(props.id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'add'){
+        if(id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'add'){
             updateDoc(docRef, {
                 popUps:arrayUnion(...popUps.popUpsList)
             });
             setPopUpsAction('')
         }
-        if(props.id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'remove'){
+        if(id !== '' && popUps.popUpsList.length > 0 && popUpsAction === 'remove'){
             updateDoc(docRef, {
                 popUps:arrayRemove(...popUps.popUpsList)
             });
             setPopUpsAction('')
         }
-        props.setSelectedItem('');
+        setSelectedItem('');
         setPopUps({popUpsList:[]});
         setPopUpsAction('')
         document.getElementById('menuItemForm').reset(); 
@@ -274,9 +275,9 @@ const MenuItemForm = (props) => {
 
     const handleDelete = (e) => {
         e.preventDefault()
-        const docRef = doc(db, ...props.docQuery, props.id)
+        const docRef = doc(db, ...docQuery, id)
         
-        if(props.id !== ''){
+        if(id !== ''){
             deleteDoc(docRef)
             setItemData('')
         }
@@ -284,9 +285,9 @@ const MenuItemForm = (props) => {
 
     const handleClone = async (e) => {
         e.preventDefault()
-        if(props.id !==''){
+        if(id !==''){
             try {
-                const docRef = doc(db, ...props.docQuery, props.id)
+                const docRef = doc(db, ...docQuery, id)
                 const itemToClone = await getDoc(docRef)
                 const cloneData = itemToClone.data()
                 if(itemToClone.exists()){
@@ -336,12 +337,12 @@ const MenuItemForm = (props) => {
 
     return(
         <form className='menuItemForm' id='menuItemForm' onSubmit={handleSubmit}>
-            {props.id !== '' || props.newItem === true
+            {id !== '' || newItem === true
                 ? <>
                 {/* Item Name */}
                     <div>
                         <label htmlFor='itemName'>Item Name:</label>
-                        {props.id !== ''
+                        {id !== ''
                             ? <input 
                                 id='itemName'
                                 name='itemName'
@@ -360,7 +361,7 @@ const MenuItemForm = (props) => {
                 {/* Item Count */}
                     <div>
                         <label htmlFor='itemStock'>Item Stock:</label>
-                        {props.id !== ''
+                        {id !== ''
                             ? <input 
                                 id='itemStock'
                                 name='itemStock'
@@ -379,7 +380,7 @@ const MenuItemForm = (props) => {
                 {/* On Screen Name */}
                     <div>
                         <label htmlFor='screenName'>On Screen Name:</label>
-                        {props.id !== ''
+                        {id !== ''
                             ? <input 
                                 id='screenName'
                                 name='screenName'
@@ -398,7 +399,7 @@ const MenuItemForm = (props) => {
                 {/* ChitName */}
                     <div>
                         <label htmlFor='chitName'>Chit Name:</label>
-                        {props.id !== ''
+                        {id !== ''
                             ? <input 
                                 id='chitName'
                                 name='chitName'
@@ -417,7 +418,7 @@ const MenuItemForm = (props) => {
                 {/* Item Price */}
                     <div>
                         <label htmlFor='price'>Item Price:</label>
-                        {props.id !== ''
+                        {id !== ''
                             ? <input 
                                 id='price'
                                 name='price'
@@ -439,7 +440,7 @@ const MenuItemForm = (props) => {
                             <label 
                                 htmlFor='taxGroup'
                                 >
-                                {itemData.taxGroup 
+                                {itemData?.taxGroup 
                                     ? `Current Tax: ${itemData?.taxGroup}`
                                     : 'Tax Group?'
                                 }
@@ -450,7 +451,6 @@ const MenuItemForm = (props) => {
                                 name='taxGroup'
                                 value={taxGroup}
                                 onChange={handleTaxGroup}
-                                defaultValue=''
                                 >
                                 {taxOptions.map(option => (
                                     <option key={option.value} value={option.value}>
@@ -464,7 +464,7 @@ const MenuItemForm = (props) => {
                             <label 
                                 htmlFor='printerRoute'
                                 >
-                                {itemData.printerRoute 
+                                {itemData?.printerRoute 
                                     ? `Current Printer Route: ${itemData?.printerRoute}`
                                     : 'Printer Route?'
                                 }
@@ -475,7 +475,6 @@ const MenuItemForm = (props) => {
                                 name='printerRoute'
                                 value={printerRoute}
                                 onChange={handlePrinterRoute}
-                                defaultValue=''
                                 >
                                 {printOptions.map(option => (
                                     <option key={option.value} value={option.value}>
@@ -488,7 +487,7 @@ const MenuItemForm = (props) => {
                 {/* Item Type */}
                     <fieldset className='itemTypes'>
                         <legend>Select Item Type</legend>
-                        {props.id !== '' && itemData?.type
+                        {id !== '' && itemData?.type
                             ? <h4> Current type: {itemData?.type}</h4>
                             : null
                         }
@@ -551,7 +550,7 @@ const MenuItemForm = (props) => {
                     <fieldset className='itemPopUps'>
                         <legend htmlFor='popUpGroup'>Pop Up Group(s):</legend>
 
-                        {props.id !== '' && itemData?.popUps
+                        {id !== '' && itemData?.popUps
                             ? <h4>Current Pop Ups:
                                 <br />
                                  {itemData?.popUps.join(', ')}
@@ -581,9 +580,9 @@ const MenuItemForm = (props) => {
                 : <h3>Select an item, or create a new item</h3>
             }
 
-            {props.newItem === false && props.id === ''
+            {newItem === false && id === ''
                 ? null
-                : props.id !== ''
+                : id !== ''
                     ? <div className='updateButtons'>
                         <button
                             type='submit'
@@ -602,7 +601,7 @@ const MenuItemForm = (props) => {
                             >Delete Item
                         </button>
                     </div>
-                    : props.newItem
+                    : newItem
                 ? <button
                     type='submit'
                     className='newItemButton'

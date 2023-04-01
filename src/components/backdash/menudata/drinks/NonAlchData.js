@@ -7,7 +7,7 @@ const NonAlchData = (props) => {
     const [ nonAlchData, setNonAlchData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
-    const [ drinkType, setDrinkType ] = useState('cold drinks');
+    const [ drinkType, setDrinkType ] = useState('');
 
     const handleColdDrink = () => {
         setDrinkType('cold drinks')
@@ -60,11 +60,18 @@ const NonAlchData = (props) => {
                 <button onClick={handleHotDrink}>Hot Drinks</button>
             </div>
 
-            {drinkType === 'cold drinks'
-                    ?<div className='backDataList'>
-                        <h3>Cold Drinks List</h3>
-                        <button onClick={handleNewItem} className='newItemButton'>New Item</button>
-                        <ul>
+            {drinkType === 'cold drinks' || drinkType === 'hot drinks'
+                ? <div className='backDataList'>
+                    <h3>
+                        {drinkType === 'cold drinks'
+                            ? 'Cold Drinks List'
+                            : drinkType === 'hot drinks'
+                                ? 'Hot Drinks List'
+                                : null
+                        }
+                    </h3>
+                    <button onClick={handleNewItem} className='newItemButton'>New Item</button>
+                    <ul>
                         {nonAlchData.map(nonAlch => 
                             <li 
                                 key={nonAlch.id}
@@ -75,34 +82,22 @@ const NonAlchData = (props) => {
                                 >
                                     {nonAlch.data.name}
                             </li>)}
-                        </ul>
-                    </div>
-                    :drinkType === 'hot drinks'
-                        ?<div className='backDataList'>
-                            <h3>Hot Drinks List</h3>
-                            <button onClick={handleNewItem} className='newItemButton'>New Item</button><ul>
-                            {nonAlchData.map(nonAlch => 
-                                <li 
-                                    key={nonAlch.id}
-                                    onClick={() => {
-                                        setSelectedItem(nonAlch.id)
-                                        setNewItem(false)
-                                    }}
-                                    >
-                                        {nonAlch.data.name}
-                                </li>)}
-                            </ul>
-                        </div>
-                        :null
+                    </ul>
+                </div>
+                : null
             }
 
-            <MenuItemForm 
-                setNewItem={setNewItem}
-                newItem={newItem}
-                id={selectedItem}
-                setSelectedItem={setSelectedItem}
-                activeTab={drinkType}
-                docQuery={props.docQuery} />
+            {drinkType === 'cold drinks' || drinkType === 'hot drinks'
+                ? <MenuItemForm 
+                    setNewItem={setNewItem}
+                    newItem={newItem}
+                    id={selectedItem}
+                    setSelectedItem={setSelectedItem}
+                    activeTab={drinkType}
+                    docQuery={props.docQuery} 
+                    />
+                : null
+            }
         </div>
     )
 }

@@ -4,6 +4,7 @@ import { doc, getDoc, deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 import EmployeeFirebase from './EmployeeFirebase';
 
 const EmployeeDataForm = (props) => {
+    const { id, newEmployee, setNewEmployee, setFireItAlert, setSelectedEmployee } = props
     const [ employeeData, setEmployeeData ] = useState()
     const employeeNumberRef = useRef('');
     const firstNameRef = useRef('');
@@ -27,19 +28,19 @@ const EmployeeDataForm = (props) => {
 
     // Get data for selected employee.
     useEffect(() => {
-        if(props.id === ''){
+        if(id === ''){
             setEmployeeData('')
         }
-        if(props.id !== ''){
-            const docRef = doc(db, 'employees', props.id)
+        if(id !== ''){
+            const docRef = doc(db, 'employees', id)
             getDoc(docRef).then((doc) => setEmployeeData(doc.data())).catch(error => console.log(error))
         }
-    },[props.id])
+    },[id])
 
     // Clear form info on submit
     useEffect(() => {
         document.getElementById('employeeForm').reset(); 
-    },[props.id, props.newEmployee])
+    },[id, newEmployee])
     
     // ADD employee to database if checks for non duplicate # and ID have passed
     useEffect(() => {        
@@ -67,16 +68,16 @@ const EmployeeDataForm = (props) => {
                 firstLogin:'true',
                 orderBy:Number(employeeNumberRef.current.value)
             });
-            props.setNewEmployee(false);
+            setNewEmployee(false);
             setAddEmployee(false)
             document.getElementById('employeeForm').reset(); 
         }
-    },[addEmployee, props])
+    },[addEmployee, setNewEmployee])
 
     // UPDATE employee if checks for non duplicate # and ID have passed
     useEffect(() => {
         if(updateEmployee){
-            const docRef = doc(db, 'employees', props.id)
+            const docRef = doc(db, 'employees', id)
 
             if(employeeNumberRef.current.value !== ''){
                 updateDoc(docRef, {
@@ -100,7 +101,7 @@ const EmployeeDataForm = (props) => {
                 })
             }
             if(userIDRef.current.value !== '' && firebaseAuthWarning === true){
-                props.setFireItAlert('EmployeeDataForm change auth user')
+                setFireItAlert('EmployeeDataForm change auth user')
             }
             if(userPWRef.current.value !== '' && firebaseAuthWarning === false){
                 updateDoc(docRef, {
@@ -108,7 +109,7 @@ const EmployeeDataForm = (props) => {
                 })
             }
             if(userPWRef.current.value !== '' && firebaseAuthWarning === true){
-                props.setFireItAlert('EmployeeDataForm change auth user')
+                setFireItAlert('EmployeeDataForm change auth user')
             }
             if(SINRef.current.value !== ''){
                 updateDoc(docRef, {
@@ -166,19 +167,19 @@ const EmployeeDataForm = (props) => {
                 })
             }
             if(firebaseAuthWarning === false){
-                props.setSelectedEmployee('');
+                setSelectedEmployee('');
             }
             setUpdateEmployee(false)
             document.getElementById('employeeForm').reset(); 
         }
-    }, [updateEmployee, props, firebaseAuthWarning])
+    }, [id, updateEmployee, setSelectedEmployee, firebaseAuthWarning, setFireItAlert])
 
     // Clear employee data when new employee is selected
     useEffect(() => {
-        if(props.newEmployee === true){
+        if(newEmployee === true){
             setEmployeeData('')
         }
-    }, [props.newEmployee])
+    }, [newEmployee])
 
     const handleAddEmployee = (e) => {
         e.preventDefault()
@@ -271,7 +272,7 @@ const EmployeeDataForm = (props) => {
         const string = e.currentTarget.value
         const filteredArray = Array.from(string).filter(char => regex.test(char))
         if(filteredArray.length > 0){
-            props.setFireItAlert('EmployeeDataForm user credentials require numbers')
+            setFireItAlert('EmployeeDataForm user credentials require numbers')
         }
     } 
 

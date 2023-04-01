@@ -5,13 +5,17 @@ import { db } from "../../../firebase";
 import { collection, query, orderBy, onSnapshot, updateDoc, doc, getDoc, setDoc, deleteField, getCountFromServer, deleteDoc, } from "firebase/firestore";
 
 const SummaryReceipts = (props) => {
+    const { 
+        setLoading, fullPaymentData, setFullPaymentData, undoSettledPayment, setUndoTargetReceipt, undoTargetReceipt, finalizePayments, setFinalizePayments
+    } = props
     const { employeeContext } = useAuth();
     const { contextTable, setContextTable } = useTable();
     const [ receiptData, setReceiptData ] = useState([]);
     const [ startCleanUp, setStartCleanUp] = useState(false);
     const [ cleanUpSeatList, setCleanUpSeatList ] = useState([]);
     const [ cleanUpReceiptList, setCleanUpReceiptList ] = useState([])
-    const { setLoading } = props
+    const [ receiptsAreCleaned, setReceiptsAreCleaned ] = useState(false)
+    const [ seatsAreCleaned, setSeatsAreCleaned ] = useState(false)
 
     const getCurrentDate = (separator='') => {
         let newDate = new Date()
@@ -40,37 +44,36 @@ const SummaryReceipts = (props) => {
 
     // save temporary payment data and change receipt status after entering payment amount(s)
     useEffect(() => {
-        if(props.fullPaymentData !== ''){
+        if(fullPaymentData !== ''){
             const receiptRef = 
-                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + props.fullPaymentData.receiptNumber)
+                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + fullPaymentData.receiptNumber)
             updateDoc(receiptRef, {
                 status:'settledReceipt',
-                paymentData:props.fullPaymentData
+                paymentData:fullPaymentData
             })
-            props.setFullPaymentData('')
+            setFullPaymentData('')
         }
-    }, [props.fullPaymentData, contextTable, employeeContext.employeeNumber, props])
+    }, [fullPaymentData, contextTable, employeeContext.employeeNumber, setFullPaymentData])
     
     // Undo settlement of receipt
     useEffect(() => {
-        if(props.undoSettledPayment === true && props.undoTargetReceipt !== ''){
+        if(undoSettledPayment === true && undoTargetReceipt !== ''){
             const receiptRef = 
-                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + props.undoTargetReceipt)
+                doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + undoTargetReceipt)
             const undoSettledPayment = async () => {
                 await updateDoc(receiptRef, {
                     paymentData: deleteField(),
                     status:'unSettledReceipt'
                 })
-                props.setUndoTargetReceipt(false)
-                props.setUndoTargetReceipt('')
+                setUndoTargetReceipt('')
             }
             undoSettledPayment()
         }
-    }, [props.undoSettledPayment, contextTable, employeeContext.employeeNumber, props.undoTargetReceipt.receipt, props])
+    }, [undoSettledPayment, contextTable, employeeContext.employeeNumber, undoTargetReceipt.receipt, undoTargetReceipt, setUndoTargetReceipt])
 
     // Store payment data from settle receipts when finalize payments selected.
     useEffect(() => {
-        if(props.finalizePayments === true){
+        if(finalizePayments === true){
             setLoading(true)
             const paymentsToComplete = document.querySelectorAll('[data-status=settledReceipt]')
             let seatsToCleanUp = [];
@@ -98,7 +101,7 @@ const SummaryReceipts = (props) => {
                         table:contextTable,
                         server:employeeContext.firstName
                     })
-                    props.setFinalizePayments(false)
+                    setFinalizePayments(false)
                     setStartCleanUp(true)
                 }
                 getReceiptAndStorePayment()
@@ -106,7 +109,7 @@ const SummaryReceipts = (props) => {
             setCleanUpSeatList(seatsToCleanUp)
             setCleanUpReceiptList(receiptsToCleanUp)
         }
-    }, [props, props.finalizePayments, contextTable, employeeContext.employeeNumber, employeeContext.firstName, setLoading])
+    }, [finalizePayments, setFinalizePayments, contextTable, employeeContext.employeeNumber, employeeContext.firstName, setLoading])
 
     // Clean up settled seats from order and remove settled receipts
     useEffect(() => {
@@ -118,7 +121,7 @@ const SummaryReceipts = (props) => {
                     const cleaning = async () => {
                         const orderRef = 
                     doc(db, 'orders', employeeContext.employeeNumber, contextTable, 'seat' + seat)
-                    await deleteDoc(orderRef)
+                    await deleteDoc(orderRef).then(setSeatsAreCleaned(true))
                     }
                     cleaning()
                 })
@@ -126,34 +129,41 @@ const SummaryReceipts = (props) => {
                     const cleaning = async () => {
                         const receiptRef =
                     doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + receipt)
-                    await deleteDoc(receiptRef)
+                    await deleteDoc(receiptRef).then(setReceiptsAreCleaned(true))
                     }
                     cleaning()
                 })
                 setCleanUpReceiptList('')
                 setCleanUpSeatList('')
-                const resetTable = async () => {
-                    const docCollection = 
-                        collection(db, 'orders', employeeContext.employeeNumber, contextTable)
-                    const collectionSnap = await getCountFromServer(docCollection)
+                setStartCleanUp(false)
+            }
+            cleanUp()
+        }
+    }, [cleanUpReceiptList, cleanUpSeatList, contextTable, employeeContext.employeeNumber, startCleanUp, setContextTable])
+
+    // Clean up tables after seats and receipts have been removed
+    useEffect(() => {
+        if(seatsAreCleaned && receiptsAreCleaned){
+            const cleanTable = async () => {
+                const docCollection = 
+                    collection(db, 'orders', employeeContext.employeeNumber, contextTable)
+                const collectionSnap = await getCountFromServer(docCollection)
+                setTimeout(() => {
                     if(collectionSnap.data().count === 0){
                         const resetTable =
                             doc(db, 'tables', contextTable)
                         updateDoc(resetTable, {
                             serverOwner:'none'
-                        })
-                        setContextTable('')
+                        }).then(setContextTable(''))
                     }
-                }
-                resetTable()
-                setStartCleanUp(false)
-                setTimeout(() => {
+                    setSeatsAreCleaned(false)
+                    setReceiptsAreCleaned(false)
                     setLoading(false)
                 }, 1500)
             }
-            cleanUp()
+            cleanTable()
         }
-    }, [cleanUpReceiptList, cleanUpSeatList, contextTable, employeeContext.employeeNumber, startCleanUp, setContextTable, setLoading])
+    }, [seatsAreCleaned, receiptsAreCleaned, contextTable, employeeContext.employeeNumber, setContextTable, setLoading])
 
     const handleSettleReceiptCapture = (e) => {
         const targetReceipt = e.currentTarget

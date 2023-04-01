@@ -49,6 +49,16 @@
     }
 }
 
+.checkTab{
+    .seatsAndOrders{
+        cursor: pointer;
+    }
+    .seatTransferReminder{
+        background-color: lightgreen;
+        color: black;
+    }
+}
+
 .paymentTab{
     .activeCheck{
         width:30%;

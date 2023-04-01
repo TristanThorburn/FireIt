@@ -3,11 +3,11 @@ import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/f
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
+    const { selectedSeat, setCurrentOrderData } = props
     const [ drinkData, setDrinkData ] = useState([]);
     const [ collectionRef, setCollectionRef ] = useState('cider');
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
-    const time = Date.now().toString()
     const ciderButton = document.getElementById('ciders')
     const seltzerButton = document.getElementById('seltzers')
 
@@ -99,20 +99,21 @@ const CiderSeltzScreen = (props) => {
     // add selected item to display as pending order on check
     useEffect(() => {
         if(selectedItem !== ''){
-            if(itemData.name && props.selectedSeat === ''){
+            const time = Date.now().toString()
+            if(itemData.name && selectedSeat === ''){
                 const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
-                props.setCurrentOrderData(orderToAdd)
+                setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
-            if(itemData.name && props.selectedSeat !== ''){
-                const orderToAdd = {seat:props.selectedSeat, name:itemData.screenName, cost:itemData.price, time:time}
-                props.setCurrentOrderData(orderToAdd)
+            if(itemData.name && selectedSeat !== ''){
+                const orderToAdd = {seat:selectedSeat, name:itemData.screenName, cost:itemData.price, time:time}
+                setCurrentOrderData(orderToAdd)
                 setSelectedItem('')
                 setItemData('')
             }
         }
-    }, [itemData, props, selectedItem, time])
+    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat])
 
     const handleCiderCategory = () => {
         setCollectionRef('cider')

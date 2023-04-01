@@ -97,13 +97,13 @@
     background-color:$fireItColor;
 }
 
-.checkTab{
+.checkTab, .paymentTab{
     .fireItAlert{
         article{
             width:94%;
-        }
-        p{
-            margin:0 auto 1.25rem;
+            p{
+                margin:0 auto 1.25rem;
+            }
         }
     }
 }

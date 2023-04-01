@@ -8,6 +8,7 @@ import {
 import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const BeerData = (props) => {
+    const { activeTab } = props
     const [ beerData, setBeerData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
@@ -15,7 +16,7 @@ const BeerData = (props) => {
     // Data population
     useEffect(() => {
         const getMenuCategory = async () => {
-            if(props.activeTab === 'beer bottle'){
+            if(activeTab === 'beer bottle'){
                 const q = query(beerBottleCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setBeerData(snapshot.docs.map(doc => ({
@@ -25,7 +26,7 @@ const BeerData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'beer can'){
+            if(activeTab === 'beer can'){
                 const q = query(beerCanCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setBeerData(snapshot.docs.map(doc => ({
@@ -35,7 +36,7 @@ const BeerData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'beer draft'){
+            if(activeTab === 'beer draft'){
                 const q = query(beerDraftCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setBeerData(snapshot.docs.map(doc => ({
@@ -51,7 +52,7 @@ const BeerData = (props) => {
             }
         }
         getMenuCategory()
-    },[props.activeTab])
+    },[activeTab])
 
     const handleNewItem = () => {
         setSelectedItem('')

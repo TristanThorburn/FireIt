@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 const FrontDashNavTabs = (props) => {
+    const { tableTabActive, summaryTabActive, menuTabActive, checkTabActive, paymentTabActive} = props
     
     const toggleAdmin = () => {
         props.setAdminPad(true);
@@ -55,42 +56,42 @@ const FrontDashNavTabs = (props) => {
         const check = topNav.querySelector('#checkTab')
         const payment = topNav.querySelector('#paymentTab')
         
-        if(props.summaryTabActive){
+        if(summaryTabActive){
             summary.classList.add('activeTopNav')
             table.classList.remove('activeTopNav')
             menu.classList.remove('activeTopNav')
             check.classList.remove('activeTopNav')
             payment.classList.remove('activeTopNav')
         }
-        if(props.tableTabActive){
+        if(tableTabActive){
             summary.classList.remove('activeTopNav')
             table.classList.add('activeTopNav')
             menu.classList.remove('activeTopNav')
             check.classList.remove('activeTopNav')
             payment.classList.remove('activeTopNav')
         }
-        if(props.menuTabActive){
+        if(menuTabActive){
             summary.classList.remove('activeTopNav')
             table.classList.remove('activeTopNav')
             menu.classList.add('activeTopNav')
             check.classList.remove('activeTopNav')
             payment.classList.remove('activeTopNav')
         }
-        if(props.checkTabActive){
+        if(checkTabActive){
             summary.classList.remove('activeTopNav')
             table.classList.remove('activeTopNav')
             menu.classList.remove('activeTopNav')
             check.classList.add('activeTopNav')
             payment.classList.remove('activeTopNav')
         }
-        if(props.paymentTabActive){
+        if(paymentTabActive){
             summary.classList.remove('activeTopNav')
             table.classList.remove('activeTopNav')
             menu.classList.remove('activeTopNav')
             check.classList.remove('activeTopNav')
             payment.classList.add('activeTopNav')
         }
-    },[props.summaryTabActive, props.tableTabActive, props.menuTabActive, props.checkTabActive, props.paymentTabActive])
+    },[summaryTabActive, tableTabActive, menuTabActive, checkTabActive, paymentTabActive])
 
     return(
         <div className='frontDashTopNav'>

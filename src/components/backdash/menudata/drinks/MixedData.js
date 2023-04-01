@@ -7,13 +7,14 @@ import {
 import { onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const MixedData = (props) => {
+    const { activeTab } = props
     const [ mixedData, setMixedData ] = useState([]);
     const [ newItem, setNewItem ] = useState(false);
     const [ selectedItem, setSelectedItem ] = useState('');
 
     useEffect(() => {
         const getMenuCategory = async () => {
-            if(props.activeTab === 'cocktails'){
+            if(activeTab === 'cocktails'){
                 const q = query(cocktailCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setMixedData(snapshot.docs.map(doc => ({
@@ -23,7 +24,7 @@ const MixedData = (props) => {
                 })
                 return unsubscribe
             }
-            if(props.activeTab === 'shots'){
+            if(activeTab === 'shots'){
                 const q = query(shotsCollectionRef, orderBy('name'));
                 const unsubscribe = onSnapshot(q, snapshot => {
                     setMixedData(snapshot.docs.map(doc => ({
@@ -39,7 +40,7 @@ const MixedData = (props) => {
             }
         }
         getMenuCategory()
-    },[props.activeTab])
+    },[activeTab])
 
     const handleNewItem = () => {
         setSelectedItem('')
