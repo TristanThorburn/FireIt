@@ -12,6 +12,7 @@ import AlphaNumericPad from "../keypads/AlphaNumericPad";
 const CheckTab = (props) => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
+    const { setCheckTabActive, setPaymentTabActive } = props
     const [ receiptData, setReceiptData ] = useState([]);
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
@@ -24,7 +25,12 @@ const CheckTab = (props) => {
     const [ confirmSeatRemove, setConfirmSeatRemove ] = useState(false);
     const [ targetRemovalSeat, setTargetRemovalSeat ] = useState('');
     const [ receiptsList, setReceiptsList ] = useState('')
+    const [ allOnOne, setAllOnOne ] = useState(false)
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
+
+    const handleTest = () => {
+        console.log(receiptData[0].data.checkTotal)
+    }
     
     // OLD SPLIT CHECKS LOGIC:
     // Populate / Remove array to determine render # of seperate check components
@@ -50,7 +56,22 @@ const CheckTab = (props) => {
 
     // Get data for current table receipts
     useEffect(() => {
-        if(contextTable !== ''){
+        if(contextTable !== '' && allOnOne === true){
+            const getReceiptData = async () => {
+                const checkCollectionRef = 
+                    collection(db, 'orders', `${employeeContext.employeeNumber}`, contextTable)
+                const q = query(checkCollectionRef, orderBy('seatNumber'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setReceiptData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data(),
+                    })))
+                })
+                return unsubscribe
+            }
+            getReceiptData()
+        }
+        if(contextTable !== '' && allOnOne === false){
             const getReceipts = async () => {
                 const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
@@ -71,7 +92,7 @@ const CheckTab = (props) => {
                 }
             getReceipts()
         }
-    }, [contextTable, employeeContext]);
+    }, [contextTable, employeeContext, allOnOne]);
 
     // Check if selected receipt exists on display
     useEffect(() => {
@@ -157,7 +178,7 @@ const CheckTab = (props) => {
 
     // Print Receipts AKA save to firestore
     useEffect(() => {
-        if(printReceipts === true){
+        if(printReceipts === true && !allOnOne){
         // Get all the receipts on the screen
             const receiptsList = document.querySelectorAll('.seperatedCheck')
             receiptsList.forEach(receipt => {
@@ -198,10 +219,10 @@ const CheckTab = (props) => {
                 })
             })
             setPrintReceipts(false)
-            props.setCheckTabActive(false)
-            props.setPaymentTabActive(true)
+            setCheckTabActive(false)
+            setPaymentTabActive(true)
         }
-    }, [printReceipts, contextTable, employeeContext.employeeNumber, props])
+    }, [printReceipts, contextTable, employeeContext.employeeNumber, allOnOne, setCheckTabActive, setPaymentTabActive])
 
     // Remove the selected seat from printed receipt after prompt
     useEffect(() => {
@@ -288,67 +309,114 @@ const CheckTab = (props) => {
                     />
 
             <section className='checkTabDisplay'>
+<button onClick={handleTest} className='testButton'>TEST</button>
                 <h2>ADD RECEIPTs, Click on Origin Checks' Seats to Transfer to Receipts, then Print.</h2>
                 <div className='seperatedChecksContainer'>
-                    {receiptData?.map((receipt, i) => {
-                        return(
-                            <article
-                                className='seperatedCheck'
-                                key={i}>
-                                <h3>Receipt {receipt.data.receiptNumber}</h3>
-                    
-                                <div id={receipt.id}></div>
-
-                                {receipt.data.seatsList?.map((seat) => {
-                                    return(
-                                        <table
-                                            key={seat.seat}
-                                            className='receiptSeatInfo'
-                                            data-receipt={receipt.id}
-                                            data-seatnumber={seat.seat}
-                                            onClickCapture={handlePrintedSeatDeleteCapture}
-                                            >
-                                            <thead>
-                                                <tr>
-                                                    <th
-                                                        colSpan={2}
-                                                        >❌ Seat: {seat.seat}
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody 
-                                                data-seatid={'seat' + seat.seat}
-                                                data-seatcost={seat.seatCost}
-                                                >
-                                                {seat.order.map((order, i) => {
-                                                    return(
-                                                        <tr
-                                                            key={i}
-                                                            className='seatItemList'
-                                                            data-item={order.item}
-                                                            data-cost={order.cost}
-                                                            >
-                                                            <td>{order.item}</td>
+                    {allOnOne
+                        ? <article
+                            className='seperatedCheck'>
+                            <h3>Receipt 1</h3>
+                            {receiptData?.map(seat =>
+                                <table
+                                    key={seat.id}
+                                    className='receiptSeatInfo'
+                                    data-receipt='1'
+                                    data-seatnumber={seat.data?.seatNumber}>
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                colSpan={2}
+                                                >Seat: {seat.data?.seatNumber}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {seat.data.order?.map((order, i) => {
+                                                return(
+                                                    <tr
+                                                        className='seatItemList'
+                                                        key={i}>
+                                                             <td>
+                                                                {order.item}
+                                                            </td>
                                                             <td
-                                                                className='receiptItemCost'
+                                                                data-cost={order.cost}
+                                                                className='checkItemCost'
+                                                                >{order.cost}
+                                                            </td>
+                                                    </tr>    
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table> 
+                            )}
+
+                            <footer>
+                                <p>Check Total:</p>
+                                <p>${receiptData[0]?.data.checkTotal}</p>
+                            </footer>
+                        </article>
+                        : receiptData?.map((receipt, i) => {
+                            return(
+                                <article
+                                    className='seperatedCheck'
+                                    key={i}>
+                                    <h3>Receipt {receipt.data.receiptNumber}</h3>
+                        
+                                    <div id={receipt.id}></div>
+
+                                    {receipt.data.seatsList?.map((seat) => {
+                                        return(
+                                            <table
+                                                key={seat.seat}
+                                                className='receiptSeatInfo'
+                                                data-receipt={receipt.id}
+                                                data-seatnumber={seat.seat}
+                                                onClickCapture={handlePrintedSeatDeleteCapture}
+                                                >
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            colSpan={2}
+                                                            >❌ Seat: {seat.seat}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody 
+                                                    data-seatid={'seat' + seat.seat}
+                                                    data-seatcost={seat.seatCost}
+                                                    >
+                                                    {seat.order.map((order, i) => {
+                                                        return(
+                                                            <tr
+                                                                key={i}
+                                                                className='seatItemList'
+                                                                data-item={order.item}
+                                                                data-cost={order.cost}
                                                                 >
-                                                                {order.cost}</td>
-                                                        </tr>  
-                                                    )
-                                                })}
-                                            </tbody>
-                                        </table>
-                                        )
-                                    })
-                                }
-                    
-                                <footer>
-                                    <p>Check Total:</p>
-                                    <p>${receipt.data.receiptTotalCost}</p>
-                                </footer>
-                            </article>
-                        )
-                    })}
+                                                                <td>{order.item}</td>
+                                                                <td
+                                                                    className='receiptItemCost'
+                                                                    >
+                                                                    {order.cost}</td>
+                                                            </tr>  
+                                                        )
+                                                    })}
+                                                </tbody>
+                                            </table>
+                                            )
+                                        })
+                                    }
+                        
+                                    <footer>
+                                        <p>Check Total:</p>
+                                        <p>${receipt.data.receiptTotalCost}</p>
+                                    </footer>
+                                </article>
+                            )
+                        })
+                    }
                 </div>
             </section>
 
@@ -361,6 +429,8 @@ const CheckTab = (props) => {
                 employeeNumber={employeeContext.employeeNumber}
                 tableId={props.activeTableData.searchId}
                 receiptsList={receiptsList}
+                setAllOnOne={setAllOnOne}
+                allOnOne={allOnOne}
                 />
         </div>
     )

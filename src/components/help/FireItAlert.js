@@ -139,6 +139,11 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'CheckTab cancel all on one'
+                        ? <div className='padError'>Cancel 'All On One' to manually separate seats on to receipts yourself.
+                        </div>
+                        : null
+                    }
 {/* PAYMENT ERRORS */}
                     {props.fireItAlert === 'PaymentTab undo settled payment'
                         ? <div className='padError'>
