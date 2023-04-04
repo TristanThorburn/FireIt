@@ -263,6 +263,7 @@ const CheckTab = (props) => {
                 ? <AlphaNumericPad
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                     serverTableList={props.serverTableList}
+                    existingTables={props.existingTables}
                     />
                 : null
             }
