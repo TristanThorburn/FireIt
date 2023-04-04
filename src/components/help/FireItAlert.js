@@ -106,8 +106,8 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'CheckTab more than ten'
-                        ? <div className='padError'>The current limit for number of additional separated checks is 10.
+                    {props.fireItAlert === 'CheckTab more receipts than seats'
+                        ? <div className='padError'>There are not enough seats on the check to populate any more receipts.
                         </div>
                         : null
                     }

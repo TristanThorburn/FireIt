@@ -1,9 +1,9 @@
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTable } from '../../../contexts/TableContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { db } from '../../../firebase';
-import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, deleteDoc, collection, getCountFromServer } from 'firebase/firestore';
 
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
@@ -11,10 +11,22 @@ const CheckTabNav = (props) => {
     const { receiptsList } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
+    const [ seatCount, setSeatCount ] = useState('')
 
-    const handleTest = () => {
-        console.log('test')
+    const handleTest = async () => {
+        console.log(Math.max(...receiptsList))
     }
+
+    // Get the count of seats on the table to limit number of receipts
+    useEffect(() => {
+        const getSeatCount = async () => {
+            const docCollection = 
+                    collection(db, 'orders', employeeContext.employeeNumber, contextTable)
+            const collectionSnap = await getCountFromServer(docCollection)
+            setSeatCount(collectionSnap.data().count)
+        }
+        getSeatCount()
+    }, [employeeContext.employeeNumber, contextTable])
 
     const handleMgrOveride = () => {
         if(managerContext === false){
@@ -33,7 +45,11 @@ const CheckTabNav = (props) => {
     const handleAddSeparate = () => {
 
         const createSeperateReceipt = async () => {
-            if(receiptsList.length === 0){
+            if(receiptsList.length >= seatCount){
+                props.setFireItAlert('CheckTab more receipts than seats')
+            }
+
+            if(receiptsList.length === 0 && receiptsList.length < seatCount){
                 const receiptRef = 
                         doc(db, 'receipts', `${props.employeeNumber}`, contextTable, 'receipt1')
                 const docSnap = await getDoc(receiptRef)
@@ -48,7 +64,7 @@ const CheckTabNav = (props) => {
                 }
             }
 
-            if(receiptsList.length > 0){
+            if(receiptsList.length > 0 && receiptsList.length < seatCount){
                 const orderedReceipts = receiptsList.slice().sort((a, b) => a - b)
                 let nextReceipt = null
                 
@@ -80,8 +96,9 @@ const CheckTabNav = (props) => {
     }
 
     const handleRemoveSeparate = () => {
+        const receiptToRemove = Math.max(...receiptsList)
         const receiptRef = 
-            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptsList.length}`)
+            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptToRemove}`)
         const removeSeperateReceipt = async () => {
             const docSnap = await getDoc(receiptRef)
             if(receiptsList.length > 0){
