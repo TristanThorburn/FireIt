@@ -91,12 +91,12 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'TableMap table in use'
-                        ? <div className='padError'>This table is in use by employee #{props.showTableOwner}.
+                        ? <div className='padError'>This table is in use by {props.showTableOwner}.
                         </div>
                         : null
                     }
                     {props.fireItAlert === 'TableMap delete table in use'
-                        ? <div className='padError'>This table is currently in use by employee #{props.showTableOwner} and cannot be deleted.
+                        ? <div className='padError'>This table is currently in use by {props.showTableOwner} and cannot be deleted.
                         </div>
                         : null
                     }

@@ -293,7 +293,7 @@ const TableCheck = (props) => {
                     const setTableOwnership = async () => {
                         const tableRef = doc(db, 'tables', `${tableData.searchId}`)
                         updateDoc(tableRef, {
-                            serverOwner:employeeContext.employeeNumber
+                            serverOwner:employeeContext.firstName
                         })
                     }
                     createNewCheckData().then(setTableOwnership())
@@ -315,7 +315,7 @@ const TableCheck = (props) => {
         setMenuTabActive(false)
         setTableTabActive(true)
         }
-    }, [sendOrder, pendingOrder, employeeContext.employeeNumber, setMenuTabActive, setTableTabActive, setSendOrder, tableData.searchId])
+    }, [sendOrder, pendingOrder, employeeContext.employeeNumber, setMenuTabActive, setTableTabActive, setSendOrder, tableData.searchId, employeeContext.firstName])
     
     const handleCheckItemClickCapture = (e) => {
         if(props.menuTabActive && managerContext === false){

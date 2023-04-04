@@ -77,7 +77,7 @@ const FrontDash = () => {
     useEffect(() => {
         const q = 
             query(tableMapCollectionRef, 
-                where('serverOwner', '==', `${employeeContext.employeeNumber}`))
+                where('serverOwner', '==', `${employeeContext.firstName}`))
             const getTableList = async () => {
                 if(employeeContext.firstLogin === 'true'){
                     setMessageOfTheDay(true)
@@ -91,7 +91,7 @@ const FrontDash = () => {
                 return unsubscribe
         }
         getTableList()
-    }, [employeeContext.employeeNumber, employeeContext.firstLogin, loading])
+    }, [employeeContext.firstName, employeeContext.firstLogin, loading])
 
     return(
         <div className='frontDash'>

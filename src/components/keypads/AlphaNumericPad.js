@@ -10,7 +10,7 @@ const AlphaNumericPad = (props) => {
     let padCombo = []
 
     const handleCloseModal = () => {
-            props.setAlphaNumericPadOpen(false)
+        props.setAlphaNumericPadOpen(false)
     }
 
     const handleClick = (e) => {

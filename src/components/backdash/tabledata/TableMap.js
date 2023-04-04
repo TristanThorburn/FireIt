@@ -127,13 +127,13 @@ const TableMap = (props) => {
         }
         if(props.tableTabActive){
             if(e.currentTarget.dataset.inuse === 'none' 
-                || e.currentTarget.dataset.inuse === employeeContext.employeeNumber){
+                || e.currentTarget.dataset.inuse === employeeContext.firstName){
                 props.setTableTabActive(false);
                 props.setMenuTabActive(true);
                 setContextTable(e.currentTarget.id);
             }
             if(e.currentTarget.dataset.inuse !== 'none' 
-            || e.currentTarget.dataset.inuse !== employeeContext.employeeNumber){
+            || e.currentTarget.dataset.inuse !== employeeContext.firstName){
                 setShowTableOwner(e.currentTarget.dataset.inuse)
                 setFireItAlert('TableMap table in use')
             }
