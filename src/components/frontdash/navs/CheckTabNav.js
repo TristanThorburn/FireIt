@@ -8,11 +8,12 @@ import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
     const { contextTable } = useTable();
+    const { receiptsList } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
     const handleTest = () => {
-        console.log(props.receiptNumber)
+        console.log('test')
     }
 
     const handleMgrOveride = () => {
@@ -30,22 +31,49 @@ const CheckTabNav = (props) => {
     }
 
     const handleAddSeparate = () => {
-        const receiptRef = 
-                doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${props.receiptsNumber + 1}`)
+
         const createSeperateReceipt = async () => {
-            const docSnap = await getDoc(receiptRef)
-            if(props.receiptsNumber < 10){
+            if(receiptsList.length === 0){
+                const receiptRef = 
+                        doc(db, 'receipts', `${props.employeeNumber}`, contextTable, 'receipt1')
+                const docSnap = await getDoc(receiptRef)
+
                 if(!docSnap.exists()){
                     setDoc(receiptRef, {
                         receiptTotalCost:0,
-                        receiptNumber:props.receiptsNumber + 1,
+                        receiptNumber:1,
                         seatsList: [],
                         status:'unSettledReceipt'
                     })
                 }
             }
-            if(props.receiptsNumber === 10){
-                props.setFireItAlert('CheckTab more than ten')
+
+            if(receiptsList.length > 0){
+                const orderedReceipts = receiptsList.slice().sort((a, b) => a - b)
+                let nextReceipt = null
+                
+                for( let i = 1; i < orderedReceipts.length; i++){
+                    if(orderedReceipts[i] !== orderedReceipts[i - 1] + 1){
+                        nextReceipt = orderedReceipts[i - 1] + 1;
+                        break;
+                    }
+                }
+        
+                if(nextReceipt === null){
+                    nextReceipt = orderedReceipts[orderedReceipts.length - 1] +1;
+                }
+                const receiptRef = 
+                        doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${nextReceipt}`)
+                const docSnap = await getDoc(receiptRef)
+
+                if(!docSnap.exists()){
+                    setDoc(receiptRef, {
+                        receiptTotalCost:0,
+                        receiptNumber:nextReceipt,
+                        seatsList: [],
+                        status:'unSettledReceipt'
+                    })
+                }
             }
         }
         createSeperateReceipt()
@@ -53,15 +81,15 @@ const CheckTabNav = (props) => {
 
     const handleRemoveSeparate = () => {
         const receiptRef = 
-            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${props.receiptsNumber}`)
+            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptsList.length}`)
         const removeSeperateReceipt = async () => {
             const docSnap = await getDoc(receiptRef)
-            if(props.receiptsNumber > 0){
+            if(receiptsList.length > 0){
                 if(docSnap.exists()){
                     deleteDoc(receiptRef)
                 }
             }
-            if(props.receiptsNumber === 0){
+            if(receiptsList.length === 0){
                 props.setFireItAlert('CheckTab less than zero')
             }
         }
@@ -107,7 +135,7 @@ const CheckTabNav = (props) => {
                         onClick={handleAddSeparate}
                         id='addReceipt'
                         className='workingButton'
-                        >ADD RECEIPT</button>
+                        >ADD NEW RECEIPT</button>
                 </li>
                 <li>
                     <button
