@@ -10,7 +10,7 @@ const AlphaNumericPad = (props) => {
     let padCombo = []
 
     const handleCloseModal = () => {
-            props.setAlphaNumericPadOpen(false)
+        props.setAlphaNumericPadOpen(false)
     }
 
     const handleClick = (e) => {
@@ -31,38 +31,51 @@ const AlphaNumericPad = (props) => {
 
     const handleSubmit = () => {
         const padInput = new Array(padCombo.join().replace(/[, ]+/g,'').trim()).toString()
-        const approvedTable = props.serverTableList.filter(obj => obj.id === padInput)
-        if(approvedTable.length >= 1){
-            setSuccess(padInput)
-            setContextTable(padInput)
+        const tableIsOnMap = props.existingTables.filter(name => name.toLowerCase() === padInput)
+        if(tableIsOnMap.length === 0){
+            const errorTable = new Array(padCombo.join().replace(/[,]+/g,'').trim()).toString()
+            setError(`${errorTable} does not exist on the table map.`)
+            padCombo = []
             setTimeout(() => {
-                setSuccess('')
-                if(props.summaryTabActive === true){
-                    props.setSummaryTabActive(false)
-                    props.setMenuTabActive(true)
-                }
-            }, 1000)
-        } else {
-            const docRef = doc(db, 'tables', padInput)
-            const getTableInfo = async () => {
-                const docSnap = await getDoc(docRef)
-                if(docSnap.exists()){
-                    if(docSnap.data().serverOwner === 'none'){
-                        setSuccess(padInput)
-                        setContextTable(padInput)
-                        setTimeout(() => {
-                            setSuccess('')
-                            if(props.summaryTabActive === true){
-                                props.setSummaryTabActive(false)
-                                props.setMenuTabActive(true)
-                            }
-                        }, 1000)
-                    } else {
-                        setError('Another server is using that table')
+                setError('')
+            }, 1500)
+        }
+        if(tableIsOnMap.length > 0){
+            const approvedTable = props.serverTableList.filter(obj => obj.id === padInput)
+            if(approvedTable.length >= 1){
+                setSuccess(padInput)
+                setContextTable(padInput)
+                setTimeout(() => {
+                    setSuccess('')
+                    padCombo = []
+                    if(props.summaryTabActive === true){
+                        props.setSummaryTabActive(false)
+                        props.setMenuTabActive(true)
+                    }
+                }, 1000)
+            } else {
+                const docRef = doc(db, 'tables', padInput)
+                const getTableInfo = async () => {
+                    const docSnap = await getDoc(docRef)
+                    if(docSnap.exists()){
+                        if(docSnap.data().serverOwner === 'none'){
+                            setSuccess(padInput)
+                            setContextTable(padInput)
+                            setTimeout(() => {
+                                setSuccess('')
+                                padCombo = []
+                                if(props.summaryTabActive === true){
+                                    props.setSummaryTabActive(false)
+                                    props.setMenuTabActive(true)
+                                }
+                            }, 1000)
+                        } else {
+                            setError('Another server is using that table')
+                        }
                     }
                 }
+                getTableInfo()
             }
-            getTableInfo()
         }
     }
 

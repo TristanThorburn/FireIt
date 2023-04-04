@@ -208,7 +208,15 @@ const BackDashHelp = (props) => {
                         }
                         {props.tableSetupHelp
                             ? <ul>
-                                <li>Coming Soon</li>
+                                <li>Further logic insights can be seen in the front dash view code insights.</li>
+                                <li>Clicking 'update map' swaps a boolean state to allow changes to be made to the map.</li>
+                                <li>The 'Add Table' button opens a form component to name a table and pick a starting design. If no design is selected on the radio buttons, the user is prompted to do so.</li>
+                                <li>Clicking the add button first gets the table map collections and filters the data by the input table name to confirm no previous index contains the same table name, preventing duplication.</li>
+                                <li>If the table is not a duplicate it is uploaded to firestore with default locations for left and top.</li>
+                                <li>Change Table Style changes the design style data, which is used as a class name for CSS styling.</li>
+                                <li>Delete Table checks if the selected table is currently in use by any employee before allowing deletion from firestore.</li>
+                                <li>Enable Table Reposition toggles a boolean which allows an on click capture event listener on the tables. Clicking triggers styling to highlight the table and a subsequential event listener which updates the top and left styling of the table based on the mouses location on the table map. The final event listener is a click to stop movement of the table.</li>
+                                <li>Save Table Positions loops through all of the tables and updates their saved top and left locations to the current values on the updated map.</li>
                             </ul>
                             : null
                         }

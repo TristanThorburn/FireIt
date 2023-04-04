@@ -1,5 +1,5 @@
 import { db } from "../../../firebase"
-import { doc, updateDoc, arrayRemove, arrayUnion, getDoc, deleteDoc } from "firebase/firestore"
+import { doc, updateDoc, arrayRemove, arrayUnion, getDoc, deleteDoc, collection, getCountFromServer } from "firebase/firestore"
 import { useAuth } from "../../../contexts/AuthContext";
 import { useTable } from "../../../contexts/TableContext";
 import { useState, useEffect } from "react";
@@ -16,6 +16,7 @@ const ModifyCheckItem = (props) => {
     const [ discountAmount, setDiscountAmount ] = useState('')
     const [ qsaItem, setQsaItem ] = useState(false);
     const [ deleteQsaItem, setDeleteQsaItem ] = useState(false);
+    const [ confirmReleaseTable, setConfirmRelaseTable ] = useState(false)
 
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)
@@ -349,6 +350,26 @@ const ModifyCheckItem = (props) => {
         }
     },[qsaItem, setModifyCheckItem, checkItemModData.cost, checkItemModData.name, checkItemModData.originalCost, checkItemModData.qsa, checkItemModData.time, checkItemModData.seat, contextTable, employeeContext.employeeNumber])
 
+    // Release table ownership on last item delete
+    useEffect(() => {
+        if(confirmReleaseTable) {
+            const getSeatCount = async () => {
+                const docCollection = 
+                        collection(db, 'orders', employeeContext.employeeNumber, contextTable)
+                const collectionSnap = await getCountFromServer(docCollection)
+                if(collectionSnap.data().count === 0){
+                    const resetTable =
+                        doc(db, 'tables', contextTable)
+                    updateDoc(resetTable, {
+                        serverOwner:'none'
+                    })
+                }
+                setConfirmRelaseTable(false)
+            }
+            getSeatCount()
+        }
+    }, [confirmReleaseTable, employeeContext.employeeNumber, contextTable])
+
     const handleDeleteItem = async () => {
         if(props.checkItemModData.qsa === 'true' && props.checkItemModData.discount !=='0'){
             setConfirmQsaDelete(true)
@@ -373,6 +394,7 @@ const ModifyCheckItem = (props) => {
             if(docSnap.data() !== undefined && docSnap.data().order.length < 1){
                 deleteDoc(docRef)
                 props.setDoesSeatExist(false)
+                setConfirmRelaseTable(true)
             }
             setInfoMessage(`${props.checkItemModData.name} deleted`)
             setTimeout(() => {

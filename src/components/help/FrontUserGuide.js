@@ -53,13 +53,13 @@ const FrontUserGuide = (props) => {
 
                 {props.checkTabActive
                     ? <ul>
-                        <li>Use ADD RECEIPT or REMOVE RECEIPT to populate up to 10 receipts for checks to be split on to.</li>
-                        <li>REMOVE RECEIPT will delete all information on the receipt upon removal</li>
+                        <li>Use ADD NEW RECEIPT or REMOVE RECEIPT to populate receipts for checks to be split on to.</li>
+                        <li>Remove receipt removes the highest numerical receipt and will delete all information on the receipt upon removal</li>
                         <li>Click on the seat you want to transfer and select the target receipt number, currently must be less than or equal to 10.</li>
                         <li>A seat from the origin check can only be on one receipt, and cannot be repeated.</li>
                         <li>Click on any pending seperate seat on the receipt to remove it.</li>
                         <li>PRINT ALL RECEIPT to save the pending seats to each receipt, aka printing the checks out to give to guests.</li>
-                        <li>Clicking on the seat on a printed receipt will prompt for confirmation before deleting. No manager authorization is required for this as the incorrect receipt has been 'printed' and would be thrown in the garbage after re-separating.</li>
+                        <li>Deleting seats from receipts, or removing receipts does not require manager auth as they represent the physical receipts that could just be thrown in the garbage when incorrect.</li>
                         <li>Stretch Goals: 
                             <br />
                             Organize seats into different billing methods, for example split checks 50/50.
@@ -219,14 +219,14 @@ const FrontUserGuide = (props) => {
                             - Confirm the seat seperations and 'print' the checks, this stores the data to firebase. 
                         </li>
                         <li>
-                            ADD RECEIPT
+                            ADD NEW RECEIPT
                             <br />
                             - Add an additional receipt to seperate the original check on to. 
                         </li>
                         <li>
                             REMOVE RECEIPT
                             <br />
-                            - Remove an un-needed additional seperate receipt. This will delete all information on the receipt.
+                            - Remove an un-needed additional seperate receipt. This will delete all information on the receipt. Removes the highest numerical receipt.
                         </li>
                         <li>
                             CHNG TBL

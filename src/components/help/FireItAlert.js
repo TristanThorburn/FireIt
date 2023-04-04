@@ -91,12 +91,12 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'TableMap table in use'
-                        ? <div className='padError'>This table is in use by employee #{props.showTableOwner}.
+                        ? <div className='padError'>This table is in use by {props.showTableOwner}.
                         </div>
                         : null
                     }
                     {props.fireItAlert === 'TableMap delete table in use'
-                        ? <div className='padError'>This table is currently in use by employee #{props.showTableOwner} and cannot be deleted.
+                        ? <div className='padError'>This table is currently in use by {props.showTableOwner} and cannot be deleted.
                         </div>
                         : null
                     }
@@ -106,8 +106,8 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
-                    {props.fireItAlert === 'CheckTab more than ten'
-                        ? <div className='padError'>The current limit for number of additional separated checks is 10.
+                    {props.fireItAlert === 'CheckTab more receipts than seats'
+                        ? <div className='padError'>There are not enough seats on the check to populate any more receipts.
                         </div>
                         : null
                     }

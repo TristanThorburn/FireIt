@@ -34,16 +34,23 @@ const FrontDash = () => {
     const [ serverTableList, setServerTableList ] = useState([]);
     const [ messageOfTheDay, setMessageOfTheDay ] = useState(false);
     const [ frontTableMapData, setFrontTableMapData ] = useState([])
+    const [ existingTables, setExistingTables ] = useState('')
 
     // Populate screen from table Data
     useEffect(() => {
         const getTables = async () => {
             const q = query(tableMapCollectionRef, orderBy('name'));
+            let tablesList = []
             const unsubscribe = onSnapshot(q, snapshot => {
+                tablesList = []
                 setFrontTableMapData(snapshot.docs.map(doc => ({
                     id: doc.id,
                     data: doc.data()
                 })))
+                snapshot.forEach(table => {
+                    tablesList.push(table.data().name.replace(/ /g, ''))
+                })
+                setExistingTables(tablesList)
             })
             return unsubscribe
         }
@@ -77,7 +84,7 @@ const FrontDash = () => {
     useEffect(() => {
         const q = 
             query(tableMapCollectionRef, 
-                where('serverOwner', '==', `${employeeContext.employeeNumber}`))
+                where('serverOwner', '==', `${employeeContext.firstName}`))
             const getTableList = async () => {
                 if(employeeContext.firstLogin === 'true'){
                     setMessageOfTheDay(true)
@@ -91,7 +98,7 @@ const FrontDash = () => {
                 return unsubscribe
         }
         getTableList()
-    }, [employeeContext.employeeNumber, employeeContext.firstLogin, loading])
+    }, [employeeContext.firstName, employeeContext.firstLogin, loading])
 
     return(
         <div className='frontDash'>
@@ -184,6 +191,7 @@ const FrontDash = () => {
                     menuTabActive={menuTabActive}
                     activeTableData={activeTableData}
                     serverTableList={serverTableList}
+                    existingTables={existingTables}
                     />
                 : null
             }
@@ -196,6 +204,7 @@ const FrontDash = () => {
                     setPaymentTabActive={setPaymentTabActive}
                     activeTableData={activeTableData}
                     serverTableList={serverTableList}
+                    existingTables={existingTables}
                     />
                 : null
             }

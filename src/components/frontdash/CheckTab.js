@@ -23,6 +23,7 @@ const CheckTab = (props) => {
     const [ printReceipts, setPrintReceipts ] = useState(false);
     const [ confirmSeatRemove, setConfirmSeatRemove ] = useState(false);
     const [ targetRemovalSeat, setTargetRemovalSeat ] = useState('');
+    const [ receiptsList, setReceiptsList ] = useState('')
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
     
     // OLD SPLIT CHECKS LOGIC:
@@ -54,11 +55,17 @@ const CheckTab = (props) => {
                 const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
                 const q = query(receiptCollectionRef, orderBy('receiptNumber', 'asc'));
+                let receiptNumbers = []
                 const unsubscribe = onSnapshot(q, snapshot => {
+                    receiptNumbers = []
                     setReceiptData(snapshot.docs.map(doc => ({
                         id: doc.id,
                         data: doc.data(),
                     })))
+                    snapshot.forEach(receipt => {
+                        receiptNumbers.push(receipt.data().receiptNumber)
+                    })
+                    setReceiptsList(receiptNumbers)
                 })
                 return unsubscribe
                 }
@@ -256,6 +263,7 @@ const CheckTab = (props) => {
                 ? <AlphaNumericPad
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                     serverTableList={props.serverTableList}
+                    existingTables={props.existingTables}
                     />
                 : null
             }
@@ -348,11 +356,11 @@ const CheckTab = (props) => {
                 setHelpModal={props.setHelpModal}
                 setFireItAlert={setFireItAlert}
                 setManagerKeyPadActive={setManagerKeyPadActive}
-                receiptsNumber={receiptData.length}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
                 setPrintReceipts={setPrintReceipts}
                 employeeNumber={employeeContext.employeeNumber}
                 tableId={props.activeTableData.searchId}
+                receiptsList={receiptsList}
                 />
         </div>
     )
