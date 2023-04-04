@@ -353,6 +353,7 @@ const CheckTab = (props) => {
                 setPrintReceipts={setPrintReceipts}
                 employeeNumber={employeeContext.employeeNumber}
                 tableId={props.activeTableData.searchId}
+                receiptData={receiptData}
                 />
         </div>
     )

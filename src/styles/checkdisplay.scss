@@ -74,6 +74,12 @@
     }
 }
 
+.checkTab{
+    .receiptSeatInfo{
+        cursor: pointer;
+    }
+}
+
 .pendingOrder, .pendingSeat, .pendingSeperateSeat{
     color:blue;
     background-color: lightblue;
