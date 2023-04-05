@@ -3,7 +3,7 @@ import { ciderCollectionRef, hardSeltzerCollectionRef } from '../../../library/f
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const CiderSeltzScreen = (props) => {
-    const { selectedSeat, setCurrentOrderData } = props
+    const { selectedSeat, setCurrentOrderData, contextTable, setFireItAlert } = props
     const [ drinkData, setDrinkData ] = useState([]);
     const [ collectionRef, setCollectionRef ] = useState('cider');
     const [ selectedItem, setSelectedItem ] = useState('');
@@ -98,7 +98,9 @@ const CiderSeltzScreen = (props) => {
 
     // add selected item to display as pending order on check
     useEffect(() => {
-        if(selectedItem !== ''){
+        if(contextTable === '' && selectedItem !== ''){
+            setFireItAlert('FireIt no table')
+        } else {
             const time = Date.now().toString()
             if(itemData.name && selectedSeat === ''){
                 const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
@@ -113,7 +115,7 @@ const CiderSeltzScreen = (props) => {
                 setItemData('')
             }
         }
-    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat])
+    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat, contextTable, setFireItAlert])
 
     const handleCiderCategory = () => {
         setCollectionRef('cider')

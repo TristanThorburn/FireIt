@@ -85,6 +85,11 @@ const FireItAlert = (props) => {
                         : null
                     }
 {/* TABLE ERRORS */}
+                    {props.fireItAlert === 'FireIt no table'
+                        ? <div className='padError'>No table selected.
+                        </div>
+                        : null
+                    }
                     {props.fireItAlert === 'TableMap no table'
                         ? <div className='padError'>Please select the table you wish to edit.
                         </div>
@@ -146,6 +151,11 @@ const FireItAlert = (props) => {
                     }
                     {props.fireItAlert === 'CheckTab delete all or split'
                         ? <div className='padError'>This is a combined receipt. Use 'Remove Receipt' button to delete 'All On One' or 'Split Even' receipts, and then you can re-separate by seat.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'CheckTab no seats'
+                        ? <div className='padError'>Nothing exists on this check to separate or print.
                         </div>
                         : null
                     }

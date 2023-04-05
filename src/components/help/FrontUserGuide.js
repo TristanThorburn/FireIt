@@ -175,7 +175,7 @@ const FrontUserGuide = (props) => {
                             - Return to the main directory of menu categories. 
                         </li>
                         <li>
-                            CHNG TBL
+                            CHANGE TABLE
                             <br />
                             - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
                         </li>
@@ -236,7 +236,7 @@ const FrontUserGuide = (props) => {
                             - Create one receipt with math completed for total divided by number of guests who will pay.
                         </li>
                         <li>
-                            CHNG TBL
+                            CHANGE TABLE
                             <br />
                             - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
                         </li>

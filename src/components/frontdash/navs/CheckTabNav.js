@@ -15,13 +15,15 @@ const CheckTabNav = (props) => {
 
     // Get the count of seats on the table to limit number of receipts
     useEffect(() => {
-        const getSeatCount = async () => {
-            const docCollection = 
-                    collection(db, 'orders', employeeContext.employeeNumber, contextTable)
-            const collectionSnap = await getCountFromServer(docCollection)
-            setSeatCount(collectionSnap.data().count)
+        if(contextTable !== ''){
+            const getSeatCount = async () => {
+                const docCollection = 
+                        collection(db, 'orders', employeeContext.employeeNumber, contextTable)
+                const collectionSnap = await getCountFromServer(docCollection)
+                setSeatCount(collectionSnap.data().count)
+            }
+            getSeatCount()
         }
-        getSeatCount()
     }, [employeeContext.employeeNumber, contextTable])
 
     const handleMgrOveride = () => {
@@ -35,98 +37,132 @@ const CheckTabNav = (props) => {
     }
 
     const handlePrintReceipts = () => {
-        props.setPrintReceipts(true)
+        if(contextTable === '' && seatCount === ''){
+            props.setFireItAlert('FireIt no table')
+        }
+         else if(contextTable !== '' && seatCount === 0){
+            props.setFireItAlert('CheckTab no seats')
+        } else {
+            props.setPrintReceipts(true)
+        }
     }
 
     const handleAllOnOne = () => {
-        setDivisionAmount('')
-        setAllOnOne(!allOnOne)
+        if(contextTable === '' && seatCount === ''){
+            props.setFireItAlert('FireIt no table')
+        }
+         else if(contextTable !== '' && seatCount === 0){
+            props.setFireItAlert('CheckTab no seats')
+        } else {
+            setDivisionAmount('')
+            setAllOnOne(!allOnOne)
+        }
     }
 
     const handleAddSeparate = () => {
         const createSeperateReceipt = async () => {
-            if(receiptsList.length >= seatCount && !allOnOne){
-                props.setFireItAlert('CheckTab more receipts than seats')
+            // Do not allow adding receipts if no table selected, or the check has nothing on it
+            if(contextTable === '' && seatCount === ''){
+                props.setFireItAlert('FireIt no table')
             }
-
-            if(receiptsList.length === 0 && receiptsList.length < seatCount && !allOnOne){
-                const receiptRef = 
-                        doc(db, 'receipts', `${props.employeeNumber}`, contextTable, 'receipt1')
-                const docSnap = await getDoc(receiptRef)
-
-                if(!docSnap.exists()){
-                    setDoc(receiptRef, {
-                        receiptTotalCost:0,
-                        receiptNumber:1,
-                        seatsList: [],
-                        status:'unSettledReceipt'
-                    })
+             else if(contextTable !== '' && seatCount === 0){
+                props.setFireItAlert('CheckTab no seats')
+            } else {
+                if(receiptsList.length >= seatCount && !allOnOne){
+                    props.setFireItAlert('CheckTab more receipts than seats')
                 }
-            }
-
-            if(receiptsList.length > 0 && receiptsList.length < seatCount && !allOnOne){
-                const orderedReceipts = receiptsList.slice().sort((a, b) => a - b)
-                let nextReceipt = null
-                
-                for( let i = 1; i < orderedReceipts.length; i++){
-                    if(orderedReceipts[i] !== orderedReceipts[i - 1] + 1){
-                        nextReceipt = orderedReceipts[i - 1] + 1;
-                        break;
+    
+                if(receiptsList.length === 0 && receiptsList.length < seatCount && !allOnOne){
+                    const receiptRef = 
+                            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, 'receipt1')
+                    const docSnap = await getDoc(receiptRef)
+    
+                    if(!docSnap.exists()){
+                        setDoc(receiptRef, {
+                            receiptTotalCost:0,
+                            receiptNumber:1,
+                            seatsList: [],
+                            status:'unSettledReceipt'
+                        })
                     }
                 }
-        
-                if(nextReceipt === null){
-                    nextReceipt = orderedReceipts[orderedReceipts.length - 1] +1;
-                }
-                const receiptRef = 
-                        doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${nextReceipt}`)
-                const docSnap = await getDoc(receiptRef)
-
-                if(!docSnap.exists()){
-                    setDoc(receiptRef, {
-                        receiptTotalCost:0,
-                        receiptNumber:nextReceipt,
-                        seatsList: [],
-                        status:'unSettledReceipt'
-                    })
-                }
-            }
+    
+                if(receiptsList.length > 0 && receiptsList.length < seatCount && !allOnOne){
+                    const orderedReceipts = receiptsList.slice().sort((a, b) => a - b)
+                    let nextReceipt = null
+                    
+                    for( let i = 1; i < orderedReceipts.length; i++){
+                        if(orderedReceipts[i] !== orderedReceipts[i - 1] + 1){
+                            nextReceipt = orderedReceipts[i - 1] + 1;
+                            break;
+                        }
+                    }
             
-            if(allOnOne){
-                props.setFireItAlert('CheckTab cancel all on one')
+                    if(nextReceipt === null){
+                        nextReceipt = orderedReceipts[orderedReceipts.length - 1] +1;
+                    }
+                    const receiptRef = 
+                            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${nextReceipt}`)
+                    const docSnap = await getDoc(receiptRef)
+    
+                    if(!docSnap.exists()){
+                        setDoc(receiptRef, {
+                            receiptTotalCost:0,
+                            receiptNumber:nextReceipt,
+                            seatsList: [],
+                            status:'unSettledReceipt'
+                        })
+                    }
+                }
+                
+                if(allOnOne){
+                    props.setFireItAlert('CheckTab cancel all on one')
+                }
             }
+
         }
         createSeperateReceipt()
     }
 
     const handleRemoveSeparate = () => {
-        const receiptToRemove = Math.max(...receiptsList)
-        const receiptRef = 
-            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptToRemove}`)
-        const removeSeperateReceipt = async () => {
-            const docSnap = await getDoc(receiptRef)
-            if(receiptsList.length > 0 && !allOnOne){
-                if(docSnap.exists()){
-                    deleteDoc(receiptRef)
+        if(contextTable === '' && seatCount === ''){
+            props.setFireItAlert('FireIt no table')
+        } else {
+            const receiptToRemove = Math.max(...receiptsList)
+            const receiptRef = 
+                doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptToRemove}`)
+            const removeSeperateReceipt = async () => {
+                const docSnap = await getDoc(receiptRef)
+                if(receiptsList.length > 0 && !allOnOne){
+                    if(docSnap.exists()){
+                        deleteDoc(receiptRef)
+                    }
+                }
+
+                if(receiptsList.length === 0 && !allOnOne){
+                    props.setFireItAlert('CheckTab less than zero')
+                }
+
+                if(allOnOne){
+                    props.setFireItAlert('CheckTab cancel all on one')
                 }
             }
-
-            if(receiptsList.length === 0 && !allOnOne){
-                props.setFireItAlert('CheckTab less than zero')
-            }
-
-            if(allOnOne){
-                props.setFireItAlert('CheckTab cancel all on one')
-            }
+            removeSeperateReceipt()
         }
-        removeSeperateReceipt()
     }
 
     const handleSplitEven = () => {
-        if(allOnOne){
-            props.setFireItAlert('CheckTab cancel all on one')
+        if(contextTable === '' && seatCount === ''){
+            props.setFireItAlert('FireIt no table')
+        }
+         else if(contextTable !== '' && seatCount === 0){
+            props.setFireItAlert('CheckTab no seats')
         } else {
-            setSplitEven(true)
+            if(allOnOne){
+                props.setFireItAlert('CheckTab cancel all on one')
+            } else {
+                setSplitEven(true)
+            }
         }
     }
 
@@ -195,7 +231,7 @@ const CheckTabNav = (props) => {
                     <button onClick={handleSplitEven} className='workingButton'>split total evenly</button>
                 </li>
                 <li>
-                    <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
+                    <button onClick={handleChangeTable} className='workingButton'>CHANGE TABLE</button>
                 </li>
                 <li>
                     <button onClickCapture={handleHelp} className='infoButton'>
