@@ -294,7 +294,7 @@ const MenuItemForm = (props) => {
                     setCloneItem({
                         name : cloneData.name + '-CLONE', 
                         itemStock : cloneData.itemStock,
-                        screenName : '',
+                        screenName :  cloneData.name + '-CLONE',
                         chitName : '',
                         price : cloneData.price,
                         type : cloneData.type,
