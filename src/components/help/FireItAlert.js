@@ -65,7 +65,7 @@ const FireItAlert = (props) => {
                         : null
                     }
                     {props.fireItAlert === 'EmployeeDataForm delete authed'
-                        ? <div className='padError'>Deleting firebase authorized users can cause errors if other users still use this ID to log in. Contact creator to delete.
+                        ? <div className='padError'>Employee must be deactivated before deleting.
                         </div>
                         : null
                     }
