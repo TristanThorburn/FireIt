@@ -8,14 +8,10 @@ import { doc, setDoc, getDoc, deleteDoc, collection, getCountFromServer } from '
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
     const { contextTable } = useTable();
-    const { receiptsList } = props
+    const { receiptsList, allOnOne, setAllOnOne, setSplitEven, setDivisionAmount } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
     const [ seatCount, setSeatCount ] = useState('')
-
-    const handleTest = async () => {
-        console.log(Math.max(...receiptsList))
-    }
 
     // Get the count of seats on the table to limit number of receipts
     useEffect(() => {
@@ -42,14 +38,18 @@ const CheckTabNav = (props) => {
         props.setPrintReceipts(true)
     }
 
-    const handleAddSeparate = () => {
+    const handleAllOnOne = () => {
+        setDivisionAmount('')
+        setAllOnOne(!allOnOne)
+    }
 
+    const handleAddSeparate = () => {
         const createSeperateReceipt = async () => {
-            if(receiptsList.length >= seatCount){
+            if(receiptsList.length >= seatCount && !allOnOne){
                 props.setFireItAlert('CheckTab more receipts than seats')
             }
 
-            if(receiptsList.length === 0 && receiptsList.length < seatCount){
+            if(receiptsList.length === 0 && receiptsList.length < seatCount && !allOnOne){
                 const receiptRef = 
                         doc(db, 'receipts', `${props.employeeNumber}`, contextTable, 'receipt1')
                 const docSnap = await getDoc(receiptRef)
@@ -64,7 +64,7 @@ const CheckTabNav = (props) => {
                 }
             }
 
-            if(receiptsList.length > 0 && receiptsList.length < seatCount){
+            if(receiptsList.length > 0 && receiptsList.length < seatCount && !allOnOne){
                 const orderedReceipts = receiptsList.slice().sort((a, b) => a - b)
                 let nextReceipt = null
                 
@@ -91,6 +91,10 @@ const CheckTabNav = (props) => {
                     })
                 }
             }
+            
+            if(allOnOne){
+                props.setFireItAlert('CheckTab cancel all on one')
+            }
         }
         createSeperateReceipt()
     }
@@ -101,16 +105,29 @@ const CheckTabNav = (props) => {
             doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptToRemove}`)
         const removeSeperateReceipt = async () => {
             const docSnap = await getDoc(receiptRef)
-            if(receiptsList.length > 0){
+            if(receiptsList.length > 0 && !allOnOne){
                 if(docSnap.exists()){
                     deleteDoc(receiptRef)
                 }
             }
-            if(receiptsList.length === 0){
+
+            if(receiptsList.length === 0 && !allOnOne){
                 props.setFireItAlert('CheckTab less than zero')
+            }
+
+            if(allOnOne){
+                props.setFireItAlert('CheckTab cancel all on one')
             }
         }
         removeSeperateReceipt()
+    }
+
+    const handleSplitEven = () => {
+        if(allOnOne){
+            props.setFireItAlert('CheckTab cancel all on one')
+        } else {
+            setSplitEven(true)
+        }
     }
 
     const handleChangeTable = () => {
@@ -142,31 +159,44 @@ const CheckTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button 
-                    onClick={handlePrintReceipts} 
-                    id='printReceipts' 
-                    className='workingButton'
-                    >"PRINT" ALL RECEIPTS</button></li>
+                <li>
+                    <button 
+                        onClick={handlePrintReceipts} 
+                        id='printReceipts' 
+                        className='workingButton'
+                        >"PRINT" ALL RECEIPTS
+                    </button>
+                </li>
                 <li>
                     <button
                         onClick={handleAddSeparate}
                         id='addReceipt'
                         className='workingButton'
-                        >ADD NEW RECEIPT</button>
+                        >ADD NEW RECEIPT
+                    </button>
                 </li>
                 <li>
                     <button
                         onClick={handleRemoveSeparate}
                         id='removeReceipt'
                         className='workingButton'
-                        >REMOVE RECEIPT</button>
+                        >REMOVE RECEIPT
+                    </button>
+                </li>
+                <li>
+                    <button onClick={handleAllOnOne} className='workingButton'>
+                        {allOnOne
+                            ? 'cancel all on one'
+                            : 'all on one receipt'
+                        }
+                    </button>
+                </li>
+                <li>
+                    <button onClick={handleSplitEven} className='workingButton'>split total evenly</button>
                 </li>
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
                 </li>
-                <li><button className='nonWorkingButton'>ALL ON ONE</button></li>
-                <li><button className='nonWorkingButton'>% SPLIT</button></li>
-                <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li>
                     <button onClickCapture={handleHelp} className='infoButton'>
                         🔥

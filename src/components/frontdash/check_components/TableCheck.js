@@ -47,7 +47,7 @@ const TableCheck = (props) => {
             const sum = costsArray.reduce((a, b) => a + b, 0)
             setCheckTotal(sum)
         }
-    }, [checkData])
+    }, [checkData, currentOrderData])
 
     // Get Data for the check from current server and table
     useEffect(() => {
@@ -269,7 +269,7 @@ const TableCheck = (props) => {
         }
     }, [sendOrder])
 
-    // Add item to firebase, check for duplicates and allow.
+    // Send Order, Adding items to firebase, check for duplicates and allow.
     useEffect(() => {
         if(sendOrder === true && pendingOrder !== ''){
             pendingOrder.forEach(order => {
@@ -287,6 +287,7 @@ const TableCheck = (props) => {
                                 originalCost:order.cost,
                                 qsa:'false',
                                 time:order.time,
+                                checkTotal:checkTotal,
                             }],
                         })
                     }
@@ -308,14 +309,15 @@ const TableCheck = (props) => {
                         time:order.time,
                     }]
                     updateDoc(checkRef, {
-                    order:arrayUnion(...orderToAdd)})
+                        checkTotal:checkTotal,
+                        order:arrayUnion(...orderToAdd)})
                 }
             })
         setSendOrder(false)
         setMenuTabActive(false)
         setTableTabActive(true)
         }
-    }, [sendOrder, pendingOrder, employeeContext.employeeNumber, setMenuTabActive, setTableTabActive, setSendOrder, tableData.searchId, employeeContext.firstName])
+    }, [sendOrder, pendingOrder, employeeContext.employeeNumber, setMenuTabActive, setTableTabActive, setSendOrder, tableData.searchId, employeeContext.firstName, checkTotal])
     
     const handleCheckItemClickCapture = (e) => {
         if(props.menuTabActive && managerContext === false){

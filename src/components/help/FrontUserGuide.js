@@ -22,10 +22,7 @@ const FrontUserGuide = (props) => {
                         <li>This represents the layout of the restaurant, tables can be 'touched' to select the table and link to the menu for food and drink orders. Table designs, names and positions can be updated and saved by using the Admin tab to enter the back dash.</li>
                         <li>Servers cannot access a table that already has orders on it from another server.</li>
                         <li>Tables that are in use will be red, while free tables will be green.</li>
-                        <li>Stretch Goals: 
-                            <br />
-                            .
-                        </li>
+                        <li>Table ownership is released when all seats have settled payments on the check, or if the last item on the check is deleted.</li>
                     </ul>
                     : null
                 }
@@ -38,6 +35,7 @@ const FrontUserGuide = (props) => {
                         <li>Click on the item name to delete PENDING orders, pending orders which create a new seat can only be deleted if no other items are on the seat.</li>
                         <li>When manager override is active, SENT items on the check can be modified. This includes deletion, 25% / 50% / 100% discount application and removal, as well as QSA application and removal of a 100% discount.</li>
                         <li>Attempting to delete an item with a discount will prompt a warning and a confirmation, as future data will account for discount totals and type.</li>
+                        <li>If the last item on the table is deleted via manager authorization, table ownership is released.</li>
                         <li>New items can be added to the menu categories using the Admin tab and the back dash.</li>
                         <li>Stretch Goals:
                             <br />
@@ -54,16 +52,15 @@ const FrontUserGuide = (props) => {
                 {props.checkTabActive
                     ? <ul>
                         <li>Use ADD NEW RECEIPT or REMOVE RECEIPT to populate receipts for checks to be split on to.</li>
-                        <li>Remove receipt removes the highest numerical receipt and will delete all information on the receipt upon removal</li>
-                        <li>Click on the seat you want to transfer and select the target receipt number, currently must be less than or equal to 10.</li>
+                        <li>Remove receipt removes the highest numerical receipt and will delete all information on the receipt upon removal.</li>
+                        <li>Click on the seat you want to transfer and select the target receipt number.</li>
+                        <li>It is not possible to add more receipts that total number of guest seats.</li>
                         <li>A seat from the origin check can only be on one receipt, and cannot be repeated.</li>
                         <li>Click on any pending seperate seat on the receipt to remove it.</li>
                         <li>PRINT ALL RECEIPT to save the pending seats to each receipt, aka printing the checks out to give to guests.</li>
                         <li>Deleting seats from receipts, or removing receipts does not require manager auth as they represent the physical receipts that could just be thrown in the garbage when incorrect.</li>
-                        <li>Stretch Goals: 
-                            <br />
-                            Organize seats into different billing methods, for example split checks 50/50.
-                        </li>
+                        <li>Use 'All On One' for a quick receipt generated as though the entire bill was going to be paid by one guest.</li>
+                        <li>Use 'Split Total Evenly' to pre generate the math as though several guests want to pay equal amounts towards the bill.</li>
                     </ul>
                     : null
                 }
@@ -216,7 +213,7 @@ const FrontUserGuide = (props) => {
                         <li>
                             "PRINT" ALL RECEIPT
                             <br />
-                            - Confirm the seat seperations and 'print' the checks, this stores the data to firebase. 
+                            - Confirm the seat separations and 'print' the checks, this stores the data to firebase. 
                         </li>
                         <li>
                             ADD NEW RECEIPT
@@ -229,19 +226,19 @@ const FrontUserGuide = (props) => {
                             - Remove an un-needed additional seperate receipt. This will delete all information on the receipt. Removes the highest numerical receipt.
                         </li>
                         <li>
+                            ALL ON ONE RECEIPT
+                            <br />
+                            - Create a receipt with all seats on one, rather than separating seats.
+                        </li>
+                        <li>
+                            SPLIT TOTAL EVENLY
+                            <br />
+                            - Create one receipt with math completed for total divided by number of guests who will pay.
+                        </li>
+                        <li>
                             CHNG TBL
                             <br />
                             - Change active table using the alphanumeric pad instead of TableMap. You cannot access tables that are already in use by another server. There is currently no logic to notify if searched table does not exist.
-                        </li>
-                        <li>
-                            ALL ON ONE
-                            <br />
-                            - Button under construction. Set up check info on one receipt.
-                        </li>
-                        <li>
-                            % Split
-                            <br />
-                            - Button under construction. Fraction split, 'divide the check 50/50'.
                         </li>
                         <li>
                             TEST

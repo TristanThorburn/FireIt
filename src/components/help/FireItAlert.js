@@ -139,6 +139,16 @@ const FireItAlert = (props) => {
                         </div>
                         : null
                     }
+                    {props.fireItAlert === 'CheckTab cancel all on one'
+                        ? <div className='padError'>Cancel 'All On One' to manually separate seats on to receipts yourself, or to split the check evenly.
+                        </div>
+                        : null
+                    }
+                    {props.fireItAlert === 'CheckTab delete all or split'
+                        ? <div className='padError'>This is a combined receipt. Use 'Remove Receipt' button to delete 'All On One' or 'Split Even' receipts, and then you can re-separate by seat.
+                        </div>
+                        : null
+                    }
 {/* PAYMENT ERRORS */}
                     {props.fireItAlert === 'PaymentTab undo settled payment'
                         ? <div className='padError'>
