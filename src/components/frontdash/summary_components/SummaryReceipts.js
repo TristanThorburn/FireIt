@@ -248,11 +248,19 @@ const SummaryReceipts = (props) => {
                                             </tbody>
                                         }
                                         <thead>
-                                            <tr>
-                                                <th>
-                                                    Total: ${receipt.data.receiptTotalCost}
-                                                </th>
-                                            </tr>
+                                            {receipt.data?.separation === 'split even'
+                                                ? <tr>
+                                                    <th>
+                                                        Total: ${receipt.data.receiptTotalCost} / {receipt.data.splitEven} =
+                                                        ${receipt.data.receiptTotalCost / receipt.data.splitEven} each.
+                                                    </th>
+                                                </tr>
+                                                : <tr>
+                                                    <th>
+                                                        Total: ${receipt.data.receiptTotalCost}
+                                                    </th>
+                                                </tr>
+                                            }
                                         </thead>
                                     </table>
                                 </button>

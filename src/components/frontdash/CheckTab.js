@@ -29,10 +29,6 @@ const CheckTab = (props) => {
     const [ splitEven, setSplitEven ] = useState(false);
     const [ divisionAmount, setDivisionAmount ] = useState('')
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
-
-    const handleTest = () => {
-        console.log(receiptData[0].data.checkTotal)
-    }
     
     // OLD SPLIT CHECKS LOGIC:
     // Populate / Remove array to determine render # of seperate check components
@@ -52,13 +48,17 @@ const CheckTab = (props) => {
     },[])
 
     const handlePrintedSeatDeleteCapture = (e) => {
-        setTargetRemovalSeat(e.currentTarget.dataset.seatnumber)
-        setFireItAlert('CheckTab delete sent seat')
+        if(e.currentTarget.dataset.separation === 'seat'){
+            setTargetRemovalSeat(e.currentTarget.dataset.seatnumber)
+            setFireItAlert('CheckTab delete sent seat')
+        } else if(e.currentTarget.dataset.separation === 'all on one' || e.currentTarget.dataset.separation === 'split even') {
+            setFireItAlert('CheckTab delete all or split')
+        }
     }
 
     // Get data for current table receipts
     useEffect(() => {
-        if(contextTable !== '' && allOnOne === true){
+        if(contextTable !=='' && !allOnOne && divisionAmount !== ''){
             const getReceiptData = async () => {
                 const checkCollectionRef = 
                     collection(db, 'orders', `${employeeContext.employeeNumber}`, contextTable)
@@ -73,7 +73,22 @@ const CheckTab = (props) => {
             }
             getReceiptData()
         }
-        if(contextTable !== '' && allOnOne === false){
+        if(contextTable !== '' && allOnOne && divisionAmount === ''){
+            const getReceiptData = async () => {
+                const checkCollectionRef = 
+                    collection(db, 'orders', `${employeeContext.employeeNumber}`, contextTable)
+                const q = query(checkCollectionRef, orderBy('seatNumber'));
+                const unsubscribe = onSnapshot(q, snapshot => {
+                    setReceiptData(snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        data: doc.data(),
+                    })))
+                })
+                return unsubscribe
+            }
+            getReceiptData()
+        }
+        if(contextTable !== '' && allOnOne === false && divisionAmount === ''){
             const getReceipts = async () => {
                 const receiptCollectionRef = 
                     collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
@@ -94,7 +109,7 @@ const CheckTab = (props) => {
                 }
             getReceipts()
         }
-    }, [contextTable, employeeContext, allOnOne]);
+    }, [contextTable, employeeContext, allOnOne, divisionAmount]);
 
     // Check if selected receipt exists on display
     useEffect(() => {
@@ -180,7 +195,8 @@ const CheckTab = (props) => {
 
     // Print Receipts AKA save to firestore
     useEffect(() => {
-        if(printReceipts && allOnOne){
+        // Upload receipt to firestore as one receipt.
+        if(printReceipts && allOnOne && divisionAmount === ''){
             const clearOldReceipts = async () => {
                 const receiptsCollection =
                             collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
@@ -217,7 +233,57 @@ const CheckTab = (props) => {
                     seatsList:seatsList,
                     receiptNumber: '1',
                     receiptTotalCost:allOnOneReceipt.dataset.receipttotalcost,
-                    status:'unSettledReceipt'
+                    status:'unSettledReceipt',
+                    separation:'all on one',
+                })
+                setPrintReceipts(false)
+                setCheckTabActive(false)
+                setPaymentTabActive(true)
+                setDivisionAmount('')
+            }
+            clearOldReceipts().then(setReceiptOnOne)
+        }
+        // Upload receipt to firestore as one receipt with division data
+        if(printReceipts && !allOnOne && divisionAmount !== ''){
+            const clearOldReceipts = async () => {
+                const receiptsCollection =
+                            collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
+                const docRef = query(receiptsCollection)
+                const toDelete = await getDocs(docRef)
+                toDelete.forEach(item => {
+                    const id = item.id
+                    deleteDoc(doc(receiptsCollection, id))
+                })
+            }
+            const seatInfo = document.querySelectorAll('.allOnOneSeatInfo')
+            let seatsList = []
+            seatInfo.forEach(seat => {
+                let seatsOrders = []
+                const seatItemList = seat.querySelectorAll('.seatItemList')
+                seatItemList.forEach(item => {
+                    const orderList = {
+                        item:item.dataset.item,
+                        cost:item.dataset.cost
+                    }
+                    seatsOrders.push(orderList)
+                })
+                const seatData = {
+                    seat:seat.dataset.seatnumber,
+                    order:seatsOrders
+                }
+                seatsList.push(seatData)
+            })
+            const setReceiptOnOne = async () => {
+                const receiptRef = 
+                            doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt1')
+                const allOnOneReceipt = document.querySelector('.allOnOneCheck')
+                setDoc(receiptRef, {
+                    seatsList:seatsList,
+                    receiptNumber: '1',
+                    receiptTotalCost:allOnOneReceipt.dataset.receipttotalcost,
+                    status:'unSettledReceipt',
+                    splitEven:divisionAmount,
+                    separation:'split even'
                 })
                 setPrintReceipts(false)
                 setCheckTabActive(false)
@@ -226,8 +292,8 @@ const CheckTab = (props) => {
             }
             clearOldReceipts().then(setReceiptOnOne)
         }
-
-        if(printReceipts && !allOnOne){
+        // Upload to firestore as seperate receipts by seat
+        if(printReceipts && !allOnOne && divisionAmount === ''){
         // Get all the receipts on the screen
             const receiptsList = document.querySelectorAll('.seperatedCheck')
             receiptsList.forEach(receipt => {
@@ -261,7 +327,8 @@ const CheckTab = (props) => {
                         }
                         updateDoc(receiptRef, {
                             seatsList:arrayUnion(seatData),
-                            receiptTotalCost:receiptOriginalTotal.data().receiptTotalCost + sum
+                            receiptTotalCost:receiptOriginalTotal.data().receiptTotalCost + sum,
+                            separation:'seat'
                         })
                     }
                     confirmDataAndUpdate()
@@ -271,7 +338,7 @@ const CheckTab = (props) => {
             setCheckTabActive(false)
             setPaymentTabActive(true)
         }
-    }, [printReceipts, contextTable, employeeContext.employeeNumber, allOnOne, setCheckTabActive, setPaymentTabActive])
+    }, [printReceipts, contextTable, employeeContext.employeeNumber, allOnOne, setCheckTabActive, setPaymentTabActive, divisionAmount])
 
     // Remove the selected seat from printed receipt after prompt
     useEffect(() => {
@@ -331,7 +398,11 @@ const CheckTab = (props) => {
 
             {splitEven
                 ? <ServerKeyPad 
+                    divisionAmount={divisionAmount}
                     setDivisionAmount={setDivisionAmount}
+                    setSplitEven={setSplitEven}
+                    splitEven={splitEven}
+                    checkTabActive={props.checkTabActive}
                     />
                 : null
             }
@@ -365,15 +436,21 @@ const CheckTab = (props) => {
                     />
 
             <section className='checkTabDisplay'>
-<button onClick={handleTest} className='testButton'>TEST</button>
                 <h2>ADD RECEIPTs, Click on Origin Checks' Seats to Transfer to Receipts, then Print.</h2>
                 <div className='seperatedChecksContainer'>
-                    {allOnOne
+                    {allOnOne || divisionAmount !== ''
                         ? <article
                             className='allOnOneCheck'
                             data-receipttotalcost={receiptData[0]?.data.checkTotal}
                             >
                             <h3>Receipt 1</h3>
+                            {divisionAmount !== ''
+                                ? <div className='splitEvenContainer'>
+                                    <p>${receiptData[0]?.data.checkTotal} split {divisionAmount} ways</p>
+                                    <p>is ${receiptData[0]?.data.checkTotal / divisionAmount} each.</p>
+                                </div>
+                                : null
+                            }
                             {receiptData?.map(seat =>
                                 <table
                                     key={seat.id}
@@ -410,7 +487,7 @@ const CheckTab = (props) => {
                                     </tbody>
                                 </table> 
                             )}
-
+                            
                             <footer>
                                 <p>Check Total:</p>
                                 <p>${receiptData[0]?.data.checkTotal}</p>
@@ -421,6 +498,27 @@ const CheckTab = (props) => {
                                 <article
                                     className='seperatedCheck'
                                     key={i}>
+
+                                    {receipt.data?.separation === 'split even'
+                                        ? <div className='splitEvenContainer'>
+                                            <p>
+                                                ${receipt.data.receiptTotalCost} split {receipt.data.splitEven} ways
+                                            </p>
+                                            <p>
+                                                is ${receipt.data.receiptTotalCost / receipt.data.splitEven} each.
+                                            </p>
+                                        </div>
+                                        : receipt.data?.separation === 'all on one'
+                                            ? <div className='splitEvenContainer'>
+                                                <p>All On One Receipt.</p>
+                                            </div>
+                                            : receipt.data?.separation === 'seat'
+                                                ? <div className='splitEvenContainer'>
+                                                    <p>Seperated by Seat.</p>
+                                                </div>
+                                                : null
+                                    }
+                                    
                                     <h3>Receipt {receipt.data.receiptNumber}</h3>
                         
                                     <div id={receipt.id}></div>
@@ -432,14 +530,22 @@ const CheckTab = (props) => {
                                                 className='receiptSeatInfo'
                                                 data-receipt={receipt.id}
                                                 data-seatnumber={seat.seat}
+                                                data-separation={receipt.data.separation}
                                                 onClickCapture={handlePrintedSeatDeleteCapture}
                                                 >
                                                 <thead>
                                                     <tr>
-                                                        <th
-                                                            colSpan={2}
-                                                            >❌ Seat: {seat.seat}
-                                                        </th>
+                                                        {receipt.data?.separation === 'all on one'
+                                                            || receipt.data?.separation === 'split even'
+                                                            ? <th
+                                                                colSpan={2}
+                                                                >Seat: {seat.seat}
+                                                            </th>
+                                                            : <th
+                                                                colSpan={2}
+                                                                >❌ Seat: {seat.seat}
+                                                            </th>
+                                                        }
                                                     </tr>
                                                 </thead>
                                                 <tbody 
@@ -491,6 +597,7 @@ const CheckTab = (props) => {
                 setAllOnOne={setAllOnOne}
                 allOnOne={allOnOne}
                 setSplitEven={setSplitEven}
+                setDivisionAmount={setDivisionAmount}
                 />
         </div>
     )

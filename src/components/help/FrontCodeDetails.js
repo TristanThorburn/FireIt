@@ -27,7 +27,7 @@ const FrontCodeDetails = (props) => {
                     <li>Attempting to access a table that doesnt belong to the current user causes an alert to explain lack of ownership.</li>
                     <li>Table ownership is given after the first order is 'sent', and removed after all payments on the table are settled.</li>
                     <li>Clicking on a table while Table Tab is active sets the context table to the event target and sets the babs state for Menu to be active so that an order can be made.</li>
-                    <li>Prior to understanding event bubbling and capture, both the table and the text inside had seperate on click logic to set the context table. I later changed this to on click capture on the table alone. Thanks Wes Bos!</li>
+                    <li>Prior to understanding event bubbling and capture, both the table and the text inside had separate on click logic to set the context table. I later changed this to on click capture on the table alone. Thanks Wes Bos!</li>
                 </ul>
                 : null
             }
@@ -70,12 +70,12 @@ const FrontCodeDetails = (props) => {
 
             {props.checkTabActive
                 ? <ul>
-                    <li><h3>Organizing Seperate Guest Checks/Receipts:</h3></li>
+                    <li><h3>Organizing Separate Guest Checks/Receipts:</h3></li>
                     <li>Much of this component contains smaller scale versions of logic in the Menu Tab.</li>
-                    <li>The seperation of checks currently has a max limit of ten, I'd like to make a way to change this number using the 'back' dash which is why it is currently given a limit. Realistically this should be infinite.</li>
+                    <li>After a refactor, when adding new receipts, the current collection of receipts is sorted and looped through to determine the next highest number in the sequence. This is to allow for partial settling of the total check in the payment tab. This replicates the possibility of tables which have guests who come and go at seperate times throughout the total service time, and need different seats split off throughout. </li>
                     <li>When first started the receipts display was created with an array of dummy data, in order to map out receipt components based on the amount of receipts added by the user.</li>
                     <li>Working on this component caused me to review event bubbling and capture as I wanted the user to be able to click anywhere on the seat and its children and have that counted as the seat to move. Once I found the existance of onClickCapture I was able to do this, as stated in the table map information, thanks Wes Bos.</li>
-                    <li>This component currently uses similar logic to the Menu Tab appending to seperate the seats, keeping a copy of the base check intact for reference. This is carried forward to the Payments Tab, where seats are eventually deleted from the original check once they have a payment stored. I did not want there to be an overload of info to scroll through on possible larger receipt displays, so I opted to limit the information they display which can be compared to the original check.</li>
+                    <li>This component currently uses similar logic to the Menu Tab appending to separate the seats, keeping a copy of the base check intact for reference. This is carried forward to the Payments Tab, where seats are eventually deleted from the original check once they have a payment stored. I did not want there to be an overload of info to scroll through on possible larger receipt displays, so I opted to limit the information they display which can be compared to the original check.</li>
                     <li>A useEffect checks that the receipt the user wants to add the seat to exists on the display.</li>
                     <li>The server pad component checks that the value entered on the keypad for chosen receipt is less than or equal to ten based on the current receipt limit.</li>
                     <li>When moving seats to receipts, the system will also check that the seat does not already exist on a receipt to prevent duplication.</li>
@@ -83,6 +83,8 @@ const FrontCodeDetails = (props) => {
                     <li>Removing seats from 'printed' receipts, or simply deleting a receipt by reducing the total number of splits does not require manager context as in theory these receipts would have been printed and thrown away for being incorrect.</li>
                     <li>I wanted each seat to tally its' total similar to the check logic when a seat was appended to it. This proved difficult as each receipt was the same already rendered compontent, and I could not find a way to have only one of the mapped components change. I opted to display subtotals for each seat, and stop using the dummy array to create the map and display the receipts from a firestore snapshot instead.</li>
                     <li>Due to this changed, ADD RECEIPT and REMOVE RECEIPT where change from count++ or count-- to setDoc or deleteDoc.</li>
+                    <li>All on one receipt, or split total evenly use the same active check data and re structure it when uploaded to match the data sent to firestore from separation by seat.</li>
+                    <li>New flags were added to denote receipt split style to prevent single seat deletion on receipts populated together as all on one or split even.</li>
                     <li>CHNG TBL is the same as in the Menu Tab.</li>
                 </ul>
                 : null

@@ -8,14 +8,10 @@ import { doc, setDoc, getDoc, deleteDoc, collection, getCountFromServer } from '
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
     const { contextTable } = useTable();
-    const { receiptsList, allOnOne, setAllOnOne, setSplitEven } = props
+    const { receiptsList, allOnOne, setAllOnOne, setSplitEven, setDivisionAmount } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
     const [ seatCount, setSeatCount ] = useState('')
-
-    const handleTest = async () => {
-        console.log(Math.max(...receiptsList))
-    }
 
     // Get the count of seats on the table to limit number of receipts
     useEffect(() => {
@@ -43,6 +39,7 @@ const CheckTabNav = (props) => {
     }
 
     const handleAllOnOne = () => {
+        setDivisionAmount('')
         setAllOnOne(!allOnOne)
     }
 
@@ -126,7 +123,11 @@ const CheckTabNav = (props) => {
     }
 
     const handleSplitEven = () => {
-        setSplitEven(true)
+        if(allOnOne){
+            props.setFireItAlert('CheckTab cancel all on one')
+        } else {
+            setSplitEven(true)
+        }
     }
 
     const handleChangeTable = () => {
@@ -167,14 +168,6 @@ const CheckTabNav = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button onClick={handleAllOnOne} className='workingButton'>
-                        {allOnOne
-                            ? 'cancel all on one'
-                            : 'all on one'
-                        }
-                    </button>
-                </li>
-                <li>
                     <button
                         onClick={handleAddSeparate}
                         id='addReceipt'
@@ -191,12 +184,19 @@ const CheckTabNav = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button onClick={handleSplitEven} className='nonWorkingButton'>split even</button>
+                    <button onClick={handleAllOnOne} className='workingButton'>
+                        {allOnOne
+                            ? 'cancel all on one'
+                            : 'all on one receipt'
+                        }
+                    </button>
+                </li>
+                <li>
+                    <button onClick={handleSplitEven} className='workingButton'>split total evenly</button>
                 </li>
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
                 </li>
-                <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li>
                     <button onClickCapture={handleHelp} className='infoButton'>
                         🔥

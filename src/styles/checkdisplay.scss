@@ -49,16 +49,6 @@
     }
 }
 
-.checkTab{
-    .seatsAndOrders{
-        cursor: pointer;
-    }
-    .seatTransferReminder{
-        background-color: lightgreen;
-        color: black;
-    }
-}
-
 .paymentTab{
     .activeCheck{
         width:30%;
@@ -75,8 +65,34 @@
 }
 
 .checkTab{
+    .seatsAndOrders{
+        cursor: pointer;
+    }
+    .seatTransferReminder{
+        background-color: lightgreen;
+        color: black;
+    }
     .receiptSeatInfo{
         cursor: pointer;
+    }
+    .allOnOneCheck{
+        color:darkblue;
+        
+        th, td, h3{
+            background-color: lightblue;
+            cursor: default;
+        }
+    }
+    .splitEvenContainer{
+        margin:0 auto;
+        width:90%;
+
+        p{
+            margin:0 auto;
+            text-align: center;
+            font-weight: bold;
+            background-color: lightgreen;
+        }
     }
 }
 
