@@ -8,7 +8,7 @@ import { doc, setDoc, getDoc, deleteDoc, collection, getCountFromServer } from '
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
     const { contextTable } = useTable();
-    const { receiptsList, allOnOne, setAllOnOne } = props
+    const { receiptsList, allOnOne, setAllOnOne, setSplitEven } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
     const [ seatCount, setSeatCount ] = useState('')
@@ -40,6 +40,10 @@ const CheckTabNav = (props) => {
 
     const handlePrintReceipts = () => {
         props.setPrintReceipts(true)
+    }
+
+    const handleAllOnOne = () => {
+        setAllOnOne(!allOnOne)
     }
 
     const handleAddSeparate = () => {
@@ -121,12 +125,12 @@ const CheckTabNav = (props) => {
         removeSeperateReceipt()
     }
 
-    const handleChangeTable = () => {
-        props.setAlphaNumericPadOpen(true)
+    const handleSplitEven = () => {
+        setSplitEven(true)
     }
 
-    const handleAllOnOne = () => {
-        setAllOnOne(!allOnOne)
+    const handleChangeTable = () => {
+        props.setAlphaNumericPadOpen(true)
     }
 
     const handleHelp = () => {
@@ -154,37 +158,44 @@ const CheckTabNav = (props) => {
                     }
                     </button>
                 </li>
-                <li><button 
-                    onClick={handlePrintReceipts} 
-                    id='printReceipts' 
-                    className='workingButton'
-                    >"PRINT" ALL RECEIPTS</button></li>
                 <li>
-                    <button
-                        onClick={handleAddSeparate}
-                        id='addReceipt'
+                    <button 
+                        onClick={handlePrintReceipts} 
+                        id='printReceipts' 
                         className='workingButton'
-                        >ADD NEW RECEIPT</button>
+                        >"PRINT" ALL RECEIPTS
+                    </button>
                 </li>
                 <li>
-                    <button
-                        onClick={handleRemoveSeparate}
-                        id='removeReceipt'
-                        className='workingButton'
-                        >REMOVE RECEIPT</button>
-                </li>
-                <li>
-                    <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
-                </li>
-                <li>
-                    <button onClick={handleAllOnOne} className='nonWorkingButton'>
+                    <button onClick={handleAllOnOne} className='workingButton'>
                         {allOnOne
                             ? 'cancel all on one'
                             : 'all on one'
                         }
                     </button>
                 </li>
-                <li><button className='nonWorkingButton'>% SPLIT</button></li>
+                <li>
+                    <button
+                        onClick={handleAddSeparate}
+                        id='addReceipt'
+                        className='workingButton'
+                        >ADD NEW RECEIPT
+                    </button>
+                </li>
+                <li>
+                    <button
+                        onClick={handleRemoveSeparate}
+                        id='removeReceipt'
+                        className='workingButton'
+                        >REMOVE RECEIPT
+                    </button>
+                </li>
+                <li>
+                    <button onClick={handleSplitEven} className='nonWorkingButton'>split even</button>
+                </li>
+                <li>
+                    <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
+                </li>
                 <li><button onClick={handleTest} className='testButton'>Test</button></li>
                 <li>
                     <button onClickCapture={handleHelp} className='infoButton'>

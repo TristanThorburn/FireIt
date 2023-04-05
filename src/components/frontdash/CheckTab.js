@@ -4,7 +4,7 @@ import { useTable } from "../../contexts/TableContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
-import { doc, getDoc, collection, query, orderBy, onSnapshot, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, collection, query, orderBy, onSnapshot, updateDoc, arrayUnion, arrayRemove, getDocs, deleteDoc, setDoc } from "firebase/firestore";
 import TableCheck from './check_components/TableCheck';
 import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from "../keypads/AlphaNumericPad";
@@ -25,7 +25,9 @@ const CheckTab = (props) => {
     const [ confirmSeatRemove, setConfirmSeatRemove ] = useState(false);
     const [ targetRemovalSeat, setTargetRemovalSeat ] = useState('');
     const [ receiptsList, setReceiptsList ] = useState('')
-    const [ allOnOne, setAllOnOne ] = useState(false)
+    const [ allOnOne, setAllOnOne ] = useState(false);
+    const [ splitEven, setSplitEven ] = useState(false);
+    const [ divisionAmount, setDivisionAmount ] = useState('')
     const seperateChecksList = document.querySelector('.seperatedChecksContainer');
 
     const handleTest = () => {
@@ -178,7 +180,54 @@ const CheckTab = (props) => {
 
     // Print Receipts AKA save to firestore
     useEffect(() => {
-        if(printReceipts === true && !allOnOne){
+        if(printReceipts && allOnOne){
+            const clearOldReceipts = async () => {
+                const receiptsCollection =
+                            collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
+                const docRef = query(receiptsCollection)
+                const toDelete = await getDocs(docRef)
+                toDelete.forEach(item => {
+                    const id = item.id
+                    deleteDoc(doc(receiptsCollection, id))
+                })
+            }
+            const seatInfo = document.querySelectorAll('.allOnOneSeatInfo')
+            let seatsList = []
+            seatInfo.forEach(seat => {
+                let seatsOrders = []
+                const seatItemList = seat.querySelectorAll('.seatItemList')
+                seatItemList.forEach(item => {
+                    const orderList = {
+                        item:item.dataset.item,
+                        cost:item.dataset.cost
+                    }
+                    seatsOrders.push(orderList)
+                })
+                const seatData = {
+                    seat:seat.dataset.seatnumber,
+                    order:seatsOrders
+                }
+                seatsList.push(seatData)
+            })
+            const setReceiptOnOne = async () => {
+                const receiptRef = 
+                            doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt1')
+                const allOnOneReceipt = document.querySelector('.allOnOneCheck')
+                setDoc(receiptRef, {
+                    seatsList:seatsList,
+                    receiptNumber: '1',
+                    receiptTotalCost:allOnOneReceipt.dataset.receipttotalcost,
+                    status:'unSettledReceipt'
+                })
+                setPrintReceipts(false)
+                setCheckTabActive(false)
+                setPaymentTabActive(true)
+                setAllOnOne(false)
+            }
+            clearOldReceipts().then(setReceiptOnOne)
+        }
+
+        if(printReceipts && !allOnOne){
         // Get all the receipts on the screen
             const receiptsList = document.querySelectorAll('.seperatedCheck')
             receiptsList.forEach(receipt => {
@@ -280,6 +329,13 @@ const CheckTab = (props) => {
                 : null
             }
 
+            {splitEven
+                ? <ServerKeyPad 
+                    setDivisionAmount={setDivisionAmount}
+                    />
+                : null
+            }
+
             {alphaNumericPadOpen
                 ? <AlphaNumericPad
                     setAlphaNumericPadOpen={setAlphaNumericPadOpen}
@@ -314,13 +370,14 @@ const CheckTab = (props) => {
                 <div className='seperatedChecksContainer'>
                     {allOnOne
                         ? <article
-                            className='seperatedCheck'>
+                            className='allOnOneCheck'
+                            data-receipttotalcost={receiptData[0]?.data.checkTotal}
+                            >
                             <h3>Receipt 1</h3>
                             {receiptData?.map(seat =>
                                 <table
                                     key={seat.id}
-                                    className='receiptSeatInfo'
-                                    data-receipt='1'
+                                    className='allOnOneSeatInfo'
                                     data-seatnumber={seat.data?.seatNumber}>
                                     <thead>
                                         <tr>
@@ -335,6 +392,8 @@ const CheckTab = (props) => {
                                                 return(
                                                     <tr
                                                         className='seatItemList'
+                                                        data-item={order.item}
+                                                        data-cost={order.cost}
                                                         key={i}>
                                                              <td>
                                                                 {order.item}
@@ -431,6 +490,7 @@ const CheckTab = (props) => {
                 receiptsList={receiptsList}
                 setAllOnOne={setAllOnOne}
                 allOnOne={allOnOne}
+                setSplitEven={setSplitEven}
                 />
         </div>
     )
