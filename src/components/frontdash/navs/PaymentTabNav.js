@@ -1,9 +1,11 @@
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTable } from '../../../contexts/TableContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const PaymentTabNav = (props) => {
     const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
+    const { contextTable } = useTable();
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
 
@@ -22,12 +24,16 @@ const PaymentTabNav = (props) => {
     }
 
     const handleFinalizePayments = () => {
-        const settledReceipts = document.querySelectorAll('[data-status=settledReceipt]')
-        if(settledReceipts.length > 0){
-            props.setFinalizePayments(true)
-        }
-        else {
-            props.setFireItAlert('PaymentTab no settled receipts')
+        if(contextTable === ''){
+            props.setFireItAlert('FireIt no table')
+        } else {
+            const settledReceipts = document.querySelectorAll('[data-status=settledReceipt]')
+            if(settledReceipts.length > 0){
+                props.setFinalizePayments(true)
+            }
+            else {
+                props.setFireItAlert('PaymentTab no settled receipts')
+            }
         }
     }
 

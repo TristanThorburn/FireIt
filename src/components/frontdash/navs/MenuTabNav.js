@@ -8,13 +8,21 @@ const MenuTabNav = (props) => {
     const [ error, setError ] = useState('')
 
     const handleSendOrder = () => {
-        props.setSendOrder(true)
+        if(props.contextTable === ''){
+            props.setFireItAlert('FireIt no table')
+        } else {
+            props.setSendOrder(true)
+        }
     }
 
     const handleSeatNum = () => {
-        props.setSeatKeyPadActive(true)
-        props.setSelectedSeat('')
-        props.setCurrentOrderData('')
+        if(props.contextTable === ''){
+            props.setFireItAlert('FireIt no table')
+        } else {
+            props.setSeatKeyPadActive(true)
+            props.setSelectedSeat('')
+            props.setCurrentOrderData('')
+        }
     }
 
     const handleChangeTable = () => {
@@ -63,10 +71,9 @@ const MenuTabNav = (props) => {
                 <li><button onClick={handleSendOrder} className='workingButton'>"SEND" ORDER</button></li>
                 <li><button onClick={handleSeatNum} className='workingButton'>SEAT #?</button></li>
                 <li>
-                    <button onClick={handleChangeTable} className='workingButton'>CHNG TBL</button>
+                    <button onClick={handleChangeTable} className='workingButton'>CHANGE TABLE</button>
                 </li>
                 <li><button onClick={handleDirectory} className='workingButton'>MAIN MENU</button></li>
-                <li><button className='nonWorkingButton'>DEMO</button></li>
                 <li>
                     <button onClickCapture={handleHelp} className='infoButton'>
                         🔥

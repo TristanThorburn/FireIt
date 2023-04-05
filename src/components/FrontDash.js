@@ -158,7 +158,6 @@ const FrontDash = () => {
                 : null
             }
             
-            
             {summaryTabActive
                 ? <SummaryTab
                     setHelpModal={setHelpModal}
@@ -167,6 +166,7 @@ const FrontDash = () => {
                     summaryTabActive={summaryTabActive}
                     setSummaryTabActive={setSummaryTabActive}
                     setMenuTabActive={setMenuTabActive}
+                    existingTables={existingTables}
                     />
                 : null
             }

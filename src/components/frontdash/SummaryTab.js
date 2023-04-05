@@ -28,6 +28,7 @@ const SummaryTab = (props) => {
                     summaryTabActive={props.summaryTabActive}
                     setSummaryTabActive={props.setSummaryTabActive}
                     setMenuTabActive={props.setMenuTabActive}
+                    existingTables={props.existingTables}
                     />
                 : null
             }

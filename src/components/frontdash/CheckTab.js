@@ -58,6 +58,7 @@ const CheckTab = (props) => {
 
     // Get data for current table receipts
     useEffect(() => {
+        // Get data if split even is chosen
         if(contextTable !=='' && !allOnOne && divisionAmount !== ''){
             const getReceiptData = async () => {
                 const checkCollectionRef = 
@@ -73,6 +74,7 @@ const CheckTab = (props) => {
             }
             getReceiptData()
         }
+        // Get data if all on one is chosen
         if(contextTable !== '' && allOnOne && divisionAmount === ''){
             const getReceiptData = async () => {
                 const checkCollectionRef = 
@@ -88,6 +90,7 @@ const CheckTab = (props) => {
             }
             getReceiptData()
         }
+        // Get data of any existing receipts
         if(contextTable !== '' && allOnOne === false && divisionAmount === ''){
             const getReceipts = async () => {
                 const receiptCollectionRef = 
@@ -436,7 +439,13 @@ const CheckTab = (props) => {
                     />
 
             <section className='checkTabDisplay'>
-                <h2>ADD RECEIPTs, Click on Origin Checks' Seats to Transfer to Receipts, then Print.</h2>
+                {allOnOne || divisionAmount !== '' || receiptsList.length > 0
+                    ? null
+                    : contextTable === '' 
+                        ? <h2>No Table Selected</h2>
+                        : <h2>Use 'All On One' for one receipt, 'Split Total Evenly' for one receipt with total divided by paying guests, or 'Add New Receipt(s)' to separate seat(s) to receipts by click.</h2>
+                }
+                
                 <div className='seperatedChecksContainer'>
                     {allOnOne || divisionAmount !== ''
                         ? <article

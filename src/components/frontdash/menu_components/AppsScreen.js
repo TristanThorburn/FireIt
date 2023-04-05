@@ -3,7 +3,7 @@ import { appCollectionRef } from '../../../library/firestoreCollections';
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const AppsScreen = (props) => {
-    const { selectedSeat, setCurrentOrderData } = props
+    const { selectedSeat, setCurrentOrderData, contextTable, setFireItAlert } = props
     const [ appsData, setAppsData ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
@@ -57,7 +57,9 @@ const AppsScreen = (props) => {
 
     // add selected item to display as pending order on check
     useEffect(() => {
-        if(selectedItem !== ''){
+        if(contextTable === '' && selectedItem !== ''){
+            setFireItAlert('FireIt no table')
+        } else {
             const time = Date.now().toString()
             if(itemData.name && selectedSeat === ''){
                 const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
@@ -72,7 +74,7 @@ const AppsScreen = (props) => {
                 setItemData('')
             }
         }
-    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat])
+    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat, contextTable, setFireItAlert])
 
     // OLD LOGIC TO ADD ITEM DIRECTLY TO FIREBASE AND DISPLAY ON CHECK, CAUSING EMPTY STRING PUSHES:
     // logic for seat number, no seat number add/update

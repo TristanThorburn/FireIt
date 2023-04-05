@@ -3,7 +3,7 @@ import { dessertsCollectionRef } from '../../../library/firestoreCollections';
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const DessertsScreen = (props) => {
-    const { selectedSeat, setCurrentOrderData } = props
+    const { selectedSeat, setCurrentOrderData, contextTable, setFireItAlert } = props
     const [ dessertsData, setDessertsData ] = useState([]);
     const [ selectedItem, setSelectedItem ] = useState('');
     const [ itemData, setItemData ] = useState('');
@@ -56,7 +56,9 @@ const DessertsScreen = (props) => {
 
     // add selected item to display as pending order on check
     useEffect(() => {
-        if(selectedItem !== ''){
+        if(contextTable === '' && selectedItem !== ''){
+            setFireItAlert('FireIt no table')
+        } else {
             const time = Date.now().toString()
             if(itemData.name && selectedSeat === ''){
                 const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
@@ -71,7 +73,7 @@ const DessertsScreen = (props) => {
                 setItemData('')
             }
         }
-    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat])
+    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat, contextTable, setFireItAlert])
 
     const handleClick =(e) => {
         setSelectedItem(e.target.id)

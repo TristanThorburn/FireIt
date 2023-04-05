@@ -2,6 +2,7 @@ import TableCheck from './check_components/TableCheck';
 import MenuTabNav from "./navs/MenuTabNav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTable } from '../../contexts/TableContext';
 import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import AppsScreen from './menu_components/AppsScreen';
@@ -19,9 +20,10 @@ import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from '../keypads/AlphaNumericPad';
 
 const MenuTab = (props) => {
-    const { activeTableData } = props
-    const { employeeContext } = useAuth()
-    const [ menuCategory, setMenuCategory ] = useState('directory')
+    const { activeTableData } = props;
+    const { employeeContext } = useAuth();
+    const { contextTable } = useTable();
+    const [ menuCategory, setMenuCategory ] = useState('directory');
     const [ selectedSeat, setSelectedSeat ] = useState('');
     const [ seatKeyPadActive, setSeatKeyPadActive ] = useState(false);
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
@@ -189,6 +191,8 @@ const MenuTab = (props) => {
                         currentOrderData={currentOrderData}
                         setSelectedSeat={setSelectedSeat}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -200,6 +204,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -211,6 +217,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -222,6 +230,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -233,6 +243,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -244,6 +256,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -255,6 +269,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -266,6 +282,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -277,6 +295,8 @@ const MenuTab = (props) => {
                         setCurrentOrderData={setCurrentOrderData}
                         currentOrderData={currentOrderData}
                         setMenuCategory={setMenuCategory}
+                        contextTable={contextTable}
+                        setFireItAlert={setFireItAlert}
                         />
                     : null
                 }
@@ -291,6 +311,8 @@ const MenuTab = (props) => {
                 setSendOrder={setSendOrder}
                 setManagerKeyPadActive={setManagerKeyPadActive}
                 setAlphaNumericPadOpen={setAlphaNumericPadOpen}
+                contextTable={contextTable}
+                setFireItAlert={setFireItAlert}
                 />
         </div>
     )

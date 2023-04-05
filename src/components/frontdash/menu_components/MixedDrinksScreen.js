@@ -3,7 +3,7 @@ import { cocktailCollectionRef, shotsCollectionRef } from '../../../library/fire
 import { query, orderBy, doc, getDoc, onSnapshot, getDocFromCache } from 'firebase/firestore';
 
 const MixedDrinksScreen = (props) => {
-    const { selectedSeat, setCurrentOrderData } = props
+    const { selectedSeat, setCurrentOrderData, contextTable, setFireItAlert } = props
     const [ mixedData, setMixedData ] = useState([]);
     const [ collectionRef, setCollectionRef ] = useState('cocktails');
     const [ selectedItem, setSelectedItem ] = useState('');
@@ -98,7 +98,9 @@ const MixedDrinksScreen = (props) => {
 
     // add selected item to display as pending order on check
     useEffect(() => {
-        if(selectedItem !== ''){
+        if(contextTable === '' && selectedItem !== ''){
+            setFireItAlert('FireIt no table')
+        } else {
             const time = Date.now().toString()
             if(itemData.name && selectedSeat === ''){
                 const orderToAdd = {seat: '1', name:itemData.screenName, cost:itemData.price, time:time}
@@ -113,7 +115,7 @@ const MixedDrinksScreen = (props) => {
                 setItemData('')
             }
         }
-    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat])
+    }, [itemData, setCurrentOrderData, selectedItem, selectedSeat, contextTable, setFireItAlert])
 
     const handleCocktailsCategory = () => {
         setCollectionRef('cocktails')
