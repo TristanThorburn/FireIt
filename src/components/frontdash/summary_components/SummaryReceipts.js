@@ -252,7 +252,7 @@ const SummaryReceipts = (props) => {
                                                 ? <tr>
                                                     <th>
                                                         Total: ${receipt.data.receiptTotalCost} / {receipt.data.splitEven} =
-                                                        ${receipt.data.receiptTotalCost / receipt.data.splitEven} each.
+                                                        ${(receipt.data.receiptTotalCost / receipt.data.splitEven).toFixed(2)} each.
                                                     </th>
                                                 </tr>
                                                 : <tr>
