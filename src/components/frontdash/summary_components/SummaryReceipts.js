@@ -14,8 +14,7 @@ const SummaryReceipts = (props) => {
     const [ startCleanUp, setStartCleanUp] = useState(false);
     const [ cleanUpSeatList, setCleanUpSeatList ] = useState([]);
     const [ cleanUpReceiptList, setCleanUpReceiptList ] = useState([])
-    const [ receiptsAreCleaned, setReceiptsAreCleaned ] = useState(false)
-    const [ seatsAreCleaned, setSeatsAreCleaned ] = useState(false)
+    const [ checkTableRelease, setCheckTableRelease ] = useState(false)
 
     const getCurrentDate = (separator='') => {
         let newDate = new Date()
@@ -121,7 +120,7 @@ const SummaryReceipts = (props) => {
                     const cleaning = async () => {
                         const orderRef = 
                     doc(db, 'orders', employeeContext.employeeNumber, contextTable, 'seat' + seat)
-                    await deleteDoc(orderRef).then(setSeatsAreCleaned(true))
+                    await deleteDoc(orderRef)
                     }
                     cleaning()
                 })
@@ -129,13 +128,16 @@ const SummaryReceipts = (props) => {
                     const cleaning = async () => {
                         const receiptRef =
                     doc(db, 'receipts', employeeContext.employeeNumber, contextTable, 'receipt' + receipt)
-                    await deleteDoc(receiptRef).then(setReceiptsAreCleaned(true))
+                    await deleteDoc(receiptRef)
                     }
                     cleaning()
                 })
-                setCleanUpReceiptList('')
-                setCleanUpSeatList('')
-                setStartCleanUp(false)
+                setTimeout(() => {
+                    setCleanUpReceiptList('')
+                    setCleanUpSeatList('')
+                    setStartCleanUp(false)
+                    setCheckTableRelease(true)
+                }, 1500)
             }
             cleanUp()
         }
@@ -143,27 +145,26 @@ const SummaryReceipts = (props) => {
 
     // Clean up tables after seats and receipts have been removed
     useEffect(() => {
-        if(seatsAreCleaned && receiptsAreCleaned){
+        if(checkTableRelease){
             const cleanTable = async () => {
                 const docCollection = 
                     collection(db, 'orders', employeeContext.employeeNumber, contextTable)
                 const collectionSnap = await getCountFromServer(docCollection)
-                setTimeout(() => {
-                    if(collectionSnap.data().count === 0){
-                        const resetTable =
-                            doc(db, 'tables', contextTable)
-                        updateDoc(resetTable, {
-                            serverOwner:'none'
-                        }).then(setContextTable(''))
-                    }
-                    setSeatsAreCleaned(false)
-                    setReceiptsAreCleaned(false)
+                    setTimeout(() => {
+                        if(collectionSnap.data().count === 0){
+                            const resetTable =
+                                doc(db, 'tables', contextTable)
+                            updateDoc(resetTable, {
+                                serverOwner:'none'
+                            }).then(setContextTable(''))
+                        }
+                    }, 1500)
                     setLoading(false)
-                }, 1500)
+                    setCheckTableRelease(false)
             }
             cleanTable()
         }
-    }, [seatsAreCleaned, receiptsAreCleaned, contextTable, employeeContext.employeeNumber, setContextTable, setLoading])
+    }, [checkTableRelease, contextTable, employeeContext.employeeNumber, setContextTable, setLoading])
 
     const handleSettleReceiptCapture = (e) => {
         const targetReceipt = e.currentTarget
