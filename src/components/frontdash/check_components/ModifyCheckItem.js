@@ -73,6 +73,7 @@ const ModifyCheckItem = (props) => {
             if(docSnap.data() !== undefined && docSnap.data().order.length < 1){
                 deleteDoc(docRef)
                 setDoesSeatExist(false)
+                setConfirmRelaseTable(true)
             }
         }
         deleteCleanUp()
@@ -394,9 +395,9 @@ const ModifyCheckItem = (props) => {
             if(docSnap.data() !== undefined && docSnap.data().order.length < 1){
                 deleteDoc(docRef)
                 props.setDoesSeatExist(false)
-                setConfirmRelaseTable(true)
             }
             setInfoMessage(`${props.checkItemModData.name} deleted`)
+            setConfirmRelaseTable(true)
             setTimeout(() => {
                 props.setModifyCheckItem(false)
                 setInfoMessage('')

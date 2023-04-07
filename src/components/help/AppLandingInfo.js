@@ -35,7 +35,7 @@ const AppLandingInfo = (props) => {
                         <p>Lastly I wanted to create something that wasnt just another YouTube tutorial walkthrough, something where I didnt have easy access to solutions and would have to form my own logic.</p>
                         <a
                             className='squirrelLink'
-                            href='https://www.squirrelsystems.com/'
+                            href='https://www.squirrelsystems.com/hospitality-pos-hardware/'
                             target='_blank'
                             rel='noreferrer'
                         >

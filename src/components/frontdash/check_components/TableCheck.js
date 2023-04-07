@@ -293,6 +293,7 @@ const TableCheck = (props) => {
                         setDoc(checkRef, {
                             seat:true,
                             seatNumber:order.number,
+                            checkTotal:checkTotal,
                             order:[{
                                 item:order.name, 
                                 cost:order.cost, 
@@ -300,7 +301,6 @@ const TableCheck = (props) => {
                                 originalCost:order.cost,
                                 qsa:'false',
                                 time:order.time,
-                                checkTotal:checkTotal,
                             }],
                         })
                     }
