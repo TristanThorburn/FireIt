@@ -6,9 +6,9 @@ import { db } from '../../../firebase';
 import { doc, setDoc, getDoc, deleteDoc, collection, getCountFromServer } from 'firebase/firestore';
 
 const CheckTabNav = (props) => {
-    const { currentUser, logout, employeeContext, setManagerContext, managerContext } = useAuth();
+    const { currentUser, logout, employeeContext, } = useAuth();
     const { contextTable } = useTable();
-    const { receiptsList, allOnOne, setAllOnOne, setSplitEven, setDivisionAmount } = props
+    const { receiptsList, allOnOne, setAllOnOne, setSplitEven, setDivisionAmount, divisionAmount } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
     const [ seatCount, setSeatCount ] = useState('')
@@ -26,15 +26,15 @@ const CheckTabNav = (props) => {
         }
     }, [employeeContext.employeeNumber, contextTable])
 
-    const handleMgrOveride = () => {
-        if(managerContext === false){
-            props.setManagerKeyPadActive(true)
-        }
+    // const handleMgrOveride = () => {
+    //     if(managerContext === false){
+    //         props.setManagerKeyPadActive(true)
+    //     }
         
-        if(managerContext === true){
-            setManagerContext(false)
-        }
-    }
+    //     if(managerContext === true){
+    //         setManagerContext(false)
+    //     }
+    // }
 
     const handlePrintReceipts = () => {
         if(contextTable === '' && seatCount === ''){
@@ -166,6 +166,19 @@ const CheckTabNav = (props) => {
         }
     }
 
+    const handleCancelSplitEven = () => {
+        if(contextTable === '' && seatCount === ''){
+            props.setFireItAlert('FireIt no table')
+        }
+         else if(contextTable !== '' && seatCount === 0){
+            props.setFireItAlert('CheckTab no seats')
+        } else {
+            if(divisionAmount !== ''){
+                setDivisionAmount('')
+            }
+        }
+    }
+
     const handleChangeTable = () => {
         props.setAlphaNumericPadOpen(true)
     }
@@ -188,13 +201,13 @@ const CheckTabNav = (props) => {
     return(
         <div className='frontLowerNav'>
             <ul>
-                <li><button onClick={handleMgrOveride} className='workingButton'>
+                {/* <li><button onClick={handleMgrOveride} className='workingButton'>
                     {managerContext
                         ? 'CANCEL MANAGER AUTH'
                         : 'GET MANAGER AUTH'
                     }
                     </button>
-                </li>
+                </li> */}
                 <li>
                     <button 
                         onClick={handlePrintReceipts} 
@@ -230,6 +243,12 @@ const CheckTabNav = (props) => {
                 <li>
                     <button onClick={handleSplitEven} className='workingButton'>split total evenly</button>
                 </li>
+                {divisionAmount !== ''
+                    ? <li>
+                        <button onClick={handleCancelSplitEven} className='workingButton'>cancel split even</button>
+                    </li>
+                    : null
+                }
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHANGE TABLE</button>
                 </li>

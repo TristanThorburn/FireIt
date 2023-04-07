@@ -313,6 +313,9 @@ const TableCheck = (props) => {
                     createNewCheckData().then(setTableOwnership())
                 }
                 if(order.new === 'false'){
+                    // Update Seat 1 Price for receipts
+                    const priceUpdateRef =
+                        doc(db, 'orders', `${employeeContext.employeeNumber}`, `${tableData.searchId}`, 'seat1')
                     const orderToAdd = [{
                         item:order.name, 
                         cost:order.cost, 
@@ -322,8 +325,9 @@ const TableCheck = (props) => {
                         time:order.time,
                     }]
                     updateDoc(checkRef, {
-                        checkTotal:checkTotal,
-                        order:arrayUnion(...orderToAdd)})
+                        order:arrayUnion(...orderToAdd)}).then(updateDoc(priceUpdateRef, {
+                            checkTotal:checkTotal,
+                        }))
                 }
             })
         setSendOrder(false)

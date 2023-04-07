@@ -607,6 +607,7 @@ const CheckTab = (props) => {
                 allOnOne={allOnOne}
                 setSplitEven={setSplitEven}
                 setDivisionAmount={setDivisionAmount}
+                divisionAmount={divisionAmount}
                 />
         </div>
     )
