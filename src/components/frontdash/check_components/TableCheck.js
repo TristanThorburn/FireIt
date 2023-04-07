@@ -13,12 +13,14 @@ const TableCheck = (props) => {
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
     const [ checkTotal, setCheckTotal ] = useState();
+    const [ recalculate, setRecalculate ] = useState(false)
         
     const handlePendingOrderDelete = useCallback((e) => {
         const seatToAppend = document.getElementById(`${e.target.parentNode.dataset.seat}`)
         const child = e.target.parentNode
         seatToAppend.removeChild(child)
         e.target.removeEventListener('click', handlePendingOrderDelete)
+        setRecalculate(true)
     },[])
 
     const handlePendingSeatDelete = useCallback((e) => {
@@ -30,6 +32,7 @@ const TableCheck = (props) => {
             seatToAppend.removeChild(firstChild)
             seatToAppend.removeChild(secondChild)
             e.target.removeEventListener('click', handlePendingOrderDelete)
+            setRecalculate(true)
         }
         if(secondChild.childNodes.length > 1){
             setFireItAlert('TableCheck seat delete')
@@ -47,7 +50,17 @@ const TableCheck = (props) => {
             const sum = costsArray.reduce((a, b) => a + b, 0)
             setCheckTotal(sum)
         }
-    }, [checkData, currentOrderData])
+        if(recalculate){
+            let costsArray = []
+            const itemCosts = document.querySelectorAll('.checkItemCost')
+            itemCosts.forEach((item) => {
+                costsArray.push(Number(item.dataset.cost))
+            })
+            const sum = costsArray.reduce((a, b) => a + b, 0)
+            setCheckTotal(sum)
+            setRecalculate(false)
+        }
+    }, [checkData, currentOrderData, recalculate])
 
     // Get Data for the check from current server and table
     useEffect(() => {

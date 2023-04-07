@@ -29,7 +29,8 @@ const MessageOfTheDay = (props) => {
                     ? <div className='welcomeMessage'>
                         <h2>{employeeName}!</h2>
                         <h3>This pop up is a one time prompt for newly created employee logins to remind you that there are info buttons throughout the app to help explain what should be possible in each component.</h3>
-                        <h4>Thank YOU for testing my project!</h4>
+                        <h4>Thank YOU for checking out my project!</h4>
+                        <h5>Additional thanks to Chris Kim, Neha Bhole, Charlotte Duppre and Colm O'Sullivan who helped catch bugs with their testing.</h5>
 
                         <footer>
                             <ul className='tristanLinks'>
@@ -67,7 +68,8 @@ const MessageOfTheDay = (props) => {
                     : <div className='welcomeMessage'>
                         <h2>{employeeName}!</h2>
                         <h3>Look for the INFO buttons for details on how to use each component.</h3>
-                        <h4>Thank YOU for testing my project!</h4>
+                        <h4>Thank YOU for checking out my project!</h4>
+                        <h5>Additional thanks to Chris Kim, Neha Bhole, Charlotte Duppre and Colm O'Sullivan who helped catch bugs with their testing.</h5>
 
                         <footer>
                             <ul className='tristanLinks'>

@@ -456,7 +456,7 @@ const CheckTab = (props) => {
                             {divisionAmount !== ''
                                 ? <div className='splitEvenContainer'>
                                     <p>${receiptData[0]?.data.checkTotal} split {divisionAmount} ways</p>
-                                    <p>is ${receiptData[0]?.data.checkTotal / divisionAmount} each.</p>
+                                    <p>is ${(receiptData[0]?.data.checkTotal / divisionAmount).toFixed(2)} each.</p>
                                 </div>
                                 : null
                             }
@@ -514,7 +514,7 @@ const CheckTab = (props) => {
                                                 ${receipt.data.receiptTotalCost} split {receipt.data.splitEven} ways
                                             </p>
                                             <p>
-                                                is ${receipt.data.receiptTotalCost / receipt.data.splitEven} each.
+                                                is ${(receipt.data.receiptTotalCost / receipt.data.splitEven).toFixed(2)} each.
                                             </p>
                                         </div>
                                         : receipt.data?.separation === 'all on one'

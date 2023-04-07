@@ -105,7 +105,7 @@ const ServerKeyPad = (props) => {
         }
 
         if(props.managerKeyPadActive){
-            if(managerCombo === '1985') {
+            if(managerCombo === '1810') {
                 try{
                     setManagerContext(true)
                     setSuccess('Manager Authorized')
@@ -164,7 +164,7 @@ const ServerKeyPad = (props) => {
                                 : null
                             }
                             {props.managerKeyPadActive
-                                ? <th colSpan={3}>Manager Password?(1985)</th>
+                                ? <th colSpan={3}>Manager Password?(1810)</th>
                                 : null
                             }
                             {props.selectReceiptTarget
