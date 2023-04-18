@@ -1,5 +1,5 @@
 import { db } from "../../../firebase"
-import { doc, updateDoc, arrayRemove, arrayUnion, getDoc, deleteDoc, collection, getCountFromServer } from "firebase/firestore"
+import { doc, updateDoc, arrayRemove, arrayUnion, getDoc, deleteDoc, collection, getCountFromServer, getDocs, query } from "firebase/firestore"
 import { useAuth } from "../../../contexts/AuthContext";
 import { useTable } from "../../../contexts/TableContext";
 import { useState, useEffect } from "react";
@@ -364,6 +364,17 @@ const ModifyCheckItem = (props) => {
                     updateDoc(resetTable, {
                         serverOwner:'none'
                     })
+                    const clearOldReceipts = async () => {
+                        const receiptsCollection =
+                                    collection(db, 'receipts', employeeContext.employeeNumber, contextTable)
+                        const docRef = query(receiptsCollection)
+                        const toDelete = await getDocs(docRef)
+                        toDelete.forEach(item => {
+                            const id = item.id
+                            deleteDoc(doc(receiptsCollection, id))
+                        })
+                    }
+                    clearOldReceipts()
                 }
                 setConfirmRelaseTable(false)
             }
