@@ -7,7 +7,7 @@ const PassPad = (props) => {
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState('');
     const [ success, setSuccess ] =useState('')
-    const { login } = useAuth();
+    const { login, managerContext, setManagerContext } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,6 +45,9 @@ const PassPad = (props) => {
                 setLoading(true)
                 await login(props.email.toString(), props.password.toString())
                 navigate('/')
+                if(managerContext === true){
+                    setManagerContext(false)
+                }
             } catch (error) {
                 setError(error.message)
             }
