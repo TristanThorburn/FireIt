@@ -2,6 +2,8 @@ Fire It:
 
 Netlify Hosting             https://fire-it.netlify.app/
 
+Demonstration Videos Playlist: https://www.youtube.com/watch?v=yv3hdYbZXDE&list=PLwKvodfTch7aIQYjNm_W0W_1_hWmCABqH&ab_channel=TristanThorburn
+
 =>Created to explore the logic of some of the Point of Sale systems I used while previously working in the restuarant industry.
 
 =>See INFO buttons dispersed throughout the components of this project, to detail what the project can currently do, and some insights to the code & strategies to accomplish this.
