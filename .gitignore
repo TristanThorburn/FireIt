@@ -24,3 +24,5 @@ yarn-error.log*
 
 ideas.html
 projectreminders.html
+
+.env

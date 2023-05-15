@@ -73,6 +73,7 @@ const PaymentKeyPad = (props) => {
         if(remainingTotal > 0){
             setSuccess('')
             setError('')
+            setSubmitPayments(false)
         }
         if(remainingTotal === 0){
             setSubmitPayments(true)
@@ -80,6 +81,7 @@ const PaymentKeyPad = (props) => {
         }
         if(remainingTotal < 0){
             setError('Payments total more than receipt cost')
+            setSubmitPayments(false)
         }
     }, [remainingTotal])
 
