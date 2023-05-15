@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
 import { getFirestore, initializeFirestore } from 'firebase/firestore'
 import { enableIndexedDbPersistence } from "firebase/firestore";
-// import { disableNetwork, enableNetwork } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -37,10 +36,3 @@ enableIndexedDbPersistence(db)
   });
 
 export default app;
-
-// await disableNetwork(db);
-// console.log("Network disabled!");
-// Do offline actions
-// ... 
-
-// await enableNetwork(db);
