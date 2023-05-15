@@ -5,12 +5,12 @@ import { enableIndexedDbPersistence } from "firebase/firestore";
 // import { disableNetwork, enableNetwork } from "firebase/firestore"; 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAuXk9_lQOZ7y9lBkJtqsMTkpiK9XiqLNM",
-  authDomain: "fireit-a5b39.firebaseapp.com",
-  projectId: "fireit-a5b39",
-  storageBucket: "fireit-a5b39.appspot.com",
-  messagingSenderId: "789223904157",
-  appId: "1:789223904157:web:322ed09c67a31823efd574"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGE_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
