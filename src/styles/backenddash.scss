@@ -13,7 +13,7 @@
     }
 }
 
-.scheduleData, .settingsData, .paymentData{
+.settingsData, .paymentData{
     @include flexCenterCenter;
     flex-direction: column;
 }

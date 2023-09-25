@@ -60,17 +60,15 @@ const ScheduleData = () => {
         setScheduleHelp(true)
     }
 
-    const TEST = () => {
-        console.log(showDates)
-    }
-
     return(
         <main className='scheduleData'>
             <header className='backTitleAndInfo'>
                 <Link to='/backend-dash'>
                     <button className='newItemButton deleteItemButton'>Back to Dashboard</button>
                 </Link>
+
                 <h2>Scheduler</h2>
+
                 <button onClickCapture={handleScheduleHelp} className='infoButton'>
                     🔥
                     <p>INFO</p>
@@ -85,38 +83,52 @@ const ScheduleData = () => {
                 : null
             }
 
-            <section>
-                <button onClick={TEST}>TEST</button>
+            <section className='schedule'>
+                <h3>Under Construction</h3>
                 <table>
                     <thead>
-                        <tr
-                            colSpan={9}
-                            >
-                            <td>UNDER CONSTRUCTION</td>
+                        <tr>
+                            <td 
+                                onClick={() => setDateAdjustment(0)}
+                                >
+                                    <button
+                                        className='todaySave'
+                                        >To Today</button>
+                                </td>
+                            <td 
+                                onClick={() => setDateAdjustment(dateAdjustment - 1)}
+                                className='dayAdjust'
+                                >⬅️</td>
+                            <td className='date'>{showDates?.dayOne.toDateString()}</td>
+                            <td className='date'>{showDates?.dayTwo.toDateString()}</td>
+                            <td className='date'>{showDates?.dayThree.toDateString()}</td>
+                            <td className='date'>{showDates?.dayFour.toDateString()}</td>
+                            <td className='date'>{showDates?.dayFive.toDateString()}</td>
+                            <td className='date'>{showDates?.daySix.toDateString()}</td>
+                            <td className='date'>{showDates?.daySeven.toDateString()}</td>
+                            <td 
+                                onClick={() => setDateAdjustment(dateAdjustment + 1)}
+                                className='dayAdjust'
+                                >➡️</td>
+                            <td
+                                className='save'
+                                >
+                                    <button
+                                        className='todaySave'
+                                        >Save</button>
+                                </td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>employee</td>
-                            <td>shifts/hours</td>
-                        </tr>
-                        <tr>
-                            <td onClick={() => setDateAdjustment(0)}>To Today</td>
-                            <td onClick={() => setDateAdjustment(dateAdjustment - 1)}>⬅️</td>
-                            <td>{showDates?.dayOne.toDateString()}</td>
-                            <td>{showDates?.dayTwo.toDateString()}</td>
-                            <td>{showDates?.dayThree.toDateString()}</td>
-                            <td>{showDates?.dayFour.toDateString()}</td>
-                            <td>{showDates?.dayFive.toDateString()}</td>
-                            <td>{showDates?.daySix.toDateString()}</td>
-                            <td>{showDates?.daySeven.toDateString()}</td>
-                            <td onClick={() => setDateAdjustment(dateAdjustment + 1)}>➡️</td>
-                        </tr>
                     {employeeData.map(employee =>
                         <tr
                             key={employee.id}
+                            className='employeeRow'
                             >
-                            <td>{employee.data.firstName}&nbsp;{employee.data.lastName}</td>
+                            <td
+                                colSpan={2}
+                                className='shiftData'
+                                >{employee.data.firstName}&nbsp;{employee.data.lastName}</td>
                             <td className='scheduleShift'></td>
                             <td className='scheduleShift'></td>
                             <td className='scheduleShift'></td>
@@ -124,7 +136,10 @@ const ScheduleData = () => {
                             <td className='scheduleShift'></td>
                             <td className='scheduleShift'></td>
                             <td className='scheduleShift'></td>
-                            <td className='scheduleHours'></td>
+                            <td 
+                                colSpan={2}
+                                className='shiftData'
+                                >Shifts/Hours:</td>
                         </tr>
                         )}
                     </tbody>
