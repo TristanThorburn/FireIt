@@ -7,6 +7,8 @@ import BackDashHelp from '../help/BackDashHelp';
 const ScheduleData = () => {
     const [ scheduleHelp, setScheduleHelp ] = useState(false)
     const [ employeeData, setEmployeeData ] = useState([])
+    const [ dateAdjustment, setDateAdjustment ] = useState(0)
+    const [ showDates, setShowDates ] = useState()
 
     // get employeee data to populate employee list for schedule
     useEffect(() => {
@@ -23,35 +25,43 @@ const ScheduleData = () => {
     // Update the Week
     useEffect(() => {
         const getWeek = () => {
-            const dayOne = new Date();
-            dayOne.setDate(dayOne.getDate() + 0)
+            const displayDates = {}
 
-            const dayTwo = new Date(dayOne)
-            dayTwo.setDate(dayTwo.getDate() + 1)
+            displayDates.today = new Date();
+            displayDates.today.setDate(displayDates.today.getDate() + 0)
 
-            const dayThree = new Date(dayOne)
-            dayThree.setDate(dayThree.getDate() + 2)
+            displayDates.dayOne = new Date();
+            displayDates.dayOne.setDate(displayDates.dayOne.getDate() + 0 + dateAdjustment)
 
-            const dayFour = new Date(dayOne)
-            dayFour.setDate(dayFour.getDate() + 3)
+            displayDates.dayTwo = new Date(displayDates.dayOne)
+            displayDates.dayTwo.setDate(displayDates.dayTwo.getDate() + 1)
 
-            const dayFive = new Date(dayOne)
-            dayFive.setDate(dayFive.getDate() + 4)
+            displayDates.dayThree = new Date(displayDates.dayOne)
+            displayDates.dayThree.setDate(displayDates.dayThree.getDate() + 2)
 
-            const daySix = new Date(dayOne)
-            daySix.setDate(daySix.getDate() + 5)
+            displayDates.dayFour = new Date(displayDates.dayOne)
+            displayDates.dayFour.setDate(displayDates.dayFour.getDate() + 3)
 
-            const daySeven = new Date(dayOne)
-            daySeven.setDate(daySeven.getDate() + 6)
+            displayDates.dayFive = new Date(displayDates.dayOne)
+            displayDates.dayFive.setDate(displayDates.dayFive.getDate() + 4)
 
-            console.log(dayOne.toDateString(), dayTwo.toDateString(), dayThree.toDateString(), dayFour.toDateString(), dayFive.toDateString(), daySix.toDateString(), daySeven.toDateString())
+            displayDates.daySix = new Date(displayDates.dayOne)
+            displayDates.daySix.setDate(displayDates.daySix.getDate() + 5)
+
+            displayDates.daySeven = new Date(displayDates.dayOne)
+            displayDates.daySeven.setDate(displayDates.daySeven.getDate() + 6)
+
+            setShowDates(displayDates)
         }
         getWeek();
-    }, [])
-
+    }, [dateAdjustment])
 
     const handleScheduleHelp = () => {
         setScheduleHelp(true)
+    }
+
+    const TEST = () => {
+        console.log(showDates)
     }
 
     return(
@@ -76,28 +86,31 @@ const ScheduleData = () => {
             }
 
             <section>
+                <button onClick={TEST}>TEST</button>
                 <table>
                     <thead>
                         <tr
                             colSpan={9}
                             >
-                            <td>week of:</td>
-                            <td 
-                                colSpan={8}
-                                >currentWeek</td>
+                            <td>UNDER CONSTRUCTION</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>employee</td>
-                            <td>monday</td>
-                            <td>tuesday</td>
-                            <td>wednesday</td>
-                            <td>thursday</td>
-                            <td>friday</td>
-                            <td>saturday</td>
-                            <td>sunday</td>
                             <td>shifts/hours</td>
+                        </tr>
+                        <tr>
+                            <td onClick={() => setDateAdjustment(0)}>To Today</td>
+                            <td onClick={() => setDateAdjustment(dateAdjustment - 1)}>⬅️</td>
+                            <td>{showDates?.dayOne.toDateString()}</td>
+                            <td>{showDates?.dayTwo.toDateString()}</td>
+                            <td>{showDates?.dayThree.toDateString()}</td>
+                            <td>{showDates?.dayFour.toDateString()}</td>
+                            <td>{showDates?.dayFive.toDateString()}</td>
+                            <td>{showDates?.daySix.toDateString()}</td>
+                            <td>{showDates?.daySeven.toDateString()}</td>
+                            <td onClick={() => setDateAdjustment(dateAdjustment + 1)}>➡️</td>
                         </tr>
                     {employeeData.map(employee =>
                         <tr
