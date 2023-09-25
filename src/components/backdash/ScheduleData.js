@@ -3,12 +3,15 @@ import { useState, useEffect } from 'react';
 import { employeeCollectionRef } from '../../library/firestoreCollections';
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import BackDashHelp from '../help/BackDashHelp';
+import ShiftModal from './scheduledata/ShiftModal';
 
 const ScheduleData = () => {
     const [ scheduleHelp, setScheduleHelp ] = useState(false)
     const [ employeeData, setEmployeeData ] = useState([])
     const [ dateAdjustment, setDateAdjustment ] = useState(0)
     const [ showDates, setShowDates ] = useState()
+    const [ shiftDay, setShiftDay ] = useState('')
+    const [ adjustingShift, setAdjustingShift ] = useState(false)
 
     // get employeee data to populate employee list for schedule
     useEffect(() => {
@@ -60,6 +63,11 @@ const ScheduleData = () => {
         setScheduleHelp(true)
     }
 
+    const handleAdjustShift = (e) => {
+        setShiftDay(e.currentTarget.dataset.shiftdate)
+        setAdjustingShift(true)
+    }
+
     return(
         <main className='scheduleData'>
             <header className='backTitleAndInfo'>
@@ -83,6 +91,14 @@ const ScheduleData = () => {
                 : null
             }
 
+            {adjustingShift
+                ?<ShiftModal
+                    shiftDay={shiftDay}
+                    setAdjustingShift={setAdjustingShift}
+                    />
+                :null
+            }
+
             <section className='schedule'>
                 <h3>Under Construction</h3>
                 <table>
@@ -92,13 +108,16 @@ const ScheduleData = () => {
                                 onClick={() => setDateAdjustment(0)}
                                 >
                                     <button
-                                        className='todaySave'
+                                        className='newItemButton todaySave'
                                         >To Today</button>
-                                </td>
+                            </td>
                             <td 
-                                onClick={() => setDateAdjustment(dateAdjustment - 1)}
-                                className='dayAdjust'
-                                >⬅️</td>
+                                onClick={() => setDateAdjustment(dateAdjustment - 7)}
+                                className='prevDay'
+                                ><button
+                                    className='dayAdjust'
+                                    >&#60;</button>
+                            </td>
                             <td className='date'>{showDates?.dayOne.toDateString()}</td>
                             <td className='date'>{showDates?.dayTwo.toDateString()}</td>
                             <td className='date'>{showDates?.dayThree.toDateString()}</td>
@@ -107,16 +126,18 @@ const ScheduleData = () => {
                             <td className='date'>{showDates?.daySix.toDateString()}</td>
                             <td className='date'>{showDates?.daySeven.toDateString()}</td>
                             <td 
-                                onClick={() => setDateAdjustment(dateAdjustment + 1)}
-                                className='dayAdjust'
-                                >➡️</td>
+                                onClick={() => setDateAdjustment(dateAdjustment + 7)}
+                                ><button
+                                    className='dayAdjust'
+                                    >&#62;</button>
+                            </td>
                             <td
                                 className='save'
                                 >
                                     <button
-                                        className='todaySave'
+                                        className='newItemButton todaySave'
                                         >Save</button>
-                                </td>
+                            </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,17 +146,54 @@ const ScheduleData = () => {
                             key={employee.id}
                             className='employeeRow'
                             >
+                                {/* NAME */}
                             <td
                                 colSpan={2}
                                 className='shiftData'
-                                >{employee.data.firstName}&nbsp;{employee.data.lastName}</td>
-                            <td className='scheduleShift'></td>
-                            <td className='scheduleShift'></td>
-                            <td className='scheduleShift'></td>
-                            <td className='scheduleShift'></td>
-                            <td className='scheduleShift'></td>
-                            <td className='scheduleShift'></td>
-                            <td className='scheduleShift'></td>
+                                >{employee.data.firstName}&nbsp;{employee.data.lastName}
+                            </td>
+                                {/* MONDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.dayOne.toDateString()}
+                                >
+                            </td>
+                                {/* TUESDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.dayTwo.toDateString()}
+                                >
+                            </td>
+                                {/* WEDNESDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.dayThree.toDateString()}
+                                >
+                            </td>
+                                {/* THURSDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.dayFour.toDateString()}
+                                >
+                            </td>
+                                {/* FRIDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.dayFive.toDateString()}
+                                >
+                            </td>
+                                {/* SATURDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.daySix.toDateString()}
+                                >
+                            </td>
+                                {/* SUNDAY */}
+                            <td className='scheduleShift'
+                                onClick={handleAdjustShift}
+                                data-shiftdate={showDates?.daySeven.toDateString()}
+                                >
+                            </td>
                             <td 
                                 colSpan={2}
                                 className='shiftData'
