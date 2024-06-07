@@ -9,6 +9,7 @@ import SummaryReceipts from "./summary_components/SummaryReceipts";
 import PaymentKeyPad from "../keypads/PaymentKeyPad";
 
 const PaymentTab = (props) => {
+    const { checkTotal, setCheckTotal } = props
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('');
@@ -63,6 +64,8 @@ const PaymentTab = (props) => {
             
             <TableCheck
                 tableData={props.activeTableData}
+                checkTotal={checkTotal}
+                setCheckTotal={setCheckTotal}
                 />
             
             <SummaryReceipts

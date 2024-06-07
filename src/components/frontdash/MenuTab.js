@@ -20,7 +20,8 @@ import FireItAlert from "../help/FireItAlert";
 import AlphaNumericPad from '../keypads/AlphaNumericPad';
 
 const MenuTab = (props) => {
-    const { activeTableData } = props;
+    const { activeTableData, checkTotal, setCheckTotal, 
+        promoRecalculate, setPromoRecalculate } = props;
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ menuCategory, setMenuCategory ] = useState('directory');
@@ -142,6 +143,9 @@ const MenuTab = (props) => {
                     checkItemModData={checkItemModData}
                     setCheckItemModData={setCheckItemModData}
                     setDoesSeatExist={setDoesSeatExist}
+                    checkTotal={checkTotal}
+                    setPromoRecalculate={setPromoRecalculate}
+                    promoRecalculate={promoRecalculate}
                     />
                 : null
             }
@@ -162,6 +166,8 @@ const MenuTab = (props) => {
                 setCheckItemModData={setCheckItemModData}
                 setFireItAlert={setFireItAlert}
                 menuTabActive={props.menuTabActive}
+                checkTotal={checkTotal}
+                setCheckTotal={setCheckTotal}
                 />
             
             <section className='menuDirectoryContainer'>

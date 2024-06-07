@@ -35,6 +35,8 @@ const FrontDash = () => {
     const [ messageOfTheDay, setMessageOfTheDay ] = useState(false);
     const [ frontTableMapData, setFrontTableMapData ] = useState([])
     const [ existingTables, setExistingTables ] = useState('')
+    const [ checkTotal, setCheckTotal ] = useState();
+    const [ promoRecalculate, setPromoRecalculate ] = useState(false);
 
     // Populate screen from table Data
     useEffect(() => {
@@ -167,6 +169,8 @@ const FrontDash = () => {
                     setSummaryTabActive={setSummaryTabActive}
                     setMenuTabActive={setMenuTabActive}
                     existingTables={existingTables}
+                    checkTotal={checkTotal}
+                    setCheckTotal={setCheckTotal}
                     />
                 : null
             }
@@ -192,6 +196,10 @@ const FrontDash = () => {
                     activeTableData={activeTableData}
                     serverTableList={serverTableList}
                     existingTables={existingTables}
+                    checkTotal={checkTotal}
+                    setCheckTotal={setCheckTotal}
+                    promoRecalculate={promoRecalculate}
+                    setPromoRecalculate={setPromoRecalculate}
                     />
                 : null
             }
@@ -205,6 +213,8 @@ const FrontDash = () => {
                     activeTableData={activeTableData}
                     serverTableList={serverTableList}
                     existingTables={existingTables}
+                    checkTotal={checkTotal}
+                    setCheckTotal={setCheckTotal}
                     />
                 : null
             }
@@ -216,6 +226,8 @@ const FrontDash = () => {
                     activeTableData={activeTableData}
                     serverTableList={serverTableList}
                     setLoading={setLoading}
+                    checkTotal={checkTotal}
+                    setCheckTotal={setCheckTotal}
                     />
                 : null
             }
