@@ -7,6 +7,7 @@ import TableCheck from "./check_components/TableCheck";
 import AlphaNumericPad from "../keypads/AlphaNumericPad";
 
 const SummaryTab = (props) => {
+    const { checkTotal, setCheckTotal } = props
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
     const [ fireItAlert, setFireItAlert ] = useState('');
     const [ alphaNumericPadOpen, setAlphaNumericPadOpen ] = useState(false);
@@ -50,6 +51,8 @@ const SummaryTab = (props) => {
                 <TableCheck
                     tableData={props.activeTableData}
                     summaryTabActive={props.summaryTabActive}
+                    checkTotal={checkTotal}
+                    setCheckTotal={setCheckTotal}
                     />
             </div>
 
