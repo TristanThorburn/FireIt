@@ -23,6 +23,7 @@ const ModifyCheckItem = (props) => {
         props.setModifyCheckItem(false)
     }
 
+    // Update check total when promo/qsa/void sent item is completed
     useEffect(() => {
         if(promoRecalculate){
             const docRef = 

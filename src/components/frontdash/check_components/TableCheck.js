@@ -61,17 +61,6 @@ const TableCheck = (props) => {
         }
     }, [checkData, currentOrderData, recalculate, setCheckTotal])
 
-    // Update check total when promo/qsa/void sent item is completed
-    // useEffect(() => {
-    //     if(promoRecalculate === 'true'){
-    //         const docRef = 
-    //             doc(db, 'orders', employeeContext.employeeNumber, contextTable, checkItemModData.seat)
-    //         updateDoc(docRef, {
-    //             checkTotal:checkTotal
-    //         })
-    //     }
-    // }, [promoRecalculate, checkItemModData.seat, checkTotal, contextTable, employeeContext.employeeNumber])
-
     // Get Data for the check from current server and table
     useEffect(() => {
         const getCheckData = async () => {
