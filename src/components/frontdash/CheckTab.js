@@ -12,7 +12,7 @@ import AlphaNumericPad from "../keypads/AlphaNumericPad";
 const CheckTab = (props) => {
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
-    const { setCheckTabActive, setPaymentTabActive } = props
+    const { setCheckTabActive, setPaymentTabActive, checkTotal, setCheckTotal } = props
     const [ receiptData, setReceiptData ] = useState([]);
     const [ fireItAlert, setFireItAlert ] = useState('')
     const [ managerKeyPadActive, setManagerKeyPadActive ] = useState(false);
@@ -436,6 +436,8 @@ const CheckTab = (props) => {
                     setSelectReceiptTarget={setSelectReceiptTarget}
                     setTargetReceiptNumber={setTargetReceiptNumber}
                     setAppendReceipt={setAppendReceipt}
+                    checkTotal={checkTotal}
+                    setCheckTotal={setCheckTotal}
                     />
 
             <section className='checkTabDisplay'>

@@ -1,0 +1,143 @@
+.menuData header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 10%;
+}
+.menuData h2 {
+  font-size: clamp(1.25rem, 0.2459rem + 2.2951vw, 3rem);
+}
+.menuData button.infoButton {
+  width: 250px;
+}
+.menuData button.infoButton p {
+  top: 30%;
+  left: 27%;
+}
+.menuData ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  width: 80%;
+}
+.menuData li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem auto;
+  cursor: pointer;
+}
+.menuData img {
+  width: 50px;
+}
+.menuData div:last-child {
+  background-color: #bcbcbc;
+}
+
+.alcoholNavButtons {
+  display: flex;
+  justify-content: space-around;
+}
+.alcoholNavButtons button {
+  width: clamp(8rem, 5.7143rem + 3.5714vw, 10rem);
+  font-size: 1.15rem;
+  border-radius: 10px;
+  background-color: #4a5e6b;
+  color: white;
+}
+.alcoholNavButtons button:active {
+  background-color: #5f7889;
+}
+
+.menuItemForm {
+  background-color: #bcbcbc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto;
+}
+.menuItemForm div, .menuItemForm fieldset {
+  margin: 1rem auto;
+}
+.menuItemForm .taxGroup, .menuItemForm .printerRoute {
+  margin: 2rem auto;
+}
+.menuItemForm .taxGroup label, .menuItemForm .printerRoute label {
+  font-weight: bold;
+}
+.menuItemForm .updateButtons {
+  display: flex;
+  flex-direction: column;
+}
+.menuItemForm .updateButtons button {
+  margin: 10px auto;
+}
+
+.itemTypes {
+  height: 300px;
+  width: 200px;
+}
+.itemTypes h4 {
+  margin: 0 auto;
+  text-transform: capitalize;
+}
+
+.itemPopUps {
+  width: 350px;
+  height: 300px;
+  overflow-y: scroll;
+}
+.itemPopUps h4 {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.popUpButtonsContainer {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.popUpButtonsContainer button {
+  margin: 0 5px;
+  width: 40%;
+}
+
+.popUpOptions {
+  width: 80%;
+}
+.popUpOptions h5 {
+  margin: 0 auto;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+@media (min-width: 1000px) and (max-width: 1419px) {
+  .menuData ul {
+    width: 100%;
+  }
+  .menuItemForm {
+    max-width: 98%;
+    overflow-y: scroll;
+  }
+  .menuItemForm div, .menuItemForm fieldset {
+    margin: 0.5rem auto;
+  }
+  .menuItemForm .taxGroup, .menuItemForm .printerRoute {
+    margin: 0.5rem auto;
+  }
+}
+@media (min-width: 1420px) and (max-width: 1619px) {
+  .menuData .backDashHeader .infoButton {
+    right: 22%;
+  }
+}
+@media (min-width: 1620px) and (max-width: 1819px) {
+  .menuData .backDashHeader .infoButton {
+    right: 27%;
+  }
+}/*# sourceMappingURL=menudata.css.map */

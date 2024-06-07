@@ -1,0 +1,219 @@
+@charset "UTF-8";
+.activeCheck, .seperatedCheck, .allOnOneCheck {
+  background-color: white;
+  border: 4px solid black;
+  overflow-y: scroll;
+}
+.activeCheck h2, .activeCheck h3, .seperatedCheck h2, .seperatedCheck h3, .allOnOneCheck h2, .allOnOneCheck h3 {
+  margin: 0.5rem auto;
+  text-align: center;
+}
+.activeCheck footer, .seperatedCheck footer, .allOnOneCheck footer {
+  margin: 0 auto;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+.activeCheck .seatItemList, .seperatedCheck .seatItemList, .allOnOneCheck .seatItemList {
+  cursor: pointer;
+}
+
+.activeCheck {
+  width: 20%;
+  height: 90%;
+}
+.activeCheck th {
+  text-align: left;
+}
+
+.summaryTabDisplayContainer .activeCheck {
+  width: 70%;
+  height: 100%;
+}
+.summaryTabDisplayContainer .seatsAndOrders {
+  display: flex;
+  flex-wrap: wrap;
+}
+.summaryTabDisplayContainer table {
+  margin: 1rem 2rem;
+  width: calc(33.3333333333% - 4rem);
+}
+.summaryTabDisplayContainer footer {
+  font-weight: bold;
+  text-decoration: underline;
+  width: 50%;
+}
+
+.paymentTab .activeCheck {
+  width: 30%;
+}
+
+.checkSeatInfo, .receiptSeatInfo, .pendingSeperateSeat, .allOnOneSeatInfo {
+  width: 80%;
+  margin: 10px auto;
+}
+.checkSeatInfo .checkItemCost, .checkSeatInfo .receiptItemCost, .receiptSeatInfo .checkItemCost, .receiptSeatInfo .receiptItemCost, .pendingSeperateSeat .checkItemCost, .pendingSeperateSeat .receiptItemCost, .allOnOneSeatInfo .checkItemCost, .allOnOneSeatInfo .receiptItemCost {
+  text-align: right;
+}
+
+.checkTab .seatsAndOrders {
+  cursor: pointer;
+}
+.checkTab .seatTransferReminder {
+  background-color: lightgreen;
+  color: black;
+}
+.checkTab .receiptSeatInfo {
+  cursor: pointer;
+}
+.checkTab .allOnOneCheck {
+  color: darkblue;
+}
+.checkTab .allOnOneCheck th, .checkTab .allOnOneCheck td, .checkTab .allOnOneCheck h3 {
+  background-color: lightblue;
+  cursor: default;
+}
+.checkTab .splitEvenContainer {
+  margin: 0 auto;
+  width: 90%;
+}
+.checkTab .splitEvenContainer p {
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  background-color: lightgreen;
+}
+.checkTab h2 {
+  width: 80%;
+  text-align: center;
+}
+
+.pendingOrder, .pendingSeat, .pendingSeperateSeat {
+  color: blue;
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.pendingDeleteReminder::before {
+  content: "❌";
+}
+
+.itemModifyReminder::before {
+  content: "🔄";
+}
+
+.checkTabDisplay {
+  width: 80%;
+  height: 90%;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.checkTabDisplay h2 {
+  color: white;
+  margin: 0 auto;
+  font-size: clamp(1rem, 0.8566rem + 0.3279vw, 1.25rem);
+}
+
+.seperatedChecksContainer {
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.seperatedCheck, .allOnOneCheck {
+  height: 400px;
+}
+
+.summaryReceipts {
+  border: 4px solid black;
+  width: 40%;
+  overflow-y: scroll;
+}
+.summaryReceipts h2 {
+  text-align: center;
+  color: #fc466b;
+  margin: 0.5rem auto;
+}
+.summaryReceipts ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.summaryReceipts button {
+  height: 300px;
+  width: 250px;
+  margin: 1rem 0.5rem;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.summaryReceipts .unSettledReceipt {
+  background-color: lightpink;
+}
+.summaryReceipts .settledReceipt {
+  background-color: lightgreen;
+}
+.summaryReceipts table {
+  width: 100%;
+  height: 100%;
+}
+.summaryReceipts tbody {
+  overflow-y: scroll;
+}
+.summaryReceipts td {
+  text-align: center;
+}
+.summaryReceipts .receiptSavedPayments {
+  display: flex;
+  justify-content: space-evenly;
+  text-transform: capitalize;
+  font-size: 1rem;
+}
+
+@media (min-width: 1000px) and (max-width: 1220px) {
+  .activeCheck {
+    width: 30%;
+  }
+  .checkTabDisplay {
+    width: 70%;
+  }
+  .seperatedChecksContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1220px) and (max-width: 1420px) {
+  .activeCheck {
+    width: 25%;
+  }
+  .checkTabDisplay {
+    width: 75%;
+  }
+  .seperatedChecksContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1420px) and (max-width: 1619px) {
+  .activeCheck {
+    width: 25%;
+  }
+  .checkTabDisplay {
+    width: 75%;
+  }
+  .seperatedChecksContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}/*# sourceMappingURL=checkdisplay.css.map */

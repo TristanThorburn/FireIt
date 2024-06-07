@@ -1,0 +1,272 @@
+.tableDisplay {
+  background-color: black;
+  height: 92.5vh;
+  margin: 0;
+  display: flex;
+}
+.tableDisplay .tableMap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tableDisplay .tableMap li {
+  position: absolute;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.table {
+  border: 1px solid black;
+  background-color: green;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.tableInUse {
+  background-color: #fc466b;
+  color: black;
+}
+
+.diamondTable {
+  rotate: 45deg;
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+.diamondTable p {
+  margin: 0 auto;
+  rotate: -45deg;
+  position: absolute;
+  top: 35%;
+  transform: translateX(-50%);
+  left: 19%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.squareTable {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rectangleTable {
+  width: 200px;
+  height: 100px;
+}
+.rectangleTable p {
+  margin-left: 54px;
+  margin-top: 35px;
+}
+
+.circleTable {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.tableData header {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #bcbcbc;
+  height: 7.5vh;
+}
+.tableData button.infoButton p {
+  top: 30%;
+  left: -20%;
+}
+
+.updateMapNav {
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  border: 2px solid white;
+  height: 10%;
+  width: 90%;
+  z-index: 1;
+}
+.updateMapNav ul {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+.updateMapNav button.enableDrag {
+  width: 300px;
+}
+
+.tableMapDirections {
+  color: white;
+  text-align: center;
+}
+
+.tableFormContainer {
+  border: 4px solid white;
+  width: 600px;
+  height: 700px;
+  background-color: #4a5e6b;
+  display: grid;
+  grid-template-rows: 1fr, 4fr, 1fr;
+}
+.tableFormContainer h2 {
+  text-align: center;
+  margin: 1rem auto -1rem;
+  color: white;
+}
+.tableFormContainer legend, .tableFormContainer label {
+  color: white;
+}
+.tableFormContainer fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.tableFormContainer .padError {
+  margin: 0 auto;
+  height: 40px;
+}
+.tableFormContainer footer {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.tableFormContainer .padError {
+  height: 30px;
+}
+
+.tableFormStyle {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 45%;
+  margin: 0 auto;
+}
+
+.tableFormName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-evenly;
+  margin: 1rem;
+}
+
+.demoTable {
+  transform: scale(0.75);
+  margin: 15px auto;
+}
+
+.serversTablesList {
+  width: 30%;
+  border: 4px solid black;
+  background-color: darkblue;
+  overflow-y: scroll;
+}
+.serversTablesList h3 {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  margin: 0;
+}
+.serversTablesList ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+.serversTablesList li {
+  margin: 2rem auto;
+  width: 80%;
+}
+.serversTablesList button {
+  width: 100%;
+  height: 50px;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 700px) and (max-width: 1419px) {
+  .updateMapNav {
+    height: 25%;
+  }
+  .updateMapNav button.enableDrag {
+    width: 200px;
+  }
+  .updateMapNav li {
+    width: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto;
+  }
+  .updateMapNav p {
+    margin: 0;
+  }
+  .tableData header {
+    width: 100%;
+  }
+}
+@media (min-width: 1420px) and (max-width: 1619px) {
+  .updateMapNav p {
+    margin: 0;
+  }
+  .tableData header {
+    width: 100%;
+  }
+}
+@media (min-width: 700px) and (max-width: 999px) {
+  .tableDisplay .tableMap {
+    scale: 0.4;
+    margin: -175px 0 0 -225px;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1119px) {
+  .tableDisplay .tableMap {
+    scale: 0.59;
+    margin: -150px 0 0 -225px;
+  }
+}
+@media (min-width: 1120px) and (max-width: 1219px) {
+  .tableDisplay .tableMap {
+    scale: 0.65;
+    margin: -125px 0 0 -200px;
+  }
+}
+@media (min-width: 1220px) and (max-width: 1319px) {
+  .tableDisplay .tableMap {
+    scale: 0.7;
+    margin: -100px 0 0 -175px;
+  }
+}
+@media (min-width: 1320px) and (max-width: 1419px) {
+  .tableDisplay .tableMap {
+    scale: 0.75;
+    margin: -75px 0 0 -150px;
+  }
+}
+@media (min-width: 1420px) and (max-width: 1519px) {
+  .tableDisplay .tableMap {
+    scale: 0.8;
+    margin: -25px 0 0 -150px;
+  }
+}
+@media (min-width: 1520px) and (max-width: 1719px) {
+  .tableDisplay .tableMap {
+    scale: 0.9;
+    margin: 0 0 0 -125px;
+  }
+}/*# sourceMappingURL=table.css.map */

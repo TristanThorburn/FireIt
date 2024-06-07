@@ -5,7 +5,8 @@ import { useTable } from "../../../contexts/TableContext";
 import { useState, useEffect } from "react";
 
 const ModifyCheckItem = (props) => {
-    const { checkItemModData, setModifyCheckItem, setDoesSeatExist } = props
+    const { checkItemModData, setModifyCheckItem, setDoesSeatExist, 
+        setPromoRecalculate, promoRecalculate, checkTotal } = props
     const { employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ infoMessage, setInfoMessage ] = useState('')
@@ -21,6 +22,17 @@ const ModifyCheckItem = (props) => {
     const handleCloseModal = () => {
         props.setModifyCheckItem(false)
     }
+
+    // Update check total when promo/qsa/void sent item is completed
+    useEffect(() => {
+        if(promoRecalculate){
+            const docRef = 
+                doc(db, 'orders', employeeContext.employeeNumber, contextTable, checkItemModData.seat)
+            updateDoc(docRef, {
+                checkTotal:checkTotal
+            })
+        }
+    }, [promoRecalculate, checkItemModData.seat, checkTotal, contextTable, employeeContext.employeeNumber])
 
     // Delete Promo'd Item after Confirmation
     useEffect(() => {
@@ -40,6 +52,7 @@ const ModifyCheckItem = (props) => {
             })
             setDeletePromoItem(false)
             setInfoMessage(`${checkItemModData.name} deleted`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setModifyCheckItem(false)
                 setInfoMessage('')
@@ -61,6 +74,7 @@ const ModifyCheckItem = (props) => {
             })
             setDeleteQsaItem(false)
             setInfoMessage(`${checkItemModData.name} deleted`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setModifyCheckItem(false)
                 setInfoMessage('')
@@ -77,7 +91,7 @@ const ModifyCheckItem = (props) => {
             }
         }
         deleteCleanUp()
-    }, [deletePromoItem, deleteQsaItem, checkItemModData.cost, checkItemModData.discount, checkItemModData.name, checkItemModData.originalCost, checkItemModData.qsa, checkItemModData.time, setDoesSeatExist, setModifyCheckItem, contextTable, employeeContext.employeeNumber, checkItemModData.seat])
+    }, [setPromoRecalculate, deletePromoItem, deleteQsaItem, checkItemModData.cost, checkItemModData.discount, checkItemModData.name, checkItemModData.originalCost, checkItemModData.qsa, checkItemModData.time, setDoesSeatExist, setModifyCheckItem, contextTable, employeeContext.employeeNumber, checkItemModData.seat])
 
     // Promo item based on selected amount
     useEffect(() => {
@@ -109,6 +123,7 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setDiscountAmount('')
             setInfoMessage(`${checkItemModData.name} discount removed`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
@@ -142,6 +157,7 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setDiscountAmount('')
             setInfoMessage(`${checkItemModData.name} discounted 25%`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
@@ -175,6 +191,7 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setDiscountAmount('')
             setInfoMessage(`${checkItemModData.name} discount removed`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
@@ -208,6 +225,7 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setDiscountAmount('')
             setInfoMessage(`${checkItemModData.name} discounted 50%`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
@@ -241,6 +259,7 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setDiscountAmount('')
             setInfoMessage(`${checkItemModData.name} discount removed`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
@@ -274,12 +293,13 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setDiscountAmount('')
             setInfoMessage(`${checkItemModData.name} discounted 100%`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
             }, 1000)
         }
-    }, [discountAmount, checkItemModData.cost, checkItemModData.discount, checkItemModData.name, checkItemModData.originalCost, checkItemModData.time, setModifyCheckItem, contextTable, employeeContext.employeeNumber, checkItemModData.seat])
+    }, [setPromoRecalculate, discountAmount, checkItemModData.cost, checkItemModData.discount, checkItemModData.name, checkItemModData.originalCost, checkItemModData.time, setModifyCheckItem, contextTable, employeeContext.employeeNumber, checkItemModData.seat])
 
     // QSA item
     useEffect(() => {
@@ -311,6 +331,7 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setQsaItem(false)
             setInfoMessage(`${checkItemModData.name} QSA Removed`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
@@ -344,12 +365,13 @@ const ModifyCheckItem = (props) => {
             setPromoOptions(false)
             setQsaItem(false)
             setInfoMessage(`${checkItemModData.name} QSA Applied`)
+            setPromoRecalculate(true)
             setTimeout(() => {
                 setInfoMessage('')
                 setModifyCheckItem(false)
             }, 1000)
         }
-    },[qsaItem, setModifyCheckItem, checkItemModData.cost, checkItemModData.name, checkItemModData.originalCost, checkItemModData.qsa, checkItemModData.time, checkItemModData.seat, contextTable, employeeContext.employeeNumber])
+    },[setPromoRecalculate, qsaItem, setModifyCheckItem, checkItemModData.cost, checkItemModData.name, checkItemModData.originalCost, checkItemModData.qsa, checkItemModData.time, checkItemModData.seat, contextTable, employeeContext.employeeNumber])
 
     // Release table ownership on last item delete
     useEffect(() => {
@@ -408,6 +430,7 @@ const ModifyCheckItem = (props) => {
                 props.setDoesSeatExist(false)
             }
             setInfoMessage(`${props.checkItemModData.name} deleted`)
+            setPromoRecalculate(true)
             setConfirmRelaseTable(true)
             setTimeout(() => {
                 props.setModifyCheckItem(false)

@@ -6,13 +6,12 @@ import { useState, useEffect, useCallback } from 'react';
 
 const TableCheck = (props) => {
     const { 
-        setFireItAlert, currentOrderData, setCurrentOrderData, selectedSeat, setSelectedSeat, doesSeatExist, sendOrder, setSendOrder, setMenuTabActive, setTableTabActive, tableData
+        setFireItAlert, currentOrderData, setCurrentOrderData, selectedSeat, setSelectedSeat, doesSeatExist, sendOrder, setSendOrder, setMenuTabActive, setTableTabActive, tableData, checkTotal, setCheckTotal, setCheckItemModData
     } = props
     const { managerContext, employeeContext } = useAuth();
     const { contextTable } = useTable();
     const [ checkData, setCheckData ] = useState([])
     const [ pendingOrder, setPendingOrder ] = useState('')
-    const [ checkTotal, setCheckTotal ] = useState();
     const [ recalculate, setRecalculate ] = useState(false)
         
     const handlePendingOrderDelete = useCallback((e) => {
@@ -41,7 +40,7 @@ const TableCheck = (props) => {
 
     // Add up costs of items for check total
     useEffect(() => {
-        if(checkData !== []){
+        if(checkData.length >= 0){
             let costsArray = []
             const itemCosts = document.querySelectorAll('.checkItemCost')
             itemCosts.forEach((item) => {
@@ -60,7 +59,7 @@ const TableCheck = (props) => {
             setCheckTotal(sum)
             setRecalculate(false)
         }
-    }, [checkData, currentOrderData, recalculate])
+    }, [checkData, currentOrderData, recalculate, setCheckTotal])
 
     // Get Data for the check from current server and table
     useEffect(() => {
@@ -341,7 +340,7 @@ const TableCheck = (props) => {
             props.setFireItAlert('TableCheck edit sent')
         }
         if(props.menuTabActive && managerContext === true){
-            props.setCheckItemModData({
+            setCheckItemModData({
                 seat:e.currentTarget.dataset.seat,
                 discount:e.currentTarget.dataset.discount,
                 cost:e.currentTarget.dataset.cost,
