@@ -9,6 +9,7 @@ const PaymentKeyPad = (props) => {
     let padCombo = []
     const [ error, setError ] = useState('')
     const [ success, setSuccess ] = useState('')
+    const [ inputDisplay, setInputDisplay ] = useState('')
     const [ payments, setPayments ] = useState([])
     const [ paymentsChange, setPaymentsChange ] = useState([])
     const [ remainingTotal, setRemainingTotal ] = useState(props.receiptToSettle.receiptCost)
@@ -99,10 +100,13 @@ const PaymentKeyPad = (props) => {
 
     const handleClick = (e) => {
         padCombo.push(e.currentTarget.textContent)
+        const inputInfo = Number(padCombo.join().replace(/,/g, ''))
+        setInputDisplay((previous) => previous + inputInfo)
     }
 
     const handleClear = () => {
         padCombo = [];
+        setInputDisplay('')
         setError('Clearing Price Input')
         setTimeout(() => {
             setError('')
@@ -118,41 +122,46 @@ const PaymentKeyPad = (props) => {
     }
 
     const handleCash = () => {
-        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentAmount(Number(Number(inputDisplay)))
         setNewPaymentMethod('cash')
         padCombo = []
+        setInputDisplay('')
         setSuccess('Enter tip')
         setEnterTip(true)
     }
 
     const handleInterac = () => {
-        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentAmount(Number(Number(inputDisplay)))
         setNewPaymentMethod('interac')
         padCombo = []
+        setInputDisplay('')
         setSuccess('Enter tip')
         setEnterTip(true)
     }
 
     const handleAmex = () => {
-        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentAmount(Number(Number(inputDisplay)))
         setNewPaymentMethod('amex')
         padCombo = []
+        setInputDisplay('')
         setSuccess('Enter tip')
         setEnterTip(true)
     }
 
     const handleVisa = () => {
-        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentAmount(Number(Number(inputDisplay)))
         setNewPaymentMethod('visa')
         padCombo = []
+        setInputDisplay('')
         setSuccess('Enter tip')
         setEnterTip(true)
     }
 
     const handleMastercard = () => {
-        setNewPaymentAmount(Number(padCombo.join().replace(/,/g, '')))
+        setNewPaymentAmount(Number(Number(inputDisplay)))
         setNewPaymentMethod('mastercard')
         padCombo = []
+        setInputDisplay('')
         setSuccess('Enter tip')
         setEnterTip(true)
     }
@@ -161,9 +170,10 @@ const PaymentKeyPad = (props) => {
         const paymentInfo = {}
         paymentInfo.amount = newPaymentAmount
         paymentInfo.method = newPaymentMethod
-        paymentInfo.tip = Number(padCombo.join().replace(/,/g, ''))
+        paymentInfo.tip = Number(Number(inputDisplay))
         setNewPayment(paymentInfo)
         padCombo = []
+        setInputDisplay('')
     }
 
     const handleCancelPayment = (e) => {
@@ -226,8 +236,10 @@ const PaymentKeyPad = (props) => {
                     {error
                         ? <div className='padError'>{error}</div>
                         : success
-                            ? <div className='padSuccess'>{success}</div>
-                            : null
+                            ? <div className='padSuccess'>{success}: {inputDisplay}</div>
+                            : inputDisplay
+                                ? <div className='padSuccess'>{inputDisplay}</div>
+                                : null
                     }
                 </div>
 

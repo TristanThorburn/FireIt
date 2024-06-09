@@ -8,7 +8,8 @@ import { doc, setDoc, getDoc, deleteDoc, collection, getCountFromServer } from '
 const CheckTabNav = (props) => {
     const { currentUser, logout, employeeContext, } = useAuth();
     const { contextTable } = useTable();
-    const { receiptsList, allOnOne, setAllOnOne, setSplitEven, setDivisionAmount, divisionAmount } = props
+    const { setFireItAlert, receiptsList, allOnOne, setAllOnOne, setSplitEven, setDivisionAmount, divisionAmount, setPrintReceipts, employeeNumber, setAlphaNumericPadOpen, setHelpModal 
+    } = props
     const navigate = useNavigate();
     const [ error, setError ] = useState('')
     const [ seatCount, setSeatCount ] = useState('')
@@ -26,6 +27,16 @@ const CheckTabNav = (props) => {
         }
     }, [employeeContext.employeeNumber, contextTable])
 
+    // toggle splitEven Button color for UX
+    useEffect(() => {
+        const splitEvenButton = document.getElementById('splitEven')
+        if(divisionAmount !== ''){
+            splitEvenButton.classList.add('functionActive')
+        } else {
+            splitEvenButton.classList.remove('functionActive')
+        }
+    }, [divisionAmount])
+
     // const handleMgrOveride = () => {
     //     if(managerContext === false){
     //         props.setManagerKeyPadActive(true)
@@ -38,24 +49,12 @@ const CheckTabNav = (props) => {
 
     const handlePrintReceipts = () => {
         if(contextTable === '' && seatCount === ''){
-            props.setFireItAlert('FireIt no table')
+            setFireItAlert('FireIt no table')
         }
          else if(contextTable !== '' && seatCount === 0){
-            props.setFireItAlert('CheckTab no seats')
+            setFireItAlert('CheckTab no seats')
         } else {
-            props.setPrintReceipts(true)
-        }
-    }
-
-    const handleAllOnOne = () => {
-        if(contextTable === '' && seatCount === ''){
-            props.setFireItAlert('FireIt no table')
-        }
-         else if(contextTable !== '' && seatCount === 0){
-            props.setFireItAlert('CheckTab no seats')
-        } else {
-            setDivisionAmount('')
-            setAllOnOne(!allOnOne)
+            setPrintReceipts(true)
         }
     }
 
@@ -63,18 +62,18 @@ const CheckTabNav = (props) => {
         const createSeperateReceipt = async () => {
             // Do not allow adding receipts if no table selected, or the check has nothing on it
             if(contextTable === '' && seatCount === ''){
-                props.setFireItAlert('FireIt no table')
+                setFireItAlert('FireIt no table')
             }
              else if(contextTable !== '' && seatCount === 0){
-                props.setFireItAlert('CheckTab no seats')
+                setFireItAlert('CheckTab no seats')
             } else {
                 if(receiptsList.length >= seatCount && !allOnOne){
-                    props.setFireItAlert('CheckTab more receipts than seats')
+                    setFireItAlert('CheckTab more receipts than seats')
                 }
     
                 if(receiptsList.length === 0 && receiptsList.length < seatCount && !allOnOne){
                     const receiptRef = 
-                            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, 'receipt1')
+                            doc(db, 'receipts', `${employeeNumber}`, contextTable, 'receipt1')
                     const docSnap = await getDoc(receiptRef)
     
                     if(!docSnap.exists()){
@@ -102,7 +101,7 @@ const CheckTabNav = (props) => {
                         nextReceipt = orderedReceipts[orderedReceipts.length - 1] +1;
                     }
                     const receiptRef = 
-                            doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${nextReceipt}`)
+                            doc(db, 'receipts', `${employeeNumber}`, contextTable, `receipt${nextReceipt}`)
                     const docSnap = await getDoc(receiptRef)
     
                     if(!docSnap.exists()){
@@ -116,7 +115,7 @@ const CheckTabNav = (props) => {
                 }
                 
                 if(allOnOne){
-                    props.setFireItAlert('CheckTab cancel all on one')
+                    setFireItAlert('CheckTab cancel all on one')
                 }
             }
 
@@ -126,11 +125,11 @@ const CheckTabNav = (props) => {
 
     const handleRemoveSeparate = () => {
         if(contextTable === '' && seatCount === ''){
-            props.setFireItAlert('FireIt no table')
+            setFireItAlert('FireIt no table')
         } else {
             const receiptToRemove = Math.max(...receiptsList)
             const receiptRef = 
-                doc(db, 'receipts', `${props.employeeNumber}`, contextTable, `receipt${receiptToRemove}`)
+                doc(db, 'receipts', `${employeeNumber}`, contextTable, `receipt${receiptToRemove}`)
             const removeSeperateReceipt = async () => {
                 const docSnap = await getDoc(receiptRef)
                 if(receiptsList.length > 0 && !allOnOne){
@@ -140,51 +139,54 @@ const CheckTabNav = (props) => {
                 }
 
                 if(receiptsList.length === 0 && !allOnOne){
-                    props.setFireItAlert('CheckTab less than zero')
+                    setFireItAlert('CheckTab less than zero')
                 }
 
                 if(allOnOne){
-                    props.setFireItAlert('CheckTab cancel all on one')
+                    setFireItAlert('CheckTab cancel all on one')
                 }
             }
             removeSeperateReceipt()
         }
     }
-
-    const handleSplitEven = () => {
+    
+    const handleAllOnOne = (e) => {
         if(contextTable === '' && seatCount === ''){
-            props.setFireItAlert('FireIt no table')
+            setFireItAlert('FireIt no table')
         }
          else if(contextTable !== '' && seatCount === 0){
-            props.setFireItAlert('CheckTab no seats')
+            setFireItAlert('CheckTab no seats')
+        } else {
+            setDivisionAmount('')
+            setAllOnOne(!allOnOne)
+            e.target.classList.toggle('functionActive')
+        }
+    }
+
+    const handleSplitEven = (e) => {
+        if(contextTable === '' && seatCount === ''){
+            setFireItAlert('FireIt no table')
+        }
+         else if(contextTable !== '' && seatCount === 0){
+            setFireItAlert('CheckTab no seats')
         } else {
             if(allOnOne){
-                props.setFireItAlert('CheckTab cancel all on one')
+                setFireItAlert('CheckTab cancel all on one')
+            } if(divisionAmount !== ''){
+                setSplitEven(false)
+                setDivisionAmount('')
             } else {
                 setSplitEven(true)
             }
         }
     }
 
-    const handleCancelSplitEven = () => {
-        if(contextTable === '' && seatCount === ''){
-            props.setFireItAlert('FireIt no table')
-        }
-         else if(contextTable !== '' && seatCount === 0){
-            props.setFireItAlert('CheckTab no seats')
-        } else {
-            if(divisionAmount !== ''){
-                setDivisionAmount('')
-            }
-        }
-    }
-
     const handleChangeTable = () => {
-        props.setAlphaNumericPadOpen(true)
+        setAlphaNumericPadOpen(true)
     }
 
     const handleHelp = () => {
-        props.setHelpModal(true)
+        setHelpModal(true)
     }
 
     const handleLogout = async () => { 
@@ -241,14 +243,17 @@ const CheckTabNav = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button onClick={handleSplitEven} className='workingButton'>split total evenly</button>
+                    <button 
+                        onClick={handleSplitEven}
+                        id='splitEven'
+                        className='workingButton'
+                        >
+                        {divisionAmount !== ''
+                            ? 'cancel split even'
+                            : 'split total evenly'
+                        }
+                    </button>
                 </li>
-                {divisionAmount !== ''
-                    ? <li>
-                        <button onClick={handleCancelSplitEven} className='workingButton'>cancel split even</button>
-                    </li>
-                    : null
-                }
                 <li>
                     <button onClick={handleChangeTable} className='workingButton'>CHANGE TABLE</button>
                 </li>

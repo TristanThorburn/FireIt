@@ -6,7 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 const AlphaNumericPad = (props) => {
     const { setContextTable } = useTable();
     const [ error, setError ] = useState('');
-    const [ success, setSuccess ] = useState('');
+    const [ inputDisplay, setInputDisplay ] = useState('')
     let padCombo = []
 
     const handleCloseModal = () => {
@@ -15,6 +15,8 @@ const AlphaNumericPad = (props) => {
 
     const handleClick = (e) => {
         padCombo.push(e.currentTarget.textContent)
+        const inputInfo = new Array(padCombo.join().replace(/[, ]+/g,'').trim()).toString()
+        setInputDisplay((previous) => previous + inputInfo)
     }
 
     const handleSpace = () => {
@@ -24,53 +26,58 @@ const AlphaNumericPad = (props) => {
     const handleClear = () => {
         padCombo = [];
         setError('Clearing Input')
+        setInputDisplay('')
         setTimeout(() => {
             setError('')
         }, 1000)
     }
 
     const handleSubmit = () => {
-        const padInput = new Array(padCombo.join().replace(/[, ]+/g,'').trim()).toString()
-        const tableIsOnMap = props.existingTables.filter(name => name.toLowerCase() === padInput)
+        const tableIsOnMap = props.existingTables.filter(name => name.toLowerCase() === inputDisplay)
         if(tableIsOnMap.length === 0){
-            const errorTable = new Array(padCombo.join().replace(/[,]+/g,'').trim()).toString()
-            setError(`${errorTable} does not exist on the table map.`)
+            setError(`${inputDisplay} does not exist on the table map. Include all letters and numbers`)
             padCombo = []
+            setInputDisplay('')
             setTimeout(() => {
                 setError('')
-            }, 1500)
+            }, 2000)
         }
         if(tableIsOnMap.length > 0){
-            const approvedTable = props.serverTableList.filter(obj => obj.id === padInput)
+            const approvedTable = props.serverTableList.filter(obj => obj.id === inputDisplay)
             if(approvedTable.length >= 1){
-                setSuccess(padInput)
-                setContextTable(padInput)
+                setContextTable(inputDisplay)
                 setTimeout(() => {
-                    setSuccess('')
                     padCombo = []
+                    setInputDisplay('')
                     if(props.summaryTabActive === true){
                         props.setSummaryTabActive(false)
                         props.setMenuTabActive(true)
                     }
                 }, 1000)
+                props.setAlphaNumericPadOpen(false)
             } else {
-                const docRef = doc(db, 'tables', padInput)
+                const docRef = doc(db, 'tables', inputDisplay)
                 const getTableInfo = async () => {
                     const docSnap = await getDoc(docRef)
                     if(docSnap.exists()){
                         if(docSnap.data().serverOwner === 'none'){
-                            setSuccess(padInput)
-                            setContextTable(padInput)
+                            setContextTable(inputDisplay)
                             setTimeout(() => {
-                                setSuccess('')
                                 padCombo = []
+                                setInputDisplay('')
                                 if(props.summaryTabActive === true){
                                     props.setSummaryTabActive(false)
                                     props.setMenuTabActive(true)
                                 }
                             }, 1000)
+                            props.setAlphaNumericPadOpen(false)
                         } else {
                             setError('Another server is using that table')
+                            padCombo = []
+                            setInputDisplay('')
+                            setTimeout(() => {
+                                setError('')
+                            }, 1500)
                         }
                     }
                 }
@@ -141,9 +148,9 @@ const AlphaNumericPad = (props) => {
                         </tr>
                     </tbody>
                 </table>
-
-                {success
-                    ? <p className='padSuccess'>{success}</p>
+                
+                {inputDisplay
+                    ? <p className='padSuccess'>{inputDisplay}</p>
                     : error
                         ? <p className='padError'>{error}</p>
                         : null

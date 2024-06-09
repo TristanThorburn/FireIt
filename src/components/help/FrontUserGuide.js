@@ -33,7 +33,7 @@ const FrontUserGuide = (props) => {
                         <li>Pending orders will appear on the check in blue, this also simulates the functionality of unsent orders, thus servers could delete without the help of a manager, as nothing has been 'sent' so there is no potential product loss.</li>
                         <li>~Pending orders will currently be lost when switching tabs.~</li>
                         <li>Click on the item name to delete PENDING orders, pending orders which create a new seat can only be deleted if no other items are on the seat.</li>
-                        <li>When manager override is active, SENT items on the check can be modified. This includes deletion, 25% / 50% / 100% discount application and removal, as well as QSA application and removal of a 100% discount.</li>
+                        <li>When manager override is active, SENT items on the check can be modified. This includes deletion, 25% / 50% / 100% discount application and removal, as well as QSA application and removal.</li>
                         <li>Attempting to delete an item with a discount will prompt a warning and a confirmation, as future data will account for discount totals and type.</li>
                         <li>If the last item on the table is deleted via manager authorization, table ownership is released.</li>
                         <li>New items can be added to the menu categories using the Admin tab and the back dash.</li>
@@ -84,7 +84,7 @@ const FrontUserGuide = (props) => {
                 {props.summaryTabActive
                     ? <ul>
                         <li>
-                            Displays all tables currently in use by the server for easy reference. Servers can select tables to order on similar to the table map by using START NEW TABLE instead.
+                            Displays all tables currently in use by the server for easy reference. Servers can select tables to order on similar to the table map by using CHANGE TABLE instead.
                         </li>
                         <li>Stretch Goals: 
                             <br />
