@@ -51,7 +51,7 @@ const SummaryTabNav = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button onClick={handleNewTable} className='workingButton'>START NEW TABLE</button>
+                    <button onClick={handleNewTable} className='workingButton'>CHANGE TABLE</button>
                 </li>
                 <li><button className='nonWorkingButton'>Demo</button></li>
                 <li><button className='nonWorkingButton'>Demo</button></li>

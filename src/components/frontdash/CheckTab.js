@@ -499,10 +499,14 @@ const CheckTab = (props) => {
                                 </table> 
                             )}
                             
-                            <footer>
-                                <p>Check Total:</p>
-                                <p>${receiptData[0]?.data.checkTotal}</p>
-                            </footer>
+                            {allOnOne
+                                ?<footer>
+                                    <p>Check Total:</p>
+                                    <p>${receiptData[0]?.data.checkTotal}</p>
+                                </footer>
+                                :null
+                            }
+                            
                         </article>
                         : receiptData?.map((receipt, i) => {
                             return(
@@ -585,10 +589,10 @@ const CheckTab = (props) => {
                                         })
                                     }
                         
-                                    <footer>
+                                    {/* <footer>
                                         <p>Check Total:</p>
                                         <p>${receipt.data.receiptTotalCost}</p>
-                                    </footer>
+                                    </footer> */}
                                 </article>
                             )
                         })
