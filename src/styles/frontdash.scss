@@ -77,14 +77,14 @@
         background-color: green;
     }
     button.workingButton:active{
-        background-color:lighten(green, 5%);
+        background-color:lighten(green, 10%);
     }
     .nonWorkingButton{
         border-color:darkred;
         background-color:darkred;
     }
     button.nonWorkingButton:active{
-        background-color:lighten(red, 5%);
+        background-color:lighten(red, 10%);
     }
     li{
         // 100px-150px
@@ -102,6 +102,10 @@
             // 20px-25px
             font-size: clamp(1rem, 0.3125rem + 0.7813vw, 1.25rem)
         }
+    }
+    button.functionActive{
+        background-color: $fireItColor;
+        color:black;
     }
 }
 

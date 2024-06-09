@@ -86,7 +86,7 @@ const FrontCodeDetails = (props) => {
                     <li>Due to this changed, ADD RECEIPT and REMOVE RECEIPT where change from count++ or count-- to setDoc or deleteDoc.</li>
                     <li>All on one receipt, or split total evenly use the same active check data and re structure it when uploaded to match the data sent to firestore from separation by seat.</li>
                     <li>New flags were added to denote receipt split style to prevent single seat deletion on receipts populated together as all on one or split even.</li>
-                    <li>CHNG TBL is the same as in the Menu Tab.</li>
+                    <li>CHANGE TABLE is the same as in the Menu Tab.</li>
                 </ul>
                 : null
             }
@@ -96,7 +96,7 @@ const FrontCodeDetails = (props) => {
                     <li>The summary tab offers an alternative way to the Table Map for adding tables and also serves as a quick reference, as you are able to see which tables you are actively using.</li>
                     <li>This tab displays the 'query' of the tables collection in firestore 'where' the server ownership data on the table === that of the employeeContext.</li>
                     <li>This query is done on load of the front dash when logging in and prop drilled between various components. Most often used in the CHNG TBL functions in Menu and Check Tabs. It is the same component as START NEW TABLE in the Summary Tab lower navigation.</li>
-                    <li>START NEW TABLEs' only functionality change from the CHNG TBL is to change the active tab from summary to menu after finding the table. This needs a future update in which the user would be notified if the table they have searched for does not even exist on the map.</li>
+                    <li>CHANGE TABLE's only functionality change from the CHANGE TABLE (MENU) is to change the active tab from summary to menu after finding the table.</li>
                 </ul>
                 : null
             }
@@ -109,15 +109,15 @@ const FrontCodeDetails = (props) => {
                     <li>Clicking on a receipt opens up a new Payment Key Pad for the user to apply payment methods towards the receipt. The original logic created objects with keys for the payment method and amount that were added to an array and mapped on the display. When the payments matched the receipts total, enter tip was set to true for the user to input the tip amount.</li>
                     <li>The above logic wouldn't exist in practice as with each payment you would enter the tip associated with that payment, so I refactored the code.</li>
                     <li>The changed code would set states for the payment method and amount then set the enter tip state to true individually.</li>
-                    <li>Entering the tip now combined the methond, amound and tip into an object then triggered a useEffect to start a new payments array or add to the old one and then map out the objects on the display.</li>
+                    <li>Entering the tip now combined the payment method, amound and tip information into an object then triggered a useEffect to start a new payments array or add to the old one and then map out the objects on the display.</li>
                     <li>This would subsequently trigger more useEffects, the next being one that would collect all of the payment and tip totals and sum them together, subtracting from the receipts' remaining cost to display the amount remaining, and adding to the tip display total.</li>
                     <li>These total changes trigger the next useEffect which is monitoring how much is remaining on the check total, it also guards against math mistakes and displays an error when the total payments amount add up to more than that of the receipt.</li>
                     <li>Similar to other components in this app, at any time the user can click on an applied payment to remove it. The click event stores data from the target, and filters the array to find the index of the object matching this data. After a .splice() of the index, the array displaying payments is updated, and the useEffects are again triggered to check for changes to receipt and tip totals.</li>
                     <li>When the payments total and receipt total match, the user can then submit this payment. This collects the info and updates the receipts doc with paymentData, and changes its' status data so that the receipt will display as green. This is the logic I would likely use when updating the pending menu orders to temporarily save.</li>
-                    <li>From this point the user can click on the receipt again, and if confirmed to the alert remove this payment data. In the future I would like for the receipt to display what payments were applied, so the user can tell if they actually want to delete these payments.</li>
+                    <li>From this point the user can click on the receipt again, and if confirmed to the alert remove this payment data.</li>
                     <li><h3>Confirming Payments:</h3></li>
-                    <li>If the user is happy with the payments, they can use the FINISH SETTLE to finalize these payments. It is not necessary for all receipts to be settled at the same time as in practice guests may pay at different times.</li>
-                    <li>Clicking the FINISH SETTLE button triggers to subsequent useEffects.</li>
+                    <li>If the user is happy with the payments, they can use SUBMIT SETTLED PAYMENTS to finalize these payments. It is not necessary for all receipts to be settled at the same time as in practice guests may pay at different times.</li>
+                    <li>Clicking the SUBMIT SETTLED PAYMENTS button triggers to subsequent useEffects.</li>
                     <li>The first useEffect collects the temporary paymentData applied to the receipt and stores it in the server's payments collection for future use in the back end dash. The useEffect also checks for the current date, and saves the payments by date in a collection, with its sub documents saved using a Date.now() id similar to menu items when punched in.
                     </li>
                     <li>Completion of the data save triggers the second clean up useEffect, which completes up to three tasks. First it removes (deletes) the receipts which payments were applied to. It collects the list of all of the seats on any settled receipts and removes them from the tables' check. Lastly, should the tables' check no longer have any remaining seats, the server ownership on the table is updated to 'none' so that others may use it.</li>
