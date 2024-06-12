@@ -15,12 +15,14 @@ const AlphaNumericPad = (props) => {
 
     const handleClick = (e) => {
         padCombo.push(e.currentTarget.textContent)
-        const inputInfo = new Array(padCombo.join().replace(/[, ]+/g,'').trim()).toString()
+        const inputInfo = new Array(padCombo.join().replace(/[,]+/g,''))
         setInputDisplay((previous) => previous + inputInfo)
     }
 
     const handleSpace = () => {
         padCombo.push(' ')
+        const inputInfo = new Array(padCombo.join().replace(/[,]+/g,''))
+        setInputDisplay((previous) => previous + inputInfo)
     }
 
     const handleClear = () => {
@@ -33,7 +35,8 @@ const AlphaNumericPad = (props) => {
     }
 
     const handleSubmit = () => {
-        const tableIsOnMap = props.existingTables.filter(name => name.toLowerCase() === inputDisplay)
+        const inputToCompare = inputDisplay.replace(/[, ]+/g, '').trim().toString()
+        const tableIsOnMap = props.existingTables.filter(name => name.toLowerCase() === inputToCompare)
         if(tableIsOnMap.length === 0){
             setError(`${inputDisplay} does not exist on the table map. Include all letters and numbers`)
             padCombo = []
@@ -45,7 +48,7 @@ const AlphaNumericPad = (props) => {
         if(tableIsOnMap.length > 0){
             const approvedTable = props.serverTableList.filter(obj => obj.id === inputDisplay)
             if(approvedTable.length >= 1){
-                setContextTable(inputDisplay)
+                setContextTable(inputToCompare)
                 setTimeout(() => {
                     padCombo = []
                     setInputDisplay('')
@@ -56,12 +59,12 @@ const AlphaNumericPad = (props) => {
                 }, 1000)
                 props.setAlphaNumericPadOpen(false)
             } else {
-                const docRef = doc(db, 'tables', inputDisplay)
+                const docRef = doc(db, 'tables', inputToCompare)
                 const getTableInfo = async () => {
                     const docSnap = await getDoc(docRef)
                     if(docSnap.exists()){
                         if(docSnap.data().serverOwner === 'none'){
-                            setContextTable(inputDisplay)
+                            setContextTable(inputToCompare)
                             setTimeout(() => {
                                 padCombo = []
                                 setInputDisplay('')
