@@ -43,24 +43,30 @@ const AddTableForm = (props) => {
 
     const handleAddTable = (e) => {
         e.preventDefault()
-        const confirmTableInfo = async () => {
-            let tablesList = []
-            getDocs(tableMapCollectionRef).then(snap => {
-                snap.forEach(doc => {                
-                    tablesList.push(doc.data().name)
-                })            
-                // check if table table is in the list
-                const tableExists = tablesList.indexOf(tableNameRef?.current.value) > -1
-                setExistingTable(tableExists)
-                const designOptions = document.getElementsByName('design');
-                    for (var radio of designOptions){
-                        if (radio.checked) {    
-                            setDesign(radio.value)
+        const symbols = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
+        const newTableName = tableNameRef?.current.value
+        if(symbols.test(newTableName)){
+            setError('Symbols cannot be used in table names')
+        } else {
+            const confirmTableInfo = async () => {
+                let tablesList = []
+                getDocs(tableMapCollectionRef).then(snap => {
+                    snap.forEach(doc => {                
+                        tablesList.push(doc.data().name)
+                    })            
+                    // check if table table is in the list
+                    const tableExists = tablesList.indexOf(tableNameRef?.current.value) > -1
+                    setExistingTable(tableExists)
+                    const designOptions = document.getElementsByName('design');
+                        for (var radio of designOptions){
+                            if (radio.checked) {    
+                                setDesign(radio.value)
+                            }
                         }
-                    }
-            })
+                })
+            }
+            confirmTableInfo()
         }
-        confirmTableInfo()
     }
 
     const handleCancel = () => {
